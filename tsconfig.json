@@ -1,0 +1,25 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib",
+    "typeRoots" : ["node_modules/@bkper", "node_modules/@types" ],
+    "strict": false,
+    "esModuleInterop": true,
+    "target": "es2015",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true
+  },
+  "include": [
+    "src/**/*.json",
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "./test/",
+    "./node_modules/",
+    "./lib/"
+  ]
+}
