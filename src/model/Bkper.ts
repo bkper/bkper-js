@@ -7,7 +7,7 @@ import { User } from "./User";
 import { Config } from "./Config";
 
 /**
- * This is the main Entry Point of the [bkper-node](https://www.npmjs.com/package/bkper) library.
+ * This is the main Entry Point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
  * 
  * @public
  */

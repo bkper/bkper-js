@@ -9,19 +9,19 @@ Bkper Node.js client provides a simple and secure way to access the [Bkper REST 
 ### Add the package:
 
 ```
-npm i -S bkper
+npm i -S bkper-js
 ```
 or
 ```
-yarn add bkper
+yarn add bkper-js
 ```
 or
 ```
-bun add bkper
+bun add bkper-js
 ```
 
 ## Documentation
 
 - [Developer Docs](https://bkper.com/docs)
-- [API Reference](https://bkper.com/docs/bkper-node/)
+- [API Reference](https://bkper.com/docs/bkper-js/)
 
