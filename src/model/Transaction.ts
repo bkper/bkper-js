@@ -1,9 +1,9 @@
-import { File } from "./File";
-import { Book } from "./Book";
-import { Account } from "./Account";
-import * as TransactionService from '../service/transaction-service';
-import * as Utils from '../utils';
-import { Amount } from './Amount';
+import { File } from "./File.js";
+import { Book } from "./Book.js";
+import { Account } from "./Account.js";
+import * as TransactionService from '../service/transaction-service.js';
+import * as Utils from '../utils.js';
+import { Amount } from './Amount.js';
 
 
 /**

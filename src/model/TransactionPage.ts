@@ -1,8 +1,8 @@
-import { Book } from "./Book"
-import { Transaction } from "./Transaction"
-import { Account } from "./Account"
-import * as TransactionService from '../service/transaction-service';
-import { wrapObjects } from "../utils";
+import { Book } from "./Book.js"
+import { Transaction } from "./Transaction.js"
+import { Account } from "./Account.js"
+import * as TransactionService from '../service/transaction-service.js';
+import { wrapObjects } from "../utils.js";
 
 
 export class TransactionPage {

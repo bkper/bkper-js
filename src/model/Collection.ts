@@ -1,4 +1,4 @@
-import { Book } from "./Book";
+import { Book } from "./Book.js";
 
 /**
  * This class defines a Collection of [[Books]].

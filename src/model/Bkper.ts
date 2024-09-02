@@ -1,10 +1,10 @@
-import { Book } from "./Book";
-import { App } from "./App";
-import * as BookService from '../service/book-service';
-import * as UserService from '../service/user-service';
-import { HttpApiRequest } from '../service/http-api-request';
-import { User } from "./User";
-import { Config } from "./Config";
+import { Book } from "./Book.js";
+import { App } from "./App.js";
+import * as BookService from '../service/book-service.js';
+import * as UserService from '../service/user-service.js';
+import { HttpApiRequest } from '../service/http-api-request.js';
+import { User } from "./User.js";
+import { Config } from "./Config.js";
 
 /**
  * This is the main Entry Point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.

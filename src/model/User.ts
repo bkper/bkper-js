@@ -1,6 +1,5 @@
-import { Connection } from "./Connection";
-import * as ConnectionService from '../service/connection-service';
-import * as Utils from '../utils';
+import { Connection } from "./Connection.js";
+import * as ConnectionService from '../service/connection-service.js';
 
 /**
  * This class defines a User.

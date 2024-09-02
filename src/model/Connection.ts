@@ -1,5 +1,5 @@
-import * as ConnectionService from '../service/connection-service';
-import { Integration } from './Integration';
+import * as ConnectionService from '../service/connection-service.js';
+import { Integration } from './Integration.js';
 
 /**
  * This class defines a Connection from an [[User]] to an external service.

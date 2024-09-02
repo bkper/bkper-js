@@ -1,20 +1,20 @@
-import * as AccountService from '../service/account-service';
-import * as GroupService from '../service/group-service';
-import * as BookService from '../service/book-service';
-import * as FileService from '../service/file-service';
-import * as TransactionService from '../service/transaction-service';
-import * as IntegrationService from '../service/integration-service';
-import * as Utils from '../utils';
-import { normalizeName } from '../utils';
-import { Account } from './Account';
-import { Amount } from './Amount';
-import { Collection } from './Collection';
-import { DecimalSeparator, Month, Period, Permission } from './Enums';
-import { File } from './File';
-import { Group } from './Group';
-import { Transaction } from './Transaction';
-import { TransactionIterator } from './TransactionIterator';
-import { Integration } from './Integration';
+import * as AccountService from '../service/account-service.js';
+import * as GroupService from '../service/group-service.js';
+import * as BookService from '../service/book-service.js';
+import * as FileService from '../service/file-service.js';
+import * as TransactionService from '../service/transaction-service.js';
+import * as IntegrationService from '../service/integration-service.js';
+import * as Utils from '../utils.js';
+import { normalizeName } from '../utils.js';
+import { Account } from './Account.js';
+import { Amount } from './Amount.js';
+import { Collection } from './Collection.js';
+import { DecimalSeparator, Month, Period, Permission } from './Enums.js';
+import { File } from './File.js';
+import { Group } from './Group.js';
+import { Transaction } from './Transaction.js';
+import { TransactionIterator } from './TransactionIterator.js';
+import { Integration } from './Integration.js';
 
 /**
  *

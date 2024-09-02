@@ -1,7 +1,7 @@
-import { DecimalSeparator } from '../src/model/Enums';
-import * as utils from '../src/utils'
+import { DecimalSeparator } from '../src/model/Enums.js';
+import * as utils from '../src/utils.js'
 
-var expect = require('chai').expect;
+import { expect } from "chai";
 
 describe('utils', () => {
 

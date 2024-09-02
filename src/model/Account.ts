@@ -1,11 +1,11 @@
-import * as AccountService  from '../service/account-service'
-import * as GroupService  from '../service/group-service'
-import { Book } from './Book';
-import { AccountType } from './Enums';
-import { Group } from './Group';
-import { normalizeText, round } from '../utils';
-import { Amount } from './Amount';
-import * as Utils from '../utils';
+import * as AccountService  from '../service/account-service.js'
+import * as GroupService  from '../service/group-service.js'
+import { Book } from './Book.js';
+import { AccountType } from './Enums.js';
+import { Group } from './Group.js';
+import { normalizeText, round } from '../utils.js';
+import { Amount } from './Amount.js';
+import * as Utils from '../utils.js';
 
 /**
  * 

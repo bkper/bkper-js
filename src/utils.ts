@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
-import { Amount } from './model/Amount';
-import { DecimalSeparator, Periodicity } from './model/Enums';
+import { Amount } from './model/Amount.js';
+import { DecimalSeparator, Periodicity } from './model/Enums.js';
 
 export const NODE_ENV_DEV = 'development';
 

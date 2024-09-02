@@ -1,5 +1,5 @@
-import { Book } from "./Book";
-import * as FileService from '../service/file-service';
+import { Book } from "./Book.js";
+import * as FileService from '../service/file-service.js';
 
 /**
  * 

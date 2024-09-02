@@ -1,4 +1,4 @@
-import { createApp, patchApp, updateApp } from "../service/app-service";
+import { createApp, patchApp, updateApp } from "../service/app-service.js";
 
 /**
  * Defines an App on Bkper.

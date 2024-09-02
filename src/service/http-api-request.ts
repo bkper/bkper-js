@@ -1,11 +1,11 @@
 
 import { GaxiosError, request, GaxiosResponse } from 'gaxios';
 import https from 'https';
-import { NODE_ENV_DEV } from '../utils';
-import { Config } from '../model/Config';
+import { NODE_ENV_DEV } from '../utils.js';
+import { Config } from '../model/Config.js';
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-const httpsAgent = new https.Agent({ keepAlive: true });
+const httpsAgent = https && https.Agent ? new https.Agent({ keepAlive: true }) : null;
 
 export interface HttpError {
   errors:

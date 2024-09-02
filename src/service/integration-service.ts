@@ -1,4 +1,4 @@
-import { HttpBooksApiV5Request } from "./http-api-request";
+import { HttpBooksApiV5Request } from "./http-api-request.js";
 
 export async function listIntegrations(bookId: string): Promise<bkper.Integration[]> {
   const res = await new HttpBooksApiV5Request(`${bookId}/integrations`)

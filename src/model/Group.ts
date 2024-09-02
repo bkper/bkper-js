@@ -1,9 +1,9 @@
-import * as GroupService from '../service/group-service';
-import { normalizeText } from "../utils";
-import { Account } from './Account';
-import { Book } from "./Book";
-import { AccountType } from './Enums';
-import * as Utils from '../utils';
+import * as GroupService from '../service/group-service.js';
+import { normalizeText } from "../utils.js";
+import { Account } from './Account.js';
+import { Book } from "./Book.js";
+import { AccountType } from './Enums.js';
+import * as Utils from '../utils.js';
 
 /**
  * This class defines a Group of [[Accounts]].

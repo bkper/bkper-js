@@ -1,7 +1,7 @@
-import { Book } from "./Book"
-import { Transaction } from "./Transaction"
-import { Account } from "./Account"
-import { TransactionPage } from "./TransactionPage"
+import { Book } from "./Book.js"
+import { Transaction } from "./Transaction.js"
+import { Account } from "./Account.js"
+import { TransactionPage } from "./TransactionPage.js"
 
 /**
  *
