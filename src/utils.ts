@@ -19,18 +19,18 @@ export function base64Decode(data: string): Buffer {
 
 var diacriticsMap_: any = null;
 
-export function round(number: Amount | string | number, fractionDigits: number): Amount {
+export function round(number: Amount | string | number, fractionDigits?: number): Amount {
   if (number == null) {
     number = new Amount('0');
   }
-  if (fractionDigits != null) {
+  if (fractionDigits) {
     return new Amount(number).round(fractionDigits);
   } else {
     return new Amount(number).round(2);
   }
 }
 
-export function formatValue(value: Amount | string | number, decimalSeparator: DecimalSeparator, fractionDigits: number): string {
+export function formatValue(value: Amount | string | number, decimalSeparator: DecimalSeparator, fractionDigits?: number): string {
 
   if (value == null) {
     return "";
@@ -47,7 +47,7 @@ export function formatValue(value: Amount | string | number, decimalSeparator: D
     return "";
   }
 
-  if (fractionDigits == null) {
+  if (!fractionDigits) {
     fractionDigits = 2;
   }
 
@@ -59,9 +59,9 @@ export function formatValue(value: Amount | string | number, decimalSeparator: D
   }
 }
 
-export function parseValue(value: string, decimalSeparator: DecimalSeparator): Amount {
+export function parseValue(value: string, decimalSeparator?: DecimalSeparator): Amount | undefined {
   if (value == null) {
-    return null;
+    return undefined;
   }
 
   if (!isNaN(+value) && isFinite(+value)) {
@@ -76,12 +76,12 @@ export function parseValue(value: string, decimalSeparator: DecimalSeparator): A
   try {
     return new Amount(value);
   } catch (err) {
-    return null;
+    return undefined;
   }
 }
 
-export function convertValueToDate(dateValue: number, offsetInMinutes: number): Date {
-  if (dateValue == null) {
+export function convertValueToDate(dateValue?: number, offsetInMinutes?: number): Date {
+  if (!dateValue) {
     return new Date();
   }
   var year = dateValue / 10000;
@@ -102,32 +102,40 @@ export function isString(obj: object): boolean {
   }
 }
 
-export function createDate(year: number, month: number, day: number, offsetInMinutes: number): Date {
+export function createDate(year: number, month: number, day: number, offsetInMinutes?: number): Date {
   var date = new Date(year, month - 1, day);
+  if (!offsetInMinutes) {
+    offsetInMinutes = 0;
+  }
   date.setTime(date.getTime() + offsetInMinutes * 60 * 1000);
   return date;
 }
 
 
-export function formatDate(date: Date, pattern: string, timeZone: string): string {
+export function formatDate(date: Date, pattern?: string, timeZone?: string): string {
+
   if (date == null || !(Object.prototype.toString.call(date) === '[object Date]')) {
     return '';
   }
 
-  if (timeZone == null || timeZone == "") {
+  if (!timeZone || timeZone == "") {
     timeZone = "UTC";
+  }
+
+  if (!pattern) {
+    return formatDateISO(date, timeZone);
   }
 
   var formatedDate = DateTime.fromJSDate(date, {zone: timeZone}).toFormat(pattern);
   return formatedDate;
 }
 
-export function formatDateISO(date: Date, timeZone: string): string {
+export function formatDateISO(date: Date, timeZone?: string): string {
   if (date == null || !(Object.prototype.toString.call(date) === '[object Date]')) {
     return '';
   }
 
-  if (timeZone == null || timeZone == "") {
+  if (!timeZone || timeZone == "") {
     timeZone = "UTC";
   }
 
@@ -135,14 +143,17 @@ export function formatDateISO(date: Date, timeZone: string): string {
   return formatedDate;
 }
 
-export function parseDate(date: string, pattern: string, timeZone: string): Date {
-    let dateObject = DateTime.fromFormat(date, pattern, {zone: timeZone}).toJSDate();
-    if (dateObject instanceof Date && !isNaN(dateObject.getTime())) {
-        console.log(dateObject)
-        return dateObject
-    } else {
-        return DateTime.fromFormat(date, 'yyyy-MM-dd', {zone: timeZone}).toJSDate();
-    }
+export function parseDate(date: string, pattern?: string, timeZone?: string): Date {
+  if (!pattern) {
+    pattern = 'yyyy-MM-dd';
+  }
+  let dateObject = DateTime.fromFormat(date, pattern, {zone: timeZone}).toJSDate();
+  if (dateObject instanceof Date && !isNaN(dateObject.getTime())) {
+      console.log(dateObject)
+      return dateObject
+  } else {
+      return DateTime.fromFormat(date, 'yyyy-MM-dd', {zone: timeZone}).toJSDate();
+  }
 }
 
 export function getDateFormatterPattern(datePattern: string, periodicity: Periodicity): string {
@@ -157,7 +168,7 @@ export function getDateFormatterPattern(datePattern: string, periodicity: Period
   return pattern;
 }
 
-export function getRepresentativeValue(value: Amount, credit: boolean): Amount {
+export function getRepresentativeValue(value: Amount, credit?: boolean): Amount {
 
   if (value == null) {
     return new Amount(0);
@@ -169,25 +180,25 @@ export function getRepresentativeValue(value: Amount, credit: boolean): Amount {
   return value;
 }
 
-export function wrapObjects<E extends Object>(wrapper: E, wrappeds: Array<Object>): Array<E> {
-  var newObjects = [];
-  if (wrappeds != null) {
-    for (var i = 0; i < wrappeds.length; i++) {
-      var newObject = wrapObject(wrapper, wrappeds[i]);
-      newObjects.push(newObject);
-    }
-  }
-  return newObjects;
-}
+// export function wrapObjects<E extends Object>(wrapper: E, wrappeds: Array<Object>): Array<E> {
+//   var newObjects = [];
+//   if (wrappeds != null) {
+//     for (var i = 0; i < wrappeds.length; i++) {
+//       var newObject = wrapObject(wrapper, wrappeds[i]);
+//       newObjects.push(newObject);
+//     }
+//   }
+//   return newObjects;
+// }
 
-export function wrapObject<E extends Object>(wrapper: E, wrapped: Object): E {
-  if (wrapped == null) {
-    wrapped = new Object();
-  }
-  var w = Object.create(wrapper);
-  w.wrapped = wrapped;
-  return w;
-}
+// export function wrapObject<E extends Object>(wrapper: E, wrapped: Object): E {
+//   if (wrapped == null) {
+//     wrapped = new Object();
+//   }
+//   var w = Object.create(wrapper);
+//   w.wrapped = wrapped;
+//   return w;
+// }
 
 export function buildURLParams(params: any): string {
   var urlSegment = "";
@@ -224,13 +235,13 @@ export function convertInMatrix(array: any[]): any[][] {
 }
 
 
-export function normalizeName(name: string): string {
+export function normalizeName(name?: string): string {
   return normalizeText(name, "_");
 }
 
-export function normalizeText(text: string, spaceReplacement?: string): string {
-  if (text == null || typeof text != 'string') {
-    return null;
+export function normalizeText(text?: string, spaceReplacement?: string): string {
+  if (!text || typeof text != 'string') {
+    return '';
   }
 
   if (spaceReplacement) {

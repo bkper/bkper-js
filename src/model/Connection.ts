@@ -29,7 +29,7 @@ export class Connection {
    * 
    * @returns The Connection's id
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
@@ -38,7 +38,7 @@ export class Connection {
    * 
    * @returns The Connection's agentId
    */
-  public getAgentId(): string {
+  public getAgentId(): string | undefined {
     return this.wrapped.agentId;
   }
 
@@ -59,7 +59,7 @@ export class Connection {
    * 
    * @returns The Connection name
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }
 
@@ -68,7 +68,7 @@ export class Connection {
    * 
    * @returns The Connection owner's email
    */
-  public getEmail(): string {
+  public getEmail(): string | undefined {
     return this.wrapped.email;
   }
 
@@ -101,7 +101,7 @@ export class Connection {
    * 
    * @returns The Connection's universal unique identifier name
    */
-  public getUUID(): string {
+  public getUUID(): string | undefined {
     return this.wrapped.uuid;
   }
 
@@ -110,7 +110,7 @@ export class Connection {
    * 
    * @returns The Connection type
    */
-  public getType(): "APP" | "BANK" {
+  public getType(): "APP" | "BANK" | undefined {
     return this.wrapped.type;
   }
 
@@ -154,7 +154,7 @@ export class Connection {
    * 
    * @returns The retrieved property value
    */
-  public getProperty(...keys: string[]): string {
+  public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
       let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
@@ -162,7 +162,7 @@ export class Connection {
         return value;
       }
     }
-    return null;
+    return undefined;
   }
 
   /**
@@ -173,12 +173,15 @@ export class Connection {
    * 
    * @returns The Connection, for chaining
    */
-  public setProperty(key: string, value: string): Connection {
+  public setProperty(key: string, value: string | null): Connection {
     if (key == null || key.trim() == '') {
       return this;
     }
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
+    }
+    if (!value) {
+      value = ''
     }
     this.wrapped.properties[key] = value;
     return this;

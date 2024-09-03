@@ -71,9 +71,12 @@ export async function getTransaction(bookId: string, id: string): Promise<bkper.
   return response.data;
 }
 
-export async function searchTransactions(bookId: string, query: string, limit: number, cursor?: string): Promise<bkper.TransactionList> {
-  if (query == null) {
+export async function searchTransactions(bookId: string, query?: string, limit?: number, cursor?: string): Promise<bkper.TransactionList> {
+  if (!query) {
     query = "";
+  }
+  if (!limit) {
+    limit = 100;
   }
   var request = new HttpBooksApiV5Request(`${bookId}/transactions`);
   request.addParam('query', query);

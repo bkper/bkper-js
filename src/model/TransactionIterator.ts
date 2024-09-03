@@ -28,16 +28,16 @@ export class TransactionIterator {
   private book: Book
 
   /** @internal */
-  private query: string
+  private query?: string
 
   /** @internal */
-  private currentPage: TransactionPage
+  private currentPage?: TransactionPage
 
   /** @internal */
-  private nextPage: TransactionPage
+  private nextPage?: TransactionPage
 
   /** @internal */
-  private lastCursor: string
+  private lastCursor?: string
   
   /** @internal */
   constructor(book: Book, query?: string) {
@@ -46,9 +46,9 @@ export class TransactionIterator {
     if (this.query == null) {
       this.query = "";
     }
-    this.currentPage = null;
-    this.nextPage = null;
-    this.lastCursor = null;
+    this.currentPage = undefined;
+    this.nextPage = undefined;
+    this.lastCursor = undefined;
   }
 
   /**
@@ -66,10 +66,10 @@ export class TransactionIterator {
    * 
    * Continuation tokens are generally valid short period of time.
    */
-  public getContinuationToken(): string {
+  public getContinuationToken(): string | undefined {
 
     if (this.currentPage == null) {
-      return null;
+      return undefined;
     }
 
     var cursor = this.lastCursor;
@@ -131,7 +131,7 @@ export class TransactionIterator {
   /**
    * Gets the next transaction in the collection of transactions.
    */
-  public async next(): Promise<Transaction> {
+  public async next(): Promise<Transaction | undefined> {
 
     if (this.currentPage == null) {
       this.currentPage = await new TransactionPage().init(this.book, this.query, this.lastCursor);
@@ -141,15 +141,15 @@ export class TransactionIterator {
       return this.currentPage.next();
     } else if (!this.currentPage.hasReachEnd()) {
       this.lastCursor = this.currentPage.getCursor();
-      if (this.nextPage != null) {
+      if (this.nextPage) {
         this.currentPage = this.nextPage;
-        this.nextPage = null;
+        this.nextPage = undefined;
       } else {
         this.currentPage = await new TransactionPage().init(this.book, this.query, this.lastCursor);
       }
       return this.currentPage.next();
     } else {
-      return null;
+      return undefined;
     }
   }
 
@@ -157,7 +157,7 @@ export class TransactionIterator {
   /**
    * @returns The account, when filtering by a single account.
    */  
-  public async getAccount(): Promise<Account> {
+  public async getAccount(): Promise<Account | undefined> {
     if (this.currentPage == null) {
       this.currentPage = await new TransactionPage().init(this.book, this.query, this.lastCursor);
     }    

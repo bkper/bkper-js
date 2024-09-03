@@ -2,27 +2,25 @@ import { Book } from "./Book.js"
 import { Transaction } from "./Transaction.js"
 import { Account } from "./Account.js"
 import * as TransactionService from '../service/transaction-service.js';
-import { wrapObjects } from "../utils.js";
 
 
 export class TransactionPage {
 
-  private account: Account
-  private transactions: Transaction[]
-  private cursor: string
-  private index: number
-  private reachEnd: boolean
+  private account?: Account
+  private transactions: Transaction[] = []
+  private cursor?: string
+  private index?: number
+  private reachEnd?: boolean
 
-  async init(book: Book, query: string, lastCursor: string): Promise<TransactionPage> {
+  async init(book: Book, query?: string, lastCursor?: string): Promise<TransactionPage> {
 
     var transactionList = await TransactionService.searchTransactions(book.getId(), query, 1000, lastCursor);
 
-    if (transactionList.items == null) {
+    if (!transactionList.items) {
       transactionList.items = [];
     }
 
-    this.transactions = wrapObjects(new Transaction(), transactionList.items);
-    book.configureTransactions_(this.transactions);
+    this.transactions = transactionList.items.map(tx => new Transaction(book, tx));
     this.cursor = transactionList.cursor;
     if (transactionList.account) {
       this.account = await book.getAccount(transactionList.account)
@@ -37,23 +35,23 @@ export class TransactionPage {
     return this;
   } 
 
-  public getCursor(): string {
+  public getCursor(): string | undefined {
     return this.cursor;
   }
 
   public hasNext(): boolean {
-    return this.index < this.transactions.length;
+    return (this.index && this.index < this.transactions.length) || false;
   }
 
   public hasReachEnd(): boolean {
-    return this.reachEnd;
+    return this.reachEnd || false;
   }
 
   public getIndex(): number {
-    if (this.index >= this.transactions.length) {
+    if (this.index && this.index >= this.transactions.length) {
       return 0;
     } else {
-      return this.index;
+      return this.index || 0;
     }
 
   }
@@ -62,17 +60,17 @@ export class TransactionPage {
     this.index = index;
   }
 
-  public getAccount(): Account {
+  public getAccount(): Account | undefined {
     return this.account;
   }
 
-  public next(): Transaction {
-    if (this.index < this.transactions.length) {
+  public next(): Transaction | undefined {
+    if (this.index && this.index < this.transactions.length) {
       var transaction = this.transactions[this.index];
       this.index++;
       return transaction;
     } else {
-      return null;
+      return undefined;
     }
   }
 }

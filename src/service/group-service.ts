@@ -35,7 +35,10 @@ export async function getGroup(bookId: string, idOrName: string): Promise<bkper.
     return response.data;
 }
 
-export async function getAccounts(bookId: string, idOrName: string): Promise<bkper.Account[]> {
+export async function getAccounts(bookId: string, idOrName?: string): Promise<bkper.Account[]> {
+  if (!idOrName) {
+    return [];
+  }
   var response = await new HttpBooksApiV5Request(`${bookId}/groups/${encodeURIComponent(idOrName)}/accounts`).setMethod('GET').fetch();
   var accountsPlain = response.data;
   if (!accountsPlain?.items) {

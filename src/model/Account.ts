@@ -18,13 +18,17 @@ import * as Utils from '../utils.js';
  * @public
  */
 export class Account {
+  
+  /** @internal */
+  private book: Book;
 
   /** @internal */
   private wrapped: bkper.Account;
   
-  /** @internal */
-  book: Book;
-
+  constructor(book: Book, json?: bkper.Account) {
+    this.book = book;
+    this.wrapped = json || {};
+  }
   /**
    * 
    * @returns The wrapped plain json object
@@ -36,7 +40,7 @@ export class Account {
   /**
    * Gets the account internal id.
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
@@ -45,7 +49,7 @@ export class Account {
   /**
    * Gets the account name.
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }
 
@@ -114,7 +118,7 @@ export class Account {
    * 
    * @param keys - The property key
    */
-  public getProperty(...keys: string[]): string {
+  public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
       let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
@@ -122,7 +126,7 @@ export class Account {
         return value;
       }
     }
-    return null;
+    return undefined;
   }
 
 
@@ -134,12 +138,15 @@ export class Account {
    * 
    * @returns This Account, for chainning. 
    */
-  public setProperty(key: string, value: string): Account {
+  public setProperty(key: string, value: string | null): Account {
     if (key == null || key.trim() == '') {
       return this;
     }    
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
+    }
+    if (!value) {
+      value = ''
     }
     this.wrapped.properties[key] = value;
     return this;
@@ -186,7 +193,7 @@ export class Account {
   /**
    * Tell if this account is archived.
    */  
-  public isArchived(): boolean {
+  public isArchived(): boolean | undefined {
     return this.wrapped.archived;
   }
 
@@ -205,7 +212,7 @@ export class Account {
    * 
    * Accounts with transaction posted, even with zero balance, can only be archived.
    */
-  public hasTransactionPosted(): boolean {
+  public hasTransactionPosted(): boolean | undefined {
     return this.wrapped.hasTransactionPosted;
   }
   
@@ -222,7 +229,7 @@ export class Account {
    * 
    * @returns True if its a permanent Account
    */
-  public isPermanent(): boolean {
+  public isPermanent(): boolean | undefined {
     return this.wrapped.permanent;
   }
 
@@ -246,7 +253,7 @@ export class Account {
    * 
    * As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
    */
-  public isCredit(): boolean {
+  public isCredit(): boolean | undefined {
     return this.wrapped.credit;
   }
 
@@ -255,11 +262,12 @@ export class Account {
    * Get the [[Groups]] of this account.
    */  
   public async getGroups(): Promise<Group[]> {
-    let groups = await GroupService.getGroupsByAccountId(this.book.getId(), this.getId());
-    let groupsObj = Utils.wrapObjects(new Group(), groups);
-    for (const group of groupsObj) {
-      group.book = this.book;
+    const id = this.getId();
+    if (!id) {
+      return [];
     }
+    let groups = await GroupService.getGroupsByAccountId(this.book.getId(), id);
+    let groupsObj = groups.map(group => new Group(this.book, group));
     return groupsObj;
   }
 
@@ -269,7 +277,7 @@ export class Account {
    * @returns This Account, for chainning.
    */  
   public setGroups(groups: Group[] | bkper.Group[]): Account {
-    this.wrapped.groups = null;
+    this.wrapped.groups = undefined;
     if (groups != null) {
       groups.forEach(group => this.addGroup(group))
     }
@@ -282,7 +290,7 @@ export class Account {
    * @returns This Account, for chainning.
    */
   public addGroup(group: Group | bkper.Group): Account {
-    if (this.wrapped.groups == null) {
+    if (!this.wrapped.groups) {
       this.wrapped.groups = [];
     }
 
@@ -301,7 +309,7 @@ export class Account {
   public async removeGroup(group: string | Group): Promise<Account> {
 
     if (this.wrapped.groups != null) {
-      let groupObject: Group = null;
+      let groupObject: Group | undefined = undefined;
       if (group instanceof Group) {
         groupObject = group;
       } else if (typeof group == "string") {

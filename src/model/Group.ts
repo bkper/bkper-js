@@ -15,14 +15,20 @@ import * as Utils from '../utils.js';
  * @public
  */
 export class Group {
+  
+  /** @internal */
+  private book: Book
 
   /** @internal */
   private wrapped: bkper.Group
-
-  accounts: Set<Account>
-
+  
   /** @internal */
-  book: Book
+  private accounts?: Set<Account>
+
+  constructor(book: Book, json?: bkper.Group) {
+    this.book = book;
+    this.wrapped = json || {}
+  }
 
   /**
    * 
@@ -35,18 +41,18 @@ export class Group {
   /**
    * @returns The id of this Group
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
   /**
    * @returns The parent Group
    */
-  public async getParent(): Promise<Group> {
+  public async getParent(): Promise<Group | undefined> {
     if (this.wrapped.parent) {
       return await this.book.getGroup(this.wrapped.parent.id)
     } else {
-      return null;
+      return undefined;
     }
   }
 
@@ -55,11 +61,11 @@ export class Group {
    * 
    * @returns This Group, for chainning.
    */  
-  public setParent(group: Group | null): Group {
+  public setParent(group: Group | null | undefined): Group {
     if (group) {
       this.wrapped.parent = {id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName()};
     } else {
-      this.wrapped.parent = null;
+      this.wrapped.parent = undefined;
     }
     return this;
   }
@@ -67,7 +73,7 @@ export class Group {
   /**
    * @returns The name of this Group
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }
 
@@ -100,10 +106,7 @@ export class Group {
     if (!accountsPlain) {
       return [];
     }
-    let accounts = Utils.wrapObjects(new Account(), accountsPlain);
-    for (const account of accounts) {
-      account.book = this.book;
-    }
+    let accounts = accountsPlain.map(acc => new Account(this.book, acc))
     return accounts;
   }
 
@@ -111,7 +114,7 @@ export class Group {
   /**
    * @returns True if this group has any account in it
    */
-  public hasAccounts(): boolean {
+  public hasAccounts(): boolean | undefined {
     return this.wrapped.hasAccounts;
   }
 
@@ -146,7 +149,7 @@ export class Group {
    * 
    * @param keys - The property key
    */
-  public getProperty(...keys: string[]): string {
+  public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
       let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
@@ -154,7 +157,7 @@ export class Group {
         return value;
       }
     }
-    return null;
+    return undefined;
   }
 
   /**
@@ -163,12 +166,15 @@ export class Group {
    * @param key - The property key
    * @param value - The property value
    */
-  public setProperty(key: string, value: string): Group {
+  public setProperty(key: string, value: string | null): Group {
     if (key == null || key.trim() == '') {
       return this;
     }
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
+    }
+    if (!value) {
+      value = ''
     }
     this.wrapped.properties[key] = value;
     return this;
@@ -189,7 +195,7 @@ export class Group {
   /**
    * Tell if the Group is hidden on main transactions menu
    */
-  public isHidden(): boolean {
+  public isHidden(): boolean | undefined{
     return this.wrapped.hidden;
   }
 

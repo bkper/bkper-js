@@ -12,8 +12,8 @@ export class App {
   /** @internal */
   private wrapped: bkper.App;
 
-  constructor(json: bkper.App) {
-    this.wrapped = json;
+  constructor(json?: bkper.App) {
+    this.wrapped = json || {};
   }
 
   /**
@@ -36,7 +36,7 @@ export class App {
    * 
    * @returns The App universal identifier
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
@@ -45,7 +45,7 @@ export class App {
    * 
    * @returns This App for chaining
    */
-  public setUserEmails(emails: string): App {
+  public setUserEmails(emails?: string): App {
     this.wrapped.userEmails = emails;
     return this;
   }
@@ -55,7 +55,7 @@ export class App {
    * 
    * @returns This App for chaining
    */
-  public setDeveloperEmail(email: string): App {
+  public setDeveloperEmail(email?: string): App {
     this.wrapped.developerEmail = email;
     return this;
   }
@@ -65,7 +65,7 @@ export class App {
    * 
    * @returns This App for chaining
    */
-  public setClientSecret(clientSecret: string): App {
+  public setClientSecret(clientSecret?: string): App {
     this.wrapped.clientSecret = clientSecret;
     return this;
   }
@@ -75,7 +75,7 @@ export class App {
    * 
    * @returns This App for chaining
    */
-  public setReadme(readme: string): App {
+  public setReadme(readme?: string): App {
     this.wrapped.readme = readme;
     return this;
   }

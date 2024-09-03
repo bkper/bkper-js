@@ -10,24 +10,37 @@ import * as FileService from '../service/file-service.js';
  * @public
  */
 export class File {
-
-  /** @internal */
-  wrapped: bkper.File;
   
   /** @internal */
-  book: Book;
+  private book: Book;
+
+  /** @internal */
+  private wrapped: bkper.File;
+
+  constructor(book: Book, json?: bkper.File) {
+    this.book = book;
+    this.wrapped = json || {};
+  }
+
+  /**
+   * 
+   * @returns The wrapped plain json object
+   */
+  public json(): bkper.Transaction {
+    return this.wrapped;
+  }
 
   /**
    * Gets the File id
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
   /**
    * Gets the File name
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }
 
@@ -45,7 +58,7 @@ export class File {
   /**
    * Gets the File content type
    */
-  public getContentType(): string {
+  public getContentType(): string | undefined {
     return this.wrapped.contentType;
   }
 
@@ -63,9 +76,10 @@ export class File {
   /**
    * Gets the file content Base64 encoded
    */
-  public async getContent(): Promise<string> {
-    if (this.getId() != null && (this.wrapped == null || this.wrapped.content == null)) {
-      this.wrapped = await FileService.getFile(this.book.getId(), this.getId());
+  public async getContent(): Promise<string | undefined> {
+    const id = this.getId();
+    if (this.getId() != null && (this.wrapped == null || this.wrapped.content == null) && this.book && id) {
+      this.wrapped = await FileService.getFile(this.book.getId(), id);
     }
     return this.wrapped.content;
   }
@@ -84,14 +98,14 @@ export class File {
   /**
    * Gets the file serving url for accessing via browser
    */
-  public getUrl(): string {
+  public getUrl(): string | undefined {
     return this.wrapped.url;
   }
 
   /**
    * Gets the file size in bytes
    */  
-  public getSize(): number {
+  public getSize(): number | undefined {
     return this.wrapped.size;
   }
 
@@ -100,7 +114,9 @@ export class File {
    * Perform create new File.
    */
   public async create(): Promise<File> {
-    this.wrapped = await FileService.createFile(this.book.getId(), this.wrapped);
+    if (this.book) {
+      this.wrapped = await FileService.createFile(this.book.getId(), this.wrapped);
+    }
     return this;
   }
 

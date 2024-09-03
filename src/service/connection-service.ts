@@ -38,7 +38,10 @@ export async function deleteConnection(id: string): Promise<bkper.Connection> {
   return res.data;
 }
 
-export async function listIntegrations(connectionId: string): Promise<bkper.Integration[]> {
+export async function listIntegrations(connectionId?: string): Promise<bkper.Integration[]> {
+  if (!connectionId) {
+    return [];
+  }
   const res = await new HttpApiV5Request(`user/connections/${connectionId}/integrations`)
   .setMethod('GET')
   .fetch()

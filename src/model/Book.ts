@@ -30,17 +30,17 @@ export class Book {
   private wrapped: bkper.Book;
 
   /** @internal */
-  private collection: Collection;
+  private collection?: Collection;
 
   /** @internal */
-  private idGroupMap: Map<string, Group>;
+  private idGroupMap?: Map<string, Group>;
 
   /** @internal */
-  private nameGroupMap: Map<string, Group>;
+  private nameGroupMap?: Map<string, Group>;
 
 
-  constructor(json: bkper.Book) {
-    this.wrapped = json;
+  constructor(json?: bkper.Book) {
+    this.wrapped = json || {};
   }
 
   /**
@@ -54,13 +54,13 @@ export class Book {
    * Same as bookId param
    */
   public getId(): string {
-    return this.wrapped.id;
+    return this.wrapped.id || '';
   }
 
   /**
    * @returns The name of this Book
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }
 
@@ -78,14 +78,14 @@ export class Book {
   /**
    * @returns The number of fraction digits supported by this Book. Same as getDecimalPlaces
    */
-  public getFractionDigits(): number {
+  public getFractionDigits(): number | undefined {
     return this.wrapped.fractionDigits;
   }
 
   /**
    * @returns The number of decimal places supported by this Book. Same as getFractionDigits
    */
-  public getDecimalPlaces(): number {
+  public getDecimalPlaces(): number | undefined {
     return this.getFractionDigits();
   }
 
@@ -137,7 +137,7 @@ export class Book {
   /**
    * @returns The transactions pagination page size
    */
-  public getPageSize(): number {
+  public getPageSize(): number | undefined {
     return this.wrapped.pageSize;
   }
 
@@ -155,7 +155,7 @@ export class Book {
   /**
    * @returns The name of the owner of the Book
    */
-  public getOwnerName(): string {
+  public getOwnerName(): string | undefined {
     return this.wrapped.ownerName;
   }
 
@@ -169,7 +169,7 @@ export class Book {
   /** 
    * @returns The collection of this book
    */
-  public getCollection(): Collection {
+  public getCollection(): Collection | undefined {
     if (this.wrapped.collection != null && this.collection == null) {
       this.collection = new Collection(this.wrapped.collection);
     }
@@ -180,7 +180,7 @@ export class Book {
   /**
    * @returns The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    */
-  public getDatePattern(): string {
+  public getDatePattern(): string | undefined {
     return this.wrapped.datePattern;
   }
 
@@ -199,7 +199,7 @@ export class Book {
   /**
    * @returns The lock date of the Book in ISO format yyyy-MM-dd
    */
-  public getLockDate(): string {
+  public getLockDate(): string | undefined {
     return this.wrapped.lockDate;
   }
 
@@ -220,7 +220,7 @@ export class Book {
   /**
    * @returns The closing date of the Book in ISO format yyyy-MM-dd 
    */
-  public getClosingDate(): string {
+  public getClosingDate(): string | undefined {
     return this.wrapped.closingDate;
   }
 
@@ -261,7 +261,7 @@ export class Book {
   /**
    * @returns The time zone of the Book
    */
-  public getTimeZone(): string {
+  public getTimeZone(): string | undefined {
     return this.wrapped.timeZone;
   }
 
@@ -279,15 +279,15 @@ export class Book {
   /**
    * @returns The time zone offset of the book, in minutes
    */
-  public getTimeZoneOffset(): number {
+  public getTimeZoneOffset(): number | undefined {
     return this.wrapped.timeZoneOffset;
   }
 
   /**
    * @returns The last update date of the book, in in milliseconds
    */
-  public getLastUpdateMs(): number {
-    return +this.wrapped.lastUpdateMs;
+  public getLastUpdateMs(): number | undefined {
+    return this.wrapped.lastUpdateMs ? +this.wrapped.lastUpdateMs : undefined;
   }
 
 
@@ -303,7 +303,7 @@ export class Book {
    * 
    * @param keys - The property key
    */
-  public getProperty(...keys: string[]): string {
+  public getProperty(...keys: string[]): string | undefined {
 
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
@@ -313,7 +313,7 @@ export class Book {
       }
     }
 
-    return null;
+    return undefined;
   }
 
   /**
@@ -336,12 +336,15 @@ export class Book {
    * 
    * @returns This Book, for chainning. 
    */
-  public setProperty(key: string, value: string): Book {
+  public setProperty(key: string, value: string | null): Book {
     if (key == null || key.trim() == '') {
       return this;
     }
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
+    }
+    if (!value) {
+      value = ''
     }
     this.wrapped.properties[key] = value;
     return this;
@@ -390,7 +393,7 @@ export class Book {
   /**
    * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
    */
-  public parseValue(value: string): Amount {
+  public parseValue(value: string): Amount  | undefined {
     return Utils.parseValue(value, this.getDecimalSeparator());
   }
 
@@ -411,10 +414,9 @@ export class Book {
    */
   public async batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]> {
     let transactionPayloads: bkper.Transaction[] = [];
-    transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+    transactions.forEach(tx => transactionPayloads.push(tx.json()))
     transactionPayloads = await TransactionService.createTransactionsBatch(this.getId(), transactionPayloads);
-    transactions = Utils.wrapObjects(new Transaction(), transactionPayloads);
-    this.configureTransactions_(transactions);
+    transactions = transactionPayloads.map(tx => new Transaction(this, tx));
     return transactions;
   }
 
@@ -423,7 +425,7 @@ export class Book {
    */
   public async batchTrashTransactions(transactions: Transaction[]): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
-    transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+    transactions.forEach(tx => transactionPayloads.push(tx.json()))
     await TransactionService.trashTransactionsBatch(this.getId(), transactionPayloads);
   }
 
@@ -492,20 +494,6 @@ export class Book {
   }
 
 
-  configureTransactions_(transactions: Transaction[]) {
-    for (var i = 0; i < transactions.length; i++) {
-      this.configureTransaction_(transactions[i]);
-    }
-    return transactions;
-  }
-
-  /** @internal */
-  private configureTransaction_(transaction: Transaction) {
-    transaction.book = this;
-    return transaction;
-  }
-
-
   /**
    * Instantiate a new [[Transaction]]
    * 
@@ -526,8 +514,7 @@ export class Book {
    * 
    */
   public newTransaction(): Transaction {
-    let transaction = Utils.wrapObject(new Transaction(), {});
-    this.configureTransaction_(transaction);
+    let transaction = new Transaction(this, {});
     return transaction;
   }
 
@@ -547,9 +534,8 @@ export class Book {
    * ```
    */
   public newAccount(): Account {
-    let account = Utils.wrapObject(new Account(), {});
+    let account = new Account(this, {});
     account.setArchived(false);
-    account.book = this;
     return account;
   }
 
@@ -567,8 +553,7 @@ export class Book {
    * ```
    */
   public newGroup(): Group {
-    let group = Utils.wrapObject(new Group(), {});
-    group.book = this;
+    let group = new Group(this, {});
     return group;
   }
 
@@ -579,32 +564,37 @@ export class Book {
    * 
    * @returns The matching Account object
    */
-  public async getAccount(idOrName: string): Promise<Account> {
-    if (idOrName == null) {
-      return null;
+  public async getAccount(idOrName?: string): Promise<Account | undefined> {
+    if (!idOrName) {
+      return undefined;
     }
     idOrName = idOrName + '';
     const accountPlain = await AccountService.getAccount(this.getId(), idOrName);
     if (!accountPlain) {
-      return null;
+      return undefined;
     }
-    const account = Utils.wrapObject(new Account(), accountPlain);
-    account.book = this;
+    const account = new Account(this, accountPlain);
     return account;
   }
 
   /** @internal */
   updateGroupCache(group: Group) {
-    group.book = this;
     if (this.idGroupMap) {
-      this.idGroupMap.set(group.getId(), group);
+      const id = group.getId();
+      if (id) {
+        this.idGroupMap.set(id, group);
+      }
+    }
+    if (this.nameGroupMap) {
       this.nameGroupMap.set(normalizeName(group.getName()), group);
     }
   }
 
   removeGroupCache(group: Group) {
     if (this.idGroupMap) {
-      this.idGroupMap.delete(group.getId());
+      this.idGroupMap.delete(group.getId() || '');
+    }
+    if (this.nameGroupMap) {
       this.nameGroupMap.delete(normalizeName(group.getName()));
     }
   }
@@ -617,17 +607,17 @@ export class Book {
    * 
    * @returns The matching Group object
    */
-  public async getGroup(idOrName: string): Promise<Group> {
+  public async getGroup(idOrName?: string): Promise<Group | undefined> {
 
-    if (idOrName == null) {
-      return null;
+    if (!idOrName) {
+      return undefined;
     }
 
     idOrName = idOrName + '';
 
     if (this.idGroupMap) {
       let group = this.idGroupMap.get(idOrName);
-      if (!group) {
+      if (!group && this.nameGroupMap) {
         group = this.nameGroupMap.get(normalizeName(idOrName));
       }
       if (group) {
@@ -637,9 +627,9 @@ export class Book {
 
     const groupPlain = await GroupService.getGroup(this.getId(), idOrName);
     if (!groupPlain) {
-      return null;
+      return undefined;
     }
-    let group = Utils.wrapObject(new Group(), groupPlain);
+    let group = new Group(this, groupPlain);
     this.updateGroupCache(group);
     return group;
   }
@@ -653,7 +643,7 @@ export class Book {
       return Array.from(this.idGroupMap.values())
     }
     let groups = await GroupService.getGroups(this.getId());
-    let groupsObj = Utils.wrapObjects(new Group(), groups);
+    let groupsObj = groups.map(group => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
     this.nameGroupMap = new Map<string, Group>();
     for (var i = 0; i < groupsObj.length; i++) {
@@ -668,10 +658,7 @@ export class Book {
    */
   public async getGroupsByAccount(accountIdOrName: string): Promise<Group[]> {
     let groups = await GroupService.getGroupsByAccountId(this.getId(), accountIdOrName);
-    let groupsObj = Utils.wrapObjects(new Group(), groups);
-    for (const group of groupsObj) {
-      group.book = this;
-    }
+    let groupsObj = groups.map(group => new Group(this, group));
     return groupsObj;
   }
 
@@ -705,13 +692,12 @@ export class Book {
   /**
    * Retrieve a transaction by id
    */
-  public async getTransaction(id: string): Promise<Transaction> {
+  public async getTransaction(id: string): Promise<Transaction | undefined> {
     let wrapped = await TransactionService.getTransaction(this.getId(), id);
     if (!wrapped) {
-      return null;
+      return undefined;
     }
-    let transaction = Utils.wrapObject(new Transaction(), wrapped);
-    this.configureTransaction_(transaction);
+    let transaction = new Transaction(this, wrapped);
     return transaction;
   }
 
@@ -728,8 +714,7 @@ export class Book {
    * ```
    */
   public newFile(): File {
-    let file = Utils.wrapObject(new File(), {});
-    file.book = this;
+    let file = new File(this, {});
     return file;
   }
 
@@ -738,7 +723,7 @@ export class Book {
    */
   public async getFile(id: string): Promise<File> {
     let wrapped = await FileService.getFile(this.getId(), id);
-    let file = Utils.wrapObject(new File(), wrapped);
+    let file = new File(this, wrapped);
     return file;
   }
 

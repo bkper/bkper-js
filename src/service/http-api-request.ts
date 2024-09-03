@@ -1,11 +1,11 @@
 
-import { GaxiosError, request, GaxiosResponse } from 'gaxios';
+import { GaxiosError, request } from 'gaxios';
 import https from 'https';
-import { NODE_ENV_DEV } from '../utils.js';
-import { Config } from '../model/Config.js';
+import { Config } from '../model/Config';
+import { NODE_ENV_DEV } from '../utils';
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-const httpsAgent = https && https.Agent ? new https.Agent({ keepAlive: true }) : null;
+const httpsAgent = https && https.Agent ? new https.Agent({ keepAlive: true }) : undefined;
 
 export interface HttpError {
   errors:
@@ -102,7 +102,7 @@ export class HttpApiRequest {
         method: this.method,
         headers: this.headers,
         body: this.payload,
-        agent: url.startsWith('https') ?  httpsAgent : null,
+        agent: url.startsWith('https') ?  httpsAgent : undefined,
         retryConfig: {
           httpMethodsToRetry: ['GET', 'PUT', 'POST', 'PATCH', 'HEAD', 'OPTIONS', 'DELETE'],
           statusCodesToRetry: [[100, 199], [429, 429], [500, 599]],
@@ -110,7 +110,7 @@ export class HttpApiRequest {
           onRetryAttempt: (err: GaxiosError) => { console.log(`${err.message} - Retrying... `) }
         }
       })
-    } catch (e) {
+    } catch (e: any) {
       const customError = HttpApiRequest.config.requestErrorHandler ? HttpApiRequest.config.requestErrorHandler(e) : undefined;
       if (customError) {
         throw customError
@@ -146,10 +146,12 @@ async function getApiKey() {
   return null;
 }
 
-async function getAccessToken() {
-  let token: string = null;
+async function getAccessToken(): Promise<string | undefined> {
+  let token: string | undefined = undefined;
   if (HttpApiRequest.config.oauthTokenProvider) {
     token = await HttpApiRequest.config.oauthTokenProvider();
+  } else {
+    console.warn(`Token provider NOT configured!`);
   }
 
   if (token) {

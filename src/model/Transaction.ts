@@ -15,13 +15,17 @@ import { Amount } from './Amount.js';
  * @public
  */
 export class Transaction {
+  
+  /** @internal */
+  private book: Book;
 
   /** @internal */
-  wrapped: bkper.Transaction
+  private wrapped: bkper.Transaction
 
-
-  /** @internal */
-  book: Book;
+  constructor(book: Book, json?: bkper.Transaction) {
+    this.book = book;
+    this.wrapped = json || {};
+  }
 
   /**
    * 
@@ -34,14 +38,14 @@ export class Transaction {
   /**
    * @returns The id of the Transaction.
    */
-  public getId(): string {
+  public getId(): string | undefined{
     return this.wrapped.id;
   }
 
   /**
    * @returns The id of the agent that created this transaction
    */
-  public getAgentId(): string {
+  public getAgentId(): string | undefined{
     return this.wrapped.agentId;
   }
 
@@ -51,7 +55,7 @@ export class Transaction {
    * @returns The remote ids of the Transaction.
    */
   public getRemoteIds(): string[] {
-    return this.wrapped.remoteIds;
+    return this.wrapped.remoteIds || [];
   }
 
   /**
@@ -74,14 +78,14 @@ export class Transaction {
   /**
    * @returns True if transaction was already posted to the accounts. False if is still a Draft.
    */
-  public isPosted(): boolean {
+  public isPosted(): boolean | undefined {
     return this.wrapped.posted;
   }
 
   /**
    * @returns True if transaction is checked.
    */
-  public isChecked(): boolean {
+  public isChecked(): boolean | undefined {
     return this.wrapped.checked;
   }
 
@@ -100,7 +104,7 @@ export class Transaction {
   /**
    * @returns True if transaction is in trash.
    */
-  public isTrashed(): boolean {
+  public isTrashed(): boolean | undefined {
     return this.wrapped.trashed;
   }
 
@@ -108,7 +112,7 @@ export class Transaction {
    * @returns All #hashtags used on the transaction.
    */
   public getTags(): string[] {
-    return this.wrapped.tags;
+    return this.wrapped.tags || [];
   }
 
 
@@ -116,7 +120,7 @@ export class Transaction {
    * @returns All urls of the transaction.
    */
   public getUrls(): string[] {
-    return this.wrapped.urls;
+    return this.wrapped.urls || [];
   }
 
   /**
@@ -127,7 +131,7 @@ export class Transaction {
    * @returns This Transaction, for chainning.
    */
   public setUrls(urls: string[]): Transaction {
-    this.wrapped.urls = null;
+    this.wrapped.urls = undefined;
     if (urls) {
       urls.forEach(url => {
         this.addUrl(url);
@@ -158,12 +162,7 @@ export class Transaction {
    */
   public getFiles(): File[] {
     if (this.wrapped.files && this.wrapped.files.length > 0) {
-      const files = Utils.wrapObjects(new File(), this.wrapped.files);
-      if (files != null) {
-        for (const file of files) {
-          file.book = this.book;
-        }
-      }
+      const files = this.wrapped.files.map(file => new File(this.book, file));
       return files
     } else {
       return [];
@@ -187,11 +186,10 @@ export class Transaction {
     }
 
     //Make sure file is already created
-    if (file.getId() == null || file.book.getId() != this.book.getId()) {
-      file.book = this.book;
+    if (file.getId() == null) {
       file = await file.create();
     }
-    this.wrapped.files.push(file.wrapped)
+    this.wrapped.files.push(file.json())
     return this;
   }
 
@@ -236,7 +234,7 @@ export class Transaction {
    * 
    * @param keys - The property key
    */
-  public getProperty(...keys: string[]): string {
+  public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
       let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
@@ -244,7 +242,7 @@ export class Transaction {
         return value;
       }
     }
-    return null;
+    return undefined;
   }
 
    /**
@@ -272,12 +270,15 @@ export class Transaction {
    * 
    * @returns This Transaction, for chainning. 
    */
-  public setProperty(key: string, value: string): Transaction {
+  public setProperty(key: string, value: string | null): Transaction {
     if (key == null || key.trim() == '') {
       return this;
     }
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
+    }
+    if (!value) {
+      value = ''
     }
     this.wrapped.properties[key] = value;
     return this;
@@ -300,9 +301,9 @@ export class Transaction {
   /**
    * @returns The credit account. The same as origin account.
    */
-  public async getCreditAccount(): Promise<Account> {
+  public async getCreditAccount(): Promise<Account | undefined> {
     if (!this.wrapped.creditAccount) {
-      return null;
+      return undefined;
     }
     return await this.book.getAccount(this.wrapped.creditAccount.id);
 
@@ -311,9 +312,9 @@ export class Transaction {
   /**
    * @returns The credit account name.
    */
-  public async getCreditAccountName(): Promise<string> {
+  public async getCreditAccountName(): Promise<string | undefined> {
     if (await this.getCreditAccount() != null) {
-      return (await this.getCreditAccount()).getName();
+      return (await this.getCreditAccount())?.getName();
     } else {
       return "";
     }
@@ -358,9 +359,9 @@ export class Transaction {
    * @returns The debit account. The same as destination account.
    * 
    */
-  public async getDebitAccount(): Promise<Account> {
+  public async getDebitAccount(): Promise<Account | undefined> {
     if (!this.wrapped.debitAccount) {
-      return null;
+      return undefined;
     }
     return await this.book.getAccount(this.wrapped.debitAccount.id);
   }
@@ -368,9 +369,9 @@ export class Transaction {
   /**
    * @returns The debit account name.
    */
-  public async getDebitAccountName(): Promise<string> {
+  public async getDebitAccountName(): Promise<string | undefined> {
     if (await this.getDebitAccount() != null) {
-      return (await this.getDebitAccount()).getName();
+      return (await this.getDebitAccount())?.getName();
     } else {
       return "";
     }
@@ -414,8 +415,8 @@ export class Transaction {
   /**
    * @returns The amount of the transaction.
    */
-  public getAmount(): Amount {
-    return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? new Amount(this.wrapped.amount) : null;
+  public getAmount(): Amount | undefined {
+    return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? new Amount(this.wrapped.amount) : undefined;
   }
 
   /**
@@ -435,7 +436,7 @@ export class Transaction {
     amount = new Amount(amount);
 
     if (amount.eq(0)) {
-      this.wrapped.amount = null;
+      this.wrapped.amount = undefined;
       return this;
     }
 
@@ -449,12 +450,12 @@ export class Transaction {
    * 
    * @param account - The account object, id or name.
    */
-  public async getCreditAmount(account: Account | string): Promise<Amount> {
+  public async getCreditAmount(account: Account | string): Promise<Amount | undefined> {
     let accountObject = await this.getAccount_(account);
-    if (this.isCredit(accountObject)) {
+    if (await this.isCredit(accountObject)) {
       return this.getAmount();
     }
-    return null;
+    return undefined;
   }
 
   /**
@@ -462,12 +463,12 @@ export class Transaction {
    * 
    * @param account - The account object, id or name.
    */
-  public async getDebitAmount(account: Account | string): Promise<Amount> {
+  public async getDebitAmount(account: Account | string): Promise<Amount | undefined> {
     let accountObject = await this.getAccount_(account);
-    if (this.isDebit(accountObject)) {
+    if (await this.isDebit(accountObject)) {
       return this.getAmount();
     }
-    return null;
+    return undefined;
   }
 
   /**
@@ -475,15 +476,15 @@ export class Transaction {
    * 
    * @param account - The account object, id or name.
    */
-  public async getOtherAccount(account: Account | string): Promise<Account> {
+  public async getOtherAccount(account: Account | string): Promise<Account | undefined> {
     let accountObject = await this.getAccount_(account);
-    if (this.isCredit(accountObject)) {
+    if (await this.isCredit(accountObject)) {
       return await this.getDebitAccount();
     }
-    if (this.isDebit(accountObject)) {
+    if (await this.isDebit(accountObject)) {
       return await this.getCreditAccount();
     }
-    return null;
+    return undefined;
   }
 
   /**
@@ -492,7 +493,7 @@ export class Transaction {
    * 
    * @param account - The account object, id or name.
    */
-  public async getOtherAccountName(account: string | Account): Promise<string> {
+  public async getOtherAccountName(account: string | Account): Promise<string | undefined> {
     var otherAccount = await this.getOtherAccount(account);
     if (otherAccount != null) {
       return otherAccount.getName();
@@ -507,8 +508,8 @@ export class Transaction {
    * 
    * @param account - The account object
    */  
-  public async isCredit(account: Account): Promise<boolean> {
-    return (await this.getCreditAccount()) != null && account != null && (await this.getCreditAccount()).getNormalizedName() == account.getNormalizedName();
+  public async isCredit(account?: Account): Promise<boolean> {
+    return (await this.getCreditAccount()) != null && account != null && (await this.getCreditAccount())?.getNormalizedName() == account.getNormalizedName();
   }
 
   /**
@@ -517,13 +518,13 @@ export class Transaction {
    * 
    * @param account - The account object
    */  
-  public async isDebit(account: Account): Promise<boolean> {
-    return (await this.getDebitAccount()) != null && account != null && (await this.getDebitAccount()).getNormalizedName() == account.getNormalizedName();
+  public async isDebit(account?: Account): Promise<boolean> {
+    return (await this.getDebitAccount()) != null && account != null && (await this.getDebitAccount())?.getNormalizedName() == account.getNormalizedName();
   }
 
 
   /** @internal */
-  private async getAccount_(account: Account | string): Promise<Account> {
+  private async getAccount_(account: Account | string): Promise<Account | undefined> {
     if (account == null || account instanceof Account) {
       return account as Account;
     }
@@ -559,7 +560,7 @@ export class Transaction {
   /**
    * @returns The Transaction date, in ISO format yyyy-MM-dd.
    */
-  public getDate(): string {
+  public getDate(): string | undefined{
     return this.wrapped.date;
   }
 
@@ -593,14 +594,14 @@ export class Transaction {
   /**
    * @returns The Transaction date number, in format YYYYMMDD.
    */
-  public getDateValue(): number {
+  public getDateValue(): number | undefined {
     return this.wrapped.dateValue;
   }
 
   /**
    * @returns The Transaction date, formatted on the date pattern of the [[Book]].
    */
-  public getDateFormatted(): string {
+  public getDateFormatted(): string | undefined {
     return this.wrapped.dateFormatted;
   }
 
@@ -621,13 +622,13 @@ export class Transaction {
 
   //EVOLVED BALANCES
   /** @internal */
-  private getCaEvolvedBalance_(): Amount {
-    return this.wrapped.creditAccount != null && this.wrapped.creditAccount.balance != null ? new Amount(this.wrapped.creditAccount.balance) : null;
+  private getCaEvolvedBalance_(): Amount | undefined {
+    return this.wrapped.creditAccount != null && this.wrapped.creditAccount.balance != null ? new Amount(this.wrapped.creditAccount.balance) : undefined;
   }
 
   /** @internal */
-  private getDaEvolvedBalance_(): Amount {
-    return this.wrapped.debitAccount != null && this.wrapped.debitAccount.balance != null ? new Amount(this.wrapped.debitAccount.balance) : null;
+  private getDaEvolvedBalance_(): Amount | undefined {
+    return this.wrapped.debitAccount != null && this.wrapped.debitAccount.balance != null ? new Amount(this.wrapped.debitAccount.balance) : undefined;
   }
 
   /**
@@ -639,7 +640,7 @@ export class Transaction {
    * 
    * @param raw - True to get the raw balance, no matter the credit nature of the [[Account]].
    */
-  public async getAccountBalance(raw?: boolean): Promise<Amount> {
+  public async getAccountBalance(raw?: boolean): Promise<Amount | undefined> {
     var accountBalance = this.getCaEvolvedBalance_();
     var isCa = true;
     if (accountBalance == null) {
@@ -649,11 +650,11 @@ export class Transaction {
     if (accountBalance != null) {
       if (!raw) {
         var account = isCa ? await this.getCreditAccount() : await this.getDebitAccount();
-        accountBalance = Utils.getRepresentativeValue(accountBalance, account.isCredit());
+        accountBalance = Utils.getRepresentativeValue(accountBalance, account?.isCredit());
       }
       return Utils.round(accountBalance, this.book.getFractionDigits());
     } else {
-      return null;
+      return undefined;
     }
   }
 
@@ -662,7 +663,7 @@ export class Transaction {
    */
   public async create(): Promise<Transaction> {
     let operation = await TransactionService.createTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
+    this.wrapped = operation.transaction || {};
     return this;
   }
 
@@ -671,7 +672,7 @@ export class Transaction {
    */
   public async update(): Promise<Transaction> {
     let operation = await TransactionService.updateTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
+    this.wrapped = operation.transaction || {};
     return this;
   }
 
@@ -681,7 +682,7 @@ export class Transaction {
    */
   public async check(): Promise<Transaction> {
     let operation = await TransactionService.checkTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.checked = operation.transaction.checked;
+    this.wrapped.checked = operation.transaction?.checked;
     return this;
   }
 
@@ -690,7 +691,7 @@ export class Transaction {
    */
   public async uncheck(): Promise<Transaction> {
     let operation = await TransactionService.uncheckTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.checked = operation.transaction.checked;
+    this.wrapped.checked = operation.transaction?.checked;
     return this;
   }
 
@@ -699,7 +700,7 @@ export class Transaction {
    */
   public async post(): Promise<Transaction> {
     let operation = await TransactionService.postTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
+    this.wrapped = operation.transaction || {};
     return this;
   }
 
@@ -708,7 +709,7 @@ export class Transaction {
    */
   public async remove(): Promise<Transaction> {
     let operation = await TransactionService.trashTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.trashed = operation.transaction.trashed;
+    this.wrapped.trashed = operation.transaction?.trashed;
     return this;
   }
 
@@ -717,7 +718,7 @@ export class Transaction {
    */
   public async restore(): Promise<Transaction> {
     let operation = await TransactionService.restoreTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.trashed = operation.transaction.trashed;
+    this.wrapped.trashed = operation.transaction?.trashed;
     return this;
   }
 

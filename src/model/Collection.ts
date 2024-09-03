@@ -11,21 +11,21 @@ export class Collection {
   private wrapped: bkper.Collection
   
   /** @internal */
-  constructor(wrapped: bkper.Collection) {
-    this.wrapped = wrapped;
+  constructor(json?: bkper.Collection) {
+    this.wrapped = json || {};
   }
 
   /**
    * @returns The id of this Collection
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
   /**
    * @returns The name of this Collection
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }
 

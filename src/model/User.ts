@@ -9,10 +9,10 @@ import * as ConnectionService from '../service/connection-service.js';
 export class User {
 
   /** @internal */
-  private wrapped: bkper.User;
+  private wrapped: bkper.User = {};
 
-  constructor(wrapped: bkper.User) {
-    this.wrapped = wrapped;
+  constructor(json?: bkper.User) {
+    this.wrapped = json || {};
   }
 
   /**
@@ -20,7 +20,7 @@ export class User {
    * 
    * @returns The User's id
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
@@ -29,7 +29,7 @@ export class User {
    * 
    * @returns The User's name
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }  
 
@@ -38,7 +38,7 @@ export class User {
    * 
    * @returns The User's full name
    */
-  public getFullName(): string {
+  public getFullName(): string | undefined {
     return this.wrapped.fullName;
   }  
 

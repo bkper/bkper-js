@@ -9,8 +9,8 @@ export class Integration {
   /** @internal */
   private wrapped: bkper.Integration
 
-  constructor(json: bkper.Integration) {
-    this.wrapped = json;
+  constructor(json?: bkper.Integration) {
+    this.wrapped = json || {};
   }
 
   /**
@@ -27,7 +27,7 @@ export class Integration {
    * 
    * @returns The Integration's Book id
    */
-  public getBookId(): string {
+  public getBookId(): string | undefined {
     return this.wrapped.bookId
   }
 
@@ -36,7 +36,7 @@ export class Integration {
    * 
    * @returns This Integration's id
    */
-  public getId(): string {
+  public getId(): string | undefined {
     return this.wrapped.id;
   }
 
@@ -45,7 +45,7 @@ export class Integration {
    * 
    * @returns The Integration's name
    */
-  public getName(): string {
+  public getName(): string | undefined {
     return this.wrapped.name;
   }
 
@@ -77,7 +77,7 @@ export class Integration {
    * 
    * @returns The retrieved property value
    */
-  public getProperty(...keys: string[]): string {
+  public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
       let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
@@ -85,7 +85,7 @@ export class Integration {
         return value;
       }
     }
-    return null;
+    return undefined;
   }
 
   /**
@@ -96,12 +96,15 @@ export class Integration {
    * 
    * @returns The Integration, for chaining
    */
-  public setProperty(key: string, value: string): Integration {
+  public setProperty(key: string, value: string | null): Integration {
     if (key == null || key.trim() == '') {
       return this;
     }
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
+    }
+    if (!value) {
+      value = ''
     }
     this.wrapped.properties[key] = value;
     return this;
