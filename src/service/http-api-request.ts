@@ -1,8 +1,8 @@
 
 import { GaxiosError, request } from 'gaxios';
 import https from 'https';
-import { Config } from '../model/Config';
-import { NODE_ENV_DEV } from '../utils';
+import { Config } from '../model/Config.js';
+import { NODE_ENV_DEV } from '../utils.js';
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 const httpsAgent = https && https.Agent ? new https.Agent({ keepAlive: true }) : undefined;
