@@ -1,5 +1,5 @@
 /**
- * Bkper REST API Node client.
+ * Bkper REST API Javascript client for Node.js and browsers.
  * 
  * Learn more at https://bkper.com/docs
  * 

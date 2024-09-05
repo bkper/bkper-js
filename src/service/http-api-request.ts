@@ -1,11 +1,6 @@
 
-import { GaxiosError, request } from 'gaxios';
-import https from 'https';
 import { Config } from '../model/Config.js';
-import { NODE_ENV_DEV } from '../utils.js';
-
-type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-const httpsAgent = https && https.Agent ? new https.Agent({ keepAlive: true }) : undefined;
+import { HttpRequest } from './http-request.js';
 
 export interface HttpError {
   errors:
@@ -22,112 +17,57 @@ export interface HttpResponse {
   data: any
 }
 
-export class HttpApiRequest {
-
-  private params: Array<{ name: string, value: string }> = [];
-  private url: string;
-  private headers: { [key: string]: string } = {};
-  private method: HttpMethod = 'GET';
-  private payload: any = null;
+export class HttpApiRequest extends HttpRequest {
 
   public static config: Config = {}
+  private retry = 0;
 
   constructor(path: string) {
-    this.url = `${HttpApiRequest.config.apiBaseUrl || "https://app.bkper.com/_ah/api/bkper"}/${path}`;
+    super(`${HttpApiRequest.config.apiBaseUrl || "https://app.bkper.com/_ah/api/bkper"}/${path}`);
   }
-
-  public setMethod(method: HttpMethod) {
-    this.method = method;
-    return this;
-  }
-
-  public setHeader(name: string, value: string) {
-    if (value) {
-      this.headers[name] = value;
-    }
-    return this;
-  }
-
-  public addParam(name: string, value: any) {
-    if (value) {
-      this.params.push({ name, value });
-    }
-    return this;
-  }
-
-
-  public setPayload(payload: any) {
-    this.payload = typeof payload === "string" ? payload : JSON.stringify(payload);
-    return this;
-  }
-
-  /**
- * Gets the result url, with query params appended.
- */
-  private getUrl(): string {
-    let url = this.url;
-    if (this.params != null) {
-      let i = 0
-      if (url.indexOf('?') < 0) {
-        url += '?';
-      } else {
-        i++;
-      }
-      for (const param of this.params) {
-        if (i > 0) {
-          url += "&";
-        }
-        var key = param.name;
-        var value = param.value;
-        if (value != null) {
-          url += key + "=" + encodeURIComponent(value);
-          i++;
-        }
-      }
-
-    }
-    return url
-  }
-
 
   async fetch(): Promise<HttpResponse> {
     this.addCustomHeaders();
-    this.headers['Authorization'] = `Bearer ${await getAccessToken()}`;
+    this.setHeader('Authorization', `Bearer ${await getAccessToken()}`);
     this.addParam('key', await getApiKey());
     // this.httpRequest.setMuteHttpExceptions(true);
-    const url = this.getUrl();
+
     try {
-      return await request({
-        url: url,
-        method: this.method,
-        headers: this.headers,
-        body: this.payload,
-        agent: url.startsWith('https') ?  httpsAgent : undefined,
-        retryConfig: {
-          httpMethodsToRetry: ['GET', 'PUT', 'POST', 'PATCH', 'HEAD', 'OPTIONS', 'DELETE'],
-          statusCodesToRetry: [[100, 199], [429, 429], [500, 599]],
-          retry: process.env.NODE_ENV == NODE_ENV_DEV ? 0 : 3,
-          onRetryAttempt: (err: GaxiosError) => { console.log(`${err.message} - Retrying... `) }
+      let resp = await super.execute();
+      if (resp.status >= 200 && resp.status < 300) {
+        console.log(resp.data)
+        return resp;
+      } else if (resp.status == 404) {
+        return { data: null }
+      } else if (this.retry <= 3) {
+        this.retry++;
+        if (HttpApiRequest.config.requestRetryHandler) {
+          await HttpApiRequest.config.requestRetryHandler(resp.status, resp.data, this.retry);
+        } else {
+          console.log(`${resp.data} - Retrying... `)
         }
-      })
-    } catch (e: any) {
-      const customError = HttpApiRequest.config.requestErrorHandler ? HttpApiRequest.config.requestErrorHandler(e) : undefined;
+        return await this.fetch()
+      } else {
+        throw this.handleError(resp.data)
+      }      
+    } catch (err: any) {
+      throw this.handleError(err.toJSON ? err.toJSON() : err)
+    }
+  }
+
+  private handleError(err: any) {
+      const customError = HttpApiRequest.config.requestErrorHandler ? HttpApiRequest.config.requestErrorHandler(err) : undefined;
       if (customError) {
-        throw customError
+        return customError
       } else {
         //Default error handler
-        let error: HttpError = e.response.data?.error
+        let error: HttpError = err.response?.data?.error
         if (error) {
-          if (error.code == 404) {
-            return { data: null };
-          } else {
-            throw error.message;
-          }
+          return error.message;
         } else {
-          throw e.message;
+          return err.message || err;
         }
       }
-    }
   }
 
   private async addCustomHeaders() {
