@@ -213,6 +213,7 @@ export interface Config {
     requestHeadersProvider?: () => Promise<{
         [key: string]: string;
     }>;
+    requestRetryHandler?: (status?: number, message?: string, attempt?: number) => Promise<void>;
 }
 
 // @public

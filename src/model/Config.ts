@@ -29,6 +29,18 @@ export interface Config {
    * Custom request error handler
    */
   requestErrorHandler?: (error: any) => any;
+  
+  /**
+   * Custom request retry handler.
+   *
+   * This function is called when a request fails and needs to be retried.
+   * It provides the HTTP status code, error message, and the number of retry attempts made so far.
+   *
+   * @param code - The HTTP status code of the failed request.
+   * @param message - The error message associated with the failed request.
+   * @param attempt - The number of retry attempts made so far.
+   */
+  requestRetryHandler?: (status?: number, message?: string, attempt?: number ) => Promise<void>;
 
   /**
    * Sets the base api url. Default to https://app.bkper.com/_ah/api/bkper
