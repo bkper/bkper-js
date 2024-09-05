@@ -35,7 +35,6 @@ export class HttpApiRequest extends HttpRequest {
     try {
       let resp = await super.execute();
       if (resp.status >= 200 && resp.status < 300) {
-        console.log(resp.data)
         return resp;
       } else if (resp.status == 404) {
         return { data: null }
