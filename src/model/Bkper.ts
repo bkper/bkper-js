@@ -7,7 +7,20 @@ import { User } from "./User.js";
 import { Config } from "./Config.js";
 
 /**
- * This is the main Entry Point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
+ * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
+ * 
+ * You start by setting the API [[Config]] object.
+ * 
+ * Example:
+ * 
+ * ```javascript
+ * Bkper.setConfig({
+ *   apiKeyProvider: () => process.env.BKPER_API_KEY,
+ *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
+ * })
+ * ```
+ * 
+ * Once the config is set, you can start using the library.
  * 
  * @public
  */
