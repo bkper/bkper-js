@@ -33,14 +33,14 @@ export class TransactionPage {
     }
 
     return this;
-  } 
+  }
 
   public getCursor(): string | undefined {
     return this.cursor;
   }
 
   public hasNext(): boolean {
-    return (this.index && this.index < this.transactions.length) || false;
+    return (this.index != null && this.index < this.transactions.length) || false;
   }
 
   public hasReachEnd(): boolean {
@@ -48,7 +48,7 @@ export class TransactionPage {
   }
 
   public getIndex(): number {
-    if (this.index && this.index >= this.transactions.length) {
+    if (this.index != null && this.index >= this.transactions.length) {
       return 0;
     } else {
       return this.index || 0;
@@ -65,7 +65,7 @@ export class TransactionPage {
   }
 
   public next(): Transaction | undefined {
-    if (this.index && this.index < this.transactions.length) {
+    if (this.index != null && this.index < this.transactions.length) {
       var transaction = this.transactions[this.index];
       this.index++;
       return transaction;
