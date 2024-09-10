@@ -6,7 +6,7 @@ export async function createAccount(bookId: string, account: bkper.Account): Pro
 }
 
 export async function updateAccount(bookId: string, account: bkper.Account): Promise<bkper.Account> {
-  var payload = JSON.stringify(account);
+  var payload = account;
   var response = await new HttpBooksApiV5Request(`${bookId}/accounts`).setMethod('PUT').setPayload(payload).fetch();
   return response.data;
 }

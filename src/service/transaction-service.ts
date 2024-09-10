@@ -10,7 +10,7 @@ export async function createTransactionsBatch(bookId: string, transactions: bkpe
   let transactionList: bkper.TransactionList = {
     items: transactions
   }
-  var payload = JSON.stringify(transactionList);
+  var payload = transactionList;
 
   let response = await new HttpBooksApiV5Request(`${bookId}/transactions/batch`)
     .setMethod('POST')
@@ -26,7 +26,7 @@ export async function trashTransactionsBatch(bookId: string, transactions: bkper
   let transactionList: bkper.TransactionList = {
     items: transactions
   }
-  var payload = JSON.stringify(transactionList);
+  var payload = transactionList;
 
   let response = await new HttpBooksApiV5Request(`${bookId}/transactions/trash/batch`)
     .setMethod('PATCH')

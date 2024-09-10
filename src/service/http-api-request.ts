@@ -36,21 +36,52 @@ export class HttpApiRequest extends HttpRequest {
       let resp = await super.execute();
       if (resp.status >= 200 && resp.status < 300) {
         return resp;
-      } else if (resp.status == 404) {
-        return { data: null }
-      } else if (this.retry <= 3) {
-        this.retry++;
-        if (HttpApiRequest.config.requestRetryHandler) {
-          await HttpApiRequest.config.requestRetryHandler(resp.status, resp.data, this.retry);
-        } else {
-          console.log(`${resp.data} - Retrying... `)
-        }
-        return await this.fetch()
-      } else {
+      } else  {
         throw this.handleError(resp.data)
       }      
-    } catch (err: any) {
-      throw this.handleError(err.toJSON ? err.toJSON() : err)
+    } catch (error: any) {
+
+      if (error.response) {
+        let errorResp = error.response
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
+
+        if (errorResp.status == 404) {
+          return { data: null };
+        } else if (this.retry <= 3) {
+          this.retry++;
+          if (HttpApiRequest.config.requestRetryHandler) {
+            await HttpApiRequest.config.requestRetryHandler(errorResp.status, errorResp.data, this.retry);
+          } else {
+            console.log(`${errorResp.data} - Retrying... `)
+          }
+          return await this.fetch()
+        }
+
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        if (this.retry <= 3) {
+          this.retry++;
+          if (HttpApiRequest.config.requestRetryHandler) {
+            await HttpApiRequest.config.requestRetryHandler(520, undefined, this.retry);
+          } else {
+            console.log(`No response received - Retrying... `)
+          }
+          return await this.fetch()
+        }
+
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+
+      throw this.handleError(error.toJSON ? error.toJSON() : error)
+      
     }
   }
 
