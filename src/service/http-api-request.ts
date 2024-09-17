@@ -37,7 +37,7 @@ export class HttpApiRequest extends HttpRequest {
       if (resp.status >= 200 && resp.status < 300) {
         return resp;
       } else  {
-        throw this.handleError(resp.data)
+        throw this.handleError(resp)
       }      
     } catch (error: any) {
 
@@ -56,10 +56,11 @@ export class HttpApiRequest extends HttpRequest {
           if (HttpApiRequest.config.requestRetryHandler) {
             await HttpApiRequest.config.requestRetryHandler(errorResp.status, errorResp.data, this.retry);
           } else {
-            console.log(`${errorResp.data} - Retrying... `)
+            console.log(`${JSON.stringify(errorResp.data)} - Retrying... `)
           }
           return await this.fetch()
         }
+        throw this.handleError(errorResp);
 
       } else if (error.request) {
         // The request was made but no response was received
@@ -91,7 +92,7 @@ export class HttpApiRequest extends HttpRequest {
         return customError
       } else {
         //Default error handler
-        let error: HttpError = err.response?.data?.error
+        let error: HttpError = err.response?.data?.error || err.data?.error || err.error;
         if (error) {
           return error.message;
         } else {
