@@ -82,6 +82,25 @@ export enum Permission {
 }
 
 /**
+ * Enum representing the visibility of a Book
+ * 
+ * @public
+ */
+export enum Visibility {
+
+  /**
+   * The book can be accessed by anyone with the link
+   */
+  PUBLIC = "PUBLIC",
+
+  /**
+   * The book can be accessed by the owner and collaborators
+   */
+  PRIVATE = "PRIVATE"
+
+}
+
+/**
  * Enum that represents account types.
  * 
  * @public
