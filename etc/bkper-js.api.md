@@ -94,6 +94,7 @@ export class App {
 // @public
 export class Bkper {
     static getBook(id: string): Promise<Book>;
+    static getBooks(): Promise<Book[]>;
     static getUser(): Promise<User>;
     // @deprecated
     static setApiKey(key: string): App;
@@ -159,6 +160,9 @@ export class Book {
     getTimeZone(): string | undefined;
     // (undocumented)
     getTimeZoneOffset(): number | undefined;
+    getTotalTransactions(): number;
+    getTotalTransactionsCurrentMonth(): number;
+    getTotalTransactionsCurrentYear(): number;
     getTransaction(id: string): Promise<Transaction | undefined>;
     getTransactions(query?: string): TransactionIterator;
     // (undocumented)
@@ -202,6 +206,8 @@ export class Collection {
     getId(): string | undefined;
     // (undocumented)
     getName(): string | undefined;
+    // (undocumented)
+    json(): bkper.Collection;
 }
 
 // @public
