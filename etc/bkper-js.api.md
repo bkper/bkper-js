@@ -160,11 +160,18 @@ export class Book {
     getTimeZone(): string | undefined;
     // (undocumented)
     getTimeZoneOffset(): number | undefined;
+    // (undocumented)
     getTotalTransactions(): number;
+    // (undocumented)
     getTotalTransactionsCurrentMonth(): number;
+    // (undocumented)
     getTotalTransactionsCurrentYear(): number;
     getTransaction(id: string): Promise<Transaction | undefined>;
     getTransactions(query?: string): TransactionIterator;
+    // Warning: (ae-forgotten-export) The symbol "Visibility" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    getVisibility(): Visibility;
     // (undocumented)
     json(): bkper.Book;
     newAccount(): Account;
@@ -451,9 +458,17 @@ export class User {
     constructor(json?: bkper.User);
     getConnection(id: string): Promise<Connection>;
     getConnections(): Promise<Connection[]>;
+    getDaysLeftInTrial(): number | undefined;
+    getEmail(): string | undefined;
     getFullName(): string | undefined;
+    getHostedDomain(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
+    hasStartedTrial(): boolean | undefined;
+    hasUsedConnections(): boolean | undefined;
+    isFree(): boolean | undefined;
+    // (undocumented)
+    json(): bkper.User;
 }
 
 ```
