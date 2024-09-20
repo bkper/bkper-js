@@ -41,7 +41,7 @@
     "luxon": "^1.25.0"
   },
   "devDependencies": {
-    "@bkper/bkper-api-types": "^5.9.0",
+    "@bkper/bkper-api-types": "^5.10.0",
     "@microsoft/api-extractor": "^7.12.1",
     "@types/big.js": "^6.0.2",
     "@types/chai": "^4.2.14",
