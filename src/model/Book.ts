@@ -9,7 +9,7 @@ import { normalizeName } from '../utils.js';
 import { Account } from './Account.js';
 import { Amount } from './Amount.js';
 import { Collection } from './Collection.js';
-import { DecimalSeparator, Month, Period, Permission } from './Enums.js';
+import { DecimalSeparator, Month, Period, Permission, Visibility } from './Enums.js';
 import { File } from './File.js';
 import { Group } from './Group.js';
 import { Transaction } from './Transaction.js';
@@ -290,6 +290,33 @@ export class Book {
     return this.wrapped.lastUpdateMs ? +this.wrapped.lastUpdateMs : undefined;
   }
 
+  /**
+   * @returns The total number of posted transactions
+   */
+  public getTotalTransactions(): number {
+    return this.wrapped.totalTransactions ? +(this.wrapped.totalTransactions) : 0;
+  }
+
+  /**
+   * @returns The total number of posted transactions on current month
+   */
+  public getTotalTransactionsCurrentMonth(): number {
+    return this.wrapped.totalTransactionsCurrentMonth ? +(this.wrapped.totalTransactionsCurrentMonth) : 0;
+  }
+
+  /**
+   * @returns The total number of posted transactions on current year
+   */
+  public getTotalTransactionsCurrentYear(): number {
+    return this.wrapped.totalTransactionsCurrentYear ? +(this.wrapped.totalTransactionsCurrentYear) : 0;
+  }
+
+  /**
+   * @returns The visibility of the book
+   */
+  public getVisibility(): Visibility {
+    return this.wrapped.visibility as Visibility;
+  }
 
   /**
    * Gets the custom properties stored in this Book
@@ -393,7 +420,7 @@ export class Book {
   /**
    * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
    */
-  public parseValue(value: string): Amount  | undefined {
+  public parseValue(value: string): Amount | undefined {
     return Utils.parseValue(value, this.getDecimalSeparator());
   }
 
