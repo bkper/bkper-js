@@ -1,7 +1,19 @@
 import { HttpBooksApiV5Request } from "./http-api-request.js";
 
-export async function loadBook(bookId: string): Promise<bkper.Book> {
+export async function loadBooks(): Promise<bkper.Book[]> {
+  let response = await new HttpBooksApiV5Request('').fetch();
+  if (response.data == null) {
+    return [];
+  }
+  let bookListPlain: bkper.BookList = response.data;
+  let booksJson = bookListPlain.items;
+  if (booksJson == null) {
+    return [];
+  }
+  return booksJson;
+}
 
+export async function loadBook(bookId: string): Promise<bkper.Book> {
   if (bookId == null) {
     throw new Error("Book id null!");
   }
@@ -17,6 +29,3 @@ export async function updateBook(bookId: string, book: bkper.Book): Promise<bkpe
 export async function audit(bookId: string): Promise<void> {
   new HttpBooksApiV5Request(`${bookId}/audit`).setMethod('PATCH').fetch();
 }
-
-
-

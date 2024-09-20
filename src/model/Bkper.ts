@@ -39,6 +39,16 @@ export class Bkper {
   }
 
   /**
+   * Gets all [[Books]] the user has access to.
+   * 
+   * @returns The retrieved list of Books
+   */
+  public static async getBooks(): Promise<Book[]> {
+    let books = await BookService.loadBooks();
+    return books.map(book => new Book(book));
+  }
+
+  /**
    * Gets the current logged [[User]].
    * 
    * @returns The retrieved User, for chaining
