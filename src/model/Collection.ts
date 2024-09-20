@@ -44,4 +44,11 @@ export class Collection {
     return books;
   }
 
+  /**
+   * @returns The wrapped plain json object
+   */
+  public json(): bkper.Collection {
+    return this.wrapped;
+  }
+
 }
