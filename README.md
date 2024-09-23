@@ -1,6 +1,6 @@
 [Bkper REST API]: https://bkper.com/docs/#rest-apis
 
-[![npm](https://img.shields.io/npm/v/bkper?color=%235889e4)](https://www.npmjs.com/package/bkper)
+[![npm](https://img.shields.io/npm/v/bkper-js?color=%235889e4)](https://www.npmjs.com/package/bkper-js)
 
 bkper-js library is a simple and secure way to access the [Bkper REST API] on Node.js and modern browsers.
 
