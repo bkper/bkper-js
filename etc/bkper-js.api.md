@@ -96,6 +96,7 @@ export class Bkper {
     static getBook(id: string): Promise<Book>;
     static getBooks(): Promise<Book[]>;
     static getUser(): Promise<User>;
+    static newBook(): Book;
     // @deprecated
     static setApiKey(key: string): App;
     static setConfig(config: Config): void;
@@ -110,6 +111,7 @@ export class Book {
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
     batchTrashTransactions(transactions: Transaction[]): Promise<void>;
     continueTransactionIterator(query: string, continuationToken: string): TransactionIterator;
+    create(): Promise<Book>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
     formatDate(date: Date, timeZone?: string): string;
     formatValue(value: Amount | number | null | undefined): string;
