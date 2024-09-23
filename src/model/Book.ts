@@ -755,6 +755,16 @@ export class Book {
   }
 
   /**
+   * Performs create new Book.
+   * 
+   * @returns The created Book object
+   */
+  public async create(): Promise<Book> {
+    this.wrapped = await BookService.createBook(this.wrapped);
+    return this;
+  }
+
+  /**
    * Perform update Book, applying pending changes.
    */
   public async update(): Promise<Book> {

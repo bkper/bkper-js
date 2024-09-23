@@ -27,6 +27,22 @@ import { Config } from "./Config.js";
 export class Bkper {
 
   /**
+   * Instantiate a new [[Book]]
+   * 
+   * Example:
+   * ```js
+   * var book = Bkper.newBook()
+   *  .setName('My New Book')
+   *  .setFractionDigits(2)
+   *  .setDecimalSeparator('DOT')
+   *  .create();
+   * ```
+   */
+  public static newBook(): Book {
+    return new Book();
+  }
+
+  /**
    * Gets the [[Book]] with the specified bookId from url param.
    *
    * @param id - The universal book id - The same bookId param of URL you access at app.bkper.com
