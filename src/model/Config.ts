@@ -18,7 +18,7 @@ export interface Config {
   /**
    * Issue a valid OAuth2 access token with **https://www.googleapis.com/auth/userinfo.email** scope authorized.
    */
-  oauthTokenProvider?: () => Promise<string>;
+  oauthTokenProvider?: () => Promise<string | undefined>;
 
   /**
    * Provides additional headers to append to the API request
