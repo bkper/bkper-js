@@ -223,7 +223,7 @@ export class Collection {
 export interface Config {
     apiBaseUrl?: string;
     apiKeyProvider?: () => Promise<string>;
-    oauthTokenProvider?: () => Promise<string>;
+    oauthTokenProvider?: () => Promise<string | undefined>;
     requestErrorHandler?: (error: any) => any;
     requestHeadersProvider?: () => Promise<{
         [key: string]: string;
