@@ -21,7 +21,7 @@ export class App {
    * Sets the webhook url for development.
    * 
    * @returns This App, for chainning.
-   */    
+   */
   public setWebhookUrlDev(webhookUrlDev: string): App {
     if (webhookUrlDev) {
       this.wrapped.webhookUrlDev = webhookUrlDev;
@@ -90,7 +90,7 @@ export class App {
   public async create(): Promise<App> {
     await createApp(this.wrapped);
     return this;
-  }   
+  }
 
   /**
    * Partially update an App, applying pending changes.
@@ -98,7 +98,7 @@ export class App {
   public async patch(): Promise<App> {
     await patchApp(this.wrapped);
     return this;
-  }  
+  }
 
   /**
    * Perform update App, applying pending changes.
@@ -106,5 +106,13 @@ export class App {
   public async update(): Promise<App> {
     await updateApp(this.wrapped);
     return this;
-  }     
+  }
+
+  /**
+   * @returns The wrapped plain json object
+   */
+  public json(): bkper.App {
+    return this.wrapped;
+  }
+
 }
