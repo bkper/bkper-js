@@ -6,23 +6,27 @@
  * @packageDocumentation
  */
 
-export { App } from './model/App.js'
+export { Account } from './model/Account.js';
 export { Amount } from "./model/Amount.js";
-export { Bkper } from './model/Bkper.js'
-export { Account } from './model/Account.js'
-export { Book }  from './model/Book.js'
-export { Collection } from './model/Collection.js'
-export { File } from './model/File.js'
-export { Group } from './model/Group.js'
-export { Transaction } from './model/Transaction.js'
-export { TransactionIterator } from './model/TransactionIterator.js'
-export { User } from './model/User.js'
-export { Integration } from './model/Integration.js'
-export { Connection } from './model/Connection.js'
-export { Config } from './model/Config.js'
-export { 
-  Periodicity, 
-  AccountType,
+export { App } from './model/App.js';
+export { Bkper } from './model/Bkper.js';
+export { Book } from './model/Book.js';
+export { Collection } from './model/Collection.js';
+export { Config } from './model/Config.js';
+export { Connection } from './model/Connection.js';
+export { File } from './model/File.js';
+export { Group } from './model/Group.js';
+export { Integration } from './model/Integration.js';
+export { Template } from './model/Template.js';
+export { Transaction } from './model/Transaction.js';
+export { TransactionIterator } from './model/TransactionIterator.js';
+export { User } from './model/User.js';
+export {
+  Periodicity,
   DecimalSeparator,
-  Permission
+  Permission,
+  Visibility,
+  AccountType,
+  Period,
+  Month
 } from './model/Enums.js'
