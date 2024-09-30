@@ -98,6 +98,7 @@ export class Bkper {
     static getApps(): Promise<App[]>;
     static getBook(id: string): Promise<Book>;
     static getBooks(): Promise<Book[]>;
+    static getTemplates(): Promise<Template[]>;
     static getUser(): Promise<User>;
     static newBook(): Book;
     // @deprecated
@@ -147,12 +148,8 @@ export class Book {
     getOwnerName(): string | undefined;
     // (undocumented)
     getPageSize(): number | undefined;
-    // Warning: (ae-forgotten-export) The symbol "Period" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     getPeriod(): Period;
-    // Warning: (ae-forgotten-export) The symbol "Month" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     getPeriodStartMonth(): Month;
     // (undocumented)
@@ -173,8 +170,6 @@ export class Book {
     getTotalTransactionsCurrentYear(): number;
     getTransaction(id: string): Promise<Transaction | undefined>;
     getTransactions(query?: string): TransactionIterator;
-    // Warning: (ae-forgotten-export) The symbol "Visibility" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     getVisibility(): Visibility;
     // (undocumented)
@@ -344,6 +339,41 @@ export class Integration {
 }
 
 // @public
+export enum Month {
+    // (undocumented)
+    APRIL = "APRIL",
+    // (undocumented)
+    AUGUST = "AUGUST",
+    // (undocumented)
+    DECEMBER = "DECEMBER",
+    // (undocumented)
+    FEBRUARY = "FEBRUARY",
+    // (undocumented)
+    JANUARY = "JANUARY",
+    // (undocumented)
+    JULY = "JULY",
+    // (undocumented)
+    JUNE = "JUNE",
+    // (undocumented)
+    MARCH = "MARCH",
+    // (undocumented)
+    MAY = "MAY",
+    // (undocumented)
+    NOVEMBER = "NOVEMBER",
+    // (undocumented)
+    OCTOBER = "OCTOBER",
+    // (undocumented)
+    SEPTEMBER = "SEPTEMBER"
+}
+
+// @public
+export enum Period {
+    MONTH = "MONTH",
+    QUARTER = "QUARTER",
+    YEAR = "YEAR"
+}
+
+// @public
 export enum Periodicity {
     DAILY = "DAILY",
     MONTHLY = "MONTHLY",
@@ -358,6 +388,20 @@ export enum Permission {
     POSTER = "POSTER",
     RECORDER = "RECORDER",
     VIEWER = "VIEWER"
+}
+
+// @public
+export class Template {
+    constructor(json?: bkper.Template);
+    getBookId(): string | undefined;
+    getBookLink(): string | undefined;
+    getCategory(): string | undefined;
+    getDescription(): string | undefined;
+    getImageUrl(): string | undefined;
+    getName(): string | undefined;
+    getSheetsLink(): string | undefined;
+    getTimesUsed(): number;
+    json(): bkper.Template;
 }
 
 // @public
@@ -474,6 +518,12 @@ export class User {
     isFree(): boolean | undefined;
     // (undocumented)
     json(): bkper.User;
+}
+
+// @public
+export enum Visibility {
+    PRIVATE = "PRIVATE",
+    PUBLIC = "PUBLIC"
 }
 
 ```
