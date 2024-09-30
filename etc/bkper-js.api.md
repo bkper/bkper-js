@@ -82,6 +82,8 @@ export class App {
     create(): Promise<App>;
     // (undocumented)
     getId(): string | undefined;
+    // (undocumented)
+    json(): bkper.App;
     patch(): Promise<App>;
     setClientSecret(clientSecret?: string): App;
     setDeveloperEmail(email?: string): App;
@@ -93,6 +95,7 @@ export class App {
 
 // @public
 export class Bkper {
+    static getApps(): Promise<App[]>;
     static getBook(id: string): Promise<Book>;
     static getBooks(): Promise<Book[]>;
     static getUser(): Promise<User>;
