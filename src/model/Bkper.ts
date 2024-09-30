@@ -1,5 +1,6 @@
 import { Book } from "./Book.js";
 import { App } from "./App.js";
+import * as AppService from '../service/app-service.js';
 import * as BookService from '../service/book-service.js';
 import * as UserService from '../service/user-service.js';
 import { HttpApiRequest } from '../service/http-api-request.js';
@@ -62,6 +63,16 @@ export class Bkper {
   public static async getBooks(): Promise<Book[]> {
     let books = await BookService.loadBooks();
     return books.map(book => new Book(book));
+  }
+
+  /**
+   * Gets all [[Apps]] available for the user.
+   * 
+   * @returns The retrieved list of Apps
+   */
+  public static async getApps(): Promise<App[]> {
+    let apps = await AppService.getApps();
+    return apps.map(app => new App(app));
   }
 
   /**
