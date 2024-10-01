@@ -36,13 +36,7 @@ export class Book {
   private idGroupMap?: Map<string, Group>;
 
   /** @internal */
-  private nameGroupMap?: Map<string, Group>;
-
-  /** @internal */
   private idAccountMap?: Map<string, Account>;
-
-  /** @internal */
-  private nameAccountMap?: Map<string, Account>;
 
 
   constructor(json?: bkper.Book) {
@@ -601,13 +595,6 @@ export class Book {
       }
     }
 
-    if (this.nameAccountMap) {
-      account = this.nameAccountMap.get(normalizeName(idOrName));
-      if (account) {
-        return account;
-      }
-    }
-
     const accountPlain = await AccountService.getAccount(this.getId(), idOrName);
     if (accountPlain) {
       account = new Account(this, accountPlain);
@@ -625,18 +612,12 @@ export class Book {
         this.idGroupMap.set(id, group);
       }
     }
-    if (this.nameGroupMap) {
-      this.nameGroupMap.set(normalizeName(group.getName()), group);
-    }
   }
 
   /** @internal */
   removeGroupCache(group: Group) {
     if (this.idGroupMap) {
       this.idGroupMap.delete(group.getId() || '');
-    }
-    if (this.nameGroupMap) {
-      this.nameGroupMap.delete(normalizeName(group.getName()));
     }
   }
 
@@ -648,18 +629,12 @@ export class Book {
         this.idAccountMap.set(id, account);
       }
     }
-    if (this.nameAccountMap) {
-      this.nameAccountMap.set(normalizeName(account.getName()), account); 
-    }
   }
 
   /** @internal */
   removeAccountCache(account: Account) {
     if (this.idAccountMap) {
       this.idAccountMap.delete(account.getId() || '');
-    }
-    if (this.nameAccountMap) {
-      this.nameAccountMap.delete(normalizeName(account.getName()));
     }
   }
 
@@ -681,9 +656,6 @@ export class Book {
 
     if (this.idGroupMap) {
       let group = this.idGroupMap.get(idOrName);
-      if (!group && this.nameGroupMap) {
-        group = this.nameGroupMap.get(normalizeName(idOrName));
-      }
       if (group) {
         return group;
       }
@@ -716,7 +688,6 @@ export class Book {
     }
     let groupsObj = groups.map(group => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
-    this.nameGroupMap = new Map<string, Group>();
 
     for (const group of groupsObj) {
       this.updateGroupCache(group);
@@ -739,20 +710,10 @@ export class Book {
     }
     let accountsObj = accounts.map(account => new Account(this, account));
     this.idAccountMap = new Map<string, Account>();
-    this.nameAccountMap = new Map<string, Account>();
     for (const account of accountsObj) {
       this.updateAccountCache(account);
     }
     return accountsObj;
-  }
-
-  /**
-   * Get the [[Groups]] of a given account.
-   */
-  public async getGroupsByAccount(accountIdOrName: string): Promise<Group[]> {
-    let groups = await GroupService.getGroupsByAccountId(this.getId(), accountIdOrName);
-    let groupsObj = groups.map(group => new Group(this, group));
-    return groupsObj;
   }
 
 
