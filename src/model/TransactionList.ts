@@ -33,10 +33,6 @@ export class TransactionList {
     return await this.book.getAccount(this.wrapped.account);
   }
 
-  public hasAny(): boolean {
-    return (this.wrapped.items?.length && this.wrapped.items.length > 0) || false;
-  }
-  
   /**
    * @returns The first Transaction in the list.
    */
