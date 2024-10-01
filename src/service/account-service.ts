@@ -20,3 +20,8 @@ export async function getAccount(bookId: string, idOrName: string): Promise<bkpe
     var response = await new HttpBooksApiV5Request(`${bookId}/accounts/${encodeURIComponent(idOrName)}`).setMethod('GET').fetch();
     return response.data;
 }
+
+export async function getAccounts(bookId: string): Promise<bkper.Account[]> {
+  var response = await new HttpBooksApiV5Request(`${bookId}/accounts`).setMethod('GET').fetch();
+  return response.data;
+}

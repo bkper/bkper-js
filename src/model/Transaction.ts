@@ -36,6 +36,13 @@ export class Transaction {
   }
 
   /**
+   * @returns The book of the Transaction.
+   */
+  public getBook(): Book {
+    return this.book;
+  }
+
+  /**
    * @returns The id of the Transaction.
    */
   public getId(): string | undefined{

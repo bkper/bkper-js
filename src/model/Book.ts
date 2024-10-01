@@ -13,8 +13,8 @@ import { DecimalSeparator, Month, Period, Permission, Visibility } from './Enums
 import { File } from './File.js';
 import { Group } from './Group.js';
 import { Transaction } from './Transaction.js';
-import { TransactionIterator } from './TransactionIterator.js';
 import { Integration } from './Integration.js';
+import { TransactionPage } from './TransactionPage.js';
 
 /**
  *
@@ -38,9 +38,17 @@ export class Book {
   /** @internal */
   private nameGroupMap?: Map<string, Group>;
 
+  /** @internal */
+  private idAccountMap?: Map<string, Account>;
+
+  /** @internal */
+  private nameAccountMap?: Map<string, Account>;
+
 
   constructor(json?: bkper.Book) {
     this.wrapped = json || {};
+    this.mapGroups();
+    this.mapAccounts();
   }
 
   /**
@@ -507,19 +515,6 @@ export class Book {
     return new Integration(integration);
   }
 
-  /**
-   * Resumes a transaction iteration using a continuation token from a previous iterator.
-   * 
-   * @param continuationToken - continuation token from a previous transaction iterator
-   * 
-   * @returns a collection of transactions that remained in a previous iterator when the continuation token was generated
-   */
-  public continueTransactionIterator(query: string, continuationToken: string): TransactionIterator {
-    var transactionIterator = new TransactionIterator(this, query);
-    transactionIterator.setContinuationToken(continuationToken);
-    return transactionIterator;
-  }
-
 
   /**
    * Instantiate a new [[Transaction]]
@@ -527,7 +522,7 @@ export class Book {
    * Example:
    * 
    * ```js
-   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
    * 
    * book.newTransaction()
    *  .setDate('2013-01-25')
@@ -592,16 +587,34 @@ export class Book {
    * @returns The matching Account object
    */
   public async getAccount(idOrName?: string): Promise<Account | undefined> {
-    if (!idOrName) {
+
+    if (!idOrName || idOrName.trim() == '') {
       return undefined;
     }
-    idOrName = idOrName + '';
+
+    let account: Account | undefined;
+
+    if (this.idAccountMap) {
+      account = this.idAccountMap.get(idOrName);
+      if (account) {
+        return account;
+      }
+    }
+
+    if (this.nameAccountMap) {
+      account = this.nameAccountMap.get(normalizeName(idOrName));
+      if (account) {
+        return account;
+      }
+    }
+
     const accountPlain = await AccountService.getAccount(this.getId(), idOrName);
-    if (!accountPlain) {
-      return undefined;
+    if (accountPlain) {
+      account = new Account(this, accountPlain);
+      return account;
     }
-    const account = new Account(this, accountPlain);
-    return account;
+
+    return undefined;
   }
 
   /** @internal */
@@ -617,12 +630,36 @@ export class Book {
     }
   }
 
+  /** @internal */
   removeGroupCache(group: Group) {
     if (this.idGroupMap) {
       this.idGroupMap.delete(group.getId() || '');
     }
     if (this.nameGroupMap) {
       this.nameGroupMap.delete(normalizeName(group.getName()));
+    }
+  }
+
+  /** @internal */
+  updateAccountCache(account: Account) {
+    if (this.idAccountMap) {
+      const id = account.getId();
+      if (id) {
+        this.idAccountMap.set(id, account);
+      }
+    }
+    if (this.nameAccountMap) {
+      this.nameAccountMap.set(normalizeName(account.getName()), account); 
+    }
+  }
+
+  /** @internal */
+  removeAccountCache(account: Account) {
+    if (this.idAccountMap) {
+      this.idAccountMap.delete(account.getId() || '');
+    }
+    if (this.nameAccountMap) {
+      this.nameAccountMap.delete(normalizeName(account.getName()));
     }
   }
 
@@ -670,14 +707,43 @@ export class Book {
       return Array.from(this.idGroupMap.values())
     }
     let groups = await GroupService.getGroups(this.getId());
+    return this.mapGroups(groups);
+  }
+
+  private mapGroups(groups?: bkper.Group[]) {
+    if (!groups) {
+      return [];
+    }
     let groupsObj = groups.map(group => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
     this.nameGroupMap = new Map<string, Group>();
-    for (var i = 0; i < groupsObj.length; i++) {
-      var group = groupsObj[i];
+
+    for (const group of groupsObj) {
       this.updateGroupCache(group);
     }
+
     return groupsObj;
+  }
+
+  public async getAccounts(): Promise<Account[]> {
+    if (this.idAccountMap) {
+      return Array.from(this.idAccountMap.values());
+    }
+    let accounts = await AccountService.getAccounts(this.getId());
+    return this.mapAccounts(accounts);
+  }
+
+  private mapAccounts(accounts?: bkper.Account[]) {
+    if (!accounts) {
+      return [];
+    }
+    let accountsObj = accounts.map(account => new Account(this, account));
+    this.idAccountMap = new Map<string, Account>();
+    this.nameAccountMap = new Map<string, Account>();
+    for (const account of accountsObj) {
+      this.updateAccountCache(account);
+    }
+    return accountsObj;
   }
 
   /**
@@ -712,8 +778,9 @@ export class Book {
    * }
    * ```
    */
-  public getTransactions(query?: string): TransactionIterator {
-    return new TransactionIterator(this, query);
+  public async getTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionPage> {
+    const transactionsList = await TransactionService.listTransactions(this.getId(), query, limit, cursor);
+    return new TransactionPage(this, transactionsList);
   }
 
   /**

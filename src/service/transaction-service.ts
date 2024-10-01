@@ -71,7 +71,7 @@ export async function getTransaction(bookId: string, id: string): Promise<bkper.
   return response.data;
 }
 
-export async function searchTransactions(bookId: string, query?: string, limit?: number, cursor?: string): Promise<bkper.TransactionList> {
+export async function listTransactions(bookId: string, query?: string, limit?: number, cursor?: string): Promise<bkper.TransactionList> {
   if (!query) {
     query = "";
   }
