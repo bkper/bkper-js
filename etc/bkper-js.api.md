@@ -96,7 +96,7 @@ export class App {
 // @public
 export class Bkper {
     static getApps(): Promise<App[]>;
-    static getBook(id: string): Promise<Book>;
+    static getBook(id: string, includeAccounts?: boolean): Promise<Book>;
     static getBooks(): Promise<Book[]>;
     static getTemplates(): Promise<Template[]>;
     static getUser(): Promise<User>;
@@ -114,12 +114,13 @@ export class Book {
     audit(): void;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
     batchTrashTransactions(transactions: Transaction[]): Promise<void>;
-    continueTransactionIterator(query: string, continuationToken: string): TransactionIterator;
     create(): Promise<Book>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
     formatDate(date: Date, timeZone?: string): string;
     formatValue(value: Amount | number | null | undefined): string;
     getAccount(idOrName?: string): Promise<Account | undefined>;
+    // (undocumented)
+    getAccounts(): Promise<Account[]>;
     // (undocumented)
     getClosingDate(): string | undefined;
     // (undocumented)
@@ -135,7 +136,6 @@ export class Book {
     getFractionDigits(): number | undefined;
     getGroup(idOrName?: string): Promise<Group | undefined>;
     getGroups(): Promise<Group[]>;
-    getGroupsByAccount(accountIdOrName: string): Promise<Group[]>;
     getId(): string;
     getIntegrations(): Promise<Integration[]>;
     // (undocumented)
@@ -169,18 +169,20 @@ export class Book {
     // (undocumented)
     getTotalTransactionsCurrentYear(): number;
     getTransaction(id: string): Promise<Transaction | undefined>;
-    getTransactions(query?: string): TransactionIterator;
     // (undocumented)
     getVisibility(): Visibility;
     // (undocumented)
     json(): bkper.Book;
+    listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionPage>;
     newAccount(): Account;
     newFile(): File;
     newGroup(): Group;
     newTransaction(): Transaction;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
-    // (undocumented)
+    // @internal (undocumented)
+    removeAccountCache(account: Account): void;
+    // @internal (undocumented)
     removeGroupCache(group: Group): void;
     round(value: Amount | number): Amount;
     setClosingDate(closingDate: string): Book;
@@ -198,6 +200,8 @@ export class Book {
     setProperty(key: string, value: string | null): Book;
     setTimeZone(timeZone: string): Book;
     update(): Promise<Book>;
+    // @internal (undocumented)
+    updateAccountCache(account: Account): void;
     // @internal (undocumented)
     updateGroupCache(group: Group): void;
     updateIntegration(integration: bkper.Integration): Promise<Integration>;
@@ -420,6 +424,8 @@ export class Transaction {
     // (undocumented)
     getAmount(): Amount | undefined;
     // (undocumented)
+    getBook(): Book;
+    // (undocumented)
     getCreatedAt(): Date;
     // (undocumented)
     getCreatedAtFormatted(): string;
@@ -490,16 +496,15 @@ export class Transaction {
 }
 
 // @public
-export class TransactionIterator {
-    // @internal
-    constructor(book: Book, query?: string);
-    // (undocumented)
+export class TransactionPage {
+    constructor(book: Book, transactionList: bkper.TransactionList);
     getAccount(): Promise<Account | undefined>;
-    getBook(): Book;
-    getContinuationToken(): string | undefined;
-    hasNext(): Promise<boolean>;
-    next(): Promise<Transaction | undefined>;
-    setContinuationToken(continuationToken: string): Promise<void>;
+    // (undocumented)
+    getCursor(): string | undefined;
+    // (undocumented)
+    getFirst(): Transaction | undefined;
+    getItems(): Transaction[];
+    size(): number;
 }
 
 // @public
