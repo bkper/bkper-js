@@ -14,7 +14,7 @@ import { File } from './File.js';
 import { Group } from './Group.js';
 import { Transaction } from './Transaction.js';
 import { Integration } from './Integration.js';
-import { TransactionPage } from './TransactionPage.js';
+import { TransactionList } from './TransactionList.js';
 
 /**
  *
@@ -545,7 +545,7 @@ export class Book {
    * 
    * Example:
    * ```js
-   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
    * 
    * book.newAccount()
    *  .setName('Some New Account')
@@ -566,7 +566,7 @@ export class Book {
    * 
    * Example:
    * ```js
-   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
    * 
    * book.newGroup()
    *  .setName('Some New Group')
@@ -757,30 +757,17 @@ export class Book {
 
 
   /**
-   * Get Book transactions based on a query.
+   * Lists transactions in the Book based on the provided query, limit, and cursor, for pagination.
    * 
-   * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-   *  
-   * @param query - The query string.
+   * @param query - The query string to filter transactions
+   * @param limit - The maximum number of transactions to return. Default to 100, max to 1000;
+   * @param cursor - The cursor for pagination
    * 
-   * @returns The Transactions result as an iterator.
-   * 
-   * Example:
-   * 
-   * ```js
-   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   *
-   * var transactions = book.getTransactions("account:CreditCard after:28/01/2013 before:29/01/2013");
-   *
-   * while (transactions.hasNext()) {
-   *  var transaction = transactions.next();
-   *  Logger.log(transaction.getDescription());
-   * }
-   * ```
+   * @returns A TransactionPage object containing the list of transactions
    */
-  public async getTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionPage> {
+  public async listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList> {
     const transactionsList = await TransactionService.listTransactions(this.getId(), query, limit, cursor);
-    return new TransactionPage(this, transactionsList);
+    return new TransactionList(this, transactionsList);
   }
 
   /**
@@ -800,7 +787,7 @@ export class Book {
    * 
    * Example:
    * ```js
-   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
    * 
    * book.newFile()
    *  .setBlob(UrlFetchApp.fetch('https://bkper.com/images/index/integrations4.png').getBlob())
