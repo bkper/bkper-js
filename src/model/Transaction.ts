@@ -24,7 +24,9 @@ export class Transaction {
 
   constructor(book: Book, json?: bkper.Transaction) {
     this.book = book;
-    this.wrapped = json || {};
+    this.wrapped = json || {
+      createdAt: `${Date.now()}`
+    };
   }
 
   /**
