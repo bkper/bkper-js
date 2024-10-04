@@ -369,6 +369,7 @@ export class Account {
    */
   public async create(): Promise<Account> {
     this.payload = await AccountService.createAccount(this.book.getId(), this.payload);
+    this.book.updateAccountCache(this);
     return this;
   }   
 
@@ -377,6 +378,7 @@ export class Account {
    */
   public async update(): Promise<Account> {
     this.payload = await AccountService.updateAccount(this.book.getId(), this.payload);
+    this.book.updateAccountCache(this);
     return this;
 
   }   
@@ -386,6 +388,7 @@ export class Account {
    */
   public async remove(): Promise<Account> {
     this.payload = await AccountService.deleteAccount(this.book.getId(), this.payload);
+    this.book.removeAccountCache(this);
     return this;
   }   
 
