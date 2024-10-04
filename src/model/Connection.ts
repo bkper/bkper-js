@@ -8,20 +8,17 @@ import { Integration } from './Integration.js';
  */
 export class Connection {
 
-  /** @internal */
-  private wrapped: bkper.Connection;
+  public payload: bkper.Connection;
 
-  constructor(json?: bkper.Connection) {
-    this.wrapped = json || {};
+  constructor(payload?: bkper.Connection) {
+    this.payload = payload || {};
   }
-
+ 
   /**
-   * Gets the wrapped plain json object of the Connection.
-   * 
-   * @returns The Connection wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
   public json(): bkper.Connection {
-    return this.wrapped;
+    return { ...this.payload };
   }
 
   /**
@@ -30,7 +27,7 @@ export class Connection {
    * @returns The Connection's id
    */
   public getId(): string | undefined {
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   /**
@@ -39,7 +36,7 @@ export class Connection {
    * @returns The Connection's agentId
    */
   public getAgentId(): string | undefined {
-    return this.wrapped.agentId;
+    return this.payload.agentId;
   }
 
   /**
@@ -50,7 +47,7 @@ export class Connection {
    * @returns The Connection, for chainning
    */
   public setAgentId(agentId: string): Connection {
-    this.wrapped.agentId = agentId;
+    this.payload.agentId = agentId;
     return this;
   }
 
@@ -60,7 +57,7 @@ export class Connection {
    * @returns The Connection name
    */
   public getName(): string | undefined {
-    return this.wrapped.name;
+    return this.payload.name;
   }
 
   /**
@@ -69,7 +66,7 @@ export class Connection {
    * @returns The Connection owner's email
    */
   public getEmail(): string | undefined {
-    return this.wrapped.email;
+    return this.payload.email;
   }
 
   /**
@@ -80,7 +77,7 @@ export class Connection {
    * @returns The Connection, for chainning
    */
   public setName(name: string): Connection {
-    this.wrapped.name = name;
+    this.payload.name = name;
     return this;
   }
 
@@ -92,7 +89,7 @@ export class Connection {
    * @returns The Connection, for chainning
    */
   public setUUID(uuid: string): Connection {
-    this.wrapped.uuid = uuid;
+    this.payload.uuid = uuid;
     return this;
   }
 
@@ -102,7 +99,7 @@ export class Connection {
    * @returns The Connection's universal unique identifier name
    */
   public getUUID(): string | undefined {
-    return this.wrapped.uuid;
+    return this.payload.uuid;
   }
 
   /**
@@ -111,7 +108,7 @@ export class Connection {
    * @returns The Connection type
    */
   public getType(): "APP" | "BANK" | undefined {
-    return this.wrapped.type;
+    return this.payload.type;
   }
 
   /**
@@ -122,7 +119,7 @@ export class Connection {
    * @returns The Connection, for chainning
    */
   public setType(type: "APP" | "BANK"): Connection {
-    this.wrapped.type = type;
+    this.payload.type = type;
     return this;
   }
 
@@ -132,7 +129,7 @@ export class Connection {
    * @returns Object with key/value pair properties
    */
   public getProperties(): { [key: string]: string } {
-    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+    return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
@@ -143,7 +140,7 @@ export class Connection {
    * @returns The Connection, for chainning
    */
   public setProperties(properties: { [key: string]: string }): Connection {
-    this.wrapped.properties = { ...properties };
+    this.payload.properties = { ...properties };
     return this;
   }
 
@@ -157,7 +154,7 @@ export class Connection {
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
+      let value = this.payload.properties != null ? this.payload.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
@@ -177,13 +174,13 @@ export class Connection {
     if (key == null || key.trim() == '') {
       return this;
     }
-    if (this.wrapped.properties == null) {
-      this.wrapped.properties = {};
+    if (this.payload.properties == null) {
+      this.payload.properties = {};
     }
     if (!value) {
       value = ''
     }
-    this.wrapped.properties[key] = value;
+    this.payload.properties[key] = value;
     return this;
   }
 
@@ -242,7 +239,7 @@ export class Connection {
    * @returns The Connection, for chaining
    */
   public async create(): Promise<Connection> {
-    this.wrapped = await ConnectionService.createConnection(this.wrapped);
+    this.payload = await ConnectionService.createConnection(this.payload);
     return this;
   }
 

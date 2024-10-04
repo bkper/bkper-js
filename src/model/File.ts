@@ -10,38 +10,36 @@ import * as FileService from '../service/file-service.js';
  * @public
  */
 export class File {
+
+  public payload: bkper.File;
   
   /** @internal */
   private book: Book;
 
-  /** @internal */
-  private wrapped: bkper.File;
-
-  constructor(book: Book, json?: bkper.File) {
+  constructor(book: Book, payload?: bkper.File) {
     this.book = book;
-    this.wrapped = json || {};
+    this.payload = payload || {};
   }
 
   /**
-   * 
-   * @returns The wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
-  public json(): bkper.Transaction {
-    return this.wrapped;
+  public json(): bkper.File {
+    return { ...this.payload };
   }
 
   /**
    * Gets the File id
    */
   public getId(): string | undefined {
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   /**
    * Gets the File name
    */
   public getName(): string | undefined {
-    return this.wrapped.name;
+    return this.payload.name;
   }
 
   /**
@@ -51,7 +49,7 @@ export class File {
    * @returns This File, for chainning.
    */    
   public setName(name: string): File {
-    this.wrapped.name = name;
+    this.payload.name = name;
     return this;
   }  
 
@@ -59,7 +57,7 @@ export class File {
    * Gets the File content type
    */
   public getContentType(): string | undefined {
-    return this.wrapped.contentType;
+    return this.payload.contentType;
   }
 
   /**
@@ -69,7 +67,7 @@ export class File {
    * @returns This File, for chainning.
    */    
   public setContentType(contentType: string): File {
-    this.wrapped.contentType = contentType;
+    this.payload.contentType = contentType;
     return this;
   }    
 
@@ -78,10 +76,10 @@ export class File {
    */
   public async getContent(): Promise<string | undefined> {
     const id = this.getId();
-    if (this.getId() != null && (this.wrapped == null || this.wrapped.content == null) && this.book && id) {
-      this.wrapped = await FileService.getFile(this.book.getId(), id);
+    if (this.getId() != null && (this.payload == null || this.payload.content == null) && this.book && id) {
+      this.payload = await FileService.getFile(this.book.getId(), id);
     }
-    return this.wrapped.content;
+    return this.payload.content;
   }
 
   /**
@@ -91,7 +89,7 @@ export class File {
    * @returns This File, for chainning.
    */    
   public setContent(content: string): File {
-    this.wrapped.content = content;
+    this.payload.content = content;
     return this;
   } 
  
@@ -99,14 +97,14 @@ export class File {
    * Gets the file serving url for accessing via browser
    */
   public getUrl(): string | undefined {
-    return this.wrapped.url;
+    return this.payload.url;
   }
 
   /**
    * Gets the file size in bytes
    */  
   public getSize(): number | undefined {
-    return this.wrapped.size;
+    return this.payload.size;
   }
 
 
@@ -115,7 +113,7 @@ export class File {
    */
   public async create(): Promise<File> {
     if (this.book) {
-      this.wrapped = await FileService.createFile(this.book.getId(), this.wrapped);
+      this.payload = await FileService.createFile(this.book.getId(), this.payload);
     }
     return this;
   }

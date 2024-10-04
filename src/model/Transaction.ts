@@ -16,25 +16,23 @@ import { Amount } from './Amount.js';
  */
 export class Transaction {
   
+  public payload: bkper.Transaction
+  
   /** @internal */
   private book: Book;
 
-  /** @internal */
-  private wrapped: bkper.Transaction
-
-  constructor(book: Book, json?: bkper.Transaction) {
+  constructor(book: Book, payload?: bkper.Transaction) {
     this.book = book;
-    this.wrapped = json || {
+    this.payload = payload || {
       createdAt: `${Date.now()}`
     };
   }
 
   /**
-   * 
-   * @returns The wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
   public json(): bkper.Transaction {
-    return this.wrapped;
+    return { ...this.payload };
   }
 
   /**
@@ -48,14 +46,14 @@ export class Transaction {
    * @returns The id of the Transaction.
    */
   public getId(): string | undefined{
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   /**
    * @returns The id of the agent that created this transaction
    */
   public getAgentId(): string | undefined{
-    return this.wrapped.agentId;
+    return this.payload.agentId;
   }
 
   /**
@@ -64,7 +62,7 @@ export class Transaction {
    * @returns The remote ids of the Transaction.
    */
   public getRemoteIds(): string[] {
-    return this.wrapped.remoteIds || [];
+    return this.payload.remoteIds || [];
   }
 
   /**
@@ -75,11 +73,11 @@ export class Transaction {
    * @returns This Transaction, for chainning.
    */
   public addRemoteId(remoteId: string): Transaction {
-    if (this.wrapped.remoteIds == null) {
-      this.wrapped.remoteIds = [];
+    if (this.payload.remoteIds == null) {
+      this.payload.remoteIds = [];
     }
     if (remoteId) {
-      this.wrapped.remoteIds.push(remoteId);
+      this.payload.remoteIds.push(remoteId);
     }
     return this;
   }
@@ -88,14 +86,14 @@ export class Transaction {
    * @returns True if transaction was already posted to the accounts. False if is still a Draft.
    */
   public isPosted(): boolean | undefined {
-    return this.wrapped.posted;
+    return this.payload.posted;
   }
 
   /**
    * @returns True if transaction is checked.
    */
   public isChecked(): boolean | undefined {
-    return this.wrapped.checked;
+    return this.payload.checked;
   }
 
   /**
@@ -106,7 +104,7 @@ export class Transaction {
     * @returns This Transaction, for chainning.
   */
   public setChecked(checked: boolean): Transaction {
-    this.wrapped.checked = checked;
+    this.payload.checked = checked;
     return this;
   }
 
@@ -114,14 +112,14 @@ export class Transaction {
    * @returns True if transaction is in trash.
    */
   public isTrashed(): boolean | undefined {
-    return this.wrapped.trashed;
+    return this.payload.trashed;
   }
 
   /**
    * @returns All #hashtags used on the transaction.
    */
   public getTags(): string[] {
-    return this.wrapped.tags || [];
+    return this.payload.tags || [];
   }
 
 
@@ -129,7 +127,7 @@ export class Transaction {
    * @returns All urls of the transaction.
    */
   public getUrls(): string[] {
-    return this.wrapped.urls || [];
+    return this.payload.urls || [];
   }
 
   /**
@@ -140,7 +138,7 @@ export class Transaction {
    * @returns This Transaction, for chainning.
    */
   public setUrls(urls: string[]): Transaction {
-    this.wrapped.urls = undefined;
+    this.payload.urls = undefined;
     if (urls) {
       urls.forEach(url => {
         this.addUrl(url);
@@ -157,11 +155,11 @@ export class Transaction {
    * @returns This Transaction, for chainning.
    */
   public addUrl(url: string): Transaction {
-    if (this.wrapped.urls == null) {
-      this.wrapped.urls = [];
+    if (this.payload.urls == null) {
+      this.payload.urls = [];
     }
     if (url) {
-      this.wrapped.urls.push(url);
+      this.payload.urls.push(url);
     }
     return this;
   }
@@ -170,8 +168,8 @@ export class Transaction {
    * @returns The files attached to the transaction.
    */
   public getFiles(): File[] {
-    if (this.wrapped.files && this.wrapped.files.length > 0) {
-      const files = this.wrapped.files.map(file => new File(this.book, file));
+    if (this.payload.files && this.payload.files.length > 0) {
+      const files = this.payload.files.map(file => new File(this.book, file));
       return files
     } else {
       return [];
@@ -190,15 +188,15 @@ export class Transaction {
    */
   public async addFile(file: File): Promise<Transaction> {
 
-    if (this.wrapped.files == null) {
-      this.wrapped.files = [];
+    if (this.payload.files == null) {
+      this.payload.files = [];
     }
 
     //Make sure file is already created
     if (file.getId() == null) {
       file = await file.create();
     }
-    this.wrapped.files.push(file.json())
+    this.payload.files.push(file.json())
     return this;
   }
 
@@ -223,7 +221,7 @@ export class Transaction {
    * Gets the custom properties stored in this Transaction.
    */
   public getProperties(): { [key: string]: string } {
-    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+    return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
@@ -234,7 +232,7 @@ export class Transaction {
    * @returns This Transaction, for chainning. 
    */
   public setProperties(properties: { [key: string]: string }): Transaction {
-    this.wrapped.properties = { ...properties };
+    this.payload.properties = { ...properties };
     return this;
   }
 
@@ -246,7 +244,7 @@ export class Transaction {
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
+      let value = this.payload.properties != null ? this.payload.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
@@ -283,13 +281,13 @@ export class Transaction {
     if (key == null || key.trim() == '') {
       return this;
     }
-    if (this.wrapped.properties == null) {
-      this.wrapped.properties = {};
+    if (this.payload.properties == null) {
+      this.payload.properties = {};
     }
     if (!value) {
       value = ''
     }
-    this.wrapped.properties[key] = value;
+    this.payload.properties[key] = value;
     return this;
   }
 
@@ -311,10 +309,10 @@ export class Transaction {
    * @returns The credit account. The same as origin account.
    */
   public async getCreditAccount(): Promise<Account | undefined> {
-    if (!this.wrapped.creditAccount) {
+    if (!this.payload.creditAccount) {
       return undefined;
     }
-    return await this.book.getAccount(this.wrapped.creditAccount.id);
+    return await this.book.getAccount(this.payload.creditAccount.id);
 
   }
 
@@ -340,11 +338,11 @@ export class Transaction {
   public setCreditAccount(account: Account | bkper.Account): Transaction {
     if (account instanceof Account) {
       if (account != null && account.getId() != null) {
-        this.wrapped.creditAccount = account.json()
+        this.payload.creditAccount = account.json()
       }
     } else {
       if (account != null && account.id != null) {
-        this.wrapped.creditAccount = account
+        this.payload.creditAccount = account
       }
     }
     return this;
@@ -369,10 +367,10 @@ export class Transaction {
    * 
    */
   public async getDebitAccount(): Promise<Account | undefined> {
-    if (!this.wrapped.debitAccount) {
+    if (!this.payload.debitAccount) {
       return undefined;
     }
-    return await this.book.getAccount(this.wrapped.debitAccount.id);
+    return await this.book.getAccount(this.payload.debitAccount.id);
   }
 
   /**
@@ -397,11 +395,11 @@ export class Transaction {
   public setDebitAccount(account: Account | bkper.Account): Transaction {
     if (account instanceof Account) {
       if (account != null && account.getId() != null) {
-        this.wrapped.debitAccount = account.json()
+        this.payload.debitAccount = account.json()
       }
     } else {
       if (account != null && account.id != null) {
-        this.wrapped.debitAccount = account
+        this.payload.debitAccount = account
       }
     }
     return this;
@@ -425,7 +423,7 @@ export class Transaction {
    * @returns The amount of the transaction.
    */
   public getAmount(): Amount | undefined {
-    return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? new Amount(this.wrapped.amount) : undefined;
+    return this.payload.amount != null && this.payload.amount.trim() != '' ? new Amount(this.payload.amount) : undefined;
   }
 
   /**
@@ -438,18 +436,18 @@ export class Transaction {
 
     if (typeof amount == "string") {
       amount = Utils.parseValue(amount, this.book.getDecimalSeparator()) + '';
-      this.wrapped.amount = amount.toString();
+      this.payload.amount = amount.toString();
       return this;
     }
 
     amount = new Amount(amount);
 
     if (amount.eq(0)) {
-      this.wrapped.amount = undefined;
+      this.payload.amount = undefined;
       return this;
     }
 
-    this.wrapped.amount = amount.abs().toString();
+    this.payload.amount = amount.abs().toString();
 
     return this;
   }
@@ -546,10 +544,10 @@ export class Transaction {
    * @returns The description of this transaction.
    */
   public getDescription(): string {
-    if (this.wrapped.description == null) {
+    if (this.payload.description == null) {
       return "";
     }
-    return this.wrapped.description;
+    return this.payload.description;
   }
 
   /**
@@ -559,7 +557,7 @@ export class Transaction {
    * @returns This Transaction, for chainning.
    */
   public setDescription(description: string): Transaction {
-    this.wrapped.description = description;
+    this.payload.description = description;
     return this;
   }
 
@@ -570,7 +568,7 @@ export class Transaction {
    * @returns The Transaction date, in ISO format yyyy-MM-dd.
    */
   public getDate(): string | undefined{
-    return this.wrapped.date;
+    return this.payload.date;
   }
 
   /**
@@ -583,12 +581,12 @@ export class Transaction {
     if (typeof date == "string") {
       if (date.indexOf('/') > 0) {
         let dateObject = Utils.parseDate(date, this.book.getDatePattern(), this.book.getTimeZone())
-        this.wrapped.date = Utils.formatDateISO(dateObject, this.book.getTimeZone())
+        this.payload.date = Utils.formatDateISO(dateObject, this.book.getTimeZone())
       } else if (date.indexOf('-')) {
-        this.wrapped.date = date;
+        this.payload.date = date;
       }
     } else if (Object.prototype.toString.call(date) === '[object Date]') {
-      this.wrapped.date = Utils.formatDateISO(date, this.book.getTimeZone())
+      this.payload.date = Utils.formatDateISO(date, this.book.getTimeZone())
     }
     return this;
   }
@@ -604,21 +602,21 @@ export class Transaction {
    * @returns The Transaction date number, in format YYYYMMDD.
    */
   public getDateValue(): number | undefined {
-    return this.wrapped.dateValue;
+    return this.payload.dateValue;
   }
 
   /**
    * @returns The Transaction date, formatted on the date pattern of the [[Book]].
    */
   public getDateFormatted(): string | undefined {
-    return this.wrapped.dateFormatted;
+    return this.payload.dateFormatted;
   }
 
   /**
    * @returns The date the transaction was created.
    */
   public getCreatedAt(): Date {
-    return new Date(new Number(this.wrapped.createdAt).valueOf());
+    return new Date(new Number(this.payload.createdAt).valueOf());
   }
 
   /**
@@ -632,12 +630,12 @@ export class Transaction {
   //EVOLVED BALANCES
   /** @internal */
   private getCaEvolvedBalance_(): Amount | undefined {
-    return this.wrapped.creditAccount != null && this.wrapped.creditAccount.balance != null ? new Amount(this.wrapped.creditAccount.balance) : undefined;
+    return this.payload.creditAccount != null && this.payload.creditAccount.balance != null ? new Amount(this.payload.creditAccount.balance) : undefined;
   }
 
   /** @internal */
   private getDaEvolvedBalance_(): Amount | undefined {
-    return this.wrapped.debitAccount != null && this.wrapped.debitAccount.balance != null ? new Amount(this.wrapped.debitAccount.balance) : undefined;
+    return this.payload.debitAccount != null && this.payload.debitAccount.balance != null ? new Amount(this.payload.debitAccount.balance) : undefined;
   }
 
   /**
@@ -671,8 +669,8 @@ export class Transaction {
    * Perform create new draft transaction.
    */
   public async create(): Promise<Transaction> {
-    let operation = await TransactionService.createTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction || {};
+    let operation = await TransactionService.createTransaction(this.book.getId(), this.payload);
+    this.payload = operation.transaction || {};
     return this;
   }
 
@@ -680,8 +678,8 @@ export class Transaction {
    * Upddate transaction, applying pending changes.
    */
   public async update(): Promise<Transaction> {
-    let operation = await TransactionService.updateTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction || {};
+    let operation = await TransactionService.updateTransaction(this.book.getId(), this.payload);
+    this.payload = operation.transaction || {};
     return this;
   }
 
@@ -690,8 +688,8 @@ export class Transaction {
    * Perform check transaction.
    */
   public async check(): Promise<Transaction> {
-    let operation = await TransactionService.checkTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.checked = operation.transaction?.checked;
+    let operation = await TransactionService.checkTransaction(this.book.getId(), this.payload);
+    this.payload.checked = operation.transaction?.checked;
     return this;
   }
 
@@ -699,8 +697,8 @@ export class Transaction {
    * Perform uncheck transaction.
    */
   public async uncheck(): Promise<Transaction> {
-    let operation = await TransactionService.uncheckTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.checked = operation.transaction?.checked;
+    let operation = await TransactionService.uncheckTransaction(this.book.getId(), this.payload);
+    this.payload.checked = operation.transaction?.checked;
     return this;
   }
 
@@ -708,8 +706,8 @@ export class Transaction {
    * Perform post transaction, changing credit and debit [[Account]] balances.
    */
   public async post(): Promise<Transaction> {
-    let operation = await TransactionService.postTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction || {};
+    let operation = await TransactionService.postTransaction(this.book.getId(), this.payload);
+    this.payload = operation.transaction || {};
     return this;
   }
 
@@ -717,8 +715,8 @@ export class Transaction {
    * Remove the transaction, sending to trash.
    */
   public async remove(): Promise<Transaction> {
-    let operation = await TransactionService.trashTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.trashed = operation.transaction?.trashed;
+    let operation = await TransactionService.trashTransaction(this.book.getId(), this.payload);
+    this.payload.trashed = operation.transaction?.trashed;
     return this;
   }
 
@@ -726,8 +724,8 @@ export class Transaction {
    * Restore the transaction from trash.
    */
   public async restore(): Promise<Transaction> {
-    let operation = await TransactionService.restoreTransaction(this.book.getId(), this.wrapped);
-    this.wrapped.trashed = operation.transaction?.trashed;
+    let operation = await TransactionService.restoreTransaction(this.book.getId(), this.payload);
+    this.payload.trashed = operation.transaction?.trashed;
     return this;
   }
 

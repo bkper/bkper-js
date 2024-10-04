@@ -8,29 +8,31 @@ import * as TransactionService from '../service/transaction-service.js';
  */
 export class TransactionList {
 
-  private book: Book;
-  private wrapped: bkper.TransactionList;
+  private payload: bkper.TransactionList;
 
-  constructor(book: Book, transactionList: bkper.TransactionList) {
+  /** @internal */
+  private book: Book;
+
+  constructor(book: Book, payload: bkper.TransactionList) {
     this.book = book;
-    this.wrapped = transactionList;
+    this.payload = payload;
   }
 
   /**
    * @returns The cursor associated with the query for pagination.
    */
   public getCursor(): string | undefined {
-    return this.wrapped.cursor;
+    return this.payload.cursor;
   }
 
   /**
    * Retrieves the account associated with the query, when filtering by account.
    */
   public async getAccount(): Promise<Account | undefined> {
-    if (!this.wrapped.account) {
+    if (!this.payload.account) {
       return undefined;
     }
-    return await this.book.getAccount(this.wrapped.account);
+    return await this.book.getAccount(this.payload.account);
   }
 
   /**
@@ -48,7 +50,7 @@ export class TransactionList {
    * @returns The total number of transactions.
    */
   public size(): number {
-    return this.wrapped.items?.length || 0;
+    return this.payload.items?.length || 0;
   }
 
   /**
@@ -58,7 +60,7 @@ export class TransactionList {
    */
   public getItems(): Transaction[] {
     let transactions: Transaction[] = [];
-    for (let transaction of this.wrapped.items ?? []) {
+    for (let transaction of this.payload.items ?? []) {
       transactions.push(new Transaction(this.book, transaction));
     }
     return transactions;

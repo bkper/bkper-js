@@ -9,11 +9,17 @@ import { createApp, patchApp, updateApp } from "../service/app-service.js";
  */
 export class App {
 
-  /** @internal */
-  private wrapped: bkper.App;
+  public payload: bkper.App;
 
-  constructor(json?: bkper.App) {
-    this.wrapped = json || {};
+  constructor(payload?: bkper.App) {
+    this.payload = payload || {};
+  }
+
+  /**
+   * @returns The wrapped plain json object
+   */
+  public json(): bkper.App {
+    return {...this.payload };
   }
 
   /**
@@ -24,9 +30,9 @@ export class App {
    */
   public setWebhookUrlDev(webhookUrlDev: string): App {
     if (webhookUrlDev) {
-      this.wrapped.webhookUrlDev = webhookUrlDev;
+      this.payload.webhookUrlDev = webhookUrlDev;
     } else {
-      this.wrapped.webhookUrlDev = 'null';
+      this.payload.webhookUrlDev = 'null';
     }
     return this;
   }
@@ -37,7 +43,7 @@ export class App {
    * @returns The App universal identifier
    */
   public getId(): string | undefined {
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   /**
@@ -46,7 +52,7 @@ export class App {
    * @returns This App for chaining
    */
   public setUserEmails(emails?: string): App {
-    this.wrapped.userEmails = emails;
+    this.payload.userEmails = emails;
     return this;
   }
 
@@ -56,7 +62,7 @@ export class App {
    * @returns This App for chaining
    */
   public setDeveloperEmail(email?: string): App {
-    this.wrapped.developerEmail = email;
+    this.payload.developerEmail = email;
     return this;
   }
 
@@ -66,7 +72,7 @@ export class App {
    * @returns This App for chaining
    */
   public setClientSecret(clientSecret?: string): App {
-    this.wrapped.clientSecret = clientSecret;
+    this.payload.clientSecret = clientSecret;
     return this;
   }
 
@@ -76,7 +82,7 @@ export class App {
    * @returns This App for chaining
    */
   public setReadme(readme?: string): App {
-    this.wrapped.readme = readme;
+    this.payload.readme = readme;
     return this;
   }
 
@@ -88,7 +94,7 @@ export class App {
    * The App id MUST be unique. If another app is already existing, an error will be thrown.
    */
   public async create(): Promise<App> {
-    await createApp(this.wrapped);
+    await createApp(this.payload);
     return this;
   }
 
@@ -96,7 +102,7 @@ export class App {
    * Partially update an App, applying pending changes.
    */
   public async patch(): Promise<App> {
-    await patchApp(this.wrapped);
+    await patchApp(this.payload);
     return this;
   }
 
@@ -104,15 +110,9 @@ export class App {
    * Perform update App, applying pending changes.
    */
   public async update(): Promise<App> {
-    await updateApp(this.wrapped);
+    await updateApp(this.payload);
     return this;
   }
 
-  /**
-   * @returns The wrapped plain json object
-   */
-  public json(): bkper.App {
-    return this.wrapped;
-  }
 
 }

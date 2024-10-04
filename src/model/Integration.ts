@@ -6,20 +6,17 @@
  */
 export class Integration {
 
-  /** @internal */
-  private wrapped: bkper.Integration
+  public payload: bkper.Integration
 
-  constructor(json?: bkper.Integration) {
-    this.wrapped = json || {};
+  constructor(payload?: bkper.Integration) {
+    this.payload = payload || {};
   }
 
   /**
-   * Gets the wrapped plain json object of the Integration.
-   * 
-   * @returns The Integration wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
   public json(): bkper.Integration {
-    return this.wrapped;
+    return { ...this.payload };
   }
 
   /**
@@ -28,7 +25,7 @@ export class Integration {
    * @returns The Integration's Book id
    */
   public getBookId(): string | undefined {
-    return this.wrapped.bookId
+    return this.payload.bookId
   }
 
   /**
@@ -37,7 +34,7 @@ export class Integration {
    * @returns This Integration's id
    */
   public getId(): string | undefined {
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   /**
@@ -46,7 +43,7 @@ export class Integration {
    * @returns The Integration's name
    */
   public getName(): string | undefined {
-    return this.wrapped.name;
+    return this.payload.name;
   }
 
   /**
@@ -55,7 +52,7 @@ export class Integration {
    * @returns Object with key/value pair properties
    */
   public getProperties(): { [key: string]: string } {
-    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+    return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
@@ -66,7 +63,7 @@ export class Integration {
    * @returns The Integration, for chainning
    */
   public setProperties(properties: { [key: string]: string }): Integration {
-    this.wrapped.properties = { ...properties };
+    this.payload.properties = { ...properties };
     return this;
   }
 
@@ -80,7 +77,7 @@ export class Integration {
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
+      let value = this.payload.properties != null ? this.payload.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
@@ -100,13 +97,13 @@ export class Integration {
     if (key == null || key.trim() == '') {
       return this;
     }
-    if (this.wrapped.properties == null) {
-      this.wrapped.properties = {};
+    if (this.payload.properties == null) {
+      this.payload.properties = {};
     }
     if (!value) {
       value = ''
     }
-    this.wrapped.properties[key] = value;
+    this.payload.properties[key] = value;
     return this;
   }
 

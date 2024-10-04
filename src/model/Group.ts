@@ -15,42 +15,40 @@ import * as Utils from '../utils.js';
  * @public
  */
 export class Group {
-  
-  /** @internal */
-  private book: Book
+
+  public payload: bkper.Group
 
   /** @internal */
-  private wrapped: bkper.Group
+  private book: Book
   
   /** @internal */
   private accounts?: Set<Account>
 
-  constructor(book: Book, json?: bkper.Group) {
+  constructor(book: Book, payload?: bkper.Group) {
     this.book = book;
-    this.wrapped = json || {}
+    this.payload = payload || {}
   }
 
   /**
-   * 
-   * @returns The wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
   public json(): bkper.Group {
-    return this.wrapped;
+    return { ...this.payload };
   }
   
   /**
    * @returns The id of this Group
    */
   public getId(): string | undefined {
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   /**
    * @returns The parent Group
    */
   public async getParent(): Promise<Group | undefined> {
-    if (this.wrapped.parent) {
-      return await this.book.getGroup(this.wrapped.parent.id)
+    if (this.payload.parent) {
+      return await this.book.getGroup(this.payload.parent.id)
     } else {
       return undefined;
     }
@@ -63,9 +61,9 @@ export class Group {
    */  
   public setParent(group: Group | null | undefined): Group {
     if (group) {
-      this.wrapped.parent = {id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName()};
+      this.payload.parent = {id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName()};
     } else {
-      this.wrapped.parent = undefined;
+      this.payload.parent = undefined;
     }
     return this;
   }
@@ -74,7 +72,7 @@ export class Group {
    * @returns The name of this Group
    */
   public getName(): string | undefined {
-    return this.wrapped.name;
+    return this.payload.name;
   }
 
   /**
@@ -83,7 +81,7 @@ export class Group {
    * @returns This Group, for chainning.
    */
   public setName(name: string): Group {
-    this.wrapped.name = name;
+    this.payload.name = name;
     return this;
   }
 
@@ -91,8 +89,8 @@ export class Group {
    * @returns The name of this group without spaces and special characters
    */
   public getNormalizedName(): string {
-    if (this.wrapped.normalizedName) {
-      return this.wrapped.normalizedName;
+    if (this.payload.normalizedName) {
+      return this.payload.normalizedName;
     } else {
       return normalizeText(this.getName())
     }
@@ -115,21 +113,21 @@ export class Group {
    * @returns True if this group has any account in it
    */
   public hasAccounts(): boolean | undefined {
-    return this.wrapped.hasAccounts;
+    return this.payload.hasAccounts;
   }
 
   /**
    * @returns The type for of the accounts of this group. Null if mixed
    */
   public getType(): AccountType {
-    return this.wrapped.type as AccountType;
+    return this.payload.type as AccountType;
   }
 
   /**
    * Gets the custom properties stored in this Group
    */
   public getProperties(): { [key: string]: string } {
-    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+    return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
@@ -140,7 +138,7 @@ export class Group {
    * @returns This Group, for chainning. 
    */
   public setProperties(properties: { [key: string]: string }): Group {
-    this.wrapped.properties = { ...properties };
+    this.payload.properties = { ...properties };
     return this;
   }
 
@@ -152,7 +150,7 @@ export class Group {
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
+      let value = this.payload.properties != null ? this.payload.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
@@ -170,13 +168,13 @@ export class Group {
     if (key == null || key.trim() == '') {
       return this;
     }
-    if (this.wrapped.properties == null) {
-      this.wrapped.properties = {};
+    if (this.payload.properties == null) {
+      this.payload.properties = {};
     }
     if (!value) {
       value = ''
     }
-    this.wrapped.properties[key] = value;
+    this.payload.properties[key] = value;
     return this;
   }
 
@@ -196,14 +194,14 @@ export class Group {
    * Tell if the Group is hidden on main transactions menu
    */
   public isHidden(): boolean | undefined{
-    return this.wrapped.hidden;
+    return this.payload.hidden;
   }
 
   /**
    *  Hide/Show group on main menu.
    */
   public setHidden(hidden: boolean): Group {
-    this.wrapped.hidden = hidden;
+    this.payload.hidden = hidden;
     return this;
   }
 
@@ -211,7 +209,7 @@ export class Group {
    * Perform create new group.
    */
   public async create(): Promise<Group> {
-    this.wrapped = await GroupService.createGroup(this.book.getId(), this.wrapped);
+    this.payload = await GroupService.createGroup(this.book.getId(), this.payload);
     this.book.updateGroupCache(this);
     return this;
   }
@@ -220,7 +218,7 @@ export class Group {
    * Perform update group, applying pending changes.
    */
   public async update(): Promise<Group> {
-    this.wrapped = await GroupService.updateGroup(this.book.getId(), this.wrapped);
+    this.payload = await GroupService.updateGroup(this.book.getId(), this.payload);
     this.book.updateGroupCache(this);
     return this;
 
@@ -230,7 +228,7 @@ export class Group {
    * Perform delete group.
    */
   public async remove(): Promise<Group> {
-    this.wrapped = await GroupService.deleteGroup(this.book.getId(), this.wrapped);
+    this.payload = await GroupService.deleteGroup(this.book.getId(), this.payload);
     this.book.removeGroupCache(this);
     return this;
   }

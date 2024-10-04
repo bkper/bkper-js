@@ -5,7 +5,6 @@ import { AccountType } from './Enums.js';
 import { Group } from './Group.js';
 import { normalizeText, round } from '../utils.js';
 import { Amount } from './Amount.js';
-import * as Utils from '../utils.js';
 
 /**
  * 
@@ -18,30 +17,29 @@ import * as Utils from '../utils.js';
  * @public
  */
 export class Account {
-  
-  /** @internal */
-  private book: Book;
+
+  public payload: bkper.Account;
 
   /** @internal */
-  private wrapped: bkper.Account;
+  private book: Book;
   
-  constructor(book: Book, json?: bkper.Account) {
+  constructor(book: Book, payload?: bkper.Account) {
     this.book = book;
-    this.wrapped = json || {};
+    this.payload = payload || {};
   }
+
   /**
-   * 
-   * @returns The wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
   public json(): bkper.Account {
-    return this.wrapped;
+    return {...this.payload};
   }
   
   /**
    * Gets the account internal id.
    */
   public getId(): string | undefined {
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   
@@ -50,7 +48,7 @@ export class Account {
    * Gets the account name.
    */
   public getName(): string | undefined {
-    return this.wrapped.name;
+    return this.payload.name;
   }
 
   /**
@@ -60,7 +58,7 @@ export class Account {
    * @returns This Account, for chainning.
    */    
   public setName(name: string): Account {
-    this.wrapped.name = name;
+    this.payload.name = name;
     return this;
   }
 
@@ -69,8 +67,8 @@ export class Account {
    * @returns The name of this account without spaces or special characters.
    */
   public getNormalizedName(): string {
-    if (this.wrapped.normalizedName) {
-      return this.wrapped.normalizedName;
+    if (this.payload.normalizedName) {
+      return this.payload.normalizedName;
     } else {
       return normalizeText(this.getName())
     }
@@ -80,7 +78,7 @@ export class Account {
    * @returns The type for of this account.
    */
   public getType(): AccountType {
-    return this.wrapped.type as AccountType;
+    return this.payload.type as AccountType;
   }
 
   /**
@@ -90,7 +88,7 @@ export class Account {
    * @returns This Account, for chainning
    */   
   public setType(type: AccountType): Account {
-    this.wrapped.type = type;
+    this.payload.type = type;
     return this;
   }
 
@@ -98,7 +96,7 @@ export class Account {
    * Gets the custom properties stored in this Account.
    */  
   public getProperties(): {[key: string]: string} {
-    return this.wrapped.properties != null ?  {...this.wrapped.properties} : {};
+    return this.payload.properties != null ?  {...this.payload.properties} : {};
   }
 
   /**
@@ -109,7 +107,7 @@ export class Account {
    * @returns This Account, for chainning. 
    */
   public setProperties(properties: {[key: string]: string}): Account {
-    this.wrapped.properties = {...properties};
+    this.payload.properties = {...properties};
     return this;
   }
 
@@ -121,7 +119,7 @@ export class Account {
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      let value = this.payload.properties != null ?  this.payload.properties[key] : null 
       if (value != null && value.trim() != '') {
         return value;
       }
@@ -142,13 +140,13 @@ export class Account {
     if (key == null || key.trim() == '') {
       return this;
     }    
-    if (this.wrapped.properties == null) {
-      this.wrapped.properties = {};
+    if (this.payload.properties == null) {
+      this.payload.properties = {};
     }
     if (!value) {
       value = ''
     }
-    this.wrapped.properties[key] = value;
+    this.payload.properties[key] = value;
     return this;
   }
 
@@ -171,8 +169,8 @@ export class Account {
    */
   public getBalance(): Amount {
     var balance = new Amount('0');
-    if (this.wrapped.balance != null) {
-      balance = round(this.wrapped.balance, this.book.getFractionDigits());
+    if (this.payload.balance != null) {
+      balance = round(this.payload.balance, this.book.getFractionDigits());
     }
     return balance;
   }
@@ -184,8 +182,8 @@ export class Account {
    */  
      public getBalanceRaw(): Amount {
       var balance = new Amount('0');
-      if (this.wrapped.balance != null) {
-        balance = round(this.wrapped.balance, this.book.getFractionDigits());
+      if (this.payload.balance != null) {
+        balance = round(this.payload.balance, this.book.getFractionDigits());
       }
       return balance;
     }
@@ -194,7 +192,7 @@ export class Account {
    * Tell if this account is archived.
    */  
   public isArchived(): boolean | undefined {
-    return this.wrapped.archived;
+    return this.payload.archived;
   }
 
   /**
@@ -203,7 +201,7 @@ export class Account {
    * @returns This Account, for chainning.
    */
   public setArchived(archived: boolean): Account {
-    this.wrapped.archived = archived;
+    this.payload.archived = archived;
     return this;
   }
 
@@ -213,7 +211,7 @@ export class Account {
    * Accounts with transaction posted, even with zero balance, can only be archived.
    */
   public hasTransactionPosted(): boolean | undefined {
-    return this.wrapped.hasTransactionPosted;
+    return this.payload.hasTransactionPosted;
   }
   
 
@@ -230,7 +228,7 @@ export class Account {
    * @returns True if its a permanent Account
    */
   public isPermanent(): boolean | undefined {
-    return this.wrapped.permanent;
+    return this.payload.permanent;
   }
 
   /**
@@ -254,7 +252,7 @@ export class Account {
    * As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
    */
   public isCredit(): boolean | undefined {
-    return this.wrapped.credit;
+    return this.payload.credit;
   }
 
 
@@ -277,7 +275,7 @@ export class Account {
    * @returns This Account, for chainning.
    */  
   public setGroups(groups: Group[] | bkper.Group[]): Account {
-    this.wrapped.groups = undefined;
+    this.payload.groups = undefined;
     if (groups != null) {
       groups.forEach(group => this.addGroup(group))
     }
@@ -290,14 +288,14 @@ export class Account {
    * @returns This Account, for chainning.
    */
   public addGroup(group: Group | bkper.Group): Account {
-    if (!this.wrapped.groups) {
-      this.wrapped.groups = [];
+    if (!this.payload.groups) {
+      this.payload.groups = [];
     }
 
     if (group instanceof Group) {
-      this.wrapped.groups.push(group.json())
+      this.payload.groups.push(group.json())
     } else {
-      this.wrapped.groups.push(group)
+      this.payload.groups.push(group)
     }
 
     return this;
@@ -308,7 +306,7 @@ export class Account {
    */
   public async removeGroup(group: string | Group): Promise<Account> {
 
-    if (this.wrapped.groups != null) {
+    if (this.payload.groups != null) {
       let groupObject: Group | undefined = undefined;
       if (group instanceof Group) {
         groupObject = group;
@@ -316,10 +314,10 @@ export class Account {
         groupObject = await this.book.getGroup(group);
       }
       if (groupObject) {
-        for (let i = 0; i < this.wrapped.groups.length; i++) {
-          const groupId = this.wrapped.groups[i];
+        for (let i = 0; i < this.payload.groups.length; i++) {
+          const groupId = this.payload.groups[i];
           if (groupId == groupObject.getId()) {
-            this.wrapped.groups.splice(i, 1);
+            this.payload.groups.splice(i, 1);
           }
         }
       }
@@ -354,12 +352,12 @@ export class Account {
 
   /** @internal */
   private isInGroupObject_(group: Group): boolean {
-    if (this.wrapped.groups == null) {
+    if (this.payload.groups == null) {
       return false;
     }
 
-    for (var i = 0; i < this.wrapped.groups.length; i++) {
-      if (this.wrapped.groups[i] == group.getId()) {
+    for (var i = 0; i < this.payload.groups.length; i++) {
+      if (this.payload.groups[i] == group.getId()) {
         return true;
       }
     }
@@ -370,7 +368,7 @@ export class Account {
    * Perform create new account.
    */
   public async create(): Promise<Account> {
-    this.wrapped = await AccountService.createAccount(this.book.getId(), this.wrapped);
+    this.payload = await AccountService.createAccount(this.book.getId(), this.payload);
     return this;
   }   
 
@@ -378,7 +376,7 @@ export class Account {
    * Perform update account, applying pending changes.
    */
   public async update(): Promise<Account> {
-    this.wrapped = await AccountService.updateAccount(this.book.getId(), this.wrapped);
+    this.payload = await AccountService.updateAccount(this.book.getId(), this.payload);
     return this;
 
   }   
@@ -387,7 +385,7 @@ export class Account {
    * Perform delete account.
    */
   public async remove(): Promise<Account> {
-    this.wrapped = await AccountService.deleteAccount(this.book.getId(), this.wrapped);
+    this.payload = await AccountService.deleteAccount(this.book.getId(), this.payload);
     return this;
   }   
 

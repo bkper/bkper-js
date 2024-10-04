@@ -1,19 +1,18 @@
 import * as AccountService from '../service/account-service.js';
-import * as GroupService from '../service/group-service.js';
 import * as BookService from '../service/book-service.js';
 import * as FileService from '../service/file-service.js';
-import * as TransactionService from '../service/transaction-service.js';
+import * as GroupService from '../service/group-service.js';
 import * as IntegrationService from '../service/integration-service.js';
+import * as TransactionService from '../service/transaction-service.js';
 import * as Utils from '../utils.js';
-import { normalizeName } from '../utils.js';
 import { Account } from './Account.js';
 import { Amount } from './Amount.js';
 import { Collection } from './Collection.js';
 import { DecimalSeparator, Month, Period, Permission, Visibility } from './Enums.js';
 import { File } from './File.js';
 import { Group } from './Group.js';
-import { Transaction } from './Transaction.js';
 import { Integration } from './Integration.js';
+import { Transaction } from './Transaction.js';
 import { TransactionList } from './TransactionList.js';
 
 /**
@@ -26,8 +25,7 @@ import { TransactionList } from './TransactionList.js';
  */
 export class Book {
 
-  /** @internal */
-  private wrapped: bkper.Book;
+  public payload: bkper.Book;
 
   /** @internal */
   private collection?: Collection;
@@ -39,31 +37,31 @@ export class Book {
   private idAccountMap?: Map<string, Account>;
 
 
-  constructor(json?: bkper.Book) {
-    this.wrapped = json || {};
+  constructor(payload?: bkper.Book) {
+    this.payload = payload || {};
     this.mapGroups();
     this.mapAccounts();
   }
 
   /**
-   * @returns The wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
   public json(): bkper.Book {
-    return this.wrapped;
+    return {...this.payload};
   }
 
   /**
    * Same as bookId param
    */
   public getId(): string {
-    return this.wrapped.id || '';
+    return this.payload.id || '';
   }
 
   /**
    * @returns The name of this Book
    */
   public getName(): string | undefined {
-    return this.wrapped.name;
+    return this.payload.name;
   }
 
   /**
@@ -73,7 +71,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setName(name: string): Book {
-    this.wrapped.name = name;
+    this.payload.name = name;
     return this;
   }
 
@@ -81,7 +79,7 @@ export class Book {
    * @returns The number of fraction digits supported by this Book. Same as getDecimalPlaces
    */
   public getFractionDigits(): number | undefined {
-    return this.wrapped.fractionDigits;
+    return this.payload.fractionDigits;
   }
 
   /**
@@ -98,7 +96,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setFractionDigits(fractionDigits: number): Book {
-    this.wrapped.fractionDigits = fractionDigits;
+    this.payload.fractionDigits = fractionDigits;
     return this;
   }
 
@@ -106,7 +104,7 @@ export class Book {
    * @returns The period slice for balances visualization
    */
   public getPeriod(): Period {
-    return this.wrapped.period as Period;
+    return this.payload.period as Period;
   }
 
   /**
@@ -115,7 +113,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setPeriod(period: Period): Book {
-    this.wrapped.period = period;
+    this.payload.period = period;
     return this;
   }
 
@@ -123,7 +121,7 @@ export class Book {
    * @returns The start month when YEAR period set
    */
   public getPeriodStartMonth(): Month {
-    return this.wrapped.periodStartMonth as Month;
+    return this.payload.periodStartMonth as Month;
   }
 
   /**
@@ -132,7 +130,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setPeriodStartMonth(month: Month): Book {
-    this.wrapped.periodStartMonth = month;
+    this.payload.periodStartMonth = month;
     return this;
   }
 
@@ -140,7 +138,7 @@ export class Book {
    * @returns The transactions pagination page size
    */
   public getPageSize(): number | undefined {
-    return this.wrapped.pageSize;
+    return this.payload.pageSize;
   }
 
   /**
@@ -149,7 +147,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setPageSize(pageSize: number): Book {
-    this.wrapped.pageSize = pageSize;
+    this.payload.pageSize = pageSize;
     return this;
   }
 
@@ -158,22 +156,22 @@ export class Book {
    * @returns The name of the owner of the Book
    */
   public getOwnerName(): string | undefined {
-    return this.wrapped.ownerName;
+    return this.payload.ownerName;
   }
 
   /**
    * @returns The permission for the current user
    */
   public getPermission(): Permission {
-    return this.wrapped.permission as Permission;
+    return this.payload.permission as Permission;
   }
 
   /** 
    * @returns The collection of this book
    */
   public getCollection(): Collection | undefined {
-    if (this.wrapped.collection != null && this.collection == null) {
-      this.collection = new Collection(this.wrapped.collection);
+    if (this.payload.collection != null && this.collection == null) {
+      this.collection = new Collection(this.payload.collection);
     }
     return this.collection;
   }
@@ -183,7 +181,7 @@ export class Book {
    * @returns The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    */
   public getDatePattern(): string | undefined {
-    return this.wrapped.datePattern;
+    return this.payload.datePattern;
   }
 
   /**
@@ -193,7 +191,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setDatePattern(datePattern: string): Book {
-    this.wrapped.datePattern = datePattern;
+    this.payload.datePattern = datePattern;
     return this;
   }
 
@@ -202,7 +200,7 @@ export class Book {
    * @returns The lock date of the Book in ISO format yyyy-MM-dd
    */
   public getLockDate(): string | undefined {
-    return this.wrapped.lockDate;
+    return this.payload.lockDate;
   }
 
   /**
@@ -215,7 +213,7 @@ export class Book {
     if (lockDate == null) {
       lockDate = "1900-00-00";
     }
-    this.wrapped.lockDate = lockDate;
+    this.payload.lockDate = lockDate;
     return this;
   }
 
@@ -223,7 +221,7 @@ export class Book {
    * @returns The closing date of the Book in ISO format yyyy-MM-dd 
    */
   public getClosingDate(): string | undefined {
-    return this.wrapped.closingDate;
+    return this.payload.closingDate;
   }
 
   /**
@@ -236,7 +234,7 @@ export class Book {
     if (closingDate == null) {
       closingDate = "1900-00-00";
     }
-    this.wrapped.closingDate = closingDate;
+    this.payload.closingDate = closingDate;
     return this;
   }
 
@@ -245,7 +243,7 @@ export class Book {
    * @returns The decimal separator of the Book
    */
   public getDecimalSeparator(): DecimalSeparator {
-    return this.wrapped.decimalSeparator as DecimalSeparator;
+    return this.payload.decimalSeparator as DecimalSeparator;
   }
 
   /**
@@ -255,7 +253,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setDecimalSeparator(decimalSeparator: DecimalSeparator): Book {
-    this.wrapped.decimalSeparator = decimalSeparator;
+    this.payload.decimalSeparator = decimalSeparator;
     return this;
   }
 
@@ -264,7 +262,7 @@ export class Book {
    * @returns The time zone of the Book
    */
   public getTimeZone(): string | undefined {
-    return this.wrapped.timeZone;
+    return this.payload.timeZone;
   }
 
   /**
@@ -274,7 +272,7 @@ export class Book {
    * @returns This Book, for chainning.
    */
   public setTimeZone(timeZone: string): Book {
-    this.wrapped.timeZone = timeZone;
+    this.payload.timeZone = timeZone;
     return this;
   }
 
@@ -282,49 +280,49 @@ export class Book {
    * @returns The time zone offset of the book, in minutes
    */
   public getTimeZoneOffset(): number | undefined {
-    return this.wrapped.timeZoneOffset;
+    return this.payload.timeZoneOffset;
   }
 
   /**
    * @returns The last update date of the book, in in milliseconds
    */
   public getLastUpdateMs(): number | undefined {
-    return this.wrapped.lastUpdateMs ? +this.wrapped.lastUpdateMs : undefined;
+    return this.payload.lastUpdateMs ? +this.payload.lastUpdateMs : undefined;
   }
 
   /**
    * @returns The total number of posted transactions
    */
   public getTotalTransactions(): number {
-    return this.wrapped.totalTransactions ? +(this.wrapped.totalTransactions) : 0;
+    return this.payload.totalTransactions ? +(this.payload.totalTransactions) : 0;
   }
 
   /**
    * @returns The total number of posted transactions on current month
    */
   public getTotalTransactionsCurrentMonth(): number {
-    return this.wrapped.totalTransactionsCurrentMonth ? +(this.wrapped.totalTransactionsCurrentMonth) : 0;
+    return this.payload.totalTransactionsCurrentMonth ? +(this.payload.totalTransactionsCurrentMonth) : 0;
   }
 
   /**
    * @returns The total number of posted transactions on current year
    */
   public getTotalTransactionsCurrentYear(): number {
-    return this.wrapped.totalTransactionsCurrentYear ? +(this.wrapped.totalTransactionsCurrentYear) : 0;
+    return this.payload.totalTransactionsCurrentYear ? +(this.payload.totalTransactionsCurrentYear) : 0;
   }
 
   /**
    * @returns The visibility of the book
    */
   public getVisibility(): Visibility {
-    return this.wrapped.visibility as Visibility;
+    return this.payload.visibility as Visibility;
   }
 
   /**
    * Gets the custom properties stored in this Book
    */
   public getProperties(): { [key: string]: string } {
-    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+    return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
@@ -336,7 +334,7 @@ export class Book {
 
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
+      let value = this.payload.properties != null ? this.payload.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
@@ -353,7 +351,7 @@ export class Book {
    * @returns This Book, for chainning. 
    */
   public setProperties(properties: { [key: string]: string }): Book {
-    this.wrapped.properties = { ...properties };
+    this.payload.properties = { ...properties };
     return this;
   }
 
@@ -369,13 +367,13 @@ export class Book {
     if (key == null || key.trim() == '') {
       return this;
     }
-    if (this.wrapped.properties == null) {
-      this.wrapped.properties = {};
+    if (this.payload.properties == null) {
+      this.payload.properties = {};
     }
     if (!value) {
       value = ''
     }
-    this.wrapped.properties[key] = value;
+    this.payload.properties[key] = value;
     return this;
   }
 
@@ -775,7 +773,7 @@ export class Book {
    * @returns The created Book object
    */
   public async create(): Promise<Book> {
-    this.wrapped = await BookService.createBook(this.wrapped);
+    this.payload = await BookService.createBook(this.payload);
     return this;
   }
 
@@ -783,7 +781,7 @@ export class Book {
    * Perform update Book, applying pending changes.
    */
   public async update(): Promise<Book> {
-    this.wrapped = await BookService.updateBook(this.getId(), this.wrapped);
+    this.payload = await BookService.updateBook(this.getId(), this.payload);
     return this;
   }
 

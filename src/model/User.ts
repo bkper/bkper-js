@@ -8,18 +8,17 @@ import * as ConnectionService from '../service/connection-service.js';
  */
 export class User {
 
-  /** @internal */
-  private wrapped: bkper.User = {};
+  public payload: bkper.User = {};
 
-  constructor(json?: bkper.User) {
-    this.wrapped = json || {};
+  constructor(payload?: bkper.User) {
+    this.payload = payload || {};
   }
 
   /**
-   * @returns The wrapped plain json object
+   * @returns An immutable copy of the json payload
    */
   public json(): bkper.User {
-    return this.wrapped;
+    return { ...this.payload };
   }
 
   /**
@@ -28,7 +27,7 @@ export class User {
    * @returns The User's id
    */
   public getId(): string | undefined {
-    return this.wrapped.id;
+    return this.payload.id;
   }
 
   /**
@@ -37,7 +36,7 @@ export class User {
    * @returns The User's name
    */
   public getName(): string | undefined {
-    return this.wrapped.name;
+    return this.payload.name;
   }
 
   /**
@@ -46,7 +45,7 @@ export class User {
    * @returns The User's full name
    */
   public getFullName(): string | undefined {
-    return this.wrapped.fullName;
+    return this.payload.fullName;
   }
 
   /**
@@ -55,7 +54,7 @@ export class User {
    * @returns The User's email
    */
   public getEmail(): string | undefined {
-    return this.wrapped.email;
+    return this.payload.email;
   }
 
   /**
@@ -64,7 +63,7 @@ export class User {
    * @returns The User's hosted domain
    */
   public getHostedDomain(): string | undefined {
-    return this.wrapped.hostedDomain;
+    return this.payload.hostedDomain;
   }
 
   /**
@@ -73,7 +72,7 @@ export class User {
    * @returns True if the User is in the free plan
    */
   public isFree(): boolean | undefined {
-    return this.wrapped.free;
+    return this.payload.free;
   }
 
   /**
@@ -82,7 +81,7 @@ export class User {
    * @returns True if the User has started the trial
    */
   public hasStartedTrial(): boolean | undefined {
-    return this.wrapped.startedTrial;
+    return this.payload.startedTrial;
   }
 
   /**
@@ -91,7 +90,7 @@ export class User {
    * @returns The User's days left in trial
    */
   public getDaysLeftInTrial(): number | undefined {
-    return this.wrapped.daysLeftInTrial;
+    return this.payload.daysLeftInTrial;
   }
 
   /**
@@ -100,7 +99,7 @@ export class User {
    * @returns True if the User has already used Connections
    */
   public hasUsedConnections(): boolean | undefined {
-    return this.wrapped.bankConnections;
+    return this.payload.bankConnections;
   }
 
   /**

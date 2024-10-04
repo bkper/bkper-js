@@ -10,7 +10,7 @@ import Big from "big.js";
 export class Amount {
 
   /** @internal */
-  private wrapped: Big
+  private big: Big;
 
   /**
    * The Amount constructor.
@@ -18,13 +18,13 @@ export class Amount {
   public constructor(n: number | string | Amount) {
     this.checkNumberNotNull(n);
     if (typeof n == "string") {
-      this.wrapped = new Big(n);
+      this.big = new Big(n);
     } else if (n instanceof Amount) {
-      this.wrapped = new Big(n.wrapped)
+      this.big = new Big(n.big)
     } else if (n.toString) {
-      this.wrapped = new Big(n.toString())
+      this.big = new Big(n.toString())
     } else {
-      this.wrapped = new Big(+n);
+      this.big = new Big(+n);
     }
   }
 
@@ -32,7 +32,7 @@ export class Amount {
    * Returns an absolute Amount.
    */
   public abs(): Amount {
-    let big = this.wrapped.abs();
+    let big = this.big.abs();
     return this.wrap(big)
   }
 
@@ -42,13 +42,13 @@ export class Amount {
   public cmp(n: number | string | Amount): -1 | 0 | 1 {
     this.checkNumberNotNull(n);
     if (typeof n == "string") {
-      return this.wrapped.cmp(n);
+      return this.big.cmp(n);
     } else if (n instanceof Amount) {
-      return this.wrapped.cmp(n.wrapped)
+      return this.big.cmp(n.big)
     } else if (n.toString) {
-      return this.wrapped.cmp(n.toString())
+      return this.big.cmp(n.toString())
     } else {
-      return this.wrapped.cmp(+n);
+      return this.big.cmp(+n);
     }
   }
 
@@ -59,13 +59,13 @@ export class Amount {
     this.checkNumberNotNull(n);
     let big: Big;
     if (typeof n == "string") {
-      big = this.wrapped.div(n);
+      big = this.big.div(n);
     } else if (n instanceof Amount) {
-      big = this.wrapped.div(n.wrapped)
+      big = this.big.div(n.big)
     } else if (n.toString) {
-      big = this.wrapped.div(n.toString())
+      big = this.big.div(n.toString())
     } else {
-      big = this.wrapped.div(+n);
+      big = this.big.div(+n);
     }
     return this.wrap(big);
   }
@@ -76,13 +76,13 @@ export class Amount {
   public eq(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
     if (typeof n == "string") {
-      return this.wrapped.eq(n);
+      return this.big.eq(n);
     } else if (n instanceof Amount) {
-      return this.wrapped.eq(n.wrapped)
+      return this.big.eq(n.big)
     } else if (n.toString) {
-      return this.wrapped.eq(n.toString())
+      return this.big.eq(n.toString())
     } else {
-      return this.wrapped.eq(+n);
+      return this.big.eq(+n);
     }
   }
 
@@ -92,13 +92,13 @@ export class Amount {
   public gt(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
     if (typeof n == "string") {
-      return this.wrapped.gt(n);
+      return this.big.gt(n);
     } else if (n instanceof Amount) {
-      return this.wrapped.gt(n.wrapped)
+      return this.big.gt(n.big)
     } else if (n.toString) {
-      return this.wrapped.gt(n.toString())
+      return this.big.gt(n.toString())
     } else {
-      return this.wrapped.gt(+n);
+      return this.big.gt(+n);
     }
   }
 
@@ -108,13 +108,13 @@ export class Amount {
   public gte(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
     if (typeof n == "string") {
-      return this.wrapped.gte(n);
+      return this.big.gte(n);
     } else if (n instanceof Amount) {
-      return this.wrapped.gte(n.wrapped)
+      return this.big.gte(n.big)
     } else if (n.toString) {
-      return this.wrapped.gte(n.toString())
+      return this.big.gte(n.toString())
     } else {
-      return this.wrapped.gte(+n);
+      return this.big.gte(+n);
 
     }
   }
@@ -126,13 +126,13 @@ export class Amount {
   public lt(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
     if (typeof n == "string") {
-      return this.wrapped.lt(n);
+      return this.big.lt(n);
     } else if (n instanceof Amount) {
-      return this.wrapped.lt(n.wrapped)
+      return this.big.lt(n.big)
     } else if (n.toString) {
-      return this.wrapped.lt(n.toString())
+      return this.big.lt(n.toString())
     } else {
-      return this.wrapped.lt(+n);
+      return this.big.lt(+n);
     }
   }
 
@@ -143,13 +143,13 @@ export class Amount {
   public lte(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
     if (typeof n == "string") {
-      return this.wrapped.lte(n);
+      return this.big.lte(n);
     } else if (n instanceof Amount) {
-      return this.wrapped.lte(n.wrapped)
+      return this.big.lte(n.big)
     } else if (n.toString) {
-      return this.wrapped.lte(n.toString())
+      return this.big.lte(n.toString())
     } else {
-      return this.wrapped.lte(+n);
+      return this.big.lte(+n);
     }
   }
 
@@ -160,13 +160,13 @@ export class Amount {
     this.checkNumberNotNull(n);
     let big: Big;
     if (typeof n == "string") {
-      big = this.wrapped.plus(n);
+      big = this.big.plus(n);
     } else if (n instanceof Amount) {
-      big = this.wrapped.plus(n.wrapped)
+      big = this.big.plus(n.big)
     } else if (n.toString) {
-      big = this.wrapped.plus(n.toString())
+      big = this.big.plus(n.toString())
     } else {
-      big = this.wrapped.plus(+n);
+      big = this.big.plus(+n);
 
     }
     return this.wrap(big);
@@ -179,13 +179,13 @@ export class Amount {
     this.checkNumberNotNull(n);
     let big: Big;
     if (typeof n == "string") {
-      big = this.wrapped.minus(n);
+      big = this.big.minus(n);
     } else if (n instanceof Amount) {
-      big = this.wrapped.minus(n.wrapped)
+      big = this.big.minus(n.big)
     } else if (n.toString) {
-      big = this.wrapped.minus(n.toString())
+      big = this.big.minus(n.toString())
     } else {
-      big = this.wrapped.minus(+n);
+      big = this.big.minus(+n);
     }
     return this.wrap(big);
   }
@@ -200,13 +200,13 @@ export class Amount {
     this.checkNumberNotNull(n);
     let big: Big;
     if (typeof n == "string") {
-      big = this.wrapped.mod(n);
+      big = this.big.mod(n);
     } else if (n instanceof Amount) {
-      big = this.wrapped.mod(n.wrapped)
+      big = this.big.mod(n.big)
     } else if (n.toString) {
-      big = this.wrapped.mod(n.toString())
+      big = this.big.mod(n.toString())
     } else {
-      big = this.wrapped.mod(+n);
+      big = this.big.mod(+n);
     }
     return this.wrap(big);
   }
@@ -216,7 +216,7 @@ export class Amount {
    * Round to a maximum of dp decimal places.
    */
   public round(dp?: number): Amount {
-    let big = this.wrapped.round(dp);
+    let big = this.big.round(dp);
     return this.wrap(big);
   }
 
@@ -229,13 +229,13 @@ export class Amount {
     this.checkNumberNotNull(n);
     let big: Big;
     if (typeof n == "string") {
-      big = this.wrapped.times(n);
+      big = this.big.times(n);
     } else if (n instanceof Amount) {
-      big = this.wrapped.times(n.wrapped)
+      big = this.big.times(n.big)
     } else if (n.toString) {
-      big = this.wrapped.times(n.toString())
+      big = this.big.times(n.toString())
     } else {
-      big = this.wrapped.times(+n);
+      big = this.big.times(+n);
     }
     return this.wrap(big);
   }
@@ -244,21 +244,21 @@ export class Amount {
    * Returns a string representing the value of this Amount in normal notation to a fixed number of decimal places dp.
    */
   public toFixed(dp?: number): string {
-    return this.wrapped.toFixed(dp);
+    return this.big.toFixed(dp);
   }
 
   /**
    * Returns a string representing the value of this Amount.
    */
   public toString(): string {
-    return this.wrapped.toString();
+    return this.big.toString();
   }
 
   /**
    * Returns a primitive number representing the value of this Amount.
    */
   public toNumber(): number {
-    return this.wrapped.toNumber();
+    return this.big.toNumber();
   }
 
 
