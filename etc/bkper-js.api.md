@@ -6,7 +6,7 @@
 
 // @public
 export class Account {
-    constructor(book: Book, json?: bkper.Account);
+    constructor(book: Book, payload?: bkper.Account);
     addGroup(group: Group | bkper.Group): Account;
     create(): Promise<Account>;
     deleteProperty(key: string): Account;
@@ -32,6 +32,8 @@ export class Account {
     isPermanent(): boolean | undefined;
     // (undocumented)
     json(): bkper.Account;
+    // (undocumented)
+    payload: bkper.Account;
     remove(): Promise<Account>;
     removeGroup(group: string | Group): Promise<Account>;
     setArchived(archived: boolean): Account;
@@ -78,13 +80,15 @@ export class Amount {
 
 // @public
 export class App {
-    constructor(json?: bkper.App);
+    constructor(payload?: bkper.App);
     create(): Promise<App>;
     // (undocumented)
     getId(): string | undefined;
     // (undocumented)
     json(): bkper.App;
     patch(): Promise<App>;
+    // (undocumented)
+    payload: bkper.App;
     setClientSecret(clientSecret?: string): App;
     setDeveloperEmail(email?: string): App;
     setReadme(readme?: string): App;
@@ -110,7 +114,7 @@ export class Bkper {
 
 // @public
 export class Book {
-    constructor(json?: bkper.Book);
+    constructor(payload?: bkper.Book);
     audit(): void;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
     batchTrashTransactions(transactions: Transaction[]): Promise<void>;
@@ -174,12 +178,10 @@ export class Book {
     // (undocumented)
     json(): bkper.Book;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionPage>;
-    newAccount(): Account;
-    newFile(): File;
-    newGroup(): Group;
-    newTransaction(): Transaction;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
+    // (undocumented)
+    payload: bkper.Book;
     // @internal (undocumented)
     removeAccountCache(account: Account): void;
     // @internal (undocumented)
@@ -209,8 +211,7 @@ export class Book {
 
 // @public
 export class Collection {
-    // @internal
-    constructor(json?: bkper.Collection);
+    constructor(payload?: bkper.Collection);
     // (undocumented)
     getBooks(): Book[];
     // (undocumented)
@@ -219,6 +220,8 @@ export class Collection {
     getName(): string | undefined;
     // (undocumented)
     json(): bkper.Collection;
+    // (undocumented)
+    payload: bkper.Collection;
 }
 
 // @public
@@ -235,7 +238,7 @@ export interface Config {
 
 // @public
 export class Connection {
-    constructor(json?: bkper.Connection);
+    constructor(payload?: bkper.Connection);
     clearTokenProperties(): void;
     create(): Promise<Connection>;
     deleteProperty(key: string): Connection;
@@ -251,7 +254,10 @@ export class Connection {
     getPropertyKeys(): string[];
     getType(): "APP" | "BANK" | undefined;
     getUUID(): string | undefined;
+    // (undocumented)
     json(): bkper.Connection;
+    // (undocumented)
+    payload: bkper.Connection;
     setAgentId(agentId: string): Connection;
     setName(name: string): Connection;
     setProperties(properties: {
@@ -272,7 +278,7 @@ export enum DecimalSeparator {
 
 // @public
 export class File {
-    constructor(book: Book, json?: bkper.File);
+    constructor(book: Book, payload?: bkper.File);
     create(): Promise<File>;
     getContent(): Promise<string | undefined>;
     getContentType(): string | undefined;
@@ -281,7 +287,9 @@ export class File {
     getSize(): number | undefined;
     getUrl(): string | undefined;
     // (undocumented)
-    json(): bkper.Transaction;
+    json(): bkper.File;
+    // (undocumented)
+    payload: bkper.File;
     setContent(content: string): File;
     setContentType(contentType: string): File;
     setName(name: string): File;
@@ -289,7 +297,7 @@ export class File {
 
 // @public
 export class Group {
-    constructor(book: Book, json?: bkper.Group);
+    constructor(book: Book, payload?: bkper.Group);
     create(): Promise<Group>;
     deleteProperty(key: string): Group;
     // (undocumented)
@@ -313,6 +321,8 @@ export class Group {
     isHidden(): boolean | undefined;
     // (undocumented)
     json(): bkper.Group;
+    // (undocumented)
+    payload: bkper.Group;
     remove(): Promise<Group>;
     setHidden(hidden: boolean): Group;
     setName(name: string): Group;
@@ -326,7 +336,7 @@ export class Group {
 
 // @public
 export class Integration {
-    constructor(json?: bkper.Integration);
+    constructor(payload?: bkper.Integration);
     deleteProperty(key: string): Integration;
     getBookId(): string | undefined;
     getId(): string | undefined;
@@ -335,7 +345,10 @@ export class Integration {
         [key: string]: string;
     };
     getProperty(...keys: string[]): string | undefined;
+    // (undocumented)
     json(): bkper.Integration;
+    // (undocumented)
+    payload: bkper.Integration;
     setProperties(properties: {
         [key: string]: string;
     }): Integration;
@@ -405,12 +418,15 @@ export class Template {
     getName(): string | undefined;
     getSheetsLink(): string | undefined;
     getTimesUsed(): number;
+    // (undocumented)
     json(): bkper.Template;
+    // (undocumented)
+    payload: bkper.Template;
 }
 
 // @public
 export class Transaction {
-    constructor(book: Book, json?: bkper.Transaction);
+    constructor(book: Book, payload?: bkper.Transaction);
     addFile(file: File): Promise<Transaction>;
     addRemoteId(remoteId: string): Transaction;
     addUrl(url: string): Transaction;
@@ -476,6 +492,8 @@ export class Transaction {
     isTrashed(): boolean | undefined;
     // (undocumented)
     json(): bkper.Transaction;
+    // (undocumented)
+    payload: bkper.Transaction;
     post(): Promise<Transaction>;
     remove(): Promise<Transaction>;
     restore(): Promise<Transaction>;
@@ -497,7 +515,7 @@ export class Transaction {
 
 // @public
 export class TransactionPage {
-    constructor(book: Book, transactionList: bkper.TransactionList);
+    constructor(book: Book, payload: bkper.TransactionList);
     getAccount(): Promise<Account | undefined>;
     // (undocumented)
     getCursor(): string | undefined;
@@ -509,7 +527,7 @@ export class TransactionPage {
 
 // @public
 export class User {
-    constructor(json?: bkper.User);
+    constructor(payload?: bkper.User);
     getConnection(id: string): Promise<Connection>;
     getConnections(): Promise<Connection[]>;
     getDaysLeftInTrial(): number | undefined;
@@ -523,6 +541,8 @@ export class User {
     isFree(): boolean | undefined;
     // (undocumented)
     json(): bkper.User;
+    // (undocumented)
+    payload: bkper.User;
 }
 
 // @public

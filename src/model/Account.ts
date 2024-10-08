@@ -25,7 +25,9 @@ export class Account {
   
   constructor(book: Book, payload?: bkper.Account) {
     this.book = book;
-    this.payload = payload || {};
+    this.payload = payload || {
+      createdAt: `${Date.now()}`
+    };
   }
 
   /**

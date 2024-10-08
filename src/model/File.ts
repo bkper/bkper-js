@@ -18,7 +18,9 @@ export class File {
 
   constructor(book: Book, payload?: bkper.File) {
     this.book = book;
-    this.payload = payload || {};
+    this.payload = payload || {
+      createdAt: `${Date.now()}`
+    };;
   }
 
   /**

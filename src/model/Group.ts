@@ -26,7 +26,9 @@ export class Group {
 
   constructor(book: Book, payload?: bkper.Group) {
     this.book = book;
-    this.payload = payload || {}
+    this.payload = payload || {
+      createdAt: `${Date.now()}`
+    };
   }
 
   /**

@@ -509,69 +509,6 @@ export class Book {
 
 
   /**
-   * Instantiate a new [[Transaction]]
-   * 
-   * Example:
-   * 
-   * ```js
-   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   * 
-   * book.newTransaction()
-   *  .setDate('2013-01-25')
-   *  .setDescription("Filling tank of my truck")
-   *  .from('Credit Card')
-   *  .to('Gas')
-   *  .setAmount(126.50)
-   *  .create();
-   * 
-   * ```
-   * 
-   */
-  public newTransaction(): Transaction {
-    let transaction = new Transaction(this, {});
-    return transaction;
-  }
-
-  /**
-   * Instantiate a new [[Account]]
-   * 
-   * Example:
-   * ```js
-   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   * 
-   * book.newAccount()
-   *  .setName('Some New Account')
-   *  .setType('INCOMING')
-   *  .addGroup('Revenue').addGroup('Salary')
-   *  .setProperties({prop_a: 'A', prop_b: 'B'})
-   *  .create();
-   * ```
-   */
-  public newAccount(): Account {
-    let account = new Account(this, {});
-    account.setArchived(false);
-    return account;
-  }
-
-  /**
-   * Instantiate a new [[Group]]
-   * 
-   * Example:
-   * ```js
-   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   * 
-   * book.newGroup()
-   *  .setName('Some New Group')
-   *  .setProperty('key', 'value')
-   *  .create();
-   * ```
-   */
-  public newGroup(): Group {
-    let group = new Group(this, {});
-    return group;
-  }
-
-  /**
    * Gets an [[Account]] object
    * 
    * @param idOrName - The id or name of the Account
@@ -739,23 +676,6 @@ export class Book {
     }
     let transaction = new Transaction(this, wrapped);
     return transaction;
-  }
-
-  /**
-   * Instantiate a new [[BkperFile]]
-   * 
-   * Example:
-   * ```js
-   * var book = Bkper.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   * 
-   * book.newFile()
-   *  .setBlob(UrlFetchApp.fetch('https://bkper.com/images/index/integrations4.png').getBlob())
-   *  .create();
-   * ```
-   */
-  public newFile(): File {
-    let file = new File(this, {});
-    return file;
   }
 
   /** 
