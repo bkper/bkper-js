@@ -177,7 +177,7 @@ export class Book {
     getVisibility(): Visibility;
     // (undocumented)
     json(): bkper.Book;
-    listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionPage>;
+    listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
     // (undocumented)
@@ -514,7 +514,7 @@ export class Transaction {
 }
 
 // @public
-export class TransactionPage {
+export class TransactionList {
     constructor(book: Book, payload: bkper.TransactionList);
     getAccount(): Promise<Account | undefined>;
     // (undocumented)

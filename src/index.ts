@@ -19,7 +19,7 @@ export { Group } from './model/Group.js';
 export { Integration } from './model/Integration.js';
 export { Template } from './model/Template.js';
 export { Transaction } from './model/Transaction.js';
-export { TransactionList as TransactionPage } from './model/TransactionList.js';
+export { TransactionList } from './model/TransactionList.js';
 export { User } from './model/User.js';
 export {
   Periodicity,
