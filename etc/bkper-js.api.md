@@ -232,7 +232,7 @@ export interface Config {
     requestHeadersProvider?: () => Promise<{
         [key: string]: string;
     }>;
-    requestRetryHandler?: (status?: number, message?: string, attempt?: number) => Promise<void>;
+    requestRetryHandler?: (status?: number, error?: any, attempt?: number) => Promise<void>;
 }
 
 // @public
@@ -242,9 +242,11 @@ export class Connection {
     create(): Promise<Connection>;
     deleteProperty(key: string): Connection;
     getAgentId(): string | undefined;
+    getDateAddedMs(): string | undefined;
     getEmail(): string | undefined;
     getId(): string | undefined;
     getIntegrations(): Promise<Integration[]>;
+    getLogo(): string | undefined;
     getName(): string | undefined;
     getProperties(): {
         [key: string]: string;

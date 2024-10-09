@@ -13,7 +13,7 @@ export class Connection {
   constructor(payload?: bkper.Connection) {
     this.payload = payload || {};
   }
- 
+
   /**
    * @returns An immutable copy of the json payload
    */
@@ -58,6 +58,24 @@ export class Connection {
    */
   public getName(): string | undefined {
     return this.payload.name;
+  }
+
+  /**
+   * Gets the logo of the Connection.
+   * 
+   * @returns The Connection logo
+   */
+  public getLogo(): string | undefined {
+    return this.payload.logo;
+  }
+
+  /**
+   * Gets the date when the Connection was added.
+   * 
+   * @returns The Connection add date in milliseconds
+   */
+  public getDateAddedMs(): string | undefined {
+    return this.payload.dateAddedMs;
   }
 
   /**
