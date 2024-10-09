@@ -254,10 +254,23 @@ export class Connection {
   /**
    * Performs create new Connection.
    * 
-   * @returns The Connection, for chaining
+   * @returns The created Connection, for chaining
    */
   public async create(): Promise<Connection> {
     this.payload = await ConnectionService.createConnection(this.payload);
+    return this;
+  }
+
+  /**
+   * Performs remove Connection.
+   * 
+   * @returns The removed Connection object
+   */
+  public async remove(): Promise<Connection> {
+    const connectionId = this.getId();
+    if (connectionId) {
+      this.payload = await ConnectionService.deleteConnection(connectionId);
+    }
     return this;
   }
 

@@ -259,6 +259,7 @@ export class Connection {
     json(): bkper.Connection;
     // (undocumented)
     payload: bkper.Connection;
+    remove(): Promise<Connection>;
     setAgentId(agentId: string): Connection;
     setName(name: string): Connection;
     setProperties(properties: {
