@@ -1,3 +1,4 @@
+import * as IntegrationService from '../service/integration-service.js';
 
 /**
  * This class defines a Integration from an [[User]] to an external service.
@@ -161,6 +162,20 @@ export class Integration {
    */
   public deleteProperty(key: string): Integration {
     this.setProperty(key, null);
+    return this;
+  }
+
+  /**
+   * Performs remove Integration.
+   * 
+   * @returns The removed Integration object
+   */
+  public async remove(): Promise<Integration> {
+    const bookId = this.getBookId();
+    const integrationId = this.getId();
+    if (bookId && integrationId) {
+      this.payload = await IntegrationService.deleteIntegration(bookId, integrationId);
+    }
     return this;
   }
 

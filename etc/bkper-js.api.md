@@ -357,6 +357,7 @@ export class Integration {
     json(): bkper.Integration;
     // (undocumented)
     payload: bkper.Integration;
+    remove(): Promise<Integration>;
     setProperties(properties: {
         [key: string]: string;
     }): Integration;
