@@ -123,7 +123,6 @@ export class Book {
     formatDate(date: Date, timeZone?: string): string;
     formatValue(value: Amount | number | null | undefined): string;
     getAccount(idOrName?: string): Promise<Account | undefined>;
-    // (undocumented)
     getAccounts(): Promise<Account[]>;
     // (undocumented)
     getClosingDate(): string | undefined;

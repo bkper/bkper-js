@@ -608,6 +608,8 @@ export class Book {
 
   /**
    * Gets all [[Groups]] of this Book
+   * 
+   * @returns The retrieved Group objects
    */
   public async getGroups(): Promise<Group[]> {
     if (this.idGroupMap) {
@@ -631,6 +633,11 @@ export class Book {
     return groupsObj;
   }
 
+  /**
+   * Gets all [[Accounts]] of this Book
+   * 
+   * @returns The retrieved Account objects
+   */
   public async getAccounts(): Promise<Account[]> {
     if (this.idAccountMap) {
       return Array.from(this.idAccountMap.values());
@@ -650,7 +657,6 @@ export class Book {
     }
     return accountsObj;
   }
-
 
   /**
    * Lists transactions in the Book based on the provided query, limit, and cursor, for pagination.
