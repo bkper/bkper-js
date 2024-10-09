@@ -47,6 +47,51 @@ export class Integration {
   }
 
   /**
+   * Gets the name of the user who added the Integration.
+   * 
+   * @returns The user name of who added the Integration
+   */
+  public getAddedBy(): string | undefined {
+    return this.payload.addedBy;
+  }
+
+  /**
+   * Gets the agent id of the Integration.
+   * 
+   * @returns The Integration's agent id
+   */
+  public getAgentId(): string | undefined {
+    return this.payload.agentId;
+  }
+
+  /**
+   * Gets the logo of the Integration.
+   * 
+   * @returns The Integration's logo
+   */
+  public getLogo(): string | undefined {
+    return this.payload.logo;
+  }
+
+  /**
+   * Gets the date when the Integration was added.
+   * 
+   * @returns The Integration add date in milliseconds
+   */
+  public getDateAddedMs(): string | undefined {
+    return this.payload.dateAddedMs;
+  }
+
+  /**
+   * Gets the date when the Integration was last updated.
+   * 
+   * @returns The Integration last update date in milliseconds
+   */
+  public getLastUpdateMs(): string | undefined {
+    return this.payload.lastUpdateMs;
+  }
+
+  /**
    * Gets the custom properties stored in the Integration.
    * 
    * @returns Object with key/value pair properties

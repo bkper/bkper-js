@@ -341,8 +341,13 @@ export class Group {
 export class Integration {
     constructor(payload?: bkper.Integration);
     deleteProperty(key: string): Integration;
+    getAddedBy(): string | undefined;
+    getAgentId(): string | undefined;
     getBookId(): string | undefined;
+    getDateAddedMs(): string | undefined;
     getId(): string | undefined;
+    getLastUpdateMs(): string | undefined;
+    getLogo(): string | undefined;
     getName(): string | undefined;
     getProperties(): {
         [key: string]: string;
