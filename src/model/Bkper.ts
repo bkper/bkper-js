@@ -99,6 +99,18 @@ export class Bkper {
   }
 
   /**
+   * Gets the URL to redirect the User to the billing portal.
+   * 
+   * @param returnUrl - The URL to return to after the User has been redirected to the billing portal
+   * 
+   * @returns The URL to redirect the User to the billing portal
+   */
+  public static async getBillingPortalUrl(returnUrl: string): Promise<string | undefined> {
+    let url = await UserService.getBillingPortalUrl(returnUrl);
+    return url.url;
+  }
+
+  /**
    * Sets the API [[Config]] object.
    * 
    * @param config - The Config object
