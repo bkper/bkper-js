@@ -60,7 +60,7 @@ export class HttpApiRequest extends HttpRequest {
           }
           return await this.fetch()
         }
-        throw this.handleError(errorResp);
+        throw this.handleError(errorResp.data);
 
       } else if (error.request) {
         // The request was made but no response was received
