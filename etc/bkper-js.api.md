@@ -103,6 +103,7 @@ export class Bkper {
     static getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
     static getBook(id: string, includeAccounts?: boolean): Promise<Book>;
     static getBooks(): Promise<Book[]>;
+    static getCollections(): Promise<Collection[]>;
     static getTemplates(): Promise<Template[]>;
     static getUser(): Promise<User>;
     static newBook(): Book;
@@ -218,6 +219,9 @@ export class Collection {
     getId(): string | undefined;
     // (undocumented)
     getName(): string | undefined;
+    getOwnerUsername(): string | undefined;
+    getPermission(): Permission | undefined;
+    getUpdatedAt(): string | undefined;
     // (undocumented)
     json(): bkper.Collection;
     // (undocumented)
