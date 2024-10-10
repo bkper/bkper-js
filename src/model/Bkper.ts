@@ -2,12 +2,14 @@ import { Book } from "./Book.js";
 import { App } from "./App.js";
 import * as AppService from '../service/app-service.js';
 import * as BookService from '../service/book-service.js';
+import * as CollectionService from '../service/collection-service.js';
 import * as UserService from '../service/user-service.js';
 import * as TemplateService from '../service/template-service.js';
 import { HttpApiRequest } from '../service/http-api-request.js';
 import { User } from "./User.js";
 import { Config } from "./Config.js";
 import { Template } from "./Template.js";
+import { Collection } from "./Collection.js";
 
 /**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
@@ -66,6 +68,16 @@ export class Bkper {
   public static async getBooks(): Promise<Book[]> {
     let books = await BookService.loadBooks();
     return books.map(book => new Book(book));
+  }
+
+  /**
+   * Gets all [[Collections]] the user has access to.
+   * 
+   * @returns The retrieved list of Collections
+   */
+  public static async getCollections(): Promise<Collection[]> {
+    let collections = await CollectionService.loadCollections();
+    return collections.map(collection => new Collection(collection));
   }
 
   /**
