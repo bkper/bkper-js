@@ -1,5 +1,6 @@
 import { Book } from "./Book.js";
 import { Permission } from "./Enums.js";
+import * as CollectionService from '../service/collection-service.js';
 
 /**
  * This class defines a Collection of [[Books]].
@@ -32,6 +33,16 @@ export class Collection {
    */
   public getName(): string | undefined {
     return this.payload.name;
+  }
+
+  /**
+   * Sets the name of the Collection.
+   * 
+   * @returns This Collection, for chainning.
+   */
+  public setName(name: string): Collection {
+    this.payload.name = name;
+    return this;
   }
 
   /**
@@ -74,6 +85,16 @@ export class Collection {
    */
   public getUpdatedAt(): string | undefined {
     return this.payload.updatedAt;
+  }
+
+  /**
+   * Performs create new Collection.
+   * 
+   * @returns The created Collection object
+   */
+  public async create(): Promise<Collection> {
+    this.payload = await CollectionService.createCollection(this.payload);
+    return this;
   }
 
 }
