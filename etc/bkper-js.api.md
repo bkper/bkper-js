@@ -213,6 +213,7 @@ export class Book {
 // @public
 export class Collection {
     constructor(payload?: bkper.Collection);
+    create(): Promise<Collection>;
     // (undocumented)
     getBooks(): Book[];
     // (undocumented)
@@ -226,6 +227,8 @@ export class Collection {
     json(): bkper.Collection;
     // (undocumented)
     payload: bkper.Collection;
+    setName(name: string): Collection;
+    update(): Promise<Collection>;
 }
 
 // @public

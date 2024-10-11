@@ -97,4 +97,14 @@ export class Collection {
     return this;
   }
 
+  /**
+   * Performs update Collection, applying pending changes.
+   * 
+   * @returns The updated Collection object
+   */
+  public async update(): Promise<Collection> {
+    this.payload = await CollectionService.updateCollection(this.payload);
+    return this;
+  }
+
 }

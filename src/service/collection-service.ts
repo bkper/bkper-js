@@ -9,3 +9,8 @@ export async function createCollection(payload: bkper.Collection): Promise<bkper
   let response = await new HttpApiV5Request('collections').setMethod('POST').setPayload(payload).fetch();
   return response.data;
 }
+
+export async function updateCollection(payload: bkper.Collection): Promise<bkper.Collection> {
+  let response = await new HttpApiV5Request('collections').setMethod('PUT').setPayload(payload).fetch();
+  return response.data;
+}
