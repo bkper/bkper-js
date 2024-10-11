@@ -227,6 +227,7 @@ export class Collection {
     json(): bkper.Collection;
     // (undocumented)
     payload: bkper.Collection;
+    remove(): Promise<Book[]>;
     setName(name: string): Collection;
     update(): Promise<Collection>;
 }

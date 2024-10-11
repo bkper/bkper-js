@@ -14,3 +14,8 @@ export async function updateCollection(payload: bkper.Collection): Promise<bkper
   let response = await new HttpApiV5Request('collections').setMethod('PUT').setPayload(payload).fetch();
   return response.data;
 }
+
+export async function deleteCollection(payload: bkper.Collection): Promise<bkper.Book[]> {
+  let response = await new HttpApiV5Request(`collections/${payload.id}`).setMethod('DELETE').fetch();
+  return response?.data?.items || [];
+}

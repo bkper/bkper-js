@@ -107,4 +107,14 @@ export class Collection {
     return this;
   }
 
+  /**
+   * Performs delete Collection.
+   * 
+   * @returns The list of Books the user has access to that were affected by the deletion of this Collection
+   */
+  public async remove(): Promise<Book[]> {
+    let books = await CollectionService.deleteCollection(this.payload);
+    return books.map(book => new Book(book));
+  }
+
 }
