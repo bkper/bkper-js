@@ -8,6 +8,7 @@ import * as CollectionService from '../service/collection-service.js';
  * @public
  */
 export class Collection {
+
   public payload: bkper.Collection;
 
   constructor(payload?: bkper.Collection) {
@@ -76,6 +77,36 @@ export class Collection {
       books.push(book);
     }
     return books;
+  }
+
+  /**
+   * Adds Books to this Collection.
+   * 
+   * @returns The added Book objects
+   */
+  public async addBooks(books: Book[]): Promise<Book[]> {
+    const collectionId = this.getId();
+    if (collectionId && books.length > 0) {
+      const bookList: bkper.BookList = { items: books.map(b => b.json()) };
+      let addedBooks = await CollectionService.addBooksToCollection(collectionId, bookList);
+      return addedBooks.map(book => new Book(book));
+    }
+    return [];
+  }
+
+  /**
+   * Removes Books from this Collection.
+   * 
+   * @returns The removed Book objects
+   */
+  public async removeBooks(books: Book[]): Promise<Book[]> {
+    const collectionId = this.getId();
+    if (collectionId && books.length > 0) {
+      const bookList: bkper.BookList = { items: books.map(b => b.json()) };
+      let removedBooks = await CollectionService.removeBooksFromCollection(collectionId, bookList);
+      return removedBooks.map(book => new Book(book));
+    }
+    return [];
   }
 
   /**

@@ -19,3 +19,13 @@ export async function deleteCollection(payload: bkper.Collection): Promise<bkper
   let response = await new HttpApiV5Request(`collections/${payload.id}`).setMethod('DELETE').fetch();
   return response?.data?.items || [];
 }
+
+export async function addBooksToCollection(collectionId: string, payload: bkper.BookList): Promise<bkper.Book[]> {
+  let response = await new HttpApiV5Request(`collections/${collectionId}/books/add`).setMethod('PATCH').setPayload(payload).fetch();
+  return response?.data?.items || [];
+}
+
+export async function removeBooksFromCollection(collectionId: string, payload: bkper.BookList): Promise<bkper.Book[]> {
+  let response = await new HttpApiV5Request(`collections/${collectionId}/books/remove`).setMethod('PATCH').setPayload(payload).fetch();
+  return response?.data?.items || [];
+}
