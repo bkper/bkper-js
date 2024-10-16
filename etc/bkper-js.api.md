@@ -446,7 +446,7 @@ export class Template {
 // @public
 export class Transaction {
     constructor(book: Book, payload?: bkper.Transaction);
-    addFile(file: File): Promise<Transaction>;
+    addFile(file: File): Transaction;
     addRemoteId(remoteId: string): Transaction;
     addUrl(url: string): Transaction;
     check(): Promise<Transaction>;
