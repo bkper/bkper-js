@@ -180,22 +180,18 @@ export class Transaction {
    * 
    * Adds a file attachment to the Transaction.
    * 
-   * Files not previously created in the Book will be automatically created. 
+   * Files MUST be previously created in the Book.
    * 
    * @param file - The file to add
    * 
    * @returns This Transaction, for chainning.
    */
-  public async addFile(file: File): Promise<Transaction> {
+  public addFile(file: File): Transaction {
 
     if (this.payload.files == null) {
       this.payload.files = [];
     }
 
-    //Make sure file is already created
-    if (file.getId() == null) {
-      file = await file.create();
-    }
     this.payload.files.push(file.json())
     return this;
   }
