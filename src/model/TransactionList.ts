@@ -15,7 +15,7 @@ export class TransactionList {
 
   constructor(book: Book, payload: bkper.TransactionList) {
     this.book = book;
-    this.payload = payload;
+    this.payload = payload || {};
   }
 
   /**
