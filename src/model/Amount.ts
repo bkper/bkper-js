@@ -270,14 +270,14 @@ export class Amount {
   }
 
   /** @internal */
-  static create() {
+  static create(): Amount {
     return Object.create(this.prototype);
   }
 
   /** @internal */
   private wrap(big: Big): Amount {
     let amount = Amount.create();
-    amount.wrapped = big;
+    amount.big = big;
     return amount;
   }
 }
