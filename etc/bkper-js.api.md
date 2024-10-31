@@ -61,7 +61,7 @@ export class Amount {
     abs(): Amount;
     cmp(n: number | string | Amount): -1 | 0 | 1;
     // @internal (undocumented)
-    static create(): any;
+    static create(): Amount;
     div(n: number | string | Amount): Amount;
     eq(n: number | string | Amount): boolean;
     gt(n: number | string | Amount): boolean;
