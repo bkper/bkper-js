@@ -39,8 +39,8 @@ export class Book {
 
   constructor(payload?: bkper.Book) {
     this.payload = payload || {};
-    this.mapGroups();
-    this.mapAccounts();
+    this.mapGroups(this.payload.groups);
+    this.mapAccounts(this.payload.accounts);
   }
 
   /**
