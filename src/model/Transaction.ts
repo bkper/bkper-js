@@ -708,22 +708,23 @@ export class Transaction {
   }
 
   /**
-   * Remove the transaction, sending to trash.
+   * Trash the transaction.
    */
-  public async remove(): Promise<Transaction> {
+  public async trash(): Promise<Transaction> {
     let operation = await TransactionService.trashTransaction(this.book.getId(), this.payload);
     this.payload.trashed = operation.transaction?.trashed;
     return this;
   }
 
   /**
-   * Restore the transaction from trash.
+   * Untrash the transaction.
    */
-  public async restore(): Promise<Transaction> {
+  public async untrash(): Promise<Transaction> {
     let operation = await TransactionService.restoreTransaction(this.book.getId(), this.payload);
     this.payload.trashed = operation.transaction?.trashed;
     return this;
   }
+
 
 
 }

@@ -514,8 +514,6 @@ export class Transaction {
     // (undocumented)
     payload: bkper.Transaction;
     post(): Promise<Transaction>;
-    remove(): Promise<Transaction>;
-    restore(): Promise<Transaction>;
     setAmount(amount: Amount | number | string): Transaction;
     setChecked(checked: boolean): Transaction;
     setCreditAccount(account: Account | bkper.Account): Transaction;
@@ -528,7 +526,9 @@ export class Transaction {
     setProperty(key: string, value: string | null): Transaction;
     setUrls(urls: string[]): Transaction;
     to(account: Account | bkper.Account): Transaction;
+    trash(): Promise<Transaction>;
     uncheck(): Promise<Transaction>;
+    untrash(): Promise<Transaction>;
     update(): Promise<Transaction>;
 }
 
