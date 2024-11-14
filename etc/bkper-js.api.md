@@ -514,6 +514,10 @@ export class Transaction {
     // (undocumented)
     payload: bkper.Transaction;
     post(): Promise<Transaction>;
+    // @deprecated (undocumented)
+    remove(): Promise<Transaction>;
+    // @deprecated (undocumented)
+    restore(): Promise<Transaction>;
     setAmount(amount: Amount | number | string): Transaction;
     setChecked(checked: boolean): Transaction;
     setCreditAccount(account: Account | bkper.Account): Transaction;
