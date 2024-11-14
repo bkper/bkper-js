@@ -1,6 +1,6 @@
 {
   "name": "bkper-js",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "description": "Javascript client for Bkper REST API",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
@@ -33,11 +33,9 @@
     "preversion": "bun run build",
     "postversion": "git push --tags && yarn publish --new-version $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\""
   },
-
   "peerDependencies": {
     "@bkper/bkper-api-types": "^5.10.0"
   },
-
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.1",
     "axios": "^1.7.7",
@@ -45,7 +43,6 @@
     "dayjs": "^1.10.3",
     "luxon": "^1.25.0"
   },
-
   "devDependencies": {
     "@microsoft/api-extractor": "^7.12.1",
     "@types/big.js": "^6.0.2",
