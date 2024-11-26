@@ -47,7 +47,7 @@ export function formatValue(value: Amount | string | number, decimalSeparator: D
     return "";
   }
 
-  if (!fractionDigits) {
+  if (fractionDigits == null) {
     fractionDigits = 2;
   }
 
