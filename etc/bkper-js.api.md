@@ -459,6 +459,8 @@ export class Transaction {
     // (undocumented)
     getAmount(): Amount | undefined;
     // (undocumented)
+    getAmountFormatted(): string | undefined;
+    // (undocumented)
     getBook(): Book;
     // (undocumented)
     getCreatedAt(): Date;
