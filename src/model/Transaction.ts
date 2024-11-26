@@ -423,6 +423,17 @@ export class Transaction {
   }
 
   /**
+   * @returns The amount of the transaction, formatted according to the Book format.
+   */
+  public getAmountFormatted(): string | undefined {
+    const amount = this.getAmount();
+    if (amount) {
+      return this.book.formatValue(amount);
+    }
+    return undefined;
+  }
+
+  /**
    * 
    * Sets the amount of the Transaction.
    * 
