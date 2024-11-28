@@ -147,6 +147,8 @@ export class Book {
     getLastUpdateMs(): number | undefined;
     // (undocumented)
     getLockDate(): string | undefined;
+    // @internal (undocumented)
+    getMostRecentLockDate_(): string | null;
     // (undocumented)
     getName(): string | undefined;
     // (undocumented)
@@ -507,6 +509,8 @@ export class Transaction {
     isChecked(): boolean | undefined;
     isCredit(account?: Account): Promise<boolean>;
     isDebit(account?: Account): Promise<boolean>;
+    // (undocumented)
+    isLocked(): boolean;
     // (undocumented)
     isPosted(): boolean | undefined;
     // (undocumented)
