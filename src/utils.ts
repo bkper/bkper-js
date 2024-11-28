@@ -143,6 +143,10 @@ export function formatDateISO(date: Date, timeZone?: string): string {
   return formatedDate;
 }
 
+export function getIsoDateValue(date: string): number {
+  return +(date.replace(/-/g, ''));
+}
+
 export function parseDate(date: string, pattern?: string, timeZone?: string): Date {
   if (!pattern) {
     pattern = 'yyyy-MM-dd';

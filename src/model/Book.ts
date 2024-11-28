@@ -573,6 +573,25 @@ export class Book {
     }
   }
 
+  /** @internal */
+  getMostRecentLockDate_(): string | null {
+    const closingDate = this.getClosingDate();
+    const lockDate = this.getLockDate();
+    if (!closingDate && !lockDate) {
+      return null;
+    }
+    if (!closingDate && lockDate) {
+      return lockDate;
+    }
+    if (closingDate && !lockDate) {
+      return closingDate;
+    }
+    if (Utils.getIsoDateValue(closingDate!) > Utils.getIsoDateValue(lockDate!)) {
+      return closingDate!;
+    } else {
+      return lockDate!;
+    }
+  }
 
   /**
    * Gets a [[Group]] object
