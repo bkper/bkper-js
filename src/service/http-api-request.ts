@@ -51,7 +51,7 @@ export class HttpApiRequest extends HttpRequest {
 
         if (errorResp.status == 404) {
           return { data: null };
-        } else if (this.retry <= 3) {
+        } else if (errorResp.status != 400 && this.retry <= 3) {
           this.retry++;
           if (HttpApiRequest.config.requestRetryHandler) {
             await HttpApiRequest.config.requestRetryHandler(errorResp.status, errorResp.data, this.retry);
