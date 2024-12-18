@@ -563,6 +563,19 @@ export class Book {
       if (id) {
         this.idAccountMap.set(id, account);
       }
+      this.linkAccountsAndGroups(account);
+    }
+  }
+
+  /** @internal */
+  private linkAccountsAndGroups(account: Account) {
+    const groupPayloads = account.payload.groups || [];
+    for (const groupPayload of groupPayloads) {
+        const group = this.idGroupMap?.get(groupPayload.id || "");
+        if (group != null) {
+            group.addAccount(account);
+            //TODO add known group to account
+        }
     }
   }
 
@@ -649,8 +662,13 @@ export class Book {
       this.updateGroupCache(group);
     }
 
+    for (const group of groupsObj) {
+      group.buildGroupTree(this.idGroupMap);
+    }
+
     return groupsObj;
   }
+
 
   /**
    * Gets all [[Accounts]] of this Book

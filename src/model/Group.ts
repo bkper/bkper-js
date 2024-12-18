@@ -17,6 +17,11 @@ import * as Utils from '../utils.js';
 export class Group {
 
   public payload: bkper.Group
+  
+  private parent?: Group;
+  private depth?: number;
+  private root?: Group;
+  private children: Group[] = [];
 
   /** @internal */
   private book: Book
@@ -43,31 +48,6 @@ export class Group {
    */
   public getId(): string | undefined {
     return this.payload.id;
-  }
-
-  /**
-   * @returns The parent Group
-   */
-  public async getParent(): Promise<Group | undefined> {
-    if (this.payload.parent) {
-      return await this.book.getGroup(this.payload.parent.id)
-    } else {
-      return undefined;
-    }
-  }
-
-  /**
-   * Sets the parent Group.
-   * 
-   * @returns This Group, for chainning.
-   */  
-  public setParent(group: Group | null | undefined): Group {
-    if (group) {
-      this.payload.parent = {id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName()};
-    } else {
-      this.payload.parent = undefined;
-    }
-    return this;
   }
 
   /**
@@ -102,6 +82,11 @@ export class Group {
    * @returns All Accounts of this group.
    */
   public async getAccounts(): Promise<Account[]> {
+
+    if (this.accounts) {
+      return Array.from(this.accounts);
+    }
+
     let accountsPlain = await GroupService.getAccounts(this.book.getId(), this.getId());
     if (!accountsPlain) {
       return [];
@@ -110,13 +95,6 @@ export class Group {
     return accounts;
   }
 
-
-  /**
-   * @returns True if this group has any account in it
-   */
-  public hasAccounts(): boolean | undefined {
-    return this.payload.hasAccounts;
-  }
 
   /**
    * @returns The type for of the accounts of this group. Null if mixed
@@ -206,6 +184,193 @@ export class Group {
     this.payload.hidden = hidden;
     return this;
   }
+
+  /**
+   * Tell if the Group is permanent
+   */
+  public isPermanent(): boolean | undefined {
+    return this.payload.permanent;
+  }
+
+  /**
+   * @returns The parent Group
+   */
+  public getParent(): Group | undefined {
+    return this.parent;
+  }
+
+  /**
+   * Sets the parent Group.
+   * 
+   * @returns This Group, for chainning.
+   */  
+  public setParent(group: Group | null | undefined): Group {
+    if (group) {
+      this.payload.parent = {id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName()};
+    } else {
+      this.payload.parent = undefined;
+    }
+    return this;
+  }
+
+  /**
+   * Checks if the Group has a parent.
+   * 
+   * @returns True if the Group has a parent, otherwise false.
+   */
+  public hasParent(): boolean {
+    return this.payload.parent != null;
+  }
+
+  /**
+   * Retrieves the children of the Group.
+   * 
+   * @returns An array of child Groups.
+   */
+  public getChildren(): Group[] {
+    return this.children || [];
+  }
+
+  /**
+   * Retrieves all descendant Groups of the current Group.
+   * 
+   * @returns A set of descendant Groups.
+   */
+  public getDescendants(): Set<Group> {
+    const descendants = new Set<Group>();
+    this.traverseDescendants(this, descendants);
+    return descendants;
+  }
+
+  /**
+   * Retrieves the IDs of all descendant Groups in a tree structure.
+   * 
+   * @returns A set of descendant Group IDs.
+   */
+  public getDescendantTreeIds(): Set<string> {
+    return new Set(Array.from(this.getDescendants()).map(g => g.getId() || ""));
+  }
+
+  /**
+   * Checks if the Group has any children.
+   * 
+   * @returns True if the Group has children, otherwise false.
+   */
+  public hasChildren(): boolean {
+    return this.getChildren().length > 0;
+  }
+
+  /**
+   * Checks if the Group is a leaf node (i.e., has no children).
+   * 
+   * @returns True if the Group is a leaf, otherwise false.
+   */
+  public isLeaf(): boolean {
+    return this.getChildren().length === 0;
+  }
+
+  /**
+   * Checks if the Group is a root node (i.e., has no parent).
+   * 
+   * @returns True if the Group is a root, otherwise false.
+   */
+  public isRoot(): boolean {
+    return this.getParent() == undefined;
+  }
+
+  /**
+   * Retrieves the depth of the Group in the hierarchy.
+   * 
+   * @returns The depth of the Group.
+   */
+  public getDepth(): number {
+    if (this.depth == undefined) {
+      if (this.parent) {
+        this.depth = this.parent.getDepth() + 1;
+      } else {
+        this.depth = 0;
+      }
+    }
+    return this.depth;
+  }
+
+  /**
+   * Retrieves the root Group of the current Group.
+   * 
+   * @returns The root Group.
+   */
+  public getRoot(): Group {
+    if (this.root == undefined) {
+      if (this.parent != undefined) {
+        this.root = this.parent.getRoot();
+      } else {
+        this.root = this;
+      }
+    }
+    return this.root;
+  }
+
+  /**
+   * Retrieves the name of the root Group.
+   * 
+   * @returns The name of the root Group.
+   */
+  public getRootName(): string {
+    const root = this.getRoot();
+    if (root != null) {
+      return root.getName() || "";
+    }
+    return "";
+  }
+
+
+  /** @internal */
+  private traverseDescendants(group: Group, descendants: Set<Group>): void {
+    descendants.add(group);
+    const children = group.getChildren();
+    if (children.length > 0) {
+      for (const child of children) {
+        this.traverseDescendants(child, descendants);
+      }
+    }
+  }
+  
+
+  /** @internal */
+  buildGroupTree(groupsMap: Map<string, Group>): void {
+    this.parent = undefined;
+    this.depth = undefined;
+    this.root = undefined;
+    if (this.payload.parent) {
+      const parentGroup = groupsMap.get(this.payload.parent.id || "");
+      if (parentGroup) {
+        this.parent = parentGroup;
+        parentGroup.getChildren().push(this);
+      }
+    }
+  }
+
+  /** @internal */
+  addAccount(account: Account): void {
+    if (account == null) {
+      return;
+    }
+    if (!this.accounts) {
+      this.accounts = new Set<Account>();
+    }
+    this.accounts.add(account);
+  }
+
+  /**
+   * @returns True if this group has any account in it
+   */
+  public hasAccounts(): boolean | undefined {
+    return this.payload.hasAccounts;
+  }
+
+
+
+
 
   /**
    * Perform create new group.

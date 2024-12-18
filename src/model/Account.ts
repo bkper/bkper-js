@@ -22,7 +22,7 @@ export class Account {
 
   /** @internal */
   private book: Book;
-  
+
   constructor(book: Book, payload?: bkper.Account) {
     this.book = book;
     this.payload = payload || {
