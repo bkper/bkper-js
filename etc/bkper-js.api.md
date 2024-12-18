@@ -313,10 +313,18 @@ export class File {
 // @public
 export class Group {
     constructor(book: Book, payload?: bkper.Group);
+    // @internal (undocumented)
+    addAccount(account: Account): void;
+    // @internal (undocumented)
+    buildGroupTree(groupsMap: Map<string, Group>): void;
     create(): Promise<Group>;
     deleteProperty(key: string): Group;
     // (undocumented)
     getAccounts(): Promise<Account[]>;
+    getChildren(): Group[];
+    getDepth(): number;
+    getDescendants(): Set<Group>;
+    getDescendantTreeIds(): Set<string>;
     // (undocumented)
     getId(): string | undefined;
     // (undocumented)
@@ -324,16 +332,23 @@ export class Group {
     // (undocumented)
     getNormalizedName(): string;
     // (undocumented)
-    getParent(): Promise<Group | undefined>;
+    getParent(): Group | undefined;
     getProperties(): {
         [key: string]: string;
     };
     getProperty(...keys: string[]): string | undefined;
+    getRoot(): Group;
+    getRootName(): string;
     // (undocumented)
     getType(): AccountType;
     // (undocumented)
     hasAccounts(): boolean | undefined;
+    hasChildren(): boolean;
+    hasParent(): boolean;
     isHidden(): boolean | undefined;
+    isLeaf(): boolean;
+    isPermanent(): boolean | undefined;
+    isRoot(): boolean;
     // (undocumented)
     json(): bkper.Group;
     // (undocumented)
