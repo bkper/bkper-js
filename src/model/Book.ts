@@ -4,11 +4,13 @@ import * as FileService from '../service/file-service.js';
 import * as GroupService from '../service/group-service.js';
 import * as IntegrationService from '../service/integration-service.js';
 import * as TransactionService from '../service/transaction-service.js';
+import * as EventService from '../service/event-service.js';
 import * as Utils from '../utils.js';
 import { Account } from './Account.js';
 import { Amount } from './Amount.js';
 import { Collection } from './Collection.js';
 import { DecimalSeparator, Month, Period, Permission, Visibility } from './Enums.js';
+import { EventList } from './EventList.js';
 import { File } from './File.js';
 import { Group } from './Group.js';
 import { Integration } from './Integration.js';
@@ -707,6 +709,24 @@ export class Book {
   public async listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList> {
     const transactionsList = await TransactionService.listTransactions(this.getId(), query, limit, cursor);
     return new TransactionList(this, transactionsList);
+  }
+
+  
+  /**
+   * Lists events in the Book based on the provided parameters.
+   * 
+   * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null.
+   * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null.
+   * @param onError - True to search only for events on error.
+   * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null.
+   * @param limit - The maximum number of events to return.
+   * @param cursor - The cursor for pagination. Can be null.
+   * 
+   * @returns An EventList object containing the list of events.
+   */
+  public async listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList> {
+    const eventsList = await EventService.listEvents(this, afterDate, beforeDate, onError, resourceId, limit, cursor);
+    return new EventList(this, eventsList);
   }
 
   /**
