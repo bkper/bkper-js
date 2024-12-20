@@ -41,6 +41,10 @@ export class Book {
 
   constructor(payload?: bkper.Book) {
     this.payload = payload || {};
+    if (this.payload.permission == Permission.RECORDER) {
+      this.payload.groups = this.payload.groups || [];
+      this.payload.accounts = this.payload.accounts || [];
+    }
     this.mapGroups(this.payload.groups);
     this.mapAccounts(this.payload.accounts);
   }
