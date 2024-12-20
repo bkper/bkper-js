@@ -180,6 +180,7 @@ export class Book {
     getVisibility(): Visibility;
     // (undocumented)
     json(): bkper.Book;
+    listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
@@ -289,6 +290,26 @@ export enum DecimalSeparator {
     COMMA = "COMMA",
     // (undocumented)
     DOT = "DOT"
+}
+
+// @public
+export class Event {
+    constructor(payload?: bkper.Event);
+    // (undocumented)
+    json(): bkper.Event;
+    // (undocumented)
+    payload: bkper.Event;
+}
+
+// @public
+export class EventList {
+    constructor(book: Book, payload: bkper.EventList);
+    // (undocumented)
+    getCursor(): string | undefined;
+    // (undocumented)
+    getFirst(): Event | undefined;
+    getItems(): Event[];
+    size(): number;
 }
 
 // @public
