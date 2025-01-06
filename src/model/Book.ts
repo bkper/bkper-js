@@ -1,5 +1,6 @@
 import * as AccountService from '../service/account-service.js';
 import * as BookService from '../service/book-service.js';
+import * as BalancesService from '../service/balances-service.js';
 import * as FileService from '../service/file-service.js';
 import * as GroupService from '../service/group-service.js';
 import * as IntegrationService from '../service/integration-service.js';
@@ -16,6 +17,7 @@ import { Group } from './Group.js';
 import { Integration } from './Integration.js';
 import { Transaction } from './Transaction.js';
 import { TransactionList } from './TransactionList.js';
+import { BalancesReport } from './BalancesReport.js';
 
 /**
  *
@@ -770,6 +772,29 @@ export class Book {
   public async update(): Promise<Book> {
     this.payload = await BookService.updateBook(this.getId(), this.payload);
     return this;
+  }
+
+    /**
+   *
+   * Create a [[BalancesReport]] based on query
+   * 
+   * @param query The balances report query
+   * 
+   * @return The balances report
+   * 
+   * Example:
+   * 
+   * ```js
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
+   * 
+   * var balancesReport = book.getBalancesReport("group:'Equity' after:7/2018 before:8/2018");
+   * 
+   * var accountBalance = balancesReport.getBalancesContainer("Bank Account").getCumulativeBalance();
+   * ```
+   */
+  public async getBalancesReport(query: string): Promise<BalancesReport> {
+    const balances = await BalancesService.getBalances(this.getId(), query);
+    return new BalancesReport(this, balances);
   }
 
 }
