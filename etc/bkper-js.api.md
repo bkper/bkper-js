@@ -100,47 +100,47 @@ export class App {
 // @public
 export interface BalancesContainer {
     // (undocumented)
-    getAccount(): Promise<Account | null>;
-    getBalancesContainer(name: string): BalancesContainer;
+    getAccount: () => Promise<Account | null>;
+    getBalancesContainer: (name: string) => BalancesContainer;
     // (undocumented)
-    getBalancesContainers(): BalancesContainer[];
+    getBalancesContainers: () => BalancesContainer[];
     // (undocumented)
-    getBalancesReport(): BalancesReport;
+    getBalancesReport: () => BalancesReport;
     // (undocumented)
-    getCumulativeBalance(): Amount;
+    getCumulativeBalance: () => Amount;
     // (undocumented)
-    getCumulativeBalanceRaw(): Amount;
+    getCumulativeBalanceRaw: () => Amount;
     // (undocumented)
-    getCumulativeBalanceRawText(): string;
+    getCumulativeBalanceRawText: () => string;
     // (undocumented)
-    getCumulativeBalanceText(): string;
+    getCumulativeBalanceText: () => string;
     // (undocumented)
-    getDepth(): number;
+    getDepth: () => number;
     // (undocumented)
-    getGroup(): Promise<Group | null>;
+    getGroup: () => Promise<Group | null>;
     // (undocumented)
-    getName(): string | undefined;
+    getName: () => string | undefined;
     // (undocumented)
-    getNormalizedName(): string | undefined;
+    getNormalizedName: () => string | undefined;
     // (undocumented)
-    getParent(): BalancesContainer | null;
+    getParent: () => BalancesContainer | null;
     // (undocumented)
-    getPeriodBalance(): Amount;
+    getPeriodBalance: () => Amount;
     // (undocumented)
-    getPeriodBalanceRaw(): Amount;
+    getPeriodBalanceRaw: () => Amount;
     // (undocumented)
-    getPeriodBalanceRawText(): string;
+    getPeriodBalanceRawText: () => string;
     // (undocumented)
-    getPeriodBalanceText(): string;
+    getPeriodBalanceText: () => string;
     // (undocumented)
-    hasGroupBalances(): boolean;
+    hasGroupBalances: () => boolean;
     // (undocumented)
-    isCredit(): boolean | undefined;
+    isCredit: () => boolean | undefined;
     // (undocumented)
-    isFromAccount(): boolean;
+    isFromAccount: () => boolean;
     // (undocumented)
-    isFromGroup(): boolean;
-    isPermanent(): boolean | undefined;
+    isFromGroup: () => boolean;
+    isPermanent: () => boolean | undefined;
 }
 
 // @public
