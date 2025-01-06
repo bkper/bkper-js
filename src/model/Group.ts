@@ -186,6 +186,20 @@ export class Group {
   }
 
   /**
+   * Tell if this is a credit (Incoming and Liabities) group
+   */
+  public isCredit(): boolean | undefined {
+    return this.payload.credit;
+  }
+
+  /**
+   * Tell if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group
+   */
+  public isMixed(): boolean | undefined {
+    return this.payload.mixed;
+  }
+
+  /**
    * Tell if the Group is permanent
    */
   public isPermanent(): boolean | undefined {
