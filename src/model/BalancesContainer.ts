@@ -134,7 +134,11 @@ export interface BalancesContainer {
     getBalancesContainers(): BalancesContainer[];
 
     /**
-     * @returns Gets a specific [[BalancesContainer]].
+     * Gets a specific [[BalancesContainer]].
+     * 
+     * @param name The [[Account]] or [[Group]] name.
+     * 
+     * @returns The retrieved [[BalancesContainer]].
      */
     getBalancesContainer(name: string): BalancesContainer;
 
