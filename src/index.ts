@@ -9,6 +9,8 @@
 export { Account } from './model/Account.js';
 export { Amount } from "./model/Amount.js";
 export { App } from './model/App.js';
+export { BalancesContainer } from './model/BalancesContainer.js';
+export { BalancesReport } from './model/BalancesReport.js';
 export { Bkper } from './model/Bkper.js';
 export { Book } from './model/Book.js';
 export { Collection } from './model/Collection.js';
@@ -31,4 +33,4 @@ export {
   AccountType,
   Period,
   Month
-} from './model/Enums.js'
+} from './model/Enums.js';
