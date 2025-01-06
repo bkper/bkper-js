@@ -15,37 +15,37 @@ export interface BalancesContainer {
     /**
      * @returns The parent BalancesReport of the container
      */
-    getBalancesReport(): BalancesReport;
+    getBalancesReport: () => BalancesReport;
 
     /**
      * @returns The [[Account]] or [[Group]] name
      */
-    getName(): string | undefined;
+    getName: () => string | undefined;
 
     /**
      * @returns The [[Account]] or [[Group]] name without spaces or special characters.
      */
-    getNormalizedName(): string | undefined;
+    getNormalizedName: () => string | undefined;
 
     /**
      * @returns The [[Group]] associated with this container
      */
-    getGroup(): Promise<Group | null>;
+    getGroup: () => Promise<Group | null>;
 
     /**
      * @returns The [[Account]] associated with this container
      */
-    getAccount(): Promise<Account | null>;
+    getAccount: () => Promise<Account | null>;
 
     /**
      * @returns The parent BalanceContainer.
      */
-    getParent(): BalancesContainer | null;
+    getParent: () => BalancesContainer | null;
 
     /**
      * @returns The depth in the parent chain up to the root.
      */
-    getDepth(): number;
+    getDepth: () => number;
 
     /**
      * @returns Gets the credit nature of the BalancesContainer, based on [[Account]] or [[Group]].
@@ -55,7 +55,7 @@ export interface BalancesContainer {
      * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
      * 
      */
-    isCredit(): boolean | undefined;
+    isCredit: () => boolean | undefined;
 
     /**
      * 
@@ -69,69 +69,69 @@ export interface BalancesContainer {
      * 
      * @returns True if its a permanent Account
      */
-    isPermanent(): boolean | undefined;
+    isPermanent: () => boolean | undefined;
 
     /**
      * @returns True if this balance container if from an [[Account]] 
      */
-    isFromAccount(): boolean;
+    isFromAccount: () => boolean;
 
     /**
      * @returns True if this balance container if from a [[Group]] 
      */
-    isFromGroup(): boolean;
+    isFromGroup: () => boolean;
 
     /**
      * @returns True if the balance container is from a parent group
      */
-    hasGroupBalances(): boolean;
+    hasGroupBalances: () => boolean;
 
     /**
      * @returns The cumulative balance to the date.
      */
-    getCumulativeBalance(): Amount;
+    getCumulativeBalance: () => Amount;
 
     /**
      * @returns The cumulative raw balance to the date.
      */
-    getCumulativeBalanceRaw(): Amount;
+    getCumulativeBalanceRaw: () => Amount;
 
     /**
      * @returns The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
      */
-    getCumulativeBalanceText(): string;
+    getCumulativeBalanceText: () => string;
 
     /**
      * @returns The cumulative raw balance formatted according to [[Book]] decimal format and fraction digits.
      */
-    getCumulativeBalanceRawText(): string;
+    getCumulativeBalanceRawText: () => string;
 
     /**
      * @returns The balance on the date period.
      */
-    getPeriodBalance(): Amount;
+    getPeriodBalance: () => Amount;
 
     /**
      * @returns The raw balance on the date period.
      */
-    getPeriodBalanceRaw(): Amount;
+    getPeriodBalanceRaw: () => Amount;
 
     /**
      * @returns The balance on the date period formatted according to [[Book]] decimal format and fraction digits
      */
-    getPeriodBalanceText(): string;
+    getPeriodBalanceText: () => string;
 
     /**
      * @returns The raw balance on the date period formatted according to [[Book]] decimal format and fraction digits
      */
-    getPeriodBalanceRawText(): string;
+    getPeriodBalanceRawText: () => string;
 
     /**
      * @returns All child [[BalancesContainers]].
      * 
      * **NOTE**: Only for Group balance containers. Accounts returns null.
      */
-    getBalancesContainers(): BalancesContainer[];
+    getBalancesContainers: () => BalancesContainer[];
 
     /**
      * Gets a specific [[BalancesContainer]].
@@ -140,6 +140,6 @@ export interface BalancesContainer {
      * 
      * @returns The retrieved [[BalancesContainer]].
      */
-    getBalancesContainer(name: string): BalancesContainer;
+    getBalancesContainer: (name: string) => BalancesContainer;
 
 }
