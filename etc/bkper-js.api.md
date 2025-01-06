@@ -98,6 +98,66 @@ export class App {
 }
 
 // @public
+export interface BalancesContainer {
+    // (undocumented)
+    getAccount(): Promise<Account | null>;
+    getBalancesContainer(name: string): BalancesContainer;
+    // (undocumented)
+    getBalancesContainers(): BalancesContainer[];
+    // (undocumented)
+    getBalancesReport(): BalancesReport;
+    // (undocumented)
+    getCumulativeBalance(): Amount;
+    // (undocumented)
+    getCumulativeBalanceRaw(): Amount;
+    // (undocumented)
+    getCumulativeBalanceRawText(): string;
+    // (undocumented)
+    getCumulativeBalanceText(): string;
+    // (undocumented)
+    getDepth(): number;
+    // (undocumented)
+    getGroup(): Promise<Group | null>;
+    // (undocumented)
+    getName(): string | undefined;
+    // (undocumented)
+    getNormalizedName(): string | undefined;
+    // (undocumented)
+    getParent(): BalancesContainer | null;
+    // (undocumented)
+    getPeriodBalance(): Amount;
+    // (undocumented)
+    getPeriodBalanceRaw(): Amount;
+    // (undocumented)
+    getPeriodBalanceRawText(): string;
+    // (undocumented)
+    getPeriodBalanceText(): string;
+    // (undocumented)
+    hasGroupBalances(): boolean;
+    // (undocumented)
+    isCredit(): boolean | undefined;
+    // (undocumented)
+    isFromAccount(): boolean;
+    // (undocumented)
+    isFromGroup(): boolean;
+    isPermanent(): boolean | undefined;
+}
+
+// @public
+export class BalancesReport {
+    constructor(book: Book, payload: bkper.Balances);
+    getBalancesContainer(name: string): BalancesContainer;
+    // (undocumented)
+    getBalancesContainers(): BalancesContainer[];
+    // (undocumented)
+    getBook(): Book;
+    // (undocumented)
+    getPeriodicity(): Periodicity;
+    // (undocumented)
+    payload: bkper.Balances;
+}
+
+// @public
 export class Bkper {
     static getApps(): Promise<App[]>;
     static getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
@@ -126,6 +186,7 @@ export class Book {
     formatValue(value: Amount | number | null | undefined): string;
     getAccount(idOrName?: string): Promise<Account | undefined>;
     getAccounts(): Promise<Account[]>;
+    getBalancesReport(query: string): Promise<BalancesReport>;
     // (undocumented)
     getClosingDate(): string | undefined;
     // (undocumented)
@@ -366,8 +427,10 @@ export class Group {
     hasAccounts(): boolean | undefined;
     hasChildren(): boolean;
     hasParent(): boolean;
+    isCredit(): boolean | undefined;
     isHidden(): boolean | undefined;
     isLeaf(): boolean;
+    isMixed(): boolean | undefined;
     isPermanent(): boolean | undefined;
     isRoot(): boolean;
     // (undocumented)
