@@ -16,7 +16,7 @@ import * as Utils from '../utils.js';
  */
 export class Group {
 
-  public payload: bkper.Group
+  public payload: bkper.Group;
   
   private parent?: Group;
   private depth?: number;
@@ -24,10 +24,10 @@ export class Group {
   private children: Group[] = [];
 
   /** @internal */
-  private book: Book
+  private book: Book;
   
   /** @internal */
-  private accounts?: Set<Account>
+  accounts?: Set<Account>;
 
   constructor(book: Book, payload?: bkper.Group) {
     this.book = book;
@@ -94,7 +94,6 @@ export class Group {
     let accounts = accountsPlain.map(acc => new Account(this.book, acc))
     return accounts;
   }
-
 
   /**
    * @returns The type for of the accounts of this group. Null if mixed

@@ -579,11 +579,11 @@ export class Book {
   private linkAccountsAndGroups(account: Account) {
     const groupPayloads = account.payload.groups || [];
     for (const groupPayload of groupPayloads) {
-        const group = this.idGroupMap?.get(groupPayload.id || "");
-        if (group != null) {
-            group.addAccount(account);
-            //TODO add known group to account
-        }
+      const group = this.idGroupMap?.get(groupPayload.id || "");
+      if (group != null) {
+        group.addAccount(account);
+        // TODO add known group to account
+      }
     }
   }
 
@@ -700,7 +700,19 @@ export class Book {
     for (const account of accountsObj) {
       this.updateAccountCache(account);
     }
+    this.ensureGroupsAccountMapsLoaded();
     return accountsObj;
+  }
+
+  /** @internal */
+  private ensureGroupsAccountMapsLoaded(): void {
+    if (this.idGroupMap) {
+      for (const group of this.idGroupMap.values()) {
+        if (group.accounts == null) {
+          group.accounts = new Set<Account>();
+        }
+      }
+    }
   }
 
   /**
