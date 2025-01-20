@@ -396,6 +396,8 @@ export class File {
 export class Group {
     constructor(book: Book, payload?: bkper.Group);
     // @internal (undocumented)
+    accounts?: Set<Account>;
+    // @internal (undocumented)
     addAccount(account: Account): void;
     // @internal (undocumented)
     buildGroupTree(groupsMap: Map<string, Group>): void;
