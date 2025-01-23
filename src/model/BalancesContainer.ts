@@ -1,7 +1,7 @@
-import { Account } from "./Account";
-import { Amount } from "./Amount";
-import { BalancesReport } from "./BalancesReport";
-import { Group } from "./Group";
+import { Account } from "./Account.js";
+import { Amount } from "./Amount.js";
+import { BalancesReport } from "./BalancesReport.js";
+import { Group } from "./Group.js";
 
 /**
  * The container of balances of an [[Account]] or [[Group]]

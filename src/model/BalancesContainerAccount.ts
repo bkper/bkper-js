@@ -1,9 +1,9 @@
-import { getRepresentativeValue, normalizeName } from "../utils";
-import { Account } from "./Account";
-import { Amount } from "./Amount";
-import { BalancesContainer } from "./BalancesContainer";
-import { BalancesReport } from "./BalancesReport";
-import { Group } from "./Group";
+import { getRepresentativeValue, normalizeName } from "../utils.js";
+import { Account } from "./Account.js";
+import { Amount } from "./Amount.js";
+import { BalancesContainer } from "./BalancesContainer.js";
+import { BalancesReport } from "./BalancesReport.js";
+import { Group } from "./Group.js";
 
 /** @internal */
 export class AccountBalancesContainer implements BalancesContainer {

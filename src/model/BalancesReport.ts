@@ -1,9 +1,9 @@
-import { normalizeName } from "../utils";
-import { BalancesContainer } from "./BalancesContainer";
-import { AccountBalancesContainer } from "./BalancesContainerAccount";
-import { GroupBalancesContainer } from "./BalancesContainerGroup";
-import { Book } from "./Book";
-import { Periodicity } from "./Enums";
+import { normalizeName } from '../utils.js';
+import { BalancesContainer } from "./BalancesContainer.js";
+import { AccountBalancesContainer } from "./BalancesContainerAccount.js";
+import { GroupBalancesContainer } from "./BalancesContainerGroup.js";
+import { Book } from "./Book.js";
+import { Periodicity } from "./Enums.js";
 
 /**
  * Class representing a Balance Report, generated when calling [Book.getBalanceReport](#book_getbalancesreport)
