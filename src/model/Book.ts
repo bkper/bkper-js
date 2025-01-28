@@ -217,7 +217,7 @@ export class Book {
    * 
    * @returns This Book, for chainning.
    */
-  public setLockDate(lockDate: string): Book {
+  public setLockDate(lockDate: string | null): Book {
     if (lockDate == null) {
       lockDate = "1900-00-00";
     }
@@ -238,14 +238,13 @@ export class Book {
    * 
    * @returns This Book, for chainning.
    */
-  public setClosingDate(closingDate: string): Book {
+  public setClosingDate(closingDate: string | null): Book {
     if (closingDate == null) {
       closingDate = "1900-00-00";
     }
     this.payload.closingDate = closingDate;
     return this;
   }
-
 
   /**
    * @returns The decimal separator of the Book

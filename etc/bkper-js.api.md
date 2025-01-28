@@ -252,11 +252,11 @@ export class Book {
     // @internal (undocumented)
     removeGroupCache(group: Group): void;
     round(value: Amount | number): Amount;
-    setClosingDate(closingDate: string): Book;
+    setClosingDate(closingDate: string | null): Book;
     setDatePattern(datePattern: string): Book;
     setDecimalSeparator(decimalSeparator: DecimalSeparator): Book;
     setFractionDigits(fractionDigits: number): Book;
-    setLockDate(lockDate: string): Book;
+    setLockDate(lockDate: string | null): Book;
     setName(name: string): Book;
     setPageSize(pageSize: number): Book;
     setPeriod(period: Period): Book;
