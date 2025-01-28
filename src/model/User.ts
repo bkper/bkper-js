@@ -76,6 +76,15 @@ export class User {
   }
 
   /**
+   * Tells if billing is enabled for the User.
+   * 
+   * @returns True if billing is enabled for the User
+   */
+  public hasBillingEnabled(): boolean | undefined {
+    return this.payload.billingEnabled;
+  }
+
+  /**
    * Tells if the User has started the trial.
    * 
    * @returns True if the User has started the trial

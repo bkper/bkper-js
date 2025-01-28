@@ -666,6 +666,7 @@ export class User {
     getHostedDomain(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
+    hasBillingEnabled(): boolean | undefined;
     hasStartedTrial(): boolean | undefined;
     hasUsedConnections(): boolean | undefined;
     isFree(): boolean | undefined;
