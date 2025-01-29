@@ -34,7 +34,7 @@
     "postversion": "git push --tags && yarn publish --new-version $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\""
   },
   "peerDependencies": {
-    "@bkper/bkper-api-types": "^5.10.0"
+    "@bkper/bkper-api-types": "^5.12.0"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^3.0.1",
