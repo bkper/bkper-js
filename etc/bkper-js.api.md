@@ -166,7 +166,6 @@ export class Bkper {
     static getCollections(): Promise<Collection[]>;
     static getTemplates(): Promise<Template[]>;
     static getUser(): Promise<User>;
-    static newBook(): Book;
     // @deprecated
     static setApiKey(key: string): App;
     static setConfig(config: Config): void;
@@ -186,6 +185,8 @@ export class Book {
     formatValue(value: Amount | number | null | undefined): string;
     getAccount(idOrName?: string): Promise<Account | undefined>;
     getAccounts(): Promise<Account[]>;
+    // (undocumented)
+    getAutoPost(): boolean | undefined;
     getBalancesReport(query: string): Promise<BalancesReport>;
     // (undocumented)
     getClosingDate(): string | undefined;
@@ -252,6 +253,7 @@ export class Book {
     // @internal (undocumented)
     removeGroupCache(group: Group): void;
     round(value: Amount | number): Amount;
+    setAutoPost(autoPost: boolean): Book;
     setClosingDate(closingDate: string | null): Book;
     setDatePattern(datePattern: string): Book;
     setDecimalSeparator(decimalSeparator: DecimalSeparator): Book;
@@ -666,6 +668,7 @@ export class User {
     getHostedDomain(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
+    getPlan(): string | undefined;
     hasBillingEnabled(): boolean | undefined;
     hasStartedTrial(): boolean | undefined;
     hasUsedConnections(): boolean | undefined;
