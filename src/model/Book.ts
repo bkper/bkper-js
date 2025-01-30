@@ -291,6 +291,24 @@ export class Book {
   }
 
   /**
+   * @returns The auto post status of the Book
+   */
+  public getAutoPost(): boolean | undefined {
+    return this.payload.autoPost;
+  }
+
+  /**
+   * 
+   * Sets the auto post status of the Book
+   * 
+   * @returns This Book, for chainning.
+   */
+  public setAutoPost(autoPost: boolean): Book {
+    this.payload.autoPost = autoPost;
+    return this;
+  }
+
+  /**
    * @returns The last update date of the book, in in milliseconds
    */
   public getLastUpdateMs(): number | undefined {
