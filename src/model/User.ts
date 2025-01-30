@@ -76,6 +76,15 @@ export class User {
   }
 
   /**
+   * Gets the plan of the User.
+   * 
+   * @returns The User's plan
+   */
+  public getPlan(): string | undefined {
+    return this.payload.plan;
+  }
+
+  /**
    * Tells if billing is enabled for the User.
    * 
    * @returns True if billing is enabled for the User
