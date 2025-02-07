@@ -7,6 +7,7 @@
  */
 
 export { Account } from './model/Account.js';
+export { Agent } from './model/Agent.js';
 export { Amount } from "./model/Amount.js";
 export { App } from './model/App.js';
 export { BalancesContainer } from './model/BalancesContainer.js';
@@ -32,5 +33,6 @@ export {
   Visibility,
   AccountType,
   Period,
-  Month
+  Month,
+  EventType
 } from './model/Enums.js';
