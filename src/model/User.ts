@@ -40,6 +40,15 @@ export class User {
   }
 
   /**
+   * Gets the avatar url of the User.
+   * 
+   * @returns The User's avatar url
+   */
+  public getAvatarUrl(): string | undefined {
+    return this.payload.avatarUrl;
+  }
+
+  /**
    * Gets the full name of the User.
    * 
    * @returns The User's full name
