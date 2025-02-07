@@ -1,5 +1,12 @@
+import { Agent } from "./Agent";
+import { EventType } from "./Enums";
+import { User } from "./User";
+
 /**
- * Represents an Event in the system.
+ * 
+ * This class defines an Event from a [[Book]].
+ *
+ * An event is an object that represents an action (such as posting or deleting a [[Transaction]]) made by an actor (such as a user or a [Bot](https://bkper.com/apps) acting on behalf of a user).
  * 
  * @public
  */
@@ -16,6 +23,34 @@ export class Event {
    */
   public json(): bkper.Event {
     return { ...this.payload };
+  }
+
+  /**
+   * @returns The user who performed the event
+   */
+  public getUser(): User | undefined {
+    return this.payload.user ? new User(this.payload.user) : undefined;
+  }
+
+  /**
+   * @returns The user who performed the event
+   */
+  public getAgent(): Agent | undefined {
+    return this.payload.agent ? new Agent(this.payload.agent) : undefined;
+  }
+
+  /**
+   * @returns The date the event was created
+   */
+  public getCreatedAt(): Date | undefined {
+    return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
+  }
+
+  /**
+   * @returns The type of the event
+   */
+  public getType(): EventType | undefined {
+    return this.payload.type as EventType | undefined;
   }
 
 }
