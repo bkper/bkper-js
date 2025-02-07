@@ -56,6 +56,21 @@ export enum AccountType {
 }
 
 // @public
+export class Agent {
+    constructor(payload?: bkper.Agent);
+    // (undocumented)
+    getId(): string | undefined;
+    // (undocumented)
+    getLogoUrl(): string | undefined;
+    // (undocumented)
+    getName(): string | undefined;
+    // (undocumented)
+    json(): bkper.Agent;
+    // (undocumented)
+    payload: bkper.Agent;
+}
+
+// @public
 export class Amount {
     constructor(n: number | string | Amount);
     abs(): Amount;
@@ -359,6 +374,14 @@ export enum DecimalSeparator {
 export class Event {
     constructor(payload?: bkper.Event);
     // (undocumented)
+    getAgent(): Agent | undefined;
+    // (undocumented)
+    getCreatedAt(): Date | undefined;
+    // (undocumented)
+    getType(): EventType | undefined;
+    // (undocumented)
+    getUser(): User | undefined;
+    // (undocumented)
     json(): bkper.Event;
     // (undocumented)
     payload: bkper.Event;
@@ -373,6 +396,64 @@ export class EventList {
     getFirst(): Event | undefined;
     getItems(): Event[];
     size(): number;
+}
+
+// @public
+export enum EventType {
+    // (undocumented)
+    ACCOUNT_CREATED = "ACCOUNT_CREATED",
+    // (undocumented)
+    ACCOUNT_DELETED = "ACCOUNT_DELETED",
+    // (undocumented)
+    ACCOUNT_UPDATED = "ACCOUNT_UPDATED",
+    // (undocumented)
+    BOOK_DELETED = "BOOK_DELETED",
+    // (undocumented)
+    BOOK_UPDATED = "BOOK_UPDATED",
+    // (undocumented)
+    COLLABORATOR_ADDED = "COLLABORATOR_ADDED",
+    // (undocumented)
+    COLLABORATOR_REMOVED = "COLLABORATOR_REMOVED",
+    // (undocumented)
+    COLLABORATOR_UPDATED = "COLLABORATOR_UPDATED",
+    // (undocumented)
+    COMMENT_CREATED = "COMMENT_CREATED",
+    // (undocumented)
+    COMMENT_DELETED = "COMMENT_DELETED",
+    // (undocumented)
+    FILE_CREATED = "FILE_CREATED",
+    // (undocumented)
+    GROUP_CREATED = "GROUP_CREATED",
+    // (undocumented)
+    GROUP_DELETED = "GROUP_DELETED",
+    // (undocumented)
+    GROUP_UPDATED = "GROUP_UPDATED",
+    // (undocumented)
+    INTEGRATION_CREATED = "INTEGRATION_CREATED",
+    // (undocumented)
+    INTEGRATION_DELETED = "INTEGRATION_DELETED",
+    // (undocumented)
+    INTEGRATION_UPDATED = "INTEGRATION_UPDATED",
+    // (undocumented)
+    QUERY_CREATED = "QUERY_CREATED",
+    // (undocumented)
+    QUERY_DELETED = "QUERY_DELETED",
+    // (undocumented)
+    QUERY_UPDATED = "QUERY_UPDATED",
+    // (undocumented)
+    TRANSACTION_CHECKED = "TRANSACTION_CHECKED",
+    // (undocumented)
+    TRANSACTION_CREATED = "TRANSACTION_CREATED",
+    // (undocumented)
+    TRANSACTION_DELETED = "TRANSACTION_DELETED",
+    // (undocumented)
+    TRANSACTION_POSTED = "TRANSACTION_POSTED",
+    // (undocumented)
+    TRANSACTION_RESTORED = "TRANSACTION_RESTORED",
+    // (undocumented)
+    TRANSACTION_UNCHECKED = "TRANSACTION_UNCHECKED",
+    // (undocumented)
+    TRANSACTION_UPDATED = "TRANSACTION_UPDATED"
 }
 
 // @public
@@ -660,6 +741,7 @@ export class TransactionList {
 // @public
 export class User {
     constructor(payload?: bkper.User);
+    getAvatarUrl(): string | undefined;
     getConnection(id: string): Promise<Connection>;
     getConnections(): Promise<Connection[]>;
     getDaysLeftInTrial(): number | undefined;
