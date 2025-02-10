@@ -37,13 +37,33 @@ export class App {
     return this;
   }
 
-
   /**
    * 
    * @returns The App universal identifier
    */
   public getId(): string | undefined {
     return this.payload.id;
+  }
+
+  /**
+   * @return The name of this App
+   */
+  public getName(): string | undefined {
+    return this.payload.name;
+  }
+
+  /**
+   * @return The logo url of this App
+   */
+  public getLogoUrl(): string | undefined {
+    return this.payload.logoUrl;
+  }
+
+  /**
+   * @return The description of this App
+   */
+  public getDescription(): string | undefined {
+    return this.payload.description;
   }
 
   /**
@@ -86,8 +106,6 @@ export class App {
     return this;
   }
 
-
-
   /**
    * Performs the app creation, applying pending changes.
    * 
@@ -113,6 +131,5 @@ export class App {
     await updateApp(this.payload);
     return this;
   }
-
 
 }
