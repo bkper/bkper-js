@@ -97,8 +97,11 @@ export class Amount {
 export class App {
     constructor(payload?: bkper.App);
     create(): Promise<App>;
+    getDescription(): string | undefined;
     // (undocumented)
     getId(): string | undefined;
+    getLogoUrl(): string | undefined;
+    getName(): string | undefined;
     // (undocumented)
     json(): bkper.App;
     patch(): Promise<App>;
@@ -200,6 +203,7 @@ export class Book {
     formatValue(value: Amount | number | null | undefined): string;
     getAccount(idOrName?: string): Promise<Account | undefined>;
     getAccounts(): Promise<Account[]>;
+    getApps(): Promise<App[]>;
     // (undocumented)
     getAutoPost(): boolean | undefined;
     getBalancesReport(query: string): Promise<BalancesReport>;
