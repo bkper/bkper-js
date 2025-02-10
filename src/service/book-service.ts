@@ -35,3 +35,8 @@ export async function updateBook(bookId: string, book: bkper.Book): Promise<bkpe
 export async function audit(bookId: string): Promise<void> {
   new HttpBooksApiV5Request(`${bookId}/audit`).setMethod('PATCH').fetch();
 }
+
+export async function getApps(bookId: string): Promise<bkper.App[]> {
+  let response = await new HttpBooksApiV5Request(`${bookId}/apps`).setMethod('GET').fetch();
+  return response?.data?.items || [];
+}

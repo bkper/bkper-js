@@ -18,6 +18,7 @@ import { Integration } from './Integration.js';
 import { Transaction } from './Transaction.js';
 import { TransactionList } from './TransactionList.js';
 import { BalancesReport } from './BalancesReport.js';
+import { App } from './App.js';
 
 /**
  *
@@ -35,11 +36,13 @@ export class Book {
   private collection?: Collection;
 
   /** @internal */
+  private apps?: App[];
+
+  /** @internal */
   private idGroupMap?: Map<string, Group>;
 
   /** @internal */
   private idAccountMap?: Map<string, Account>;
-
 
   constructor(payload?: bkper.Book) {
     this.payload = payload || {};
@@ -487,6 +490,20 @@ export class Book {
    */
   public audit(): void {
     BookService.audit(this.getId());
+  }
+
+  /**
+   * Retrieve installed [[Apps]] for this Book
+   * 
+   * @returns The Apps objects
+   */
+  public async getApps(): Promise<App[]> {
+    if (this.apps != null) {
+      return this.apps;
+    }
+    const appsPlain = await BookService.getApps(this.getId());
+    this.apps = appsPlain.map(a => new App(a));
+    return this.apps;
   }
 
   /**
