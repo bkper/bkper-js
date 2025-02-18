@@ -1,6 +1,6 @@
-import { Agent } from "./Agent";
-import { EventType } from "./Enums";
-import { User } from "./User";
+import { Agent } from "./Agent.js";
+import { EventType } from "./Enums.js";
+import { User } from "./User.js";
 
 /**
  * 
