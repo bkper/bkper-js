@@ -178,7 +178,21 @@ export enum Month {
  * @public
  */
 export enum AppType {
+
+  /**
+   * Interactive solutions that can run independently and integrate with third-party services.
+   * Apps can range from simple URL openers to complex add-ons with business logic.
+   * 
+   * Learn more on [Bkper Apps](https://bkper.com/docs/#apps).
+   */
   APP = "APP",
+
+  /**
+   * Specialized type of App that react to events from Books.
+   * Bots can perform automated tasks like calculating taxes, converting currencies, or posting notifications when specific events occur.
+   * 
+   * Learn more on [Bkper Bots](https://bkper.com/docs/#bots).
+   */
   BOT = "BOT"
 }
 
