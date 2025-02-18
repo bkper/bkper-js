@@ -303,6 +303,13 @@ export class Book {
 }
 
 // @public
+export enum BotResponseType {
+    ERROR = "ERROR",
+    INFO = "INFO",
+    WARNING = "WARNING"
+}
+
+// @public
 export class Collection {
     constructor(payload?: bkper.Collection);
     addBooks(books: Book[]): Promise<Book[]>;
@@ -386,6 +393,10 @@ export class Event {
     constructor(payload?: bkper.Event);
     // (undocumented)
     getAgent(): Agent | undefined;
+    // Warning: (ae-forgotten-export) The symbol "BotResponse" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    getBotResponses(): BotResponse[];
     // (undocumented)
     getCreatedAt(): Date | undefined;
     // (undocumented)
