@@ -173,6 +173,16 @@ export enum Month {
 }
 
 /**
+ * Enum that represents the type of an App.
+ * 
+ * @public
+ */
+export enum AppType {
+  APP = "APP",
+  BOT = "BOT"
+}
+
+/**
  * Enum that represents event types.
  * 
  * @public

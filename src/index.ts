@@ -34,5 +34,6 @@ export {
   AccountType,
   Period,
   Month,
-  EventType
+  EventType,
+  AppType
 } from './model/Enums.js';
