@@ -35,5 +35,6 @@ export {
   Period,
   Month,
   EventType,
-  AppType
+  AppType,
+  BotResponseType
 } from './model/Enums.js';

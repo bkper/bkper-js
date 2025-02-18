@@ -120,7 +120,7 @@ export enum AccountType {
   /**
    * Incoming account type
    */
-  INCOMING = "INCOMING",  
+  INCOMING = "INCOMING",
 
   /**
    * Outgoing account type
@@ -197,6 +197,29 @@ export enum AppType {
 }
 
 /**
+ * Enum that represents the type of a Bot Response
+ * 
+ * @public
+ */
+export enum BotResponseType {
+
+  /**
+   * Info bot response
+   */
+  INFO = "INFO",
+
+  /**
+   * Warning bot response
+   */
+  WARNING = "WARNING",
+
+  /**
+   * Error bot response
+   */
+  ERROR = "ERROR",
+}
+
+/**
  * Enum that represents event types.
  * 
  * @public
@@ -230,5 +253,5 @@ export enum EventType {
   INTEGRATION_DELETED = "INTEGRATION_DELETED",
   BOOK_UPDATED = "BOOK_UPDATED",
   BOOK_DELETED = "BOOK_DELETED"
-  
+
 }
