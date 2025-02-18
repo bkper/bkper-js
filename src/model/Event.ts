@@ -1,4 +1,5 @@
 import { Agent } from "./Agent.js";
+import { BotResponse } from "./BotResponse.js";
 import { EventType } from "./Enums.js";
 import { User } from "./User.js";
 
@@ -14,6 +15,9 @@ export class Event {
 
   public payload: bkper.Event;
 
+  /** @internal */
+  private botResponses?: BotResponse[];
+
   constructor(payload?: bkper.Event) {
     this.payload = payload || {};
   }
@@ -26,31 +30,48 @@ export class Event {
   }
 
   /**
-   * @returns The user who performed the event
+   * @returns The user who performed the Event
    */
   public getUser(): User | undefined {
     return this.payload.user ? new User(this.payload.user) : undefined;
   }
 
   /**
-   * @returns The user who performed the event
+   * @returns The user who performed the Event
    */
   public getAgent(): Agent | undefined {
     return this.payload.agent ? new Agent(this.payload.agent) : undefined;
   }
 
   /**
-   * @returns The date the event was created
+   * @returns The date the Event was created
    */
   public getCreatedAt(): Date | undefined {
     return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
   }
 
   /**
-   * @returns The type of the event
+   * @returns The type of the Event
    */
   public getType(): EventType | undefined {
     return this.payload.type as EventType | undefined;
+  }
+
+  /**
+   * @returns Bot Responses associated to this Event
+   */
+  public getBotResponses(): BotResponse[] {
+    if (this.botResponses !== undefined) {
+      return this.botResponses;
+    }
+    let botResponses: BotResponse[] = [];
+    if (this.payload.botResponses) {
+      for (const botResponse of this.payload.botResponses) {
+        botResponses.push(new BotResponse(botResponse as bkper.BotResponse));
+      }
+    }
+    this.botResponses = botResponses;
+    return this.botResponses;
   }
 
 }
