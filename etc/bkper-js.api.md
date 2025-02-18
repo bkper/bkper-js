@@ -102,6 +102,7 @@ export class App {
     getId(): string | undefined;
     getLogoUrl(): string | undefined;
     getName(): string | undefined;
+    getType(): AppType | undefined;
     // (undocumented)
     json(): bkper.App;
     patch(): Promise<App>;
@@ -113,6 +114,12 @@ export class App {
     setUserEmails(emails?: string): App;
     setWebhookUrlDev(webhookUrlDev: string): App;
     update(): Promise<App>;
+}
+
+// @public
+export enum AppType {
+    APP = "APP",
+    BOT = "BOT"
 }
 
 // @public
