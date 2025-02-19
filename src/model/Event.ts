@@ -58,7 +58,7 @@ export class Event {
   }
 
   /**
-   * @returns Bot Responses associated to this Event
+   * @returns The Bot Responses associated to this Event
    */
   public getBotResponses(): BotResponse[] {
     if (this.botResponses !== undefined) {

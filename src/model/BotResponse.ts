@@ -35,4 +35,11 @@ export class BotResponse {
         return this.payload.message;
     }
 
+    /**
+     * @returns The date this Bot Response was created
+     */
+    public getCreatedAt(): Date | undefined {
+      return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
+    }
+
 }
