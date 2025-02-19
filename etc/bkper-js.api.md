@@ -303,6 +303,18 @@ export class Book {
 }
 
 // @public
+export class BotResponse {
+    constructor(payload?: bkper.BotResponse);
+    getAgentId(): string | undefined;
+    // (undocumented)
+    getCreatedAt(): Date | undefined;
+    getMessage(): string | undefined;
+    getType(): BotResponseType | undefined;
+    // (undocumented)
+    payload: bkper.BotResponse;
+}
+
+// @public
 export enum BotResponseType {
     ERROR = "ERROR",
     INFO = "INFO",
@@ -393,8 +405,6 @@ export class Event {
     constructor(payload?: bkper.Event);
     // (undocumented)
     getAgent(): Agent | undefined;
-    // Warning: (ae-forgotten-export) The symbol "BotResponse" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     getBotResponses(): BotResponse[];
     // (undocumented)
