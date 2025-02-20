@@ -1,6 +1,6 @@
 import { Agent } from "./Agent.js";
 import { BotResponse } from "./BotResponse.js";
-import { EventType } from "./Enums.js";
+import { BotResponseType, EventType } from "./Enums.js";
 import { User } from "./User.js";
 
 /**
@@ -72,6 +72,19 @@ export class Event {
     }
     this.botResponses = botResponses;
     return this.botResponses;
+  }
+
+  /**
+   * @returns True if this Event has at least one Bot Response of type ERROR
+   */
+  public hasErrorResponse(): boolean {
+    const botResponses = this.getBotResponses();
+    for (const botResponse of botResponses) {
+      if (botResponse.getType() === BotResponseType.ERROR) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

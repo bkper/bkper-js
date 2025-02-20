@@ -414,6 +414,8 @@ export class Event {
     // (undocumented)
     getUser(): User | undefined;
     // (undocumented)
+    hasErrorResponse(): boolean;
+    // (undocumented)
     json(): bkper.Event;
     // (undocumented)
     payload: bkper.Event;
