@@ -1,5 +1,5 @@
 import { createApp, patchApp, updateApp } from "../service/app-service.js";
-import { AppType } from "./Enums.js";
+import { AppType, EventType } from "./Enums.js";
 
 /**
  * Defines an App on Bkper.
@@ -59,6 +59,21 @@ export class App {
   public getType(): AppType | undefined {
     const events = this.payload.events;
     return events && events.length > 0 ? AppType.BOT : AppType.APP;
+  }
+
+  /**
+   * @return True if this App has events bound to it
+   */
+  public hasEvents(): boolean {
+    const events = this.getEvents() || [];
+    return events.length > 0;
+  }
+
+  /**
+   * @return The events bound to this App
+   */
+  public getEvents(): EventType[] | undefined {
+    return this.payload.events as EventType[];
   }
 
   /**
