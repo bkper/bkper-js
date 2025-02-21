@@ -98,11 +98,12 @@ export class App {
     constructor(payload?: bkper.App);
     create(): Promise<App>;
     getDescription(): string | undefined;
+    getEvents(): EventType[] | undefined;
     // (undocumented)
     getId(): string | undefined;
     getLogoUrl(): string | undefined;
     getName(): string | undefined;
-    getType(): AppType | undefined;
+    hasEvents(): boolean;
     // (undocumented)
     json(): bkper.App;
     patch(): Promise<App>;
@@ -114,12 +115,6 @@ export class App {
     setUserEmails(emails?: string): App;
     setWebhookUrlDev(webhookUrlDev: string): App;
     update(): Promise<App>;
-}
-
-// @public
-export enum AppType {
-    APP = "APP",
-    BOT = "BOT"
 }
 
 // @public
