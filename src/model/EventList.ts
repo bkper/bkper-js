@@ -23,7 +23,6 @@ export class EventList {
     return this.payload.cursor;
   }
 
-
   /**
    * @returns The first Event in the list.
    */
@@ -48,7 +47,7 @@ export class EventList {
    * @returns An array of Event objects.
    */
   public getItems(): Event[] {
-    return this.payload.items?.map(event => new Event(event)) || [];
+    return this.payload.items?.map(event => new Event(this.book, event)) || [];
   }
 
 }

@@ -1,4 +1,5 @@
 import { Agent } from "./Agent.js";
+import { Book } from "./Book.js";
 import { BotResponse } from "./BotResponse.js";
 import { BotResponseType, EventType } from "./Enums.js";
 import { User } from "./User.js";
@@ -16,9 +17,13 @@ export class Event {
   public payload: bkper.Event;
 
   /** @internal */
+  private book: Book;
+
+  /** @internal */
   private botResponses?: BotResponse[];
 
-  constructor(payload?: bkper.Event) {
+  constructor(book: Book, payload?: bkper.Event) {
+    this.book = book;
     this.payload = payload || {};
   }
 
