@@ -1,3 +1,4 @@
+import { Event } from './Event.js';
 import { BotResponseType } from "./Enums.js";
 
 /**
@@ -10,7 +11,11 @@ export class BotResponse {
 
     public payload: bkper.BotResponse;
 
-    constructor(payload?: bkper.BotResponse) {
+    /** @internal */
+    private event: Event;
+
+    constructor(event: Event, payload?: bkper.BotResponse) {
+        this.event = event;
         this.payload = payload || {};
     }
 
@@ -39,7 +44,7 @@ export class BotResponse {
      * @returns The date this Bot Response was created
      */
     public getCreatedAt(): Date | undefined {
-      return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
+        return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
     }
 
 }

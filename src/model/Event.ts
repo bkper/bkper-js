@@ -67,7 +67,7 @@ export class Event {
     let botResponses: BotResponse[] = [];
     if (this.payload.botResponses) {
       for (const botResponse of this.payload.botResponses) {
-        botResponses.push(new BotResponse(botResponse as bkper.BotResponse));
+        botResponses.push(new BotResponse(this, botResponse as bkper.BotResponse));
       }
     }
     this.botResponses = botResponses;
