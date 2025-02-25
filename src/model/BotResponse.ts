@@ -1,3 +1,4 @@
+import * as EventService from '../service/event-service.js';
 import { Event } from './Event.js';
 import { BotResponseType } from "./Enums.js";
 
@@ -45,6 +46,18 @@ export class BotResponse {
      */
     public getCreatedAt(): Date | undefined {
         return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
+    }
+
+    /**
+     * @returns The updated Bot Response
+     */
+    public async replay(): Promise<this> {
+        const eventId = this.event.getId();
+        if (eventId == null) {
+            throw new Error("Event id null!");
+        }
+        this.payload = await EventService.replayEvent(this.event.getBook(), eventId, this.payload);
+        return this;
     }
 
 }
