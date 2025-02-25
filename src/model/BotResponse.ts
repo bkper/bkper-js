@@ -56,7 +56,11 @@ export class BotResponse {
         if (eventId == null) {
             throw new Error("Event id null!");
         }
-        this.payload = await EventService.replayEvent(this.event.getBook(), eventId, this.payload);
+        const agentId = this.getAgentId();
+        if (agentId == null) {
+            throw new Error("Agent id null!");
+        }
+        this.payload = await EventService.replayEvent(this.event.getBook(), eventId, agentId);
         return this;
     }
 

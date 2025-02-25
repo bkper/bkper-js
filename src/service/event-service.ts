@@ -15,13 +15,13 @@ export async function listEvents(book: Book, afterDate: string | null, beforeDat
   return response.data;
 }
 
-export async function replayEvent(book: Book, eventId: string, botResponse: bkper.BotResponse): Promise<bkper.BotResponse> {
-  const response = await new HttpBooksApiV5Request(`${book.getId()}/events/${eventId}/replay`).setPayload(botResponse).fetch();
+export async function replayEvent(book: Book, eventId: string, agentId: string): Promise<bkper.BotResponse> {
+  const response = await new HttpBooksApiV5Request(`${book.getId()}/events/${eventId}/responses/${agentId}`).setMethod('PUT').fetch();
   return response.data;
 }
 
 export async function replayEventsBatch(book: Book, eventList: bkper.EventList, errorsOnly?: boolean): Promise<void> {
-  let request = new HttpBooksApiV5Request(`${book.getId()}/events/replay/batch`).setPayload(eventList);
+  let request = new HttpBooksApiV5Request(`${book.getId()}/events/replay/batch`).setMethod('PATCH').setPayload(eventList);
   if (errorsOnly) {
     request.addParam('errorsOnly', errorsOnly);
   }
