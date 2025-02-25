@@ -35,6 +35,20 @@ export class Event {
   }
 
   /**
+   * @returns The book in which the Event was created
+   */
+  public getBook(): Book {
+    return this.book;
+  }
+
+  /**
+   * @returns The id of the Event
+   */
+  public getId(): string | undefined {
+    return this.payload.id;
+  }
+
+  /**
    * @returns The user who performed the Event
    */
   public getUser(): User | undefined {
