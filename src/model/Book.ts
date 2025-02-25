@@ -19,6 +19,7 @@ import { Transaction } from './Transaction.js';
 import { TransactionList } from './TransactionList.js';
 import { BalancesReport } from './BalancesReport.js';
 import { App } from './App.js';
+import { Event } from './Event.js';
 
 /**
  *
@@ -484,6 +485,14 @@ export class Book {
     await TransactionService.trashTransactionsBatch(this.getId(), transactionPayloads);
   }
 
+  /**
+   * Replay [[Events]] on the Book, in batch. 
+   */
+  public async batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void> {
+    const eventPayloads = events.map(event => event.json());
+    const eventList: bkper.EventList = { items: eventPayloads };
+    await EventService.replayEventsBatch(this, eventList, errorOnly);
+  }
 
   /**
    * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
