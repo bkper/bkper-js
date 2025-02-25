@@ -9,8 +9,22 @@ export async function listEvents(book: Book, afterDate: string | null, beforeDat
   request.addParam('resoureId', resourceId);
   request.addParam('limit', limit);
   if (cursor != null) {
-      request.setHeader('cursor', cursor);
+    request.setHeader('cursor', cursor);
   }
   var response = await request.fetch();
+  return response.data;
+}
+
+export async function replayEvent(book: Book, eventId: string, botResponse: bkper.BotResponse): Promise<bkper.BotResponse> {
+  const response = await new HttpBooksApiV5Request(`${book.getId()}/events/${eventId}/replay`).setPayload(botResponse).fetch();
+  return response.data;
+}
+
+export async function replayEventsBatch(book: Book, eventList: bkper.EventList, errorsOnly?: boolean): Promise<void> {
+  let request = new HttpBooksApiV5Request(`${book.getId()}/events/replay/batch`).setPayload(eventList);
+  if (errorsOnly) {
+    request.addParam('errorsOnly', errorsOnly);
+  }
+  const response = await request.fetch();
   return response.data;
 }
