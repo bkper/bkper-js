@@ -15,8 +15,13 @@ export async function listEvents(book: Book, afterDate: string | null, beforeDat
   return response.data;
 }
 
-export async function replayEvent(book: Book, eventId: string, agentId: string): Promise<bkper.BotResponse> {
+export async function replayBotResponse(book: Book, eventId: string, agentId: string): Promise<bkper.BotResponse> {
   const response = await new HttpBooksApiV5Request(`${book.getId()}/events/${eventId}/responses/${agentId}`).setMethod('PUT').fetch();
+  return response.data;
+}
+
+export async function deleteBotResponse(book: Book, eventId: string, agentId: string): Promise<bkper.BotResponse> {
+  const response = await new HttpBooksApiV5Request(`${book.getId()}/events/${eventId}/responses/${agentId}`).setMethod('DELETE').fetch();
   return response.data;
 }
 

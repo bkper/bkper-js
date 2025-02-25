@@ -49,6 +49,8 @@ export class BotResponse {
     }
 
     /**
+     * Replay this Bot Response.
+     * 
      * @returns The updated Bot Response
      */
     public async replay(): Promise<this> {
@@ -60,7 +62,25 @@ export class BotResponse {
         if (agentId == null) {
             throw new Error("Agent id null!");
         }
-        this.payload = await EventService.replayEvent(this.event.getBook(), eventId, agentId);
+        this.payload = await EventService.replayBotResponse(this.event.getBook(), eventId, agentId);
+        return this;
+    }
+
+    /**
+     * Delete this Bot Response.
+     * 
+     * @returns The deleted Bot Response
+     */
+    public async remove(): Promise<this> {
+        const eventId = this.event.getId();
+        if (eventId == null) {
+            throw new Error("Event id null!");
+        }
+        const agentId = this.getAgentId();
+        if (agentId == null) {
+            throw new Error("Agent id null!");
+        }
+        this.payload = await EventService.deleteBotResponse(this.event.getBook(), eventId, agentId);
         return this;
     }
 
