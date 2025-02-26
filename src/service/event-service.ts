@@ -15,12 +15,12 @@ export async function listEvents(book: Book, afterDate: string | null, beforeDat
   return response.data;
 }
 
-export async function replayBotResponse(book: Book, eventId: string, agentId: string): Promise<bkper.BotResponse> {
+export async function replayBotResponse(book: Book, eventId: string, agentId: string): Promise<bkper.Event> {
   const response = await new HttpBooksApiV5Request(`${book.getId()}/events/${eventId}/responses/${agentId}`).setMethod('PUT').fetch();
   return response.data;
 }
 
-export async function deleteBotResponse(book: Book, eventId: string, agentId: string): Promise<bkper.BotResponse> {
+export async function deleteBotResponse(book: Book, eventId: string, agentId: string): Promise<bkper.Event> {
   const response = await new HttpBooksApiV5Request(`${book.getId()}/events/${eventId}/responses/${agentId}`).setMethod('DELETE').fetch();
   return response.data;
 }
@@ -30,6 +30,5 @@ export async function replayEventsBatch(book: Book, eventList: bkper.EventList, 
   if (errorsOnly) {
     request.addParam('errorsOnly', errorsOnly);
   }
-  const response = await request.fetch();
-  return response.data;
+  await request.fetch();
 }

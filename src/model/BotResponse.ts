@@ -62,7 +62,9 @@ export class BotResponse {
         if (agentId == null) {
             throw new Error("Agent id null!");
         }
-        this.payload = await EventService.replayBotResponse(this.event.getBook(), eventId, agentId);
+        const updatedEventPayload = await EventService.replayBotResponse(this.event.getBook(), eventId, agentId);
+        this.event.payload = updatedEventPayload;
+        this.findAndUpdateBotResponsePayload(updatedEventPayload);
         return this;
     }
 
@@ -80,8 +82,20 @@ export class BotResponse {
         if (agentId == null) {
             throw new Error("Agent id null!");
         }
-        this.payload = await EventService.deleteBotResponse(this.event.getBook(), eventId, agentId);
+        const updatedEventPayload = await EventService.deleteBotResponse(this.event.getBook(), eventId, agentId);
+        this.event.payload = updatedEventPayload;
+        this.findAndUpdateBotResponsePayload(updatedEventPayload);
         return this;
+    }
+
+    /** @internal */
+    private findAndUpdateBotResponsePayload(event: bkper.Event): void {
+        if (event && event.botResponses) {
+            const updatedPayload = event.botResponses.find(r => r.agentId && r.agentId === this.getAgentId());
+            if (updatedPayload) {
+                this.payload = updatedPayload;
+            }
+        }
     }
 
 }
