@@ -198,6 +198,7 @@ export class Book {
     constructor(payload?: bkper.Book);
     audit(): void;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
+    batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     batchTrashTransactions(transactions: Transaction[]): Promise<void>;
     create(): Promise<Book>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
@@ -299,7 +300,7 @@ export class Book {
 
 // @public
 export class BotResponse {
-    constructor(payload?: bkper.BotResponse);
+    constructor(event: Event, payload?: bkper.BotResponse);
     getAgentId(): string | undefined;
     // (undocumented)
     getCreatedAt(): Date | undefined;
@@ -307,6 +308,8 @@ export class BotResponse {
     getType(): BotResponseType | undefined;
     // (undocumented)
     payload: bkper.BotResponse;
+    remove(): Promise<this>;
+    replay(): Promise<this>;
 }
 
 // @public
@@ -397,13 +400,17 @@ export enum DecimalSeparator {
 
 // @public
 export class Event {
-    constructor(payload?: bkper.Event);
+    constructor(book: Book, payload?: bkper.Event);
     // (undocumented)
     getAgent(): Agent | undefined;
+    // (undocumented)
+    getBook(): Book;
     // (undocumented)
     getBotResponses(): BotResponse[];
     // (undocumented)
     getCreatedAt(): Date | undefined;
+    // (undocumented)
+    getId(): string | undefined;
     // (undocumented)
     getType(): EventType | undefined;
     // (undocumented)
