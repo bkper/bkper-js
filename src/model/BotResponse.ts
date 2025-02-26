@@ -49,6 +49,13 @@ export class BotResponse {
     }
 
     /**
+     * @returns The Event this Bot Response is associated to
+     */
+    public getEvent(): Event {
+        return this.event;
+    }
+
+    /**
      * Replay this Bot Response.
      * 
      * @returns The updated Bot Response

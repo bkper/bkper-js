@@ -304,6 +304,8 @@ export class BotResponse {
     getAgentId(): string | undefined;
     // (undocumented)
     getCreatedAt(): Date | undefined;
+    // (undocumented)
+    getEvent(): Event;
     getMessage(): string | undefined;
     getType(): BotResponseType | undefined;
     // (undocumented)
