@@ -489,7 +489,8 @@ export class Book {
    * Replay [[Events]] on the Book, in batch. 
    */
   public async batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void> {
-    const eventPayloads = events.map(event => event.json());
+    const eventIds = events.map(event => event.getId());
+    const eventPayloads: bkper.Event[] = eventIds.map(id => ({ id: id }));
     const eventList: bkper.EventList = { items: eventPayloads };
     await EventService.replayEventsBatch(this, eventList, errorOnly);
   }
