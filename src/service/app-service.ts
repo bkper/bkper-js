@@ -13,6 +13,11 @@ export async function getApps(): Promise<bkper.App[]> {
   return appsJson;
 }
 
+export async function getConversations(): Promise<bkper.Conversation[]> {
+  const response = await new HttpApiRequest(`v5/apps/conversations`).setMethod('GET').fetch();
+  return response.data?.items || [];
+}
+
 export async function createApp(app: bkper.App): Promise<bkper.App> {
   var response = await new HttpApiRequest(`v5/apps`).setMethod('POST').setPayload(app).fetch();
   return response.data;
