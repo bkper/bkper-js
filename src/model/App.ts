@@ -30,11 +30,18 @@ export class App {
    * @returns This App, for chainning.
    */
   public setWebhookUrlDev(webhookUrlDev: string): App {
-    if (webhookUrlDev) {
-      this.payload.webhookUrlDev = webhookUrlDev;
-    } else {
-      this.payload.webhookUrlDev = 'null';
-    }
+    this.payload.webhookUrlDev = webhookUrlDev;
+    return this;
+  }
+
+  /**
+   * 
+   * Sets the conversation url for development.
+   * 
+   * @returns This App, for chainning.
+   */
+  public setConversationUrlDev(conversationUrlDev: string): App {
+    this.payload.conversationUrlDev = conversationUrlDev;
     return this;
   }
 
@@ -73,6 +80,13 @@ export class App {
    */
   public getLogoUrl(): string | undefined {
     return this.payload.logoUrl;
+  }
+
+  /**
+   * @return The logo url of this App in dark mode
+   */
+  public getLogoUrlDark(): string | undefined {
+    return this.payload.logoUrlDark;
   }
 
   /**
