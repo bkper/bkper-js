@@ -56,7 +56,7 @@ export class Event {
   }
 
   /**
-   * @returns The user who performed the Event
+   * @returns The Agent who performed the Event
    */
   public getAgent(): Agent | undefined {
     return this.payload.agent ? new Agent(this.payload.agent) : undefined;

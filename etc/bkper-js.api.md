@@ -186,6 +186,7 @@ export class Bkper {
     static getBook(id: string, includeAccounts?: boolean): Promise<Book>;
     static getBooks(): Promise<Book[]>;
     static getCollections(): Promise<Collection[]>;
+    static getConversations(): Promise<Conversation[]>;
     static getTemplates(): Promise<Template[]>;
     static getUser(): Promise<User>;
     // @deprecated
@@ -395,6 +396,27 @@ export class Connection {
 }
 
 // @public
+export class Conversation {
+    constructor(payload?: bkper.Conversation);
+    // (undocumented)
+    getAgent(): Agent | undefined;
+    // (undocumented)
+    getCreatedAt(): Date | undefined;
+    // (undocumented)
+    getId(): string | undefined;
+    // (undocumented)
+    getMessages(): Message[];
+    // (undocumented)
+    getTitle(): string | undefined;
+    // (undocumented)
+    getUpdatedAt(): Date | undefined;
+    // (undocumented)
+    json(): bkper.Conversation;
+    // (undocumented)
+    payload: bkper.Conversation;
+}
+
+// @public
 export enum DecimalSeparator {
     // (undocumented)
     COMMA = "COMMA",
@@ -598,6 +620,25 @@ export class Integration {
         [key: string]: string;
     }): Integration;
     setProperty(key: string, value: string | null): Integration;
+}
+
+// @public
+export class Message {
+    constructor(conversation: Conversation, payload?: bkper.Message);
+    // (undocumented)
+    getAgent(): Agent | undefined;
+    // (undocumented)
+    getContent(): string | undefined;
+    // (undocumented)
+    getCreatedAt(): Date | undefined;
+    // (undocumented)
+    getId(): string | undefined;
+    // (undocumented)
+    getUser(): User | undefined;
+    // (undocumented)
+    json(): bkper.Message;
+    // (undocumented)
+    payload: bkper.Message;
 }
 
 // @public
