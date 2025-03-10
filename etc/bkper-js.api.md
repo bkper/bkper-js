@@ -102,6 +102,7 @@ export class App {
     // (undocumented)
     getId(): string | undefined;
     getLogoUrl(): string | undefined;
+    getLogoUrlDark(): string | undefined;
     getName(): string | undefined;
     hasEvents(): boolean;
     // (undocumented)
@@ -110,6 +111,7 @@ export class App {
     // (undocumented)
     payload: bkper.App;
     setClientSecret(clientSecret?: string): App;
+    setConversationUrlDev(conversationUrlDev: string): App;
     setDeveloperEmail(email?: string): App;
     setReadme(readme?: string): App;
     setUserEmails(emails?: string): App;
