@@ -96,6 +96,7 @@ export class Amount {
 // @public
 export class App {
     constructor(payload?: bkper.App);
+    chat(conversation: Conversation): Promise<Conversation | undefined>;
     create(): Promise<App>;
     getDescription(): string | undefined;
     getEvents(): EventType[] | undefined;
@@ -105,6 +106,7 @@ export class App {
     getLogoUrlDark(): string | undefined;
     getName(): string | undefined;
     hasEvents(): boolean;
+    isConversational(): boolean;
     // (undocumented)
     json(): bkper.App;
     patch(): Promise<App>;
