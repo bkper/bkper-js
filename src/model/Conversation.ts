@@ -1,3 +1,4 @@
+import * as ConversationService from "../service/conversation-service.js";
 import { Agent } from "./Agent.js";
 import { Message } from "./Message.js";
 
@@ -68,20 +69,18 @@ export class Conversation {
 
     /**
      * 
-     * @returns The Messages associated to this Conversation
+     * @returns The Messages in this Conversation
      */
-    public getMessages(): Message[] {
-        if (this.messages !== undefined) {
+    public async getMessages(): Promise<Message[]> {
+        if (this.messages != null) {
             return this.messages;
         }
-        let messages: Message[] = [];
-        if (this.payload.messages) {
-            for (const message of this.payload.messages) {
-                messages.push(new Message(this, message));
-            }
+        const conversationId = this.getId();
+        if (conversationId) {
+            const messagePayloads: bkper.Message[] = await ConversationService.getMessages(conversationId);
+            this.messages = messagePayloads.map(message => new Message(this, message));
         }
-        this.messages = messages;
-        return this.messages;
+        return this.messages || [];
     }
 
 }
