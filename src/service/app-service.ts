@@ -18,6 +18,11 @@ export async function getConversations(): Promise<bkper.Conversation[]> {
   return response.data?.items || [];
 }
 
+export async function chat(appId: string, conversation: bkper.Conversation): Promise<bkper.Conversation> {
+  const response = await new HttpApiRequest(`v5/apps/${appId}/conversations`).setMethod('POST').setPayload(conversation).fetch();
+  return response.data;
+}
+
 export async function createApp(app: bkper.App): Promise<bkper.App> {
   var response = await new HttpApiRequest(`v5/apps`).setMethod('POST').setPayload(app).fetch();
   return response.data;

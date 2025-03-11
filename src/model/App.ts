@@ -1,4 +1,5 @@
-import { createApp, patchApp, updateApp } from "../service/app-service.js";
+import * as AppService  from '../service/app-service.js'
+import { Conversation } from "./Conversation.js";
 import { EventType } from "./Enums.js";
 
 /**
@@ -76,6 +77,30 @@ export class App {
   }
 
   /**
+   * @return True if this App is conversational
+   */
+  public isConversational(): boolean {
+    return this.payload.conversational || false;
+  }
+
+  /**
+   * @return The conversation url of this App
+   */
+  public async chat(conversation: Conversation): Promise<Conversation | undefined> {
+    if (!this.isConversational()) {
+      throw new Error(`App ${this.getName()} is not conversational`);
+    }
+    const appId = this.getId();
+    if (appId) {
+      const response: bkper.Conversation = await AppService.chat(appId, conversation.json());
+      if (response) {
+        return new Conversation(response);
+      }
+    }
+    return undefined;
+  }
+
+  /**
    * @return The logo url of this App
    */
   public getLogoUrl(): string | undefined {
@@ -142,7 +167,7 @@ export class App {
    * The App id MUST be unique. If another app is already existing, an error will be thrown.
    */
   public async create(): Promise<App> {
-    await createApp(this.payload);
+    await AppService.createApp(this.payload);
     return this;
   }
 
@@ -150,7 +175,7 @@ export class App {
    * Partially update an App, applying pending changes.
    */
   public async patch(): Promise<App> {
-    await patchApp(this.payload);
+    await AppService.patchApp(this.payload);
     return this;
   }
 
@@ -158,7 +183,7 @@ export class App {
    * Perform update App, applying pending changes.
    */
   public async update(): Promise<App> {
-    await updateApp(this.payload);
+    await AppService.updateApp(this.payload);
     return this;
   }
 
