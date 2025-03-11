@@ -33,6 +33,14 @@ export class Conversation {
 
     /**
      * 
+     * @returns The Agent associated to this Conversation
+     */
+    public getAgent(): Agent {
+        return this.agent;
+    }
+
+    /**
+     * 
      * @returns The Conversation universal identifier
      */
     public getId(): string | undefined {
@@ -45,14 +53,6 @@ export class Conversation {
      */
     public getTitle(): string | undefined {
         return this.payload.title;
-    }
-
-    /**
-     * 
-     * @returns The Agent associated to this Conversation
-     */
-    public getAgent(): Agent | undefined {
-        return this.payload.agent ? new Agent(this.payload.agent) : undefined;
     }
 
     /**
@@ -104,12 +104,26 @@ export class Conversation {
     }
 
     /**
+     * 
      * @return The updated Conversation object
      */
     public async send(): Promise<Conversation> {
         const agentId = this.agent.getId();
         if (agentId) {
-            this.payload = await ConversationService.send(agentId, this.payload);
+            const updatedPayload = await ConversationService.send(agentId, this.payload);
+            this.payload = updatedPayload;
+            if (updatedPayload.agent) {
+                this.agent = new Agent(updatedPayload.agent);
+            }
+            if (updatedPayload.messages) {
+                if (!this.messages) {
+                    this.messages = [];
+                }
+                for (const messagePayload of updatedPayload.messages) {
+                    this.messages.push(new Message(this, messagePayload));
+                }
+                this.payload.messages = this.messages.map(message => message.json());
+            }
         }
         return this;
     }

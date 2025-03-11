@@ -402,7 +402,7 @@ export class Conversation {
     // (undocumented)
     addMessage(message: Message): Conversation;
     // (undocumented)
-    getAgent(): Agent | undefined;
+    getAgent(): Agent;
     // (undocumented)
     getCreatedAt(): Date | undefined;
     // (undocumented)
