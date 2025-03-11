@@ -83,4 +83,17 @@ export class Conversation {
         return this.messages || [];
     }
 
+    /**
+     * 
+     * @param message The Message to add to this Conversation
+     * @returns This Conversation, for chaining
+     */
+    public addMessage(message: Message): Conversation {
+        if (!this.messages) {
+            this.messages = [];
+        }
+        this.messages.push(message);
+        return this;
+    }
+
 }
