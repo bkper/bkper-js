@@ -11,6 +11,7 @@ import { Config } from "./Config.js";
 import { Template } from "./Template.js";
 import { Collection } from "./Collection.js";
 import { Conversation } from "./Conversation.js";
+import { Agent } from "./Agent.js";
 
 /**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
@@ -81,8 +82,14 @@ export class Bkper {
    * @returns The retrieved list of Conversations
    */
   public static async getConversations(): Promise<Conversation[]> {
-    let conversations = await AppService.getConversations();
-    return conversations.map(c => new Conversation(c));
+    const conversationPayloads = await AppService.getConversations();
+    let conversations: Conversation[] = [];
+    for (const payload of conversationPayloads) {
+      const agent = new Agent(payload.agent);
+      const conversation = new Conversation(agent, payload);
+      conversations.push(conversation);
+    }
+    return conversations;
   }
 
   /**

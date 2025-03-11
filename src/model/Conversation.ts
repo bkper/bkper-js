@@ -14,13 +14,14 @@ export class Conversation {
     public payload: bkper.Conversation;
 
     /** @internal */
+    private agent: Agent;
+
+    /** @internal */
     private messages?: Message[];
 
-    constructor(payload?: bkper.Conversation, agent?: bkper.Agent) {
+    constructor(agent: Agent, payload?: bkper.Conversation) {
+        this.agent = agent;
         this.payload = payload || {};
-        if (agent) {
-            this.payload.agent = agent;
-        }
     }
 
     /**
@@ -106,7 +107,7 @@ export class Conversation {
      * @return The updated Conversation object
      */
     public async send(): Promise<Conversation> {
-        const agentId = this.getAgent()?.getId();
+        const agentId = this.agent.getId();
         if (agentId) {
             this.payload = await ConversationService.send(agentId, this.payload);
         }
