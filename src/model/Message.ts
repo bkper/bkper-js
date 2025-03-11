@@ -62,10 +62,20 @@ export class Message {
         
     /**
      * 
-     * @returns The content text of the Message
+     * @returns The text content of the Message
      */
     public getContent(): string | undefined {
         return this.payload.content;
+    }
+
+    /**
+     * 
+     * @param content The text content of the Message
+     * 
+     * @returns This Message, 
+     */
+    public setContent(content: string): void {
+        this.payload.content = content;
     }
 
 }

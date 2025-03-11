@@ -643,6 +643,8 @@ export class Message {
     json(): bkper.Message;
     // (undocumented)
     payload: bkper.Message;
+    // (undocumented)
+    setContent(content: string): void;
 }
 
 // @public
