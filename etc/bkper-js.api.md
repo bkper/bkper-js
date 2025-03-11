@@ -398,7 +398,7 @@ export class Connection {
 
 // @public
 export class Conversation {
-    constructor(payload?: bkper.Conversation, agent?: bkper.Agent);
+    constructor(agent: Agent, payload?: bkper.Conversation);
     // (undocumented)
     addMessage(message: Message): Conversation;
     // (undocumented)
