@@ -1,5 +1,4 @@
-import * as AppService  from '../service/app-service.js'
-import { Conversation } from "./Conversation.js";
+import * as AppService  from '../service/app-service.js';
 import { EventType } from "./Enums.js";
 
 /**
@@ -81,23 +80,6 @@ export class App {
    */
   public isConversational(): boolean {
     return this.payload.conversational || false;
-  }
-
-  /**
-   * @return The conversation url of this App
-   */
-  public async chat(conversation: Conversation): Promise<Conversation | undefined> {
-    if (!this.isConversational()) {
-      throw new Error(`App ${this.getName()} is not conversational`);
-    }
-    const appId = this.getId();
-    if (appId) {
-      const response: bkper.Conversation = await AppService.chat(appId, conversation.json());
-      if (response) {
-        return new Conversation(response);
-      }
-    }
-    return undefined;
   }
 
   /**

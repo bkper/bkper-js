@@ -16,8 +16,11 @@ export class Conversation {
     /** @internal */
     private messages?: Message[];
 
-    constructor(payload?: bkper.Conversation) {
+    constructor(payload?: bkper.Conversation, agent?: bkper.Agent) {
         this.payload = payload || {};
+        if (agent) {
+            this.payload.agent = agent;
+        }
     }
 
     /**
@@ -78,6 +81,7 @@ export class Conversation {
         const conversationId = this.getId();
         if (conversationId) {
             const messagePayloads: bkper.Message[] = await ConversationService.getMessages(conversationId);
+            this.payload.messages = messagePayloads;
             this.messages = messagePayloads.map(message => new Message(this, message));
         }
         return this.messages || [];
@@ -93,6 +97,18 @@ export class Conversation {
             this.messages = [];
         }
         this.messages.push(message);
+        this.payload.messages = this.messages.map(message => message.json());
+        return this;
+    }
+
+    /**
+     * @return The conversation url of this App
+     */
+    public async send(): Promise<Conversation> {
+        const agentId = this.getAgent()?.getId();
+        if (agentId) {
+            this.payload = await ConversationService.send(agentId, this.payload);
+        }
         return this;
     }
 

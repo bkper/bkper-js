@@ -96,7 +96,6 @@ export class Amount {
 // @public
 export class App {
     constructor(payload?: bkper.App);
-    chat(conversation: Conversation): Promise<Conversation | undefined>;
     create(): Promise<App>;
     getDescription(): string | undefined;
     getEvents(): EventType[] | undefined;
@@ -399,7 +398,9 @@ export class Connection {
 
 // @public
 export class Conversation {
-    constructor(payload?: bkper.Conversation);
+    constructor(payload?: bkper.Conversation, agent?: bkper.Agent);
+    // (undocumented)
+    addMessage(message: Message): Conversation;
     // (undocumented)
     getAgent(): Agent | undefined;
     // (undocumented)
@@ -407,7 +408,7 @@ export class Conversation {
     // (undocumented)
     getId(): string | undefined;
     // (undocumented)
-    getMessages(): Message[];
+    getMessages(): Promise<Message[]>;
     // (undocumented)
     getTitle(): string | undefined;
     // (undocumented)
@@ -416,6 +417,7 @@ export class Conversation {
     json(): bkper.Conversation;
     // (undocumented)
     payload: bkper.Conversation;
+    send(): Promise<Conversation>;
 }
 
 // @public
