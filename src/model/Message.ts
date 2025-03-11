@@ -72,10 +72,11 @@ export class Message {
      * 
      * @param content The text content of the Message
      * 
-     * @returns This Message, 
+     * @returns This Message, for chaining
      */
-    public setContent(content: string): void {
+    public setContent(content: string): Message {
         this.payload.content = content;
+        return this;
     }
 
 }

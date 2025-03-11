@@ -90,6 +90,7 @@ export class Conversation {
     /**
      * 
      * @param message The Message to add to this Conversation
+     * 
      * @returns This Conversation, for chaining
      */
     public addMessage(message: Message): Conversation {
@@ -102,7 +103,7 @@ export class Conversation {
     }
 
     /**
-     * @return The conversation url of this App
+     * @return The updated Conversation object
      */
     public async send(): Promise<Conversation> {
         const agentId = this.getAgent()?.getId();

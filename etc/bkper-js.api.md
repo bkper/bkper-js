@@ -644,7 +644,7 @@ export class Message {
     // (undocumented)
     payload: bkper.Message;
     // (undocumented)
-    setContent(content: string): void;
+    setContent(content: string): Message;
 }
 
 // @public
