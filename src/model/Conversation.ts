@@ -89,6 +89,24 @@ export class Conversation {
     }
 
     /**
+     * Performs create Conversation
+     * 
+     * @returns The created Conversation object
+     */
+    public async create(): Promise<Conversation> {
+        const agentId = this.agent.getId();
+        if (!agentId) {
+            throw new Error('Agent id null!');
+        }
+        this.payload = await ConversationService.createConversation(agentId, this.payload);
+        // Update agent
+        if (this.payload.agent) {
+            this.agent = new Agent(this.payload.agent);
+        }
+        return this;
+    }
+
+    /**
      * @param message The Message to send to the Conversation
      * 
      * @returns The updated Conversation object
