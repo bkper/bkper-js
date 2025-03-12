@@ -400,8 +400,6 @@ export class Connection {
 export class Conversation {
     constructor(agent: Agent, payload?: bkper.Conversation);
     // (undocumented)
-    addMessage(message: Message): Conversation;
-    // (undocumented)
     getAgent(): Agent;
     // (undocumented)
     getCreatedAt(): Date | undefined;
@@ -417,7 +415,8 @@ export class Conversation {
     json(): bkper.Conversation;
     // (undocumented)
     payload: bkper.Conversation;
-    send(): Promise<Conversation>;
+    // (undocumented)
+    send(message: Message): Promise<Conversation>;
 }
 
 // @public

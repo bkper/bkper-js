@@ -89,42 +89,41 @@ export class Conversation {
     }
 
     /**
+     * @param message The Message to send to the Conversation
      * 
-     * @param message The Message to add to this Conversation
-     * 
-     * @returns This Conversation, for chaining
+     * @returns The updated Conversation object
      */
-    public addMessage(message: Message): Conversation {
-        if (!this.messages) {
-            this.messages = [];
-        }
-        this.messages.push(message);
-        this.payload.messages = this.messages.map(message => message.json());
-        return this;
-    }
+    public async send(message: Message): Promise<Conversation> {
 
-    /**
-     * 
-     * @return The updated Conversation object
-     */
-    public async send(): Promise<Conversation> {
         const agentId = this.agent.getId();
-        if (agentId) {
-            const updatedPayload = await ConversationService.send(agentId, this.payload);
-            this.payload = updatedPayload;
-            if (updatedPayload.agent) {
-                this.agent = new Agent(updatedPayload.agent);
-            }
-            if (updatedPayload.messages) {
-                if (!this.messages) {
-                    this.messages = [];
-                }
-                for (const messagePayload of updatedPayload.messages) {
-                    this.messages.push(new Message(this, messagePayload));
-                }
-                this.payload.messages = this.messages.map(message => message.json());
-            }
+        if (!agentId) {
+            throw new Error('Agent id null!');
         }
+
+        // Add message to payload
+        if (!this.payload.messages) {
+            this.payload.messages = [];
+        }
+        this.payload.messages.push(message.json());
+
+        // Send conversation
+        const updatedPayload = await ConversationService.send(agentId, this.payload);
+        this.payload = updatedPayload;
+
+        // Update agent and messages
+        if (updatedPayload.agent) {
+            this.agent = new Agent(updatedPayload.agent);
+        }
+        if (updatedPayload.messages) {
+            if (!this.messages) {
+                this.messages = [];
+            }
+            for (const messagePayload of updatedPayload.messages) {
+                this.messages.push(new Message(this, messagePayload));
+            }
+            this.payload.messages = this.messages.map(m => m.json());
+        }
+
         return this;
     }
 
