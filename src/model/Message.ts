@@ -1,3 +1,4 @@
+import * as ConversationService from "../service/conversation-service.js";
 import { Agent } from "./Agent.js";
 import { Conversation } from "./Conversation.js";
 import { User } from "./User.js";
@@ -15,6 +16,9 @@ export class Message {
 
     /** @internal */
     private conversation: Conversation;
+
+    /** @internal */
+    private parent?: Message;
 
     constructor(conversation: Conversation, payload?: bkper.Message) {
         this.conversation = conversation;
@@ -38,7 +42,7 @@ export class Message {
 
     /**
      * 
-     * @returns The Agent who created the Message, if any
+     * @returns The Agent associated with the Message, in any
      */
     public getAgent(): Agent | undefined {
         return this.payload.agent ? new Agent(this.payload.agent) : undefined;
@@ -46,7 +50,7 @@ export class Message {
 
     /**
      * 
-     * @returns The User who created the Message, if any
+     * @returns The User associated with the Message
      */
     public getUser(): User | undefined {
         return this.payload.user ? new User(this.payload.user) : undefined;
@@ -147,6 +151,25 @@ export class Message {
      */
     public deleteProperty(key: string): Message {
         this.setProperty(key, null);
+        return this;
+    }
+
+    /**
+     * Performs create Message
+     * 
+     * @returns The created Message object
+     */
+    public async create(): Promise<Message> {
+        const conversationId = this.conversation.getId();
+        if (!conversationId) {
+            throw new Error('Conversation id null!');
+        }
+        this.payload = await ConversationService.createMessage(conversationId, this.payload);
+        this.conversation.updateMessagesCache(this);
+        if (this.payload.parent) {
+            this.parent = new Message(this.conversation, this.payload.parent);
+            this.conversation.updateMessagesCache(this.parent);
+        }
         return this;
     }
 

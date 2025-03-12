@@ -17,7 +17,7 @@ export class Conversation {
     private agent: Agent;
 
     /** @internal */
-    private messages?: Message[];
+    private messagesMap?: Map<string, Message>;
 
     constructor(agent: Agent, payload?: bkper.Conversation) {
         this.agent = agent;
@@ -77,16 +77,32 @@ export class Conversation {
      * @returns The Messages in this Conversation
      */
     public async getMessages(): Promise<Message[]> {
-        if (this.messages != null) {
-            return this.messages;
+        if (this.messagesMap != null) {
+            return Array.from(this.messagesMap.values());
         }
         const conversationId = this.getId();
         if (!conversationId) {
             throw new Error('Conversation id null!');
         }
+        if (!this.messagesMap) {
+            this.messagesMap = new Map<string, Message>();
+        }
         const messagePayloads: bkper.Message[] = await ConversationService.getMessages(conversationId);
-        this.messages = messagePayloads.map(payload => new Message(this, payload));
-        return this.messages;
+        for (const payload of messagePayloads) {
+            this.updateMessagesCache(new Message(this, payload));
+        }
+        return Array.from(this.messagesMap.values());
+    }
+
+    /** @internal */
+    updateMessagesCache(message: Message): void {
+        const messageId = message.getId();
+        if (messageId) {
+            if (!this.messagesMap) {
+                this.messagesMap = new Map<string, Message>();
+            }
+            this.messagesMap.set(messageId, message);
+        }
     }
 
     /**
@@ -104,45 +120,6 @@ export class Conversation {
         if (this.payload.agent) {
             this.agent = new Agent(this.payload.agent);
         }
-        return this;
-    }
-
-    /**
-     * @param message The Message to send to the Conversation
-     * 
-     * @returns The updated Conversation object
-     */
-    public async send(message: Message): Promise<Conversation> {
-
-        const agentId = this.agent.getId();
-        if (!agentId) {
-            throw new Error('Agent id null!');
-        }
-
-        // Add message to payload
-        if (!this.payload.messages) {
-            this.payload.messages = [];
-        }
-        this.payload.messages.push(message.json());
-
-        // Send conversation
-        const updatedPayload = await ConversationService.send(agentId, this.payload);
-        this.payload = updatedPayload;
-
-        // Update agent and messages
-        if (updatedPayload.agent) {
-            this.agent = new Agent(updatedPayload.agent);
-        }
-        if (updatedPayload.messages) {
-            if (!this.messages) {
-                this.messages = [];
-            }
-            for (const messagePayload of updatedPayload.messages) {
-                this.messages.push(new Message(this, messagePayload));
-            }
-            this.payload.messages = this.messages.map(m => m.json());
-        }
-
         return this;
     }
 
