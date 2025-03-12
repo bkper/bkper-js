@@ -629,6 +629,7 @@ export class Integration {
 // @public
 export class Message {
     constructor(conversation: Conversation, payload?: bkper.Message);
+    deleteProperty(key: string): Message;
     // (undocumented)
     getAgent(): Agent | undefined;
     // (undocumented)
@@ -638,6 +639,11 @@ export class Message {
     // (undocumented)
     getId(): string | undefined;
     // (undocumented)
+    getProperties(): {
+        [key: string]: string;
+    };
+    getProperty(...keys: string[]): string | undefined;
+    // (undocumented)
     getUser(): User | undefined;
     // (undocumented)
     json(): bkper.Message;
@@ -645,6 +651,10 @@ export class Message {
     payload: bkper.Message;
     // (undocumented)
     setContent(content: string): Message;
+    setProperties(properties: {
+        [key: string]: string;
+    }): Message;
+    setProperty(key: string, value: string | null): Message;
 }
 
 // @public
