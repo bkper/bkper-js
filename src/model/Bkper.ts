@@ -1,6 +1,7 @@
 import { Book } from "./Book.js";
 import { App } from "./App.js";
 import * as AppService from '../service/app-service.js';
+import * as ConversationService from '../service/conversation-service.js';
 import * as BookService from '../service/book-service.js';
 import * as CollectionService from '../service/collection-service.js';
 import * as UserService from '../service/user-service.js';
@@ -82,7 +83,7 @@ export class Bkper {
    * @returns The retrieved list of Conversations
    */
   public static async getConversations(): Promise<Conversation[]> {
-    const conversationPayloads = await AppService.getConversations();
+    const conversationPayloads = await ConversationService.getConversations();
     let conversations: Conversation[] = [];
     for (const payload of conversationPayloads) {
       const agent = new Agent(payload.agent);
