@@ -72,6 +72,7 @@ export class Conversation {
     }
 
     /**
+     * Gets the Messages that compose this Conversation
      * 
      * @returns The Messages in this Conversation
      */
@@ -80,12 +81,12 @@ export class Conversation {
             return this.messages;
         }
         const conversationId = this.getId();
-        if (conversationId) {
-            const messagePayloads: bkper.Message[] = await ConversationService.getMessages(conversationId);
-            this.payload.messages = messagePayloads;
-            this.messages = messagePayloads.map(message => new Message(this, message));
+        if (!conversationId) {
+            throw new Error('Conversation id null!');
         }
-        return this.messages || [];
+        const messagePayloads: bkper.Message[] = await ConversationService.getMessages(conversationId);
+        this.messages = messagePayloads.map(payload => new Message(this, payload));
+        return this.messages;
     }
 
     /**
