@@ -399,13 +399,13 @@ export class Connection {
 // @public
 export class Conversation {
     constructor(agent: Agent, payload?: bkper.Conversation);
+    create(): Promise<Conversation>;
     // (undocumented)
     getAgent(): Agent;
     // (undocumented)
     getCreatedAt(): Date | undefined;
     // (undocumented)
     getId(): string | undefined;
-    // (undocumented)
     getMessages(): Promise<Message[]>;
     // (undocumented)
     getTitle(): string | undefined;
@@ -415,8 +415,8 @@ export class Conversation {
     json(): bkper.Conversation;
     // (undocumented)
     payload: bkper.Conversation;
-    // (undocumented)
-    send(message: Message): Promise<Conversation>;
+    // @internal (undocumented)
+    updateMessagesCache(message: Message): void;
 }
 
 // @public
@@ -628,6 +628,7 @@ export class Integration {
 // @public
 export class Message {
     constructor(conversation: Conversation, payload?: bkper.Message);
+    create(): Promise<Message>;
     deleteProperty(key: string): Message;
     // (undocumented)
     getAgent(): Agent | undefined;
