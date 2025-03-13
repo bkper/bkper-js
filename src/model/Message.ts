@@ -155,21 +155,22 @@ export class Message {
     }
 
     /**
-     * Performs create Message
+     * Creates the Message and receives the synchronous Agent response.
      * 
-     * @returns The created Message object
+     * @returns The Agent response Message, with the created Message as its parent
      */
     public async create(): Promise<Message> {
         const conversationId = this.conversation.getId();
         if (!conversationId) {
             throw new Error('Conversation id null!');
         }
-        this.payload = await ConversationService.createMessage(conversationId, this.payload);
-        this.conversation.updateMessagesCache(this);
-        if (this.payload.parent) {
-            this.parent = new Message(this.conversation, this.payload.parent);
-            this.conversation.updateMessagesCache(this.parent);
+        const responsePayload = await ConversationService.createMessage(conversationId, this.payload);
+        if (responsePayload.parent) {
+            this.payload = responsePayload.parent;
         }
+        const responseMessage = new Message(this.conversation, responsePayload);
+        this.conversation.updateMessagesCache(this);
+        this.conversation.updateMessagesCache(responseMessage);
         return this;
     }
 
