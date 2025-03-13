@@ -61,7 +61,7 @@ export class Message {
      * @returns The Date the Message was created
      */
     public getCreatedAt(): Date | undefined {
-        return this.payload.createdAt ? new Date(this.payload.createdAt) : undefined;
+        return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
     }
 
     /**

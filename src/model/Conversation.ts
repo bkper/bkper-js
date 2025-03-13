@@ -60,7 +60,7 @@ export class Conversation {
      * @returns The Date the Conversation was created
      */
     public getCreatedAt(): Date | undefined {
-        return this.payload.createdAt ? new Date(this.payload.createdAt) : undefined;
+        return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
     }
 
     /**
@@ -68,7 +68,7 @@ export class Conversation {
      * @returns The Date the Conversation was last updated
      */
     public getUpdatedAt(): Date | undefined {
-        return this.payload.updatedAt ? new Date(this.payload.updatedAt) : undefined;
+        return this.payload.updatedAt ? new Date(new Number(this.payload.updatedAt).valueOf()) : undefined;
     }
 
     /**
