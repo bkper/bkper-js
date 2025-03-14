@@ -637,6 +637,8 @@ export class Message {
     // (undocumented)
     getContent(): string | undefined;
     // (undocumented)
+    getConversation(): Conversation;
+    // (undocumented)
     getCreatedAt(): Date | undefined;
     // (undocumented)
     getId(): string | undefined;

@@ -50,6 +50,14 @@ export class Message {
 
     /**
      * 
+     * @returns The Conversation of the Message
+     */
+    public getConversation(): Conversation {
+        return this.conversation;
+    }
+
+    /**
+     * 
      * @returns The User associated with the Message
      */
     public getUser(): User | undefined {
