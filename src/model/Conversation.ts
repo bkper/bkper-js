@@ -105,6 +105,11 @@ export class Conversation {
         }
     }
 
+    /** @internal */
+    setUpdatedAt(updatedAtMs: string): void {
+        this.payload.updatedAt = updatedAtMs;
+    }
+
     /**
      * Performs create Conversation
      * 

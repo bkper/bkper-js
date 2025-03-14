@@ -171,6 +171,10 @@ export class Message {
         const responseMessage = new Message(this.conversation, responsePayload);
         this.conversation.updateMessagesCache(this);
         this.conversation.updateMessagesCache(responseMessage);
+        // Set conversation updatedAt
+        if (responsePayload.createdAt) {
+            this.conversation.setUpdatedAt(responsePayload.createdAt);
+        }
         return this;
     }
 

@@ -416,6 +416,8 @@ export class Conversation {
     // (undocumented)
     payload: bkper.Conversation;
     // @internal (undocumented)
+    setUpdatedAt(updatedAtMs: string): void;
+    // @internal (undocumented)
     updateMessagesCache(message: Message): void;
 }
 
