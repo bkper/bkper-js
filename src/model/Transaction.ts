@@ -52,10 +52,31 @@ export class Transaction {
   /**
    * @returns The id of the agent that created this transaction
    */
-  public getAgentId(): string | undefined{
+  public getAgentId(): string | undefined {
     return this.payload.agentId;
   }
 
+  /**
+   * @returns The name of the agent that created this transaction
+   */
+  public getAgentName(): string | undefined {
+    return this.payload.agentName;
+  }
+
+  /**
+   * @returns The logo of the agent that created this transaction
+   */
+  public getAgentLogoUrl(): string | undefined {
+    return this.payload.agentLogo;
+  }
+
+  /**
+   * @returns The logo of the agent that created this transaction in dark mode
+   */
+  public getAgentLogoUrlDark(): string | undefined {
+    return this.payload.agentLogoDark;
+  }
+  
   /**
    * Remote ids are used to avoid duplication.
    * 
