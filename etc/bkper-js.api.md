@@ -63,6 +63,8 @@ export class Agent {
     // (undocumented)
     getLogoUrl(): string | undefined;
     // (undocumented)
+    getLogoUrlDark(): string | undefined;
+    // (undocumented)
     getName(): string | undefined;
     // (undocumented)
     json(): bkper.Agent;

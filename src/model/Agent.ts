@@ -44,4 +44,12 @@ export class Agent {
         return this.payload.logo;
     }
 
+    /**
+     * 
+     * @returns The Agent logo url in dark mode
+     */
+    public getLogoUrlDark(): string | undefined {
+        return this.payload.logoDark;
+    }
+
 }
