@@ -744,6 +744,12 @@ export class Transaction {
     // (undocumented)
     getAgentId(): string | undefined;
     // (undocumented)
+    getAgentLogoUrl(): string | undefined;
+    // (undocumented)
+    getAgentLogoUrlDark(): string | undefined;
+    // (undocumented)
+    getAgentName(): string | undefined;
+    // (undocumented)
     getAmount(): Amount | undefined;
     // (undocumented)
     getAmountFormatted(): string | undefined;
