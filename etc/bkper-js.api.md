@@ -101,13 +101,17 @@ export class App {
     create(): Promise<App>;
     getDescription(): string | undefined;
     getEvents(): EventType[] | undefined;
+    getFilePatterns(): string[] | undefined;
     // (undocumented)
     getId(): string | undefined;
     getLogoUrl(): string | undefined;
     getLogoUrlDark(): string | undefined;
     getName(): string | undefined;
+    getOwnerLogoUrl(): string | undefined;
+    getOwnerName(): string | undefined;
     hasEvents(): boolean;
     isConversational(): boolean;
+    isPublished(): boolean;
     // (undocumented)
     json(): bkper.App;
     patch(): Promise<App>;
