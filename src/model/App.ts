@@ -76,6 +76,13 @@ export class App {
   }
 
   /**
+   * @return True if this App is published
+   */
+  public isPublished(): boolean {
+    return this.payload.published || false;
+  }
+
+  /**
    * @return True if this App is conversational
    */
   public isConversational(): boolean {
@@ -111,6 +118,27 @@ export class App {
   public setUserEmails(emails?: string): App {
     this.payload.userEmails = emails;
     return this;
+  }
+
+  /**
+   * @return The name of the owner of this App
+   */
+  public getOwnerName(): string | undefined {
+    return this.payload.ownerName;
+  }
+
+  /**
+   * @return The logo url of the owner of this App
+   */
+  public getOwnerLogoUrl(): string | undefined {
+    return this.payload.ownerLogoUrl;
+  }
+
+  /**
+   * @return The file patterns the App handles - E.g *.pdf *.csv
+   */
+  public getFilePatterns(): string[] | undefined {
+    return this.payload.filePatterns;
   }
 
   /**
