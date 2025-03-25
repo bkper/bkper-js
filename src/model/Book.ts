@@ -502,15 +502,35 @@ export class Book {
    */
   public async batchCreateAccounts(accounts: Account[]): Promise<Account[]> {
     if (accounts.length > 0) {
-      const payload: bkper.AccountList = { items: accounts.map(a => a.payload) };
-      const createdPayloads = await AccountService.createAccounts(this.getId(), payload);
+      const accountList: bkper.AccountList = { items: accounts.map(a => a.json()) };
+      const payloads = await AccountService.createAccounts(this.getId(), accountList);
       const createdAccounts: Account[] = [];
-      for (const payload of createdPayloads) {
+      for (const payload of payloads) {
         const account = new Account(this, payload);
         createdAccounts.push(account);
         this.updateAccountCache(account);
       }
       return createdAccounts;
+    }
+    return [];
+  }
+
+  /**
+   * Create [[Groups]] on the Book, in batch.
+   * 
+   * @return The created Groups
+   */
+  public async batchCreateGroups(groups: Group[]): Promise<Group[]> {
+    if (groups.length > 0) {
+      const groupList: bkper.GroupList = { items: groups.map(g => g.json()) };
+      const payloads = await GroupService.createGroups(this.getId(), groupList);
+      const createdGroups: Group[] = [];
+      for (const payload of payloads) {
+        const group = new Group(this, payload);
+        createdGroups.push(group);
+        this.updateGroupCache(group);
+      }
+      return createdGroups;
     }
     return [];
   }

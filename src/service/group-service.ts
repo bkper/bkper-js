@@ -5,6 +5,11 @@ export async function createGroup(bookId: string, group: bkper.Group): Promise<b
   return response.data;
 }
 
+export async function createGroups(bookId: string, payload: bkper.GroupList): Promise<bkper.Group[]> {
+  const response = await new HttpBooksApiV5Request(`${bookId}/groups/batch`).setMethod('POST').setPayload(payload).fetch();
+  return response.data?.items || [];
+}
+
 export async function updateGroup(bookId: string, group: bkper.Group): Promise<bkper.Group> {
   var response = await new HttpBooksApiV5Request(`${bookId}/groups`).setMethod('PUT').setPayload(group).fetch();
   return response.data;
