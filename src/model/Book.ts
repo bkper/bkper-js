@@ -496,6 +496,26 @@ export class Book {
   }
 
   /**
+   * Create [[Accounts]] on the Book, in batch.
+   * 
+   * @return The created Accounts
+   */
+  public async batchCreateAccounts(accounts: Account[]): Promise<Account[]> {
+    if (accounts.length > 0) {
+      const payload: bkper.AccountList = { items: accounts.map(a => a.payload) };
+      const createdPayloads = await AccountService.createAccounts(this.getId(), payload);
+      const createdAccounts: Account[] = [];
+      for (const payload of createdPayloads) {
+        const account = new Account(this, payload);
+        createdAccounts.push(account);
+        this.updateAccountCache(account);
+      }
+      return createdAccounts;
+    }
+    return [];
+  }
+
+  /**
    * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
    */
   public audit(): void {
