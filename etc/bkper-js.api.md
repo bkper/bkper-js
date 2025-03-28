@@ -207,6 +207,8 @@ export class Bkper {
 export class Book {
     constructor(payload?: bkper.Book);
     audit(): void;
+    batchCreateAccounts(accounts: Account[]): Promise<Account[]>;
+    batchCreateGroups(groups: Group[]): Promise<Group[]>;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     batchTrashTransactions(transactions: Transaction[]): Promise<void>;
@@ -235,6 +237,8 @@ export class Book {
     getFractionDigits(): number | undefined;
     getGroup(idOrName?: string): Promise<Group | undefined>;
     getGroups(): Promise<Group[]>;
+    // @internal (undocumented)
+    getGroupsMap(): Map<string, Group> | undefined;
     getId(): string;
     getIntegrations(): Promise<Integration[]>;
     // (undocumented)
@@ -552,7 +556,7 @@ export class File {
 export class Group {
     constructor(book: Book, payload?: bkper.Group);
     // @internal (undocumented)
-    accounts?: Set<Account>;
+    accounts?: Map<string, Account>;
     // @internal (undocumented)
     addAccount(account: Account): void;
     // @internal (undocumented)
@@ -596,6 +600,8 @@ export class Group {
     // (undocumented)
     payload: bkper.Group;
     remove(): Promise<Group>;
+    // @internal (undocumented)
+    removeAccount(account: Account): void;
     setHidden(hidden: boolean): Group;
     setName(name: string): Group;
     setParent(group: Group | null | undefined): Group;
