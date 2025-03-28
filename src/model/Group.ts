@@ -381,10 +381,6 @@ export class Group {
     return this.payload.hasAccounts;
   }
 
-
-
-
-
   /**
    * Perform create new group.
    */

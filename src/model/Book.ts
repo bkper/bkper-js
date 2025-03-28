@@ -616,19 +616,13 @@ export class Book {
       return undefined;
     }
 
-    let account: Account | undefined;
-
     if (this.idAccountMap) {
-      account = this.idAccountMap.get(idOrName);
-      if (account) {
-        return account;
+      return this.idAccountMap.get(idOrName);
+    } else {
+      const accountPayload = await AccountService.getAccount(this.getId(), idOrName);
+      if (accountPayload) {
+        return new Account(this, accountPayload);
       }
-    }
-
-    const accountPlain = await AccountService.getAccount(this.getId(), idOrName);
-    if (accountPlain) {
-      account = new Account(this, accountPlain);
-      return account;
     }
 
     return undefined;
@@ -715,26 +709,20 @@ export class Book {
    */
   public async getGroup(idOrName?: string): Promise<Group | undefined> {
 
-    if (!idOrName) {
+    if (!idOrName || idOrName.trim() == '') {
       return undefined;
     }
 
-    idOrName = idOrName + '';
-
     if (this.idGroupMap) {
-      let group = this.idGroupMap.get(idOrName);
-      if (group) {
-        return group;
+      return this.idGroupMap.get(idOrName);
+    } else {
+      const groupPayload = await GroupService.getGroup(this.getId(), idOrName);
+      if (groupPayload) {
+        return new Group(this, groupPayload);
       }
     }
 
-    const groupPlain = await GroupService.getGroup(this.getId(), idOrName);
-    if (!groupPlain) {
-      return undefined;
-    }
-    let group = new Group(this, groupPlain);
-    this.updateGroupCache(group);
-    return group;
+    return undefined;
   }
 
 
