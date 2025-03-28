@@ -785,7 +785,7 @@ export class Book {
     if (this.idGroupMap) {
       for (const group of this.idGroupMap.values()) {
         if (group.accounts == null) {
-          group.accounts = new Set<Account>();
+          group.accounts = new Map<string, Account>();
         }
       }
     }

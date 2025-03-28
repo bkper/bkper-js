@@ -27,7 +27,7 @@ export class Group {
   private book: Book;
   
   /** @internal */
-  accounts?: Set<Account>;
+  accounts?: Map<string, Account>;
 
   constructor(book: Book, payload?: bkper.Group) {
     this.book = book;
@@ -84,7 +84,7 @@ export class Group {
   public async getAccounts(): Promise<Account[]> {
 
     if (this.accounts) {
-      return Array.from(this.accounts);
+      return Array.from(this.accounts.values());
     }
 
     let accountsPlain = await GroupService.getAccounts(this.book.getId(), this.getId());
@@ -365,13 +365,13 @@ export class Group {
 
   /** @internal */
   addAccount(account: Account): void {
-    if (account == null) {
-      return;
+    const id = account?.getId();
+    if (id) {
+      if (!this.accounts) {
+        this.accounts = new Map<string, Account>();
+      }
+      this.accounts.set(id, account);
     }
-    if (!this.accounts) {
-      this.accounts = new Set<Account>();
-    }
-    this.accounts.add(account);
   }
 
   /**
