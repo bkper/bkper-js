@@ -374,6 +374,14 @@ export class Group {
     }
   }
 
+  /** @internal */
+  removeAccount(account: Account): void {
+    const id = account?.getId();
+    if (id) {
+      this.accounts?.delete(id);
+    }
+  }
+
   /**
    * @returns True if this group has any account in it
    */

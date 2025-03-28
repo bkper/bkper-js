@@ -674,10 +674,22 @@ export class Book {
   }
 
   /** @internal */
+  private unlinkAccountsAndGroups(account: Account) {
+    const groupPayloads = account.payload.groups || [];
+    for (const groupPayload of groupPayloads) {
+      const group = this.idGroupMap?.get(groupPayload.id || "");
+      if (group != null) {
+        group.removeAccount(account);
+      }
+    }
+  }
+
+  /** @internal */
   removeAccountCache(account: Account) {
     if (this.idAccountMap) {
       this.idAccountMap.delete(account.getId() || '');
     }
+    this.unlinkAccountsAndGroups(account);
   }
 
   /** @internal */
