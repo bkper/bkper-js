@@ -529,6 +529,9 @@ export class Book {
         const group = new Group(this, payload);
         createdGroups.push(group);
         this.updateGroupCache(group);
+        if (this.idGroupMap) {
+          group.buildGroupTree(this.idGroupMap);
+        }
       }
       return createdGroups;
     }
@@ -629,6 +632,11 @@ export class Book {
     }
 
     return undefined;
+  }
+
+  /** @internal */
+  getGroupsMap(): Map<string, Group> | undefined {
+    return this.idGroupMap;
   }
 
   /** @internal */
@@ -749,18 +757,14 @@ export class Book {
     }
     let groupsObj = groups.map(group => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
-
     for (const group of groupsObj) {
       this.updateGroupCache(group);
     }
-
     for (const group of groupsObj) {
       group.buildGroupTree(this.idGroupMap);
     }
-
     return groupsObj;
   }
-
 
   /**
    * Gets all [[Accounts]] of this Book

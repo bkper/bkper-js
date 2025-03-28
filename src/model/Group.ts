@@ -391,6 +391,10 @@ export class Group {
   public async create(): Promise<Group> {
     this.payload = await GroupService.createGroup(this.book.getId(), this.payload);
     this.book.updateGroupCache(this);
+    const bookGroupsMap = this.book.getGroupsMap();
+    if (bookGroupsMap) {
+      this.buildGroupTree(bookGroupsMap);
+    }
     return this;
   }
 
