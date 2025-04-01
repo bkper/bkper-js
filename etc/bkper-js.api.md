@@ -560,9 +560,13 @@ export class Group {
     // @internal (undocumented)
     addAccount(account: Account): void;
     // @internal (undocumented)
+    addChild(child: Group): void;
+    // @internal (undocumented)
     buildGroupTree(groupsMap: Map<string, Group>): void;
     create(): Promise<Group>;
     deleteProperty(key: string): Group;
+    // @internal (undocumented)
+    destroyGroupTree(groupsMap: Map<string, Group>): void;
     // (undocumented)
     getAccounts(): Promise<Account[]>;
     getChildren(): Group[];
@@ -602,6 +606,8 @@ export class Group {
     remove(): Promise<Group>;
     // @internal (undocumented)
     removeAccount(account: Account): void;
+    // @internal (undocumented)
+    removeChild(child: Group): void;
     setHidden(hidden: boolean): Group;
     setName(name: string): Group;
     setParent(group: Group | null | undefined): Group;
