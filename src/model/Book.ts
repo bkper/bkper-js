@@ -653,11 +653,14 @@ export class Book {
   }
 
   /** @internal */
-  updateAccountCache(account: Account) {
+  updateAccountCache(account: Account, previousGroupIds?: string[]) {
     if (this.idAccountMap) {
       const id = account.getId();
       if (id) {
         this.idAccountMap.set(id, account);
+      }
+      if (previousGroupIds && previousGroupIds.length > 0) {
+        this.unlinkAccountsAndGroups(account, previousGroupIds);
       }
       this.linkAccountsAndGroups(account);
     }
@@ -676,10 +679,12 @@ export class Book {
   }
 
   /** @internal */
-  private unlinkAccountsAndGroups(account: Account) {
-    const groupPayloads = account.payload.groups || [];
-    for (const groupPayload of groupPayloads) {
-      const group = this.idGroupMap?.get(groupPayload.id || "");
+  private unlinkAccountsAndGroups(account: Account, groupIds?: string[]) {
+    if (!groupIds) {
+      groupIds = account.payload.groups?.map(g => g.id || "") || [];
+    }
+    for (const groupId of groupIds) {
+      const group = this.idGroupMap?.get(groupId || "");
       if (group != null) {
         group.removeAccount(account);
       }

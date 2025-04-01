@@ -379,11 +379,11 @@ export class Account {
    * Perform update account, applying pending changes.
    */
   public async update(): Promise<Account> {
+    const previousGroupIds = [...(this.payload.groups || [])].map(g => g.id || "");
     this.payload = await AccountService.updateAccount(this.book.getId(), this.payload);
-    this.book.updateAccountCache(this);
+    this.book.updateAccountCache(this, previousGroupIds);
     return this;
-
-  }   
+  }
 
   /**
    * Perform delete account.

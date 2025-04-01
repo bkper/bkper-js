@@ -306,7 +306,7 @@ export class Book {
     setTimeZone(timeZone: string): Book;
     update(): Promise<Book>;
     // @internal (undocumented)
-    updateAccountCache(account: Account): void;
+    updateAccountCache(account: Account, previousGroupIds?: string[]): void;
     // @internal (undocumented)
     updateGroupCache(group: Group): void;
     updateIntegration(integration: bkper.Integration): Promise<Integration>;
