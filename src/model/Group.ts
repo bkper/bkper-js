@@ -3,7 +3,6 @@ import { normalizeText } from "../utils.js";
 import { Account } from './Account.js';
 import { Book } from "./Book.js";
 import { AccountType } from './Enums.js';
-import * as Utils from '../utils.js';
 
 /**
  * This class defines a Group of [[Accounts]].
@@ -21,7 +20,7 @@ export class Group {
   private parent?: Group;
   private depth?: number;
   private root?: Group;
-  private children: Group[] = [];
+  private children: Map<string, Group> = new Map();
 
   /** @internal */
   private book: Book;
@@ -241,7 +240,23 @@ export class Group {
    * @returns An array of child Groups.
    */
   public getChildren(): Group[] {
-    return this.children || [];
+    return Array.from(this.children.values()) || [];
+  }
+
+  /** @internal */
+  addChild(child: Group): void {
+    const id = child.getId();
+    if (id) {
+      this.children.set(id, child);
+    }
+  }
+
+  /** @internal */
+  removeChild(child: Group): void {
+    const id = child.getId();
+    if (id) {
+      this.children.delete(id);
+    }
   }
 
   /**
@@ -358,7 +373,17 @@ export class Group {
       const parentGroup = groupsMap.get(this.payload.parent.id || "");
       if (parentGroup) {
         this.parent = parentGroup;
-        parentGroup.getChildren().push(this);
+        parentGroup.addChild(this);
+      }
+    }
+  }
+
+  /** @internal */
+  destroyGroupTree(groupsMap: Map<string, Group>): void {
+    if (this.payload.parent) {
+      const parentGroup = groupsMap.get(this.payload.parent.id || "");
+      if (parentGroup) {
+        parentGroup.removeChild(this);
       }
     }
   }
@@ -395,10 +420,6 @@ export class Group {
   public async create(): Promise<Group> {
     this.payload = await GroupService.createGroup(this.book.getId(), this.payload);
     this.book.updateGroupCache(this);
-    const bookGroupsMap = this.book.getGroupsMap();
-    if (bookGroupsMap) {
-      this.buildGroupTree(bookGroupsMap);
-    }
     return this;
   }
 

@@ -640,6 +640,7 @@ export class Book {
       if (id) {
         this.idGroupMap.set(id, group);
       }
+      group.buildGroupTree(this.idGroupMap);
     }
   }
 
@@ -647,6 +648,7 @@ export class Book {
   removeGroupCache(group: Group) {
     if (this.idGroupMap) {
       this.idGroupMap.delete(group.getId() || '');
+      group.destroyGroupTree(this.idGroupMap);
     }
   }
 
