@@ -43,6 +43,9 @@ export class Book {
   private idGroupMap?: Map<string, Group>;
 
   /** @internal */
+  parentIdGroupsMap?: Map<string, Map<string, Group>>;
+
+  /** @internal */
   private idAccountMap?: Map<string, Account>;
 
   constructor(payload?: bkper.Book) {
@@ -634,11 +637,15 @@ export class Book {
   }
 
   /** @internal */
-  updateGroupCache(group: Group) {
+  updateGroupCache(group: Group, previousParentId?: string) {
     if (this.idGroupMap) {
       const id = group.getId();
       if (id) {
         this.idGroupMap.set(id, group);
+      }
+      const parentId = group.payload.parent?.id;
+      if ((previousParentId || '') !== (parentId || '')) {
+        group.destroyGroupTree(this.idGroupMap, previousParentId);
       }
       group.buildGroupTree(this.idGroupMap);
     }
@@ -764,6 +771,7 @@ export class Book {
     }
     let groupsObj = groups.map(group => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
+    this.parentIdGroupsMap = new Map<string, Map<string, Group>>();
     for (const group of groupsObj) {
       this.updateGroupCache(group);
     }

@@ -280,6 +280,8 @@ export class Book {
     json(): bkper.Book;
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
+    // @internal (undocumented)
+    parentIdGroupsMap?: Map<string, Map<string, Group>>;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
     // (undocumented)
@@ -308,7 +310,7 @@ export class Book {
     // @internal (undocumented)
     updateAccountCache(account: Account, previousGroupIds?: string[]): void;
     // @internal (undocumented)
-    updateGroupCache(group: Group): void;
+    updateGroupCache(group: Group, previousParentId?: string): void;
     updateIntegration(integration: bkper.Integration): Promise<Integration>;
 }
 
@@ -563,10 +565,12 @@ export class Group {
     addChild(child: Group): void;
     // @internal (undocumented)
     buildGroupTree(groupsMap: Map<string, Group>): void;
+    // @internal (undocumented)
+    children: Map<string, Group>;
     create(): Promise<Group>;
     deleteProperty(key: string): Group;
     // @internal (undocumented)
-    destroyGroupTree(groupsMap: Map<string, Group>): void;
+    destroyGroupTree(groupsMap: Map<string, Group>, parentId?: string): void;
     // (undocumented)
     getAccounts(): Promise<Account[]>;
     getChildren(): Group[];
@@ -616,6 +620,8 @@ export class Group {
     }): Group;
     setProperty(key: string, value: string | null): Group;
     update(): Promise<Group>;
+    // @internal (undocumented)
+    updateBookParentIdGroupsMap(): void;
 }
 
 // @public

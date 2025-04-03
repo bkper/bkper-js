@@ -17,10 +17,17 @@ export class Group {
 
   public payload: bkper.Group;
   
+  /** @internal */
   private parent?: Group;
+
+  /** @internal */
   private depth?: number;
+
+  /** @internal */
   private root?: Group;
-  private children: Map<string, Group> = new Map();
+
+  /** @internal */
+  children: Map<string, Group> = new Map();
 
   /** @internal */
   private book: Book;
@@ -248,6 +255,7 @@ export class Group {
     const id = child.getId();
     if (id) {
       this.children.set(id, child);
+      this.updateBookParentIdGroupsMap();
     }
   }
 
@@ -256,6 +264,15 @@ export class Group {
     const id = child.getId();
     if (id) {
       this.children.delete(id);
+      this.updateBookParentIdGroupsMap();
+    }
+  }
+
+  /** @internal */
+  updateBookParentIdGroupsMap(): void {
+    const id = this.getId();
+    if (id) {
+      this.book.parentIdGroupsMap?.set(id, this.children);
     }
   }
 
@@ -362,7 +379,6 @@ export class Group {
       }
     }
   }
-  
 
   /** @internal */
   buildGroupTree(groupsMap: Map<string, Group>): void {
@@ -379,9 +395,12 @@ export class Group {
   }
 
   /** @internal */
-  destroyGroupTree(groupsMap: Map<string, Group>): void {
-    if (this.payload.parent) {
-      const parentGroup = groupsMap.get(this.payload.parent.id || "");
+  destroyGroupTree(groupsMap: Map<string, Group>, parentId?: string): void {
+    if (!parentId) {
+      parentId = this.payload.parent?.id;
+    }
+    if (parentId) {
+      const parentGroup = groupsMap.get(parentId);
       if (parentGroup) {
         parentGroup.removeChild(this);
       }
@@ -427,10 +446,10 @@ export class Group {
    * Perform update group, applying pending changes.
    */
   public async update(): Promise<Group> {
+    const previousParentId = this.payload.parent?.id;
     this.payload = await GroupService.updateGroup(this.book.getId(), this.payload);
-    this.book.updateGroupCache(this);
+    this.book.updateGroupCache(this, previousParentId);
     return this;
-
   }
 
   /**
