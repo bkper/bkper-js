@@ -683,6 +683,7 @@ export class Message {
         [key: string]: string;
     }): Message;
     setProperty(key: string, value: string | null): Message;
+    stream(): Promise<void>;
 }
 
 // @public
