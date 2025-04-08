@@ -186,4 +186,15 @@ export class Message {
         return this;
     }
 
+    /**
+     * Streams the Message to the Bkper API.
+     */
+    public async stream(): Promise<void> {
+        const conversationId = this.conversation.getId();
+        if (!conversationId) {
+            throw new Error('Conversation id null!');
+        }
+        ConversationService.streamMessage(conversationId, this.payload);
+    }
+
 }

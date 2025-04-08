@@ -19,3 +19,7 @@ export async function createMessage(conversationId: string, message: bkper.Messa
     const response = await new HttpApiRequest(`v5/apps/conversations/${conversationId}/messages`).setMethod('POST').setPayload(message).fetch();
     return response.data;
 }
+
+export async function streamMessage(conversationId: string, message: bkper.Message): Promise<void> {
+    new HttpApiRequest(`v5/apps/conversations/${conversationId}/stream`).setMethod('POST').setPayload(message).fetch();
+}
