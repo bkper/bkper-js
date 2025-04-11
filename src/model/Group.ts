@@ -446,7 +446,7 @@ export class Group {
    * Perform update group, applying pending changes.
    */
   public async update(): Promise<Group> {
-    const previousParentId = this.payload.parent?.id;
+    const previousParentId = this.parent?.getId();
     this.payload = await GroupService.updateGroup(this.book.getId(), this.payload);
     this.book.updateGroupCache(this, previousParentId);
     return this;
