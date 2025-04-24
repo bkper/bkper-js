@@ -317,7 +317,7 @@ export class Account {
       }
       if (groupObject) {
         for (let i = 0; i < this.payload.groups.length; i++) {
-          const groupId = this.payload.groups[i];
+          const groupId = this.payload.groups[i].id;
           if (groupId == groupObject.getId()) {
             this.payload.groups.splice(i, 1);
           }
