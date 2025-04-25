@@ -212,6 +212,8 @@ export class Book {
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     batchTrashTransactions(transactions: Transaction[]): Promise<void>;
+    // @internal (undocumented)
+    clearCache(): void;
     create(): Promise<Book>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
     formatDate(date: Date, timeZone?: string): string;
@@ -237,8 +239,6 @@ export class Book {
     getFractionDigits(): number | undefined;
     getGroup(idOrName?: string): Promise<Group | undefined>;
     getGroups(): Promise<Group[]>;
-    // @internal (undocumented)
-    getGroupsMap(): Map<string, Group> | undefined;
     getId(): string;
     getIntegrations(): Promise<Integration[]>;
     // (undocumented)
@@ -280,22 +280,20 @@ export class Book {
     json(): bkper.Book;
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
-    // @internal (undocumented)
-    parentIdGroupsMap?: Map<string, Map<string, Group>>;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
     // (undocumented)
     payload: bkper.Book;
-    // @internal (undocumented)
-    removeAccountCache(account: Account): void;
-    // @internal (undocumented)
-    removeGroupCache(group: Group): void;
     round(value: Amount | number): Amount;
+    // @internal (undocumented)
+    setAccount(account: bkper.Account, remove?: boolean): void;
     setAutoPost(autoPost: boolean): Book;
     setClosingDate(closingDate: string | null): Book;
     setDatePattern(datePattern: string): Book;
     setDecimalSeparator(decimalSeparator: DecimalSeparator): Book;
     setFractionDigits(fractionDigits: number): Book;
+    // @internal (undocumented)
+    setGroup(group: bkper.Group, remove?: boolean): void;
     setLockDate(lockDate: string | null): Book;
     setName(name: string): Book;
     setPageSize(pageSize: number): Book;
@@ -307,10 +305,6 @@ export class Book {
     setProperty(key: string, value: string | null): Book;
     setTimeZone(timeZone: string): Book;
     update(): Promise<Book>;
-    // @internal (undocumented)
-    updateAccountCache(account: Account, previousGroupIds?: string[]): void;
-    // @internal (undocumented)
-    updateGroupCache(group: Group, previousParentId?: string): void;
     updateIntegration(integration: bkper.Integration): Promise<Integration>;
 }
 
@@ -562,15 +556,9 @@ export class Group {
     // @internal (undocumented)
     addAccount(account: Account): void;
     // @internal (undocumented)
-    addChild(child: Group): void;
-    // @internal (undocumented)
     buildGroupTree(groupsMap: Map<string, Group>): void;
-    // @internal (undocumented)
-    children: Map<string, Group>;
     create(): Promise<Group>;
     deleteProperty(key: string): Group;
-    // @internal (undocumented)
-    destroyGroupTree(groupsMap: Map<string, Group>, parentId?: string): void;
     // (undocumented)
     getAccounts(): Promise<Account[]>;
     getChildren(): Group[];
@@ -608,10 +596,6 @@ export class Group {
     // (undocumented)
     payload: bkper.Group;
     remove(): Promise<Group>;
-    // @internal (undocumented)
-    removeAccount(account: Account): void;
-    // @internal (undocumented)
-    removeChild(child: Group): void;
     setHidden(hidden: boolean): Group;
     setName(name: string): Group;
     setParent(group: Group | null | undefined): Group;
@@ -620,8 +604,6 @@ export class Group {
     }): Group;
     setProperty(key: string, value: string | null): Group;
     update(): Promise<Group>;
-    // @internal (undocumented)
-    updateBookParentIdGroupsMap(): void;
 }
 
 // @public
