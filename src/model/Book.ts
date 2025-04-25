@@ -43,9 +43,6 @@ export class Book {
   private idGroupMap?: Map<string, Group>;
 
   /** @internal */
-  parentIdGroupsMap?: Map<string, Map<string, Group>>;
-
-  /** @internal */
   private idAccountMap?: Map<string, Account>;
 
   constructor(payload?: bkper.Book) {
@@ -62,7 +59,7 @@ export class Book {
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.Book {
-    return {...this.payload};
+    return { ...this.payload };
   }
 
   /**
@@ -166,7 +163,6 @@ export class Book {
     return this;
   }
 
-
   /**
    * @returns The name of the owner of the Book
    */
@@ -191,7 +187,6 @@ export class Book {
     return this.collection;
   }
 
-
   /**
    * @returns The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    */
@@ -209,7 +204,6 @@ export class Book {
     this.payload.datePattern = datePattern;
     return this;
   }
-
 
   /**
    * @returns The lock date of the Book in ISO format yyyy-MM-dd
@@ -270,7 +264,6 @@ export class Book {
     this.payload.decimalSeparator = decimalSeparator;
     return this;
   }
-
 
   /**
    * @returns The time zone of the Book
@@ -363,7 +356,6 @@ export class Book {
    * @param keys - The property key
    */
   public getProperty(...keys: string[]): string | undefined {
-
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
       let value = this.payload.properties != null ? this.payload.properties[key] : null
@@ -371,7 +363,6 @@ export class Book {
         return value;
       }
     }
-
     return undefined;
   }
 
@@ -409,7 +400,6 @@ export class Book {
     return this;
   }
 
-
   /**
    * Formats a date according to date pattern of the Book.
    * 
@@ -434,7 +424,6 @@ export class Book {
     return Utils.parseDate(date, this.getDatePattern(), this.getTimeZone());
   }
 
-
   /**
    * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
    * 
@@ -455,7 +444,6 @@ export class Book {
   public parseValue(value: string): Amount | undefined {
     return Utils.parseValue(value, this.getDecimalSeparator());
   }
-
 
   /**
    * Rounds a value according to the number of fraction digits of the Book
@@ -511,8 +499,9 @@ export class Book {
       for (const payload of payloads) {
         const account = new Account(this, payload);
         createdAccounts.push(account);
-        this.updateAccountCache(account);
+        this.setAccount(payload);
       }
+      this.clearCache();
       return createdAccounts;
     }
     return [];
@@ -531,11 +520,9 @@ export class Book {
       for (const payload of payloads) {
         const group = new Group(this, payload);
         createdGroups.push(group);
-        this.updateGroupCache(group);
-        if (this.idGroupMap) {
-          group.buildGroupTree(this.idGroupMap);
-        }
+        this.setGroup(payload);
       }
+      this.clearCache();
       return createdGroups;
     }
     return [];
@@ -605,7 +592,6 @@ export class Book {
     return new Integration(integration);
   }
 
-
   /**
    * Gets an [[Account]] object
    * 
@@ -632,42 +618,22 @@ export class Book {
   }
 
   /** @internal */
-  getGroupsMap(): Map<string, Group> | undefined {
-    return this.idGroupMap;
-  }
-
-  /** @internal */
-  updateGroupCache(group: Group, previousParentId?: string) {
+  private updateGroupCache(group: Group): void {
     if (this.idGroupMap) {
       const id = group.getId();
       if (id) {
         this.idGroupMap.set(id, group);
-      }
-      const parentId = group.payload.parent?.id;
-      if ((previousParentId || '') !== (parentId || '')) {
-        group.destroyGroupTree(this.idGroupMap, previousParentId);
       }
       group.buildGroupTree(this.idGroupMap);
     }
   }
 
   /** @internal */
-  removeGroupCache(group: Group) {
-    if (this.idGroupMap) {
-      this.idGroupMap.delete(group.getId() || '');
-      group.destroyGroupTree(this.idGroupMap);
-    }
-  }
-
-  /** @internal */
-  updateAccountCache(account: Account, previousGroupIds?: string[]) {
+  private updateAccountCache(account: Account): void {
     if (this.idAccountMap) {
       const id = account.getId();
       if (id) {
         this.idAccountMap.set(id, account);
-      }
-      if (previousGroupIds && previousGroupIds.length > 0) {
-        this.unlinkAccountsAndGroups(account, previousGroupIds);
       }
       this.linkAccountsAndGroups(account);
     }
@@ -680,30 +646,8 @@ export class Book {
       const group = this.idGroupMap?.get(groupPayload.id || "");
       if (group != null) {
         group.addAccount(account);
-        // TODO add known group to account
       }
     }
-  }
-
-  /** @internal */
-  private unlinkAccountsAndGroups(account: Account, groupIds?: string[]) {
-    if (!groupIds) {
-      groupIds = account.payload.groups?.map(g => g.id || "") || [];
-    }
-    for (const groupId of groupIds) {
-      const group = this.idGroupMap?.get(groupId || "");
-      if (group != null) {
-        group.removeAccount(account);
-      }
-    }
-  }
-
-  /** @internal */
-  removeAccountCache(account: Account) {
-    if (this.idAccountMap) {
-      this.idAccountMap.delete(account.getId() || '');
-    }
-    this.unlinkAccountsAndGroups(account);
   }
 
   /** @internal */
@@ -751,7 +695,6 @@ export class Book {
     return undefined;
   }
 
-
   /**
    * Gets all [[Groups]] of this Book
    * 
@@ -765,13 +708,13 @@ export class Book {
     return this.mapGroups(groups);
   }
 
-  private mapGroups(groups?: bkper.Group[]) {
+  /** @internal */
+  private mapGroups(groups?: bkper.Group[]): Group[] {
     if (!groups) {
       return [];
     }
     let groupsObj = groups.map(group => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
-    this.parentIdGroupsMap = new Map<string, Map<string, Group>>();
     for (const group of groupsObj) {
       this.updateGroupCache(group);
     }
@@ -794,6 +737,7 @@ export class Book {
     return this.mapAccounts(accounts);
   }
 
+  /** @internal */
   private mapAccounts(accounts?: bkper.Account[]) {
     if (!accounts) {
       return [];
@@ -818,6 +762,52 @@ export class Book {
     }
   }
 
+  /** @internal */
+  clearCache(): void {
+    this.clearGroupCache();
+    this.clearAccountCache();
+  }
+
+  /** @internal */
+  private clearGroupCache(): void {
+    this.idGroupMap = undefined;
+  }
+
+  /** @internal */
+  private clearAccountCache(): void {
+    this.idAccountMap = undefined;
+  }
+
+  /** @internal */
+  setAccount(account: bkper.Account, remove?: boolean): void {
+    const accountPayloads = this.payload.accounts || [];
+    if (remove) {
+      this.payload.accounts = accountPayloads.filter(a => a.id !== account.id);
+    } else {
+      const existingAccount = accountPayloads.find(a => a.id === account.id);
+      if (existingAccount) {
+        this.payload.accounts = accountPayloads.map(a => a.id === account.id ? account : a);
+      } else {
+        this.payload.accounts = [...accountPayloads, account];
+      }
+    }
+  }
+
+  /** @internal */
+  setGroup(group: bkper.Group, remove?: boolean): void {
+    const groupPayloads = this.payload.groups || [];
+    if (remove) {
+      this.payload.groups = groupPayloads.filter(g => g.id !== group.id);
+    } else {
+      const existingGroup = groupPayloads.find(g => g.id === group.id);
+      if (existingGroup) {
+        this.payload.groups = groupPayloads.map(g => g.id === group.id ? group : g);
+      } else {
+        this.payload.groups = [...groupPayloads, group];
+      }
+    }
+  }
+
   /**
    * Lists transactions in the Book based on the provided query, limit, and cursor, for pagination.
    * 
@@ -832,7 +822,6 @@ export class Book {
     return new TransactionList(this, transactionsList);
   }
 
-  
   /**
    * Lists events in the Book based on the provided parameters.
    * 
@@ -889,7 +878,7 @@ export class Book {
     return this;
   }
 
-    /**
+  /**
    *
    * Create a [[BalancesReport]] based on query
    * 

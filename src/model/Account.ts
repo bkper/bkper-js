@@ -1,5 +1,5 @@
-import * as AccountService  from '../service/account-service.js'
-import * as GroupService  from '../service/group-service.js'
+import * as AccountService from '../service/account-service.js'
+import * as GroupService from '../service/group-service.js'
 import { Book } from './Book.js';
 import { AccountType } from './Enums.js';
 import { Group } from './Group.js';
@@ -34,17 +34,15 @@ export class Account {
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.Account {
-    return {...this.payload};
+    return { ...this.payload };
   }
-  
+
   /**
    * Gets the account internal id.
    */
   public getId(): string | undefined {
     return this.payload.id;
   }
-
-  
 
   /**
    * Gets the account name.
@@ -58,12 +56,11 @@ export class Account {
    * Sets the name of the Account.
    * 
    * @returns This Account, for chainning.
-   */    
+   */
   public setName(name: string): Account {
     this.payload.name = name;
     return this;
   }
-
 
   /**
    * @returns The name of this account without spaces or special characters.
@@ -88,7 +85,7 @@ export class Account {
    * Sets the type of the Account.
    * 
    * @returns This Account, for chainning
-   */   
+   */
   public setType(type: AccountType): Account {
     this.payload.type = type;
     return this;
@@ -96,9 +93,9 @@ export class Account {
 
   /**
    * Gets the custom properties stored in this Account.
-   */  
-  public getProperties(): {[key: string]: string} {
-    return this.payload.properties != null ?  {...this.payload.properties} : {};
+   */
+  public getProperties(): { [key: string]: string } {
+    return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
@@ -108,8 +105,8 @@ export class Account {
    * 
    * @returns This Account, for chainning. 
    */
-  public setProperties(properties: {[key: string]: string}): Account {
-    this.payload.properties = {...properties};
+  public setProperties(properties: { [key: string]: string }): Account {
+    this.payload.properties = { ...properties };
     return this;
   }
 
@@ -121,14 +118,13 @@ export class Account {
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.payload.properties != null ?  this.payload.properties[key] : null 
+      let value = this.payload.properties != null ? this.payload.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
     }
     return undefined;
   }
-
 
   /**
    * Sets a custom property in the Account.
@@ -141,7 +137,7 @@ export class Account {
   public setProperty(key: string, value: string | null): Account {
     if (key == null || key.trim() == '') {
       return this;
-    }    
+    }
     if (this.payload.properties == null) {
       this.payload.properties = {};
     }
@@ -181,18 +177,18 @@ export class Account {
    * Gets the raw balance, no matter credit nature of this Account.
    * @deprecated Use `Book.getBalancesReport` instead.
    * @returns The balance of this account.
-   */  
-     public getBalanceRaw(): Amount {
-      var balance = new Amount('0');
-      if (this.payload.balance != null) {
-        balance = round(this.payload.balance, this.book.getFractionDigits());
-      }
-      return balance;
+   */
+  public getBalanceRaw(): Amount {
+    var balance = new Amount('0');
+    if (this.payload.balance != null) {
+      balance = round(this.payload.balance, this.book.getFractionDigits());
     }
+    return balance;
+  }
 
   /**
    * Tell if this account is archived.
-   */  
+   */
   public isArchived(): boolean | undefined {
     return this.payload.archived;
   }
@@ -215,7 +211,6 @@ export class Account {
   public hasTransactionPosted(): boolean | undefined {
     return this.payload.hasTransactionPosted;
   }
-  
 
   /**
    * 
@@ -257,10 +252,9 @@ export class Account {
     return this.payload.credit;
   }
 
-
   /**
    * Get the [[Groups]] of this account.
-   */  
+   */
   public async getGroups(): Promise<Group[]> {
     const id = this.getId();
     if (!id) {
@@ -275,7 +269,7 @@ export class Account {
    * Sets the groups of the Account.
    * 
    * @returns This Account, for chainning.
-   */  
+   */
   public setGroups(groups: Group[] | bkper.Group[]): Account {
     this.payload.groups = undefined;
     if (groups != null) {
@@ -283,7 +277,7 @@ export class Account {
     }
     return this;
   }
-  
+
   /**
    * Add a group to the Account.
    * 
@@ -371,17 +365,16 @@ export class Account {
    */
   public async create(): Promise<Account> {
     this.payload = await AccountService.createAccount(this.book.getId(), this.payload);
-    this.book.updateAccountCache(this);
+    this.updateAccountCache();
     return this;
-  }   
+  }
 
   /**
    * Perform update account, applying pending changes.
    */
   public async update(): Promise<Account> {
-    const previousGroupIds = [...(this.payload.groups || [])].map(g => g.id || "");
     this.payload = await AccountService.updateAccount(this.book.getId(), this.payload);
-    this.book.updateAccountCache(this, previousGroupIds);
+    this.updateAccountCache();
     return this;
   }
 
@@ -390,8 +383,14 @@ export class Account {
    */
   public async remove(): Promise<Account> {
     this.payload = await AccountService.deleteAccount(this.book.getId(), this.payload);
-    this.book.removeAccountCache(this);
+    this.updateAccountCache(true);
     return this;
-  }   
+  }
+
+  /** @internal */
+  private updateAccountCache(remove?: boolean): void {
+    this.book.setAccount(this.payload, remove);
+    this.book.clearCache();
+  }
 
 }

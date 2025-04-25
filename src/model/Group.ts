@@ -16,7 +16,7 @@ import { AccountType } from './Enums.js';
 export class Group {
 
   public payload: bkper.Group;
-  
+
   /** @internal */
   private parent?: Group;
 
@@ -27,11 +27,11 @@ export class Group {
   private root?: Group;
 
   /** @internal */
-  children: Map<string, Group> = new Map();
+  private children: Map<string, Group> = new Map();
 
   /** @internal */
   private book: Book;
-  
+
   /** @internal */
   accounts?: Map<string, Account>;
 
@@ -48,7 +48,7 @@ export class Group {
   public json(): bkper.Group {
     return { ...this.payload };
   }
-  
+
   /**
    * @returns The id of this Group
    */
@@ -178,7 +178,7 @@ export class Group {
   /**
    * Tell if the Group is hidden on main transactions menu
    */
-  public isHidden(): boolean | undefined{
+  public isHidden(): boolean | undefined {
     return this.payload.hidden;
   }
 
@@ -222,10 +222,10 @@ export class Group {
    * Sets the parent Group.
    * 
    * @returns This Group, for chainning.
-   */  
+   */
   public setParent(group: Group | null | undefined): Group {
     if (group) {
-      this.payload.parent = {id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName()};
+      this.payload.parent = { id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName() };
     } else {
       this.payload.parent = undefined;
     }
@@ -251,28 +251,10 @@ export class Group {
   }
 
   /** @internal */
-  addChild(child: Group): void {
+  private addChild(child: Group): void {
     const id = child.getId();
     if (id) {
       this.children.set(id, child);
-      this.updateBookParentIdGroupsMap();
-    }
-  }
-
-  /** @internal */
-  removeChild(child: Group): void {
-    const id = child.getId();
-    if (id) {
-      this.children.delete(id);
-      this.updateBookParentIdGroupsMap();
-    }
-  }
-
-  /** @internal */
-  updateBookParentIdGroupsMap(): void {
-    const id = this.getId();
-    if (id) {
-      this.book.parentIdGroupsMap?.set(id, this.children);
     }
   }
 
@@ -368,7 +350,6 @@ export class Group {
     return "";
   }
 
-
   /** @internal */
   private traverseDescendants(group: Group, descendants: Set<Group>): void {
     descendants.add(group);
@@ -395,19 +376,6 @@ export class Group {
   }
 
   /** @internal */
-  destroyGroupTree(groupsMap: Map<string, Group>, parentId?: string): void {
-    if (!parentId) {
-      parentId = this.payload.parent?.id;
-    }
-    if (parentId) {
-      const parentGroup = groupsMap.get(parentId);
-      if (parentGroup) {
-        parentGroup.removeChild(this);
-      }
-    }
-  }
-
-  /** @internal */
   addAccount(account: Account): void {
     const id = account?.getId();
     if (id) {
@@ -415,14 +383,6 @@ export class Group {
         this.accounts = new Map<string, Account>();
       }
       this.accounts.set(id, account);
-    }
-  }
-
-  /** @internal */
-  removeAccount(account: Account): void {
-    const id = account?.getId();
-    if (id) {
-      this.accounts?.delete(id);
     }
   }
 
@@ -438,7 +398,7 @@ export class Group {
    */
   public async create(): Promise<Group> {
     this.payload = await GroupService.createGroup(this.book.getId(), this.payload);
-    this.book.updateGroupCache(this);
+    this.updateGroupCache();
     return this;
   }
 
@@ -446,9 +406,8 @@ export class Group {
    * Perform update group, applying pending changes.
    */
   public async update(): Promise<Group> {
-    const previousParentId = this.parent?.getId();
     this.payload = await GroupService.updateGroup(this.book.getId(), this.payload);
-    this.book.updateGroupCache(this, previousParentId);
+    this.updateGroupCache();
     return this;
   }
 
@@ -457,8 +416,14 @@ export class Group {
    */
   public async remove(): Promise<Group> {
     this.payload = await GroupService.deleteGroup(this.book.getId(), this.payload);
-    this.book.removeGroupCache(this);
+    this.updateGroupCache(true);
     return this;
+  }
+
+  /** @internal */
+  private updateGroupCache(remove?: boolean): void {
+    this.book.setGroup(this.payload, remove);
+    this.book.clearCache();
   }
 
 }
