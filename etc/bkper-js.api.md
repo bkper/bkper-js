@@ -588,6 +588,7 @@ export class Group {
     isCredit(): boolean | undefined;
     isHidden(): boolean | undefined;
     isLeaf(): boolean;
+    isLocked(): boolean;
     isMixed(): boolean | undefined;
     isPermanent(): boolean | undefined;
     isRoot(): boolean;
@@ -597,6 +598,7 @@ export class Group {
     payload: bkper.Group;
     remove(): Promise<Group>;
     setHidden(hidden: boolean): Group;
+    setLocked(locked: boolean): Group;
     setName(name: string): Group;
     setParent(group: Group | null | undefined): Group;
     setProperties(properties: {
