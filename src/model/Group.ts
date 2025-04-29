@@ -74,6 +74,30 @@ export class Group {
   }
 
   /**
+   * Tells if the Group is locked by the Book owner.
+   * 
+   * @returns True if the Group is locked.
+   */
+  public isLocked(): boolean {
+    if (this.payload.locked == null) {
+      return false;
+    }
+    return this.payload.locked;
+  }
+
+  /**
+   * Sets the locked state of the Group.
+   * 
+   * @param locked - The locked state of the Group.
+   * 
+   * @returns This Group, for chainning.
+   */
+  public setLocked(locked: boolean): Group {
+    this.payload.locked = locked;
+    return this;
+  }
+
+  /**
    * @returns The name of this group without spaces and special characters
    */
   public getNormalizedName(): string {
