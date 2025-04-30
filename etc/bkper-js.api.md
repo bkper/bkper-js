@@ -263,6 +263,7 @@ export class Book {
         [key: string]: string;
     };
     getProperty(...keys: string[]): string | undefined;
+    getSavedQueries(): Promise<Query[]>;
     // (undocumented)
     getTimeZone(): string | undefined;
     // (undocumented)
@@ -720,6 +721,19 @@ export enum Permission {
     POSTER = "POSTER",
     RECORDER = "RECORDER",
     VIEWER = "VIEWER"
+}
+
+// @public
+export class Query {
+    constructor(book: Book, payload?: bkper.Query);
+    // (undocumented)
+    getId(): string | undefined;
+    getQuery(): string | undefined;
+    getTitle(): string | undefined;
+    // (undocumented)
+    json(): bkper.Query;
+    // (undocumented)
+    payload: bkper.Query;
 }
 
 // @public
