@@ -22,6 +22,7 @@ export { File } from './model/File.js';
 export { Group } from './model/Group.js';
 export { Integration } from './model/Integration.js';
 export { Message } from './model/Message.js';
+export { Query } from './model/Query.js';
 export { Template } from './model/Template.js';
 export { Transaction } from './model/Transaction.js';
 export { TransactionList } from './model/TransactionList.js';
