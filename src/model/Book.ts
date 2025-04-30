@@ -20,6 +20,7 @@ import { TransactionList } from './TransactionList.js';
 import { BalancesReport } from './BalancesReport.js';
 import { App } from './App.js';
 import { Event } from './Event.js';
+import { Query } from './Query.js';
 
 /**
  *
@@ -38,6 +39,9 @@ export class Book {
 
   /** @internal */
   private apps?: App[];
+
+  /** @internal */
+  private queries?: Query[];
 
   /** @internal */
   private idGroupMap?: Map<string, Group>;
@@ -899,6 +903,17 @@ export class Book {
   public async getBalancesReport(query: string): Promise<BalancesReport> {
     const balances = await BalancesService.getBalances(this.getId(), query);
     return new BalancesReport(this, balances);
+  }
+
+  /**
+   * @return The saved queries from this book
+   */
+  public async getSavedQueries(): Promise<Query[]> {
+    if (this.queries == null) {
+      const queryPayloads = await BookService.getSavedQueries(this.getId());
+      this.queries = queryPayloads.map(payload => new Query(this, payload));
+    }
+    return this.queries;
   }
 
 }
