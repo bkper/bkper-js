@@ -1,4 +1,5 @@
 import { Book } from "./Book";
+import * as QueryService from '../service/query-service.js';
 
 /**
  * Defines a saved Query in a [[Book]].
@@ -45,6 +46,18 @@ export class Query {
      */
     public getQuery(): string | undefined {
         return this.payload.query;
+    }
+
+    /**
+     * Perform delete group.
+     */
+    public async remove(): Promise<Query> {
+        const queryId = this.getId();
+        if (!queryId) {
+            throw new Error("Query id null!");
+        }
+        this.payload = await QueryService.deleteSavedQuery(this.book.getId(), queryId);
+        return this;
     }
 
 }

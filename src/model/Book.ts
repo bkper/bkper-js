@@ -1,5 +1,6 @@
 import * as AccountService from '../service/account-service.js';
 import * as BookService from '../service/book-service.js';
+import * as QueryService from '../service/query-service.js';
 import * as BalancesService from '../service/balances-service.js';
 import * as FileService from '../service/file-service.js';
 import * as GroupService from '../service/group-service.js';
@@ -910,7 +911,7 @@ export class Book {
    */
   public async getSavedQueries(): Promise<Query[]> {
     if (this.queries == null) {
-      const queryPayloads = await BookService.getSavedQueries(this.getId());
+      const queryPayloads = await QueryService.getSavedQueries(this.getId());
       this.queries = queryPayloads.map(payload => new Query(this, payload));
     }
     return this.queries;

@@ -40,8 +40,3 @@ export async function getApps(bookId: string): Promise<bkper.App[]> {
   let response = await new HttpBooksApiV5Request(`${bookId}/apps`).setMethod('GET').fetch();
   return response?.data?.items || [];
 }
-
-export async function getSavedQueries(bookId: string): Promise<bkper.Query[]> {
-  let response = await new HttpBooksApiV5Request(`${bookId}/queries`).setMethod('GET').fetch();
-  return response?.data?.items || [];
-}
