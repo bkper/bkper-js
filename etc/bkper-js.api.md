@@ -734,6 +734,7 @@ export class Query {
     json(): bkper.Query;
     // (undocumented)
     payload: bkper.Query;
+    remove(): Promise<Query>;
 }
 
 // @public
