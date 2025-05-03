@@ -285,6 +285,8 @@ export class Book {
     parseValue(value: string): Amount | undefined;
     // (undocumented)
     payload: bkper.Book;
+    // @internal (undocumented)
+    queries?: Query[];
     round(value: Amount | number): Amount;
     // @internal (undocumented)
     setAccount(account: bkper.Account, remove?: boolean): void;

@@ -42,7 +42,7 @@ export class Book {
   private apps?: App[];
 
   /** @internal */
-  private queries?: Query[];
+  queries?: Query[];
 
   /** @internal */
   private idGroupMap?: Map<string, Group>;

@@ -57,6 +57,9 @@ export class Query {
             throw new Error("Query id null!");
         }
         this.payload = await QueryService.deleteSavedQuery(this.book.getId(), queryId);
+        if (this.book.queries) {
+            this.book.queries = this.book.queries.filter(q => q.getId() !== queryId);
+        }
         return this;
     }
 
