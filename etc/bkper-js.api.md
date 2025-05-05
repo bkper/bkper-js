@@ -728,6 +728,7 @@ export enum Permission {
 // @public
 export class Query {
     constructor(book: Book, payload?: bkper.Query);
+    create(): Promise<Query>;
     // (undocumented)
     getId(): string | undefined;
     getQuery(): string | undefined;
@@ -737,6 +738,7 @@ export class Query {
     // (undocumented)
     payload: bkper.Query;
     remove(): Promise<Query>;
+    update(): Promise<Query>;
 }
 
 // @public
