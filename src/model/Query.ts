@@ -42,10 +42,34 @@ export class Query {
     }
 
     /**
+     * Sets the title of this saved Query.
+     * 
+     * @param title The title of this saved Query
+     * 
+     * @returns This Query, for chaining
+     */
+    public setTitle(title: string): Query {
+        this.payload.title = title;
+        return this;
+    }
+
+    /**
      * @return This Query string to be executed
      */
     public getQuery(): string | undefined {
         return this.payload.query;
+    }
+
+    /**
+     * Sets the query string associated with this saved Query.
+     * 
+     * @param query The query string to be executed
+     * 
+     * @returns This Query, for chaining
+     */
+    public setQuery(query: string): Query {
+        this.payload.query = query;
+        return this;
     }
 
     /**

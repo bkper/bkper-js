@@ -738,6 +738,8 @@ export class Query {
     // (undocumented)
     payload: bkper.Query;
     remove(): Promise<Query>;
+    setQuery(query: string): Query;
+    setTitle(title: string): Query;
     update(): Promise<Query>;
 }
 
