@@ -49,7 +49,25 @@ export class Query {
     }
 
     /**
-     * Perform delete group.
+     * Perform create new Query.
+     */
+    public async create(): Promise<Query> {
+        this.payload = await QueryService.createSavedQuery(this.book.getId(), this.payload);
+        this.updateQueryCache();
+        return this;
+    }
+
+    /**
+     * Perform update Query, applying pending changes.
+     */
+    public async update(): Promise<Query> {
+        this.payload = await QueryService.updateSavedQuery(this.book.getId(), this.payload);
+        this.updateQueryCache();
+        return this;
+    }
+
+    /**
+     * Perform delete Query.
      */
     public async remove(): Promise<Query> {
         const queryId = this.getId();
@@ -57,10 +75,18 @@ export class Query {
             throw new Error("Query id null!");
         }
         this.payload = await QueryService.deleteSavedQuery(this.book.getId(), queryId);
-        if (this.book.queries) {
-            this.book.queries = this.book.queries.filter(q => q.getId() !== queryId);
-        }
+        this.updateQueryCache(true);
         return this;
+    }
+
+    /** @internal */
+    private updateQueryCache(deleted?: boolean): void {
+        if (this.book.queries) {
+            this.book.queries = this.book.queries.filter(q => q.getId() !== this.getId()!);
+            if (!deleted) {
+                this.book.queries.push(this);
+            }
+        }
     }
 
 }
