@@ -21,6 +21,16 @@ export async function createTransactionsBatch(bookId: string, transactions: bkpe
   return transactionList != null && transactionList.items != null ? transactionList.items : [];
 }
 
+export async function checkTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<void> {
+  const payload: bkper.TransactionList = { items: transactions };
+  await new HttpBooksApiV5Request(`${bookId}/transactions/check/batch`).setMethod('PATCH').setPayload(payload).fetch();
+}
+
+export async function uncheckTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<void> {
+  const payload: bkper.TransactionList = { items: transactions };
+  await new HttpBooksApiV5Request(`${bookId}/transactions/uncheck/batch`).setMethod('PATCH').setPayload(payload).fetch();
+}
+
 export async function trashTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<void> {
 
   let transactionList: bkper.TransactionList = {

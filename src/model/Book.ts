@@ -462,22 +462,53 @@ export class Book {
   }
 
   /**
-   * Create [[Transactions]] on the Book, in batch. 
+   * Batch create [[Transactions]] on the Book.
+   * 
+   * @param transactions The transactions to be created
+   * 
+   * @returns The created Transactions
    */
   public async batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]> {
     let transactionPayloads: bkper.Transaction[] = [];
-    transactions.forEach(tx => transactionPayloads.push(tx.json()))
+    transactions.forEach(tx => transactionPayloads.push(tx.json()));
     transactionPayloads = await TransactionService.createTransactionsBatch(this.getId(), transactionPayloads);
     transactions = transactionPayloads.map(tx => new Transaction(this, tx));
     return transactions;
   }
 
   /**
-   * Trash [[Transactions]] on the Book, in batch. 
+   * Batch check [[Transactions]] on the Book.
+   * 
+   * @param transactions The transactions to be checked
+   * 
+   */
+  public async batchCheckTransactions(transactions: Transaction[]): Promise<void> {
+    let transactionPayloads: bkper.Transaction[] = [];
+    transactions.forEach(tx => transactionPayloads.push(tx.json()));
+    await TransactionService.checkTransactionsBatch(this.getId(), transactionPayloads);
+  }
+
+  /**
+   * Batch uncheck [[Transactions]] on the Book.
+   * 
+   * @param transactions The transactions to be unchecked
+   * 
+   */
+  public async batchUncheckTransactions(transactions: Transaction[]): Promise<void> {
+    let transactionPayloads: bkper.Transaction[] = [];
+    transactions.forEach(tx => transactionPayloads.push(tx.json()));
+    await TransactionService.uncheckTransactionsBatch(this.getId(), transactionPayloads);
+  }
+
+  /**
+   * Batch trash [[Transactions]] on the Book.
+   * 
+   * @param transactions The transactions to be trashed
+   * 
    */
   public async batchTrashTransactions(transactions: Transaction[]): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
-    transactions.forEach(tx => transactionPayloads.push(tx.json()))
+    transactions.forEach(tx => transactionPayloads.push(tx.json()));
     await TransactionService.trashTransactionsBatch(this.getId(), transactionPayloads);
   }
 
