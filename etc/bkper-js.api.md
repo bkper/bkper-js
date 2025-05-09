@@ -207,11 +207,13 @@ export class Bkper {
 export class Book {
     constructor(payload?: bkper.Book);
     audit(): void;
+    batchCheckTransactions(transactions: Transaction[]): Promise<void>;
     batchCreateAccounts(accounts: Account[]): Promise<Account[]>;
     batchCreateGroups(groups: Group[]): Promise<Group[]>;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     batchTrashTransactions(transactions: Transaction[]): Promise<void>;
+    batchUncheckTransactions(transactions: Transaction[]): Promise<void>;
     // @internal (undocumented)
     clearCache(): void;
     create(): Promise<Book>;
