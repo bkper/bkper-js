@@ -506,10 +506,10 @@ export class Book {
    * @param transactions The transactions to be trashed
    * 
    */
-  public async batchTrashTransactions(transactions: Transaction[]): Promise<void> {
+  public async batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
     transactions.forEach(tx => transactionPayloads.push(tx.json()));
-    await TransactionService.trashTransactionsBatch(this.getId(), transactionPayloads);
+    await TransactionService.trashTransactionsBatch(this.getId(), transactionPayloads, trashChecked);
   }
 
   /**

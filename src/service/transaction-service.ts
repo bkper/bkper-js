@@ -31,18 +31,10 @@ export async function uncheckTransactionsBatch(bookId: string, transactions: bkp
   await new HttpBooksApiV5Request(`${bookId}/transactions/uncheck/batch`).setMethod('PATCH').setPayload(payload).fetch();
 }
 
-export async function trashTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<void> {
-
-  let transactionList: bkper.TransactionList = {
-    items: transactions
-  }
-  var payload = transactionList;
-
-  let response = await new HttpBooksApiV5Request(`${bookId}/transactions/trash/batch`)
-    .setMethod('PATCH')
-    .setPayload(payload)
-    .fetch();
-
+export async function trashTransactionsBatch(bookId: string, transactions: bkper.Transaction[], trashChecked?: boolean): Promise<void> {
+  let transactionList: bkper.TransactionList = { items: transactions };
+  const payload = transactionList;
+  const response = await new HttpBooksApiV5Request(`${bookId}/transactions/trash/batch`).setMethod('PATCH').setPayload(payload).addParam('trashChecked', trashChecked).fetch();
   transactionList = await response.data;
 }
 
