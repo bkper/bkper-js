@@ -477,6 +477,20 @@ export class Book {
   }
 
   /**
+   * Batch update [[Transactions]] on the Book.
+   * 
+   * @param transactions The transactions to be updated
+   * 
+   * @param updateChecked True to also update checked transactions
+   * 
+   */
+  public async batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<void> {
+    let transactionsPayload: bkper.Transaction[] = [];
+    transactions.forEach(tx => transactionsPayload.push(tx.json()));
+    await TransactionService.updateTransactionsBatch(this.getId(), transactionsPayload, updateChecked);
+  }
+
+  /**
    * Batch check [[Transactions]] on the Book.
    * 
    * @param transactions The transactions to be checked
@@ -504,6 +518,8 @@ export class Book {
    * Batch trash [[Transactions]] on the Book.
    * 
    * @param transactions The transactions to be trashed
+   * 
+   * @param trashChecked True to also trash checked transactions
    * 
    */
   public async batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void> {
