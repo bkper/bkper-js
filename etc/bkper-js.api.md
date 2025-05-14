@@ -212,8 +212,9 @@ export class Book {
     batchCreateGroups(groups: Group[]): Promise<Group[]>;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
-    batchTrashTransactions(transactions: Transaction[]): Promise<void>;
+    batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void>;
     batchUncheckTransactions(transactions: Transaction[]): Promise<void>;
+    batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<void>;
     // @internal (undocumented)
     clearCache(): void;
     create(): Promise<Book>;
