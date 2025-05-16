@@ -483,11 +483,15 @@ export class Book {
    * 
    * @param updateChecked True to also update checked transactions
    * 
+   * @returns The updated draft Transactions
+   * 
    */
-  public async batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<void> {
-    let transactionsPayload: bkper.Transaction[] = [];
-    transactions.forEach(tx => transactionsPayload.push(tx.json()));
-    await TransactionService.updateTransactionsBatch(this.getId(), transactionsPayload, updateChecked);
+  public async batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]> {
+    let transactionPayloads: bkper.Transaction[] = [];
+    transactions.forEach(tx => transactionPayloads.push(tx.json()));
+    transactionPayloads = await TransactionService.updateTransactionsBatch(this.getId(), transactionPayloads, updateChecked);
+    transactions = transactionPayloads.map(tx => new Transaction(this, tx));
+    return transactions;
   }
 
   /**

@@ -6,24 +6,19 @@ export async function createTransaction(bookId: string, transaction: bkper.Trans
 }
 
 export async function createTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<bkper.Transaction[]> {
-
-  let transactionList: bkper.TransactionList = {
-    items: transactions
-  }
-  var payload = transactionList;
-
-  let response = await new HttpBooksApiV5Request(`${bookId}/transactions/batch`)
-    .setMethod('POST')
-    .setPayload(payload)
-    .fetch();
-
+  let transactionList: bkper.TransactionList = { items: transactions };
+  const payload = transactionList;
+  const response = await new HttpBooksApiV5Request(`${bookId}/transactions/batch`).setMethod('POST').setPayload(payload).fetch();
   transactionList = await response.data;
   return transactionList != null && transactionList.items != null ? transactionList.items : [];
 }
 
-export async function updateTransactionsBatch(bookId: string, transactions: bkper.Transaction[], updateChecked?: boolean): Promise<void> {
-  const payload: bkper.TransactionList = { items: transactions };
-  await new HttpBooksApiV5Request(`${bookId}/transactions/batch`).setMethod('PUT').setPayload(payload).addParam('updateChecked', updateChecked).fetch();
+export async function updateTransactionsBatch(bookId: string, transactions: bkper.Transaction[], updateChecked?: boolean): Promise<bkper.Transaction[]> {
+  let transactionList: bkper.TransactionList = { items: transactions };
+  const payload = transactionList;
+  const response = await new HttpBooksApiV5Request(`${bookId}/transactions/batch`).setMethod('PUT').setPayload(payload).addParam('updateChecked', updateChecked).fetch();
+  transactionList = await response.data;
+  return transactionList != null && transactionList.items != null ? transactionList.items : [];
 }
 
 export async function checkTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<void> {

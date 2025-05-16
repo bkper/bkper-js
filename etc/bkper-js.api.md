@@ -214,7 +214,7 @@ export class Book {
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void>;
     batchUncheckTransactions(transactions: Transaction[]): Promise<void>;
-    batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<void>;
+    batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]>;
     // @internal (undocumented)
     clearCache(): void;
     create(): Promise<Book>;
