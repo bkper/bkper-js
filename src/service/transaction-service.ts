@@ -38,6 +38,13 @@ export async function trashTransactionsBatch(bookId: string, transactions: bkper
   transactionList = await response.data;
 }
 
+export async function untrashTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<void> {
+  let transactionList: bkper.TransactionList = { items: transactions };
+  const payload = transactionList;
+  const response = await new HttpBooksApiV5Request(`${bookId}/transactions/untrash/batch`).setMethod('PATCH').setPayload(payload).fetch();
+  transactionList = await response.data;
+}
+
 export async function updateTransaction(bookId: string, transaction: bkper.Transaction): Promise<bkper.TransactionOperation> {
   var response = await new HttpBooksApiV5Request(`${bookId}/transactions`).setMethod('PUT').setPayload(transaction).fetch();
   return response.data;

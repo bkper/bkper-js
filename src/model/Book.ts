@@ -533,6 +533,18 @@ export class Book {
   }
 
   /**
+   * Batch untrash [[Transactions]] on the Book.
+   * 
+   * @param transactions The transactions to be untrashed
+   * 
+   */
+  public async batchUntrashTransactions(transactions: Transaction[]): Promise<void> {
+    let transactionPayloads: bkper.Transaction[] = [];
+    transactions.forEach(tx => transactionPayloads.push(tx.json()));
+    await TransactionService.untrashTransactionsBatch(this.getId(), transactionPayloads);
+  }
+
+  /**
    * Replay [[Events]] on the Book, in batch. 
    */
   public async batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void> {
