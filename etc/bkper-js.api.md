@@ -211,6 +211,7 @@ export class Book {
     batchCreateAccounts(accounts: Account[]): Promise<Account[]>;
     batchCreateGroups(groups: Group[]): Promise<Group[]>;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
+    batchPostTransactions(transactions: Transaction[]): Promise<void>;
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void>;
     batchUncheckTransactions(transactions: Transaction[]): Promise<void>;
