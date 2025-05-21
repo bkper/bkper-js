@@ -5,6 +5,11 @@ export async function createTransaction(bookId: string, transaction: bkper.Trans
   return response.data;
 }
 
+export async function postTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<void> {
+  const payload: bkper.TransactionList = { items: transactions };
+  await new HttpBooksApiV5Request(`${bookId}/transactions/post/batch`).setMethod('PATCH').setPayload(payload).fetch();
+}
+
 export async function createTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): Promise<bkper.Transaction[]> {
   let transactionList: bkper.TransactionList = { items: transactions };
   const payload = transactionList;

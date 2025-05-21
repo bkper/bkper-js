@@ -477,6 +477,18 @@ export class Book {
   }
 
   /**
+   * Batch post [[Transactions]] on the Book.
+   * 
+   * @param transactions The transactions to be posted
+   * 
+   */
+  public async batchPostTransactions(transactions: Transaction[]): Promise<void> {
+    let transactionPayloads: bkper.Transaction[] = [];
+    transactions.forEach(tx => transactionPayloads.push(tx.json()));
+    await TransactionService.postTransactionsBatch(this.getId(), transactionPayloads);
+  }
+
+  /**
    * Batch update [[Transactions]] on the Book.
    * 
    * @param transactions The transactions to be updated
