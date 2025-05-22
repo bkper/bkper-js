@@ -128,6 +128,41 @@ export class App {
   }
 
   /**
+   * @return The menu url of this App
+   */
+  public getMenuUrl(): string | undefined {
+    return this.payload.menuUrl;
+  }
+
+  /**
+   * @return The menu development url of this App
+   */
+  public getMenuUrlDev(): string | undefined {
+    return this.payload.menuUrlDev;
+  }
+
+  /**
+   * @return The menu text of this App
+   */
+  public getMenuText(): string | undefined {
+    return this.payload.menuText;
+  }
+
+  /**
+   * @return The menu popup width of this App
+   */
+  public getMenuPopupWidth(): string | undefined {
+    return this.payload.menuPopupWidth;
+  }
+
+  /**
+   * @return The menu popup height of this App
+   */
+  public getMenuPopupHeight(): string | undefined {
+    return this.payload.menuPopupHeight;
+  }
+
+  /**
    * @return The logo url of the owner of this App
    */
   public getOwnerLogoUrl(): string | undefined {
