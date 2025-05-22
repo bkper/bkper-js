@@ -106,6 +106,11 @@ export class App {
     getId(): string | undefined;
     getLogoUrl(): string | undefined;
     getLogoUrlDark(): string | undefined;
+    getMenuPopupHeight(): string | undefined;
+    getMenuPopupWidth(): string | undefined;
+    getMenuText(): string | undefined;
+    getMenuUrl(): string | undefined;
+    getMenuUrlDev(): string | undefined;
     getName(): string | undefined;
     getOwnerLogoUrl(): string | undefined;
     getOwnerName(): string | undefined;
