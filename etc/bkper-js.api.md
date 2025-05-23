@@ -569,7 +569,7 @@ export class Group {
     // @internal (undocumented)
     addAccount(account: Account): void;
     // @internal (undocumented)
-    buildGroupTree(groupsMap: Map<string, Group>): void;
+    buildGroupTree(idGroupMap: Map<string, Group>): void;
     create(): Promise<Group>;
     deleteProperty(key: string): Group;
     // (undocumented)
