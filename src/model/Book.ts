@@ -50,6 +50,9 @@ export class Book {
   /** @internal */
   private idAccountMap?: Map<string, Account>;
 
+  /** @internal */
+  private nameAccountMap?: Map<string, Account>;
+
   constructor(payload?: bkper.Book) {
     this.payload = payload || {};
     if (this.payload.permission == Permission.RECORDER) {
@@ -685,16 +688,25 @@ export class Book {
       return undefined;
     }
 
+    let account: Account | undefined;
+
+    // Try to get account by id
     if (this.idAccountMap) {
-      return this.idAccountMap.get(idOrName);
-    } else {
+      account = this.idAccountMap.get(idOrName);
+    }
+    // Try to get account by name
+    if (!account && this.nameAccountMap) {
+      account = this.nameAccountMap.get(idOrName);
+    }
+    // Try to fetch account from server
+    if (!account) {
       const accountPayload = await AccountService.getAccount(this.getId(), idOrName);
       if (accountPayload) {
-        return new Account(this, accountPayload);
+        account = new Account(this, accountPayload);
       }
     }
 
-    return undefined;
+    return account;
   }
 
   /** @internal */
@@ -710,12 +722,30 @@ export class Book {
 
   /** @internal */
   private updateAccountCache(account: Account): void {
+    this.updateAccountIdMap(account);
+    this.updateAccountNameMap(account);
+    if (this.idAccountMap || this.nameAccountMap) {
+      this.linkAccountsAndGroups(account);
+    }
+  }
+
+  /** @internal */
+  private updateAccountIdMap(account: Account): void {
     if (this.idAccountMap) {
       const id = account.getId();
       if (id) {
         this.idAccountMap.set(id, account);
       }
-      this.linkAccountsAndGroups(account);
+    }
+  }
+
+  /** @internal */
+  private updateAccountNameMap(account: Account): void {
+    if (this.nameAccountMap) {
+      const normalizedName = account.getNormalizedName();
+      if (normalizedName) {
+        this.nameAccountMap.set(normalizedName, account);
+      }
     }
   }
 
@@ -824,6 +854,7 @@ export class Book {
     }
     let accountsObj = accounts.map(account => new Account(this, account));
     this.idAccountMap = new Map<string, Account>();
+    this.nameAccountMap = new Map<string, Account>();
     for (const account of accountsObj) {
       this.updateAccountCache(account);
     }
@@ -856,6 +887,7 @@ export class Book {
   /** @internal */
   private clearAccountCache(): void {
     this.idAccountMap = undefined;
+    this.nameAccountMap = undefined;
   }
 
   /** @internal */
