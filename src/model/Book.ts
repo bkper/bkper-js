@@ -48,6 +48,9 @@ export class Book {
   private idGroupMap?: Map<string, Group>;
 
   /** @internal */
+  private nameGroupMap?: Map<string, Group>;
+
+  /** @internal */
   private idAccountMap?: Map<string, Account>;
 
   /** @internal */
@@ -711,12 +714,30 @@ export class Book {
 
   /** @internal */
   private updateGroupCache(group: Group): void {
+    this.updateGroupIdMap(group);
+    this.updateGroupNameMap(group);
+    if (this.idGroupMap) {
+      group.buildGroupTree(this.idGroupMap);
+    }
+  }
+
+  /** @internal */
+  private updateGroupIdMap(group: Group): void {
     if (this.idGroupMap) {
       const id = group.getId();
       if (id) {
         this.idGroupMap.set(id, group);
       }
-      group.buildGroupTree(this.idGroupMap);
+    }
+  }
+
+  /** @internal */
+  private updateGroupNameMap(group: Group): void {
+    if (this.nameGroupMap) {
+      const normalizedName = group.getNormalizedName();
+      if (normalizedName) {
+        this.nameGroupMap.set(normalizedName, group);
+      }
     }
   }
 
@@ -793,16 +814,25 @@ export class Book {
       return undefined;
     }
 
+    let group: Group | undefined;
+
+    // Try to get group by id
     if (this.idGroupMap) {
-      return this.idGroupMap.get(idOrName);
-    } else {
+      group = this.idGroupMap.get(idOrName);
+    }
+    // Try to get group by name
+    if (!group && this.nameGroupMap) {
+      group = this.nameGroupMap.get(idOrName);
+    }
+    // Try to fetch group from server
+    if (!group) {
       const groupPayload = await GroupService.getGroup(this.getId(), idOrName);
       if (groupPayload) {
-        return new Group(this, groupPayload);
+        group = new Group(this, groupPayload);
       }
     }
 
-    return undefined;
+    return group;
   }
 
   /**
@@ -825,6 +855,7 @@ export class Book {
     }
     let groupsObj = groups.map(group => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
+    this.nameGroupMap = new Map<string, Group>();
     for (const group of groupsObj) {
       this.updateGroupCache(group);
     }
@@ -882,6 +913,7 @@ export class Book {
   /** @internal */
   private clearGroupCache(): void {
     this.idGroupMap = undefined;
+    this.nameGroupMap = undefined;
   }
 
   /** @internal */

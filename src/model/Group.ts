@@ -386,12 +386,12 @@ export class Group {
   }
 
   /** @internal */
-  buildGroupTree(groupsMap: Map<string, Group>): void {
+  buildGroupTree(idGroupMap: Map<string, Group>): void {
     this.parent = undefined;
     this.depth = undefined;
     this.root = undefined;
     if (this.payload.parent) {
-      const parentGroup = groupsMap.get(this.payload.parent.id || "");
+      const parentGroup = idGroupMap.get(this.payload.parent.id || "");
       if (parentGroup) {
         this.parent = parentGroup;
         parentGroup.addChild(this);
