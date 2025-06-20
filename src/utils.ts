@@ -126,8 +126,7 @@ export function formatDate(date: Date, pattern?: string, timeZone?: string): str
     return formatDateISO(date, timeZone);
   }
 
-  var formatedDate = DateTime.fromJSDate(date, {zone: timeZone}).toFormat(pattern);
-  return formatedDate;
+  return DateTime.fromJSDate(date, { zone: timeZone }).toFormat(pattern);
 }
 
 export function formatDateISO(date: Date, timeZone?: string): string {
@@ -139,8 +138,7 @@ export function formatDateISO(date: Date, timeZone?: string): string {
     timeZone = "UTC";
   }
 
-  var formatedDate = DateTime.fromJSDate(date, {zone: timeZone}).toISODate();
-  return formatedDate;
+  return DateTime.fromJSDate(date, { zone: timeZone }).toISODate();
 }
 
 export function getIsoDateValue(date: string): number {
