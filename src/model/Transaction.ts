@@ -657,12 +657,25 @@ export class Transaction {
   }
 
   /**
-   * @returns The date the transaction was created, formatted according to the date pattern of [[Book]].
+   * @returns The date the transaction was created, formatted according to the date pattern of the [[Book]].
    */
   public getCreatedAtFormatted(): string {
     return Utils.formatDate(this.getCreatedAt(), this.book.getTimeZone(), this.book.getDatePattern() + " HH:mm:ss");
   }
 
+  /**
+   * @returns The date the transaction was last updated.
+   */
+  public getUpdatedAt(): Date {
+    return new Date(new Number(this.payload.updatedAt).valueOf());
+  }
+
+  /**
+   * @returns The date the transaction was last updated, formatted according to the date pattern of the [[Book]].
+   */
+  public getUpdatedAtFormatted(): string {
+    return Utils.formatDate(this.getUpdatedAt(), this.book.getTimeZone(), this.book.getDatePattern() + " HH:mm:ss");
+  }
 
   //EVOLVED BALANCES
   /** @internal */
