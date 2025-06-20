@@ -834,6 +834,10 @@ export class Transaction {
     // (undocumented)
     getTags(): string[];
     // (undocumented)
+    getUpdatedAt(): Date;
+    // (undocumented)
+    getUpdatedAtFormatted(): string;
+    // (undocumented)
     getUrls(): string[];
     hasTag(tag: string): boolean;
     // (undocumented)
