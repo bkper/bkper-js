@@ -149,12 +149,11 @@ export function parseDate(date: string, pattern?: string, timeZone?: string): Da
   if (!pattern) {
     pattern = 'yyyy-MM-dd';
   }
-  let dateObject = DateTime.fromFormat(date, pattern, {zone: timeZone}).toJSDate();
+  let dateObject = DateTime.fromFormat(date, pattern, { zone: timeZone }).toJSDate();
   if (dateObject instanceof Date && !isNaN(dateObject.getTime())) {
-      console.log(dateObject)
-      return dateObject
+    return dateObject;
   } else {
-      return DateTime.fromFormat(date, 'yyyy-MM-dd', {zone: timeZone}).toJSDate();
+    return DateTime.fromFormat(date, 'yyyy-MM-dd', { zone: timeZone }).toJSDate();
   }
 }
 
