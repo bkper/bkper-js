@@ -6,3 +6,4 @@ yarn-error.log
 temp/
 lib/*
 !lib/index.d.ts
+CLAUDE.local.md
