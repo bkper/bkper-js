@@ -17,6 +17,8 @@ export class App {
   }
 
   /**
+   * Gets the wrapped plain JSON object.
+   *
    * @returns The wrapped plain json object
    */
   public json(): bkper.App {
@@ -24,10 +26,11 @@ export class App {
   }
 
   /**
-   * 
    * Sets the webhook url for development.
    * 
-   * @returns This App, for chainning.
+   * @param webhookUrlDev - The webhook URL for development
+   * 
+   * @returns This App, for chaining
    */
   public setWebhookUrlDev(webhookUrlDev: string): App {
     this.payload.webhookUrlDev = webhookUrlDev;
@@ -35,10 +38,11 @@ export class App {
   }
 
   /**
-   * 
    * Sets the conversation url for development.
    * 
-   * @returns This App, for chainning.
+   * @param conversationUrlDev - The conversation URL for development
+   * 
+   * @returns This App, for chaining
    */
   public setConversationUrlDev(conversationUrlDev: string): App {
     this.payload.conversationUrlDev = conversationUrlDev;
@@ -46,7 +50,8 @@ export class App {
   }
 
   /**
-   * 
+   * Gets the App universal identifier.
+   *
    * @returns The App universal identifier
    */
   public getId(): string | undefined {
@@ -54,14 +59,18 @@ export class App {
   }
 
   /**
-   * @return The name of this App
+   * Gets the name of this App.
+   *
+   * @returns The name of this App
    */
   public getName(): string | undefined {
     return this.payload.name;
   }
 
   /**
-   * @return True if this App has events bound to it
+   * Checks if this App has events bound to it.
+   *
+   * @returns True if this App has events bound to it
    */
   public hasEvents(): boolean {
     const events = this.getEvents() || [];
@@ -69,49 +78,63 @@ export class App {
   }
 
   /**
-   * @return The events bound to this App
+   * Gets the events bound to this App.
+   *
+   * @returns The events bound to this App
    */
   public getEvents(): EventType[] | undefined {
     return this.payload.events as EventType[];
   }
 
   /**
-   * @return True if this App is published
+   * Checks if this App is published.
+   *
+   * @returns True if this App is published
    */
   public isPublished(): boolean {
     return this.payload.published || false;
   }
 
   /**
-   * @return True if this App is conversational
+   * Checks if this App is conversational.
+   *
+   * @returns True if this App is conversational
    */
   public isConversational(): boolean {
     return this.payload.conversational || false;
   }
 
   /**
-   * @return The logo url of this App
+   * Gets the logo url of this App.
+   *
+   * @returns The logo url of this App
    */
   public getLogoUrl(): string | undefined {
     return this.payload.logoUrl;
   }
 
   /**
-   * @return The logo url of this App in dark mode
+   * Gets the logo url of this App in dark mode.
+   *
+   * @returns The logo url of this App in dark mode
    */
   public getLogoUrlDark(): string | undefined {
     return this.payload.logoUrlDark;
   }
 
   /**
-   * @return The description of this App
+   * Gets the description of this App.
+   *
+   * @returns The description of this App
    */
   public getDescription(): string | undefined {
     return this.payload.description;
   }
 
   /**
-   * Sets the whitelabeled user emails
+   * Sets the whitelabeled user emails.
+   * 
+   * @param emails - The user emails to whitelist
    * 
    * @returns This App for chaining
    */
@@ -121,63 +144,81 @@ export class App {
   }
 
   /**
-   * @return The name of the owner of this App
+   * Gets the name of the owner of this App.
+   *
+   * @returns The name of the owner of this App
    */
   public getOwnerName(): string | undefined {
     return this.payload.ownerName;
   }
 
   /**
-   * @return The menu url of this App
+   * Gets the menu url of this App.
+   *
+   * @returns The menu url of this App
    */
   public getMenuUrl(): string | undefined {
     return this.payload.menuUrl;
   }
 
   /**
-   * @return The menu development url of this App
+   * Gets the menu development url of this App.
+   *
+   * @returns The menu development url of this App
    */
   public getMenuUrlDev(): string | undefined {
     return this.payload.menuUrlDev;
   }
 
   /**
-   * @return The menu text of this App
+   * Gets the menu text of this App.
+   *
+   * @returns The menu text of this App
    */
   public getMenuText(): string | undefined {
     return this.payload.menuText;
   }
 
   /**
-   * @return The menu popup width of this App
+   * Gets the menu popup width of this App.
+   *
+   * @returns The menu popup width of this App
    */
   public getMenuPopupWidth(): string | undefined {
     return this.payload.menuPopupWidth;
   }
 
   /**
-   * @return The menu popup height of this App
+   * Gets the menu popup height of this App.
+   *
+   * @returns The menu popup height of this App
    */
   public getMenuPopupHeight(): string | undefined {
     return this.payload.menuPopupHeight;
   }
 
   /**
-   * @return The logo url of the owner of this App
+   * Gets the logo url of the owner of this App.
+   *
+   * @returns The logo url of the owner of this App
    */
   public getOwnerLogoUrl(): string | undefined {
     return this.payload.ownerLogoUrl;
   }
 
   /**
-   * @return The file patterns the App handles - E.g *.pdf *.csv
+   * Gets the file patterns the App handles.
+   *
+   * @returns The file patterns the App handles - E.g *.pdf *.csv
    */
   public getFilePatterns(): string[] | undefined {
     return this.payload.filePatterns;
   }
 
   /**
-   * Sets the developer email
+   * Sets the developer email.
+   * 
+   * @param email - The developer email to set
    * 
    * @returns This App for chaining
    */
@@ -187,7 +228,9 @@ export class App {
   }
 
   /**
-   * Sets the client secret
+   * Sets the client secret.
+   * 
+   * @param clientSecret - The client secret to set
    * 
    * @returns This App for chaining
    */
@@ -197,7 +240,9 @@ export class App {
   }
 
   /**
-   * Sets the readme text
+   * Sets the readme text.
+   * 
+   * @param readme - The readme text to set
    * 
    * @returns This App for chaining
    */
@@ -210,6 +255,8 @@ export class App {
    * Performs the app creation, applying pending changes.
    * 
    * The App id MUST be unique. If another app is already existing, an error will be thrown.
+   *
+   * @returns This App after creation
    */
   public async create(): Promise<App> {
     await AppService.createApp(this.payload);
@@ -217,7 +264,9 @@ export class App {
   }
 
   /**
-   * Partially update an App, applying pending changes.
+   * Partially updates an App, applying pending changes.
+   *
+   * @returns This App after the partial update
    */
   public async patch(): Promise<App> {
     await AppService.patchApp(this.payload);
@@ -225,7 +274,9 @@ export class App {
   }
 
   /**
-   * Perform update App, applying pending changes.
+   * Performs a full update of the App, applying pending changes.
+   *
+   * @returns This App after the update
    */
   public async update(): Promise<App> {
     await AppService.updateApp(this.payload);

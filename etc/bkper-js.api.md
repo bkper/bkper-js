@@ -17,20 +17,17 @@ export class Account {
     getGroups(): Promise<Group[]>;
     getId(): string | undefined;
     getName(): string | undefined;
-    // (undocumented)
     getNormalizedName(): string;
     getProperties(): {
         [key: string]: string;
     };
     getProperty(...keys: string[]): string | undefined;
-    // (undocumented)
     getType(): AccountType;
     hasTransactionPosted(): boolean | undefined;
     isArchived(): boolean | undefined;
     isCredit(): boolean | undefined;
     isInGroup(group: string | Group): Promise<boolean>;
     isPermanent(): boolean | undefined;
-    // (undocumented)
     json(): bkper.Account;
     // (undocumented)
     payload: bkper.Account;
@@ -58,15 +55,10 @@ export enum AccountType {
 // @public
 export class Agent {
     constructor(payload?: bkper.Agent);
-    // (undocumented)
     getId(): string | undefined;
-    // (undocumented)
     getLogoUrl(): string | undefined;
-    // (undocumented)
     getLogoUrlDark(): string | undefined;
-    // (undocumented)
     getName(): string | undefined;
-    // (undocumented)
     json(): bkper.Agent;
     // (undocumented)
     payload: bkper.Agent;
@@ -102,7 +94,6 @@ export class App {
     getDescription(): string | undefined;
     getEvents(): EventType[] | undefined;
     getFilePatterns(): string[] | undefined;
-    // (undocumented)
     getId(): string | undefined;
     getLogoUrl(): string | undefined;
     getLogoUrlDark(): string | undefined;
@@ -117,7 +108,6 @@ export class App {
     hasEvents(): boolean;
     isConversational(): boolean;
     isPublished(): boolean;
-    // (undocumented)
     json(): bkper.App;
     patch(): Promise<App>;
     // (undocumented)
@@ -232,63 +222,41 @@ export class Book {
     getAccount(idOrName?: string): Promise<Account | undefined>;
     getAccounts(): Promise<Account[]>;
     getApps(): Promise<App[]>;
-    // (undocumented)
     getAutoPost(): boolean | undefined;
     getBalancesReport(query: string): Promise<BalancesReport>;
-    // (undocumented)
     getClosingDate(): string | undefined;
-    // (undocumented)
     getCollection(): Collection | undefined;
-    // (undocumented)
     getDatePattern(): string | undefined;
-    // (undocumented)
     getDecimalPlaces(): number | undefined;
-    // (undocumented)
     getDecimalSeparator(): DecimalSeparator;
     getFile(id: string): Promise<File>;
-    // (undocumented)
     getFractionDigits(): number | undefined;
     getGroup(idOrName?: string): Promise<Group | undefined>;
     getGroups(): Promise<Group[]>;
     getId(): string;
     getIntegrations(): Promise<Integration[]>;
-    // (undocumented)
     getLastUpdateMs(): number | undefined;
-    // (undocumented)
     getLockDate(): string | undefined;
     // @internal (undocumented)
     getMostRecentLockDate_(): string | null;
-    // (undocumented)
     getName(): string | undefined;
-    // (undocumented)
     getOwnerName(): string | undefined;
-    // (undocumented)
     getPageSize(): number | undefined;
-    // (undocumented)
     getPeriod(): Period;
-    // (undocumented)
     getPeriodStartMonth(): Month;
-    // (undocumented)
     getPermission(): Permission;
     getProperties(): {
         [key: string]: string;
     };
     getProperty(...keys: string[]): string | undefined;
     getSavedQueries(): Promise<Query[]>;
-    // (undocumented)
     getTimeZone(): string | undefined;
-    // (undocumented)
     getTimeZoneOffset(): number | undefined;
-    // (undocumented)
     getTotalTransactions(): number;
-    // (undocumented)
     getTotalTransactionsCurrentMonth(): number;
-    // (undocumented)
     getTotalTransactionsCurrentYear(): number;
     getTransaction(id: string): Promise<Transaction | undefined>;
-    // (undocumented)
     getVisibility(): Visibility;
-    // (undocumented)
     json(): bkper.Book;
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
@@ -325,12 +293,15 @@ export class Book {
 // @public
 export class BotResponse {
     constructor(event: Event, payload?: bkper.BotResponse);
+    // (undocumented)
     getAgentId(): string | undefined;
     // (undocumented)
     getCreatedAt(): Date | undefined;
     // (undocumented)
     getEvent(): Event;
+    // (undocumented)
     getMessage(): string | undefined;
+    // (undocumented)
     getType(): BotResponseType | undefined;
     // (undocumented)
     payload: bkper.BotResponse;
@@ -742,7 +713,9 @@ export class Query {
     create(): Promise<Query>;
     // (undocumented)
     getId(): string | undefined;
+    // (undocumented)
     getQuery(): string | undefined;
+    // (undocumented)
     getTitle(): string | undefined;
     // (undocumented)
     json(): bkper.Query;

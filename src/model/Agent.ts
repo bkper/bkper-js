@@ -14,6 +14,8 @@ export class Agent {
     }
 
     /**
+     * Gets the wrapped plain JSON object.
+     *
      * @returns The wrapped plain json object
      */
     public json(): bkper.Agent {
@@ -21,7 +23,8 @@ export class Agent {
     }
 
     /**
-     * 
+     * Gets the Agent universal identifier.
+     *
      * @returns The Agent universal identifier
      */
     public getId(): string | undefined {
@@ -29,7 +32,8 @@ export class Agent {
     }
 
     /**
-     * 
+     * Gets the Agent name.
+     *
      * @returns The Agent name
      */
     public getName(): string | undefined {
@@ -37,7 +41,8 @@ export class Agent {
     }
 
     /**
-     * 
+     * Gets the Agent logo URL.
+     *
      * @returns The Agent logo url
      */
     public getLogoUrl(): string | undefined {
@@ -45,7 +50,8 @@ export class Agent {
     }
 
     /**
-     * 
+     * Gets the Agent logo URL in dark mode.
+     *
      * @returns The Agent logo url in dark mode
      */
     public getLogoUrlDark(): string | undefined {

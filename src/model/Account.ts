@@ -7,10 +7,9 @@ import { normalizeText, round } from '../utils.js';
 import { Amount } from './Amount.js';
 
 /**
- * 
  * This class defines an [Account](https://en.wikipedia.org/wiki/Account_(bookkeeping)) of a [[Book]].
  * 
- * It mantains a balance of all amount [credited and debited](http://en.wikipedia.org/wiki/Debits_and_credits) in it by [[Transactions]].
+ * It maintains a balance of all amount [credited and debited](http://en.wikipedia.org/wiki/Debits_and_credits) in it by [[Transactions]].
  * 
  * An Account can be grouped by [[Groups]].
  * 
@@ -31,6 +30,8 @@ export class Account {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload.
+   *
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.Account {
@@ -38,24 +39,29 @@ export class Account {
   }
 
   /**
-   * Gets the account internal id.
+   * Gets the Account internal id.
+   *
+   * @returns The Account internal id
    */
   public getId(): string | undefined {
     return this.payload.id;
   }
 
   /**
-   * Gets the account name.
+   * Gets the Account name.
+   *
+   * @returns The Account name
    */
   public getName(): string | undefined {
     return this.payload.name;
   }
 
   /**
-   * 
    * Sets the name of the Account.
-   * 
-   * @returns This Account, for chainning.
+   *
+   * @param name - The name to set
+   *
+   * @returns This Account, for chaining
    */
   public setName(name: string): Account {
     this.payload.name = name;
@@ -63,7 +69,9 @@ export class Account {
   }
 
   /**
-   * @returns The name of this account without spaces or special characters.
+   * Gets the normalized name of this Account without spaces or special characters.
+   *
+   * @returns The name of this Account without spaces or special characters
    */
   public getNormalizedName(): string {
     if (this.payload.normalizedName) {
@@ -74,17 +82,20 @@ export class Account {
   }
 
   /**
-   * @returns The type for of this account.
+   * Gets the type of this Account.
+   *
+   * @returns The [[AccountType]] of this Account
    */
   public getType(): AccountType {
     return this.payload.type as AccountType;
   }
 
   /**
-   * 
    * Sets the type of the Account.
-   * 
-   * @returns This Account, for chainning
+   *
+   * @param type - The [[AccountType]] to set
+   *
+   * @returns This Account, for chaining
    */
   public setType(type: AccountType): Account {
     this.payload.type = type;
@@ -93,17 +104,19 @@ export class Account {
 
   /**
    * Gets the custom properties stored in this Account.
+   *
+   * @returns The custom properties object
    */
   public getProperties(): { [key: string]: string } {
     return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
-   * Sets the custom properties of the Account
-   * 
+   * Sets the custom properties of the Account.
+   *
    * @param properties - Object with key/value pair properties
-   * 
-   * @returns This Account, for chainning. 
+   *
+   * @returns This Account, for chaining
    */
   public setProperties(properties: { [key: string]: string }): Account {
     this.payload.properties = { ...properties };
@@ -111,9 +124,11 @@ export class Account {
   }
 
   /**
-   * Gets the property value for given keys. First property found will be retrieved
-   * 
+   * Gets the property value for given keys. First property found will be retrieved.
+   *
    * @param keys - The property key
+   *
+   * @returns The property value or undefined if not found
    */
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
@@ -128,11 +143,11 @@ export class Account {
 
   /**
    * Sets a custom property in the Account.
-   * 
+   *
    * @param key - The property key
    * @param value - The property value
-   * 
-   * @returns This Account, for chainning. 
+   *
+   * @returns This Account, for chaining
    */
   public setProperty(key: string, value: string | null): Account {
     if (key == null || key.trim() == '') {
@@ -149,11 +164,11 @@ export class Account {
   }
 
   /**
-   * Delete a custom property
-   * 
+   * Deletes a custom property.
+   *
    * @param key - The property key
-   * 
-   * @returns This Account, for chainning. 
+   *
+   * @returns This Account, for chaining
    */
   public deleteProperty(key: string): Account {
     this.setProperty(key, null);
@@ -162,8 +177,10 @@ export class Account {
 
   /**
    * Gets the balance based on credit nature of this Account.
+   * 
    * @deprecated Use `Book.getBalancesReport` instead.
-   * @returns The balance of this account.
+   * 
+   * @returns The balance of this Account.
    */
   public getBalance(): Amount {
     var balance = new Amount('0');
@@ -175,8 +192,10 @@ export class Account {
 
   /**
    * Gets the raw balance, no matter credit nature of this Account.
+   * 
    * @deprecated Use `Book.getBalancesReport` instead.
-   * @returns The balance of this account.
+   * 
+   * @returns The balance of this Account.
    */
   public getBalanceRaw(): Amount {
     var balance = new Amount('0');
@@ -187,16 +206,20 @@ export class Account {
   }
 
   /**
-   * Tell if this account is archived.
+   * Tells if this Account is archived.
+   *
+   * @returns True if the Account is archived
    */
   public isArchived(): boolean | undefined {
     return this.payload.archived;
   }
 
   /**
-   * Set account archived/unarchived.
-   * 
-   * @returns This Account, for chainning.
+   * Sets Account archived/unarchived.
+   *
+   * @param archived - True to archive, false to unarchive
+   *
+   * @returns This Account, for chaining
    */
   public setArchived(archived: boolean): Account {
     this.payload.archived = archived;
@@ -204,23 +227,24 @@ export class Account {
   }
 
   /**
-   * Tell if the Account has any transaction already posted.
+   * Tells if the Account has any transaction already posted.
    * 
    * Accounts with transaction posted, even with zero balance, can only be archived.
+   *
+   * @returns True if the Account has transactions posted
    */
   public hasTransactionPosted(): boolean | undefined {
     return this.payload.hasTransactionPosted;
   }
 
   /**
-   * 
-   * Tell if the account is permanent.
+   * Tells if the Account is permanent.
    * 
    * Permanent Accounts are the ones which final balance is relevant and keep its balances over time.
    *  
-   * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow)
+   * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(Accountancy)#Based_on_periodicity_of_flow)
    * 
-   * Usually represents assets or tangibles, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
+   * Usually represents assets or tangibles, capable of being perceived by the senses or the mind, like bank Accounts, money, debts and so on.
    * 
    * @returns True if its a permanent Account
    */
@@ -229,31 +253,35 @@ export class Account {
   }
 
   /**
-   * Tell if the account has a Credit nature or Debit otherwise
+   * Tells if the Account has a Credit nature or Debit otherwise.
    * 
-   * Credit accounts are just for representation purposes. It increase or decrease the absolute balance. It doesn't affect the overall balance or the behavior of the system.
+   * Credit Accounts are just for representation purposes. It increase or decrease the absolute balance. It doesn't affect the overall balance or the behavior of the system.
    * 
-   * The absolute balance of credit accounts increase when it participate as a credit/origin in a transaction. Its usually for Accounts that increase the balance of the assets, like revenue accounts.
+   * The absolute balance of credit Accounts increase when it participate as a credit/origin in a transaction. Its usually for Accounts that increase the balance of the assets, like revenue Accounts.
    * 
    * ```
    *         Crediting a credit
-   *   Thus ---------------------> account increases its absolute balance
+   *   Thus ---------------------> Account increases its absolute balance
    *         Debiting a debit
    * 
    * 
    *         Debiting a credit
-   *   Thus ---------------------> account decreases its absolute balance
+   *   Thus ---------------------> Account decreases its absolute balance
    *         Crediting a debit
    * ```
    * 
-   * As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
+   * As a rule of thumb, and for simple understanding, almost all Accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue Accounts.
+   *
+   * @returns True if the Account has credit nature
    */
   public isCredit(): boolean | undefined {
     return this.payload.credit;
   }
 
   /**
-   * Get the [[Groups]] of this account.
+   * Gets the [[Groups]] of this Account.
+   *
+   * @returns Promise with the [[Groups]] of this Account
    */
   public async getGroups(): Promise<Group[]> {
     const id = this.getId();
@@ -267,8 +295,10 @@ export class Account {
 
   /**
    * Sets the groups of the Account.
-   * 
-   * @returns This Account, for chainning.
+   *
+   * @param groups - The groups to set
+   *
+   * @returns This Account, for chaining
    */
   public setGroups(groups: Group[] | bkper.Group[]): Account {
     this.payload.groups = undefined;
@@ -279,9 +309,11 @@ export class Account {
   }
 
   /**
-   * Add a group to the Account.
-   * 
-   * @returns This Account, for chainning.
+   * Adds a group to the Account.
+   *
+   * @param group - The group to add
+   *
+   * @returns This Account, for chaining
    */
   public addGroup(group: Group | bkper.Group): Account {
     if (!this.payload.groups) {
@@ -298,7 +330,11 @@ export class Account {
   }
 
   /**
-   * Remove a group from the Account.
+   * Removes a group from the Account.
+   *
+   * @param group - The group name, id or object to remove
+   *
+   * @returns Promise with this Account, for chaining
    */
   public async removeGroup(group: string | Group): Promise<Account> {
 
@@ -324,9 +360,11 @@ export class Account {
   }
 
   /**
-   * Tell if this account is in the [[Group]]
-   * 
-   * @param  group - The Group name, id or object
+   * Tells if this Account is in the [[Group]].
+   *
+   * @param group - The Group name, id or object
+   *
+   * @returns Promise with true if the Account is in the group
    */
   public async isInGroup(group: string | Group): Promise<boolean> {
     if (group == null) {
@@ -361,7 +399,9 @@ export class Account {
   }
 
   /**
-   * Perform create new account.
+   * Performs create new Account.
+   *
+   * @returns Promise with this Account after creation
    */
   public async create(): Promise<Account> {
     this.payload = await AccountService.createAccount(this.book.getId(), this.payload);
@@ -370,7 +410,9 @@ export class Account {
   }
 
   /**
-   * Perform update account, applying pending changes.
+   * Performs update Account, applying pending changes.
+   *
+   * @returns Promise with this Account after update
    */
   public async update(): Promise<Account> {
     this.payload = await AccountService.updateAccount(this.book.getId(), this.payload);
@@ -379,7 +421,9 @@ export class Account {
   }
 
   /**
-   * Perform delete account.
+   * Performs delete Account.
+   *
+   * @returns Promise with this Account after deletion
    */
   public async remove(): Promise<Account> {
     this.payload = await AccountService.deleteAccount(this.book.getId(), this.payload);
