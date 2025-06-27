@@ -1166,6 +1166,16 @@ export declare class Book {
      */
     create(): Promise<Book>;
     /**
+     * Creates a copy of this Book
+     *
+     * @param name The name for the copied book
+     * @param copyTransactions True to copy transactions from the source book (user must be the Book owner)
+     * @param fromDate Start date to consider if copying transactions (numeric value in YYYYMMDD format)
+     *
+     * @returns The copied Book object
+     */
+    copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book>;
+    /**
      * Perform update Book, applying pending changes.
      */
     update(): Promise<Book>;

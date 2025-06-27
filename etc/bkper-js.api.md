@@ -224,6 +224,7 @@ export class Book {
     batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]>;
     // @internal (undocumented)
     clearCache(): void;
+    copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book>;
     create(): Promise<Book>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
     formatDate(date: Date, timeZone?: string): string;
