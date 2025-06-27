@@ -50,10 +50,11 @@ export class Bkper {
   /**
    * Gets all [[Books]] the user has access to.
    * 
+   * @param query - Optional search term to filter books
    * @returns The retrieved list of Books
    */
-  public static async getBooks(): Promise<Book[]> {
-    let books = await BookService.loadBooks();
+  public static async getBooks(query?: string): Promise<Book[]> {
+    let books = await BookService.loadBooks(query);
     return books.map(book => new Book(book));
   }
 

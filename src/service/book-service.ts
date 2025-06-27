@@ -1,7 +1,11 @@
 import { HttpBooksApiV5Request } from "./http-api-request.js";
 
-export async function loadBooks(): Promise<bkper.Book[]> {
-  let response = await new HttpBooksApiV5Request('').fetch();
+export async function loadBooks(query?: string): Promise<bkper.Book[]> {
+  let request = new HttpBooksApiV5Request('');
+  if (query) {
+    request.addParam('query', query);
+  }
+  let response = await request.fetch();
   if (response.data == null) {
     return [];
   }
