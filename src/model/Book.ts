@@ -1015,6 +1015,20 @@ export class Book {
   }
 
   /**
+   * Creates a copy of this Book
+   * 
+   * @param name The name for the copied book
+   * @param copyTransactions True to copy transactions from the source book (user must be the Book owner)
+   * @param fromDate Start date to consider if copying transactions (numeric value in YYYYMMDD format)
+   * 
+   * @returns The copied Book object
+   */
+  public async copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book> {
+    const copiedBookPayload = await BookService.copyBook(this.getId(), name, copyTransactions, fromDate);
+    return new Book(copiedBookPayload);
+  }
+
+  /**
    * Perform update Book, applying pending changes.
    */
   public async update(): Promise<Book> {

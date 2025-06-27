@@ -40,3 +40,15 @@ export async function getApps(bookId: string): Promise<bkper.App[]> {
   let response = await new HttpBooksApiV5Request(`${bookId}/apps`).setMethod('GET').fetch();
   return response?.data?.items || [];
 }
+
+export async function copyBook(bookId: string, name: string, copyTransactions?: boolean, fromDate?: number): Promise<bkper.Book> {
+  const request = new HttpBooksApiV5Request(`${bookId}/copy`).setMethod('POST').addParam('name', name);
+  if (copyTransactions) {
+    request.addParam('copyTransactions', copyTransactions);
+    if (fromDate) {
+      request.addParam('fromDate', fromDate);
+    }
+  }
+  const response = await request.fetch();
+  return response.data;
+}
