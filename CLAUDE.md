@@ -80,3 +80,6 @@ HTTP API communication layer:
 - Static factory methods on main Bkper class for resource access
 - Fluent/chainable API design for method chaining
 - Comprehensive error handling with structured HTTP error responses
+
+## Generated Files
+- `@etc/bkper-js.api.md` is a generated code, then NEVER change it

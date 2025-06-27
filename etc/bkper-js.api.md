@@ -196,7 +196,7 @@ export class Bkper {
     static getApps(): Promise<App[]>;
     static getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
     static getBook(id: string, includeAccounts?: boolean): Promise<Book>;
-    static getBooks(): Promise<Book[]>;
+    static getBooks(query?: string): Promise<Book[]>;
     static getCollections(): Promise<Collection[]>;
     static getConversations(): Promise<Conversation[]>;
     static getTemplates(): Promise<Template[]>;

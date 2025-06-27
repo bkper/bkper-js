@@ -665,9 +665,10 @@ export declare class Bkper {
     /**
      * Gets all [[Books]] the user has access to.
      *
+     * @param query - Optional search term to filter books
      * @returns The retrieved list of Books
      */
-    static getBooks(): Promise<Book[]>;
+    static getBooks(query?: string): Promise<Book[]>;
     /**
      * Gets all [[Collections]] the user has access to.
      *
