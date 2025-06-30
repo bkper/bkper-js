@@ -24,8 +24,7 @@ import { Event } from './Event.js';
 import { Query } from './Query.js';
 
 /**
- *
- * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
+ * A Book represents a [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
  *
  * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
  * 
@@ -67,20 +66,26 @@ export class Book {
   }
 
   /**
-   * @returns An immutable copy of the json payload
+   * Gets an immutable copy of the JSON payload for this Book.
+   *
+   * @returns An immutable copy of the JSON payload
    */
   public json(): bkper.Book {
     return { ...this.payload };
   }
 
   /**
-   * Same as bookId param
+   * Gets the unique identifier of this Book.
+   *
+   * @returns This Book's unique identifier
    */
   public getId(): string {
     return this.payload.id || '';
   }
 
   /**
+   * Gets the name of this Book.
+   *
    * @returns The name of this Book
    */
   public getName(): string | undefined {
@@ -88,10 +93,11 @@ export class Book {
   }
 
   /**
-   * 
    * Sets the name of the Book.
-   * 
-   * @returns This Book, for chainning.
+   *
+   * @param name - The name to set
+   *
+   * @returns This Book, for chaining
    */
   public setName(name: string): Book {
     this.payload.name = name;
@@ -99,6 +105,8 @@ export class Book {
   }
 
   /**
+   * Gets the number of fraction digits supported by this Book.
+   *
    * @returns The number of fraction digits supported by this Book. Same as getDecimalPlaces
    */
   public getFractionDigits(): number | undefined {
@@ -106,6 +114,8 @@ export class Book {
   }
 
   /**
+   * Gets the number of decimal places supported by this Book.
+   *
    * @returns The number of decimal places supported by this Book. Same as getFractionDigits
    */
   public getDecimalPlaces(): number | undefined {
@@ -113,10 +123,11 @@ export class Book {
   }
 
   /**
-   * 
-   * Sets the number of fraction digits (decimal places) supported by this Book
-   * 
-   * @returns This Book, for chainning.
+   * Sets the number of fraction digits (decimal places) supported by this Book.
+   *
+   * @param fractionDigits - The number of fraction digits to set (0 to 8)
+   *
+   * @returns This Book, for chaining
    */
   public setFractionDigits(fractionDigits: number): Book {
     this.payload.fractionDigits = fractionDigits;
@@ -124,6 +135,8 @@ export class Book {
   }
 
   /**
+   * Gets the period slice for balances visualization.
+   *
    * @returns The period slice for balances visualization
    */
   public getPeriod(): Period {
@@ -131,9 +144,11 @@ export class Book {
   }
 
   /**
-   * Sets the period slice for balances visualization
-   * 
-   * @returns This Book, for chainning.
+   * Sets the period slice for balances visualization.
+   *
+   * @param period - The period to set
+   *
+   * @returns This Book, for chaining
    */
   public setPeriod(period: Period): Book {
     this.payload.period = period;
@@ -141,16 +156,20 @@ export class Book {
   }
 
   /**
-   * @returns The start month when YEAR period set
+   * Gets the start month when YEAR period is set.
+   *
+   * @returns The start month when YEAR period is set
    */
   public getPeriodStartMonth(): Month {
     return this.payload.periodStartMonth as Month;
   }
 
   /**
-   * Sets the start month when YEAR period set
-   * 
-   * @returns This Book, for chainning.
+   * Sets the start month when YEAR period is set.
+   *
+   * @param month - The start month to set
+   *
+   * @returns This Book, for chaining
    */
   public setPeriodStartMonth(month: Month): Book {
     this.payload.periodStartMonth = month;
@@ -158,6 +177,8 @@ export class Book {
   }
 
   /**
+   * Gets the transactions pagination page size.
+   *
    * @returns The transactions pagination page size
    */
   public getPageSize(): number | undefined {
@@ -165,9 +186,11 @@ export class Book {
   }
 
   /**
-   * Sets the transactions pagination page size
-   * 
-   * @returns This Book, for chainning.
+   * Sets the transactions pagination page size.
+   *
+   * @param pageSize - The page size to set
+   *
+   * @returns This Book, for chaining
    */
   public setPageSize(pageSize: number): Book {
     this.payload.pageSize = pageSize;
@@ -175,6 +198,8 @@ export class Book {
   }
 
   /**
+   * Gets the name of the owner of the Book.
+   *
    * @returns The name of the owner of the Book
    */
   public getOwnerName(): string | undefined {
@@ -182,14 +207,18 @@ export class Book {
   }
 
   /**
-   * @returns The permission for the current user
+   * Gets the permission for the current user in this Book.
+   *
+   * @returns The permission for the current user in this Book
    */
   public getPermission(): Permission {
     return this.payload.permission as Permission;
   }
 
-  /** 
-   * @returns The collection of this book
+  /**
+   * Gets the collection of this Book, if any.
+   *
+   * @returns The collection of this Book, if any
    */
   public getCollection(): Collection | undefined {
     if (this.payload.collection != null && this.collection == null) {
@@ -199,6 +228,8 @@ export class Book {
   }
 
   /**
+   * Gets the date pattern of the Book.
+   *
    * @returns The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    */
   public getDatePattern(): string | undefined {
@@ -206,10 +237,9 @@ export class Book {
   }
 
   /**
-   * 
    * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    * 
-   * @returns This Book, for chainning.
+   * @returns This Book, for chaining
    */
   public setDatePattern(datePattern: string): Book {
     this.payload.datePattern = datePattern;
@@ -217,6 +247,8 @@ export class Book {
   }
 
   /**
+   * Gets the lock date of the Book in ISO format yyyy-MM-dd.
+   *
    * @returns The lock date of the Book in ISO format yyyy-MM-dd
    */
   public getLockDate(): string | undefined {
@@ -224,10 +256,9 @@ export class Book {
   }
 
   /**
-   * 
    * Sets the lock date of the Book in ISO format yyyy-MM-dd.
    * 
-   * @returns This Book, for chainning.
+   * @returns This Book, for chaining
    */
   public setLockDate(lockDate: string | null): Book {
     if (lockDate == null) {
@@ -238,17 +269,18 @@ export class Book {
   }
 
   /**
-   * @returns The closing date of the Book in ISO format yyyy-MM-dd 
+   * Gets the closing date of the Book in ISO format yyyy-MM-dd.
+   *
+   * @returns The closing date of the Book in ISO format yyyy-MM-dd
    */
   public getClosingDate(): string | undefined {
     return this.payload.closingDate;
   }
 
   /**
-   * 
    * Sets the closing date of the Book in ISO format yyyy-MM-dd.
    * 
-   * @returns This Book, for chainning.
+   * @returns This Book, for chaining
    */
   public setClosingDate(closingDate: string | null): Book {
     if (closingDate == null) {
@@ -259,6 +291,8 @@ export class Book {
   }
 
   /**
+   * Gets the decimal separator of the Book.
+   *
    * @returns The decimal separator of the Book
    */
   public getDecimalSeparator(): DecimalSeparator {
@@ -266,10 +300,9 @@ export class Book {
   }
 
   /**
-   * 
    * Sets the decimal separator of the Book
    * 
-   * @returns This Book, for chainning.
+   * @returns This Book, for chaining
    */
   public setDecimalSeparator(decimalSeparator: DecimalSeparator): Book {
     this.payload.decimalSeparator = decimalSeparator;
@@ -277,6 +310,8 @@ export class Book {
   }
 
   /**
+   * Gets the time zone of the Book.
+   *
    * @returns The time zone of the Book
    */
   public getTimeZone(): string | undefined {
@@ -284,10 +319,9 @@ export class Book {
   }
 
   /**
+   * Sets the time zone of the Book.
    * 
-   * Sets the time zone of the Book
-   * 
-   * @returns This Book, for chainning.
+   * @returns This Book, for chaining
    */
   public setTimeZone(timeZone: string): Book {
     this.payload.timeZone = timeZone;
@@ -295,6 +329,8 @@ export class Book {
   }
 
   /**
+   * Gets the time zone offset of the book, in minutes.
+   *
    * @returns The time zone offset of the book, in minutes
    */
   public getTimeZoneOffset(): number | undefined {
@@ -302,6 +338,8 @@ export class Book {
   }
 
   /**
+   * Gets the auto post status of the Book.
+   *
    * @returns The auto post status of the Book
    */
   public getAutoPost(): boolean | undefined {
@@ -309,10 +347,9 @@ export class Book {
   }
 
   /**
+   * Sets the auto post status of the Book.
    * 
-   * Sets the auto post status of the Book
-   * 
-   * @returns This Book, for chainning.
+   * @returns This Book, for chaining
    */
   public setAutoPost(autoPost: boolean): Book {
     this.payload.autoPost = autoPost;
@@ -320,13 +357,17 @@ export class Book {
   }
 
   /**
-   * @returns The last update date of the book, in in milliseconds
+   * Gets the last update date of the book, in milliseconds.
+   *
+   * @returns The last update date of the book, in milliseconds
    */
   public getLastUpdateMs(): number | undefined {
     return this.payload.lastUpdateMs ? +this.payload.lastUpdateMs : undefined;
   }
 
   /**
+   * Gets the total number of posted transactions.
+   *
    * @returns The total number of posted transactions
    */
   public getTotalTransactions(): number {
@@ -334,6 +375,8 @@ export class Book {
   }
 
   /**
+   * Gets the total number of posted transactions on current month.
+   *
    * @returns The total number of posted transactions on current month
    */
   public getTotalTransactionsCurrentMonth(): number {
@@ -341,6 +384,8 @@ export class Book {
   }
 
   /**
+   * Gets the total number of posted transactions on current year.
+   *
    * @returns The total number of posted transactions on current year
    */
   public getTotalTransactionsCurrentYear(): number {
@@ -348,6 +393,8 @@ export class Book {
   }
 
   /**
+   * Gets the visibility of the book.
+   *
    * @returns The visibility of the book
    */
   public getVisibility(): Visibility {
@@ -355,16 +402,20 @@ export class Book {
   }
 
   /**
-   * Gets the custom properties stored in this Book
+   * Gets the custom properties stored in this Book.
+   *
+   * @returns The custom properties object
    */
   public getProperties(): { [key: string]: string } {
     return this.payload.properties != null ? { ...this.payload.properties } : {};
   }
 
   /**
-   * Gets the property value for given keys. First property found will be retrieved
-   * 
-   * @param keys - The property key
+   * Gets the property value for given keys. First property found will be retrieved.
+   *
+   * @param keys - The property keys to search for
+   *
+   * @returns The property value or undefined if not found
    */
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
@@ -378,11 +429,11 @@ export class Book {
   }
 
   /**
-   * Sets the custom properties of the Book
+   * Sets the custom properties of the Book.
    * 
    * @param properties - Object with key/value pair properties
    * 
-   * @returns This Book, for chainning. 
+   * @returns This Book, for chaining 
    */
   public setProperties(properties: { [key: string]: string }): Book {
     this.payload.properties = { ...properties };
@@ -395,7 +446,7 @@ export class Book {
    * @param key - The property key
    * @param value - The property value
    * 
-   * @returns This Book, for chainning. 
+   * @returns This Book, for chaining 
    */
   public setProperty(key: string, value: string | null): Book {
     if (key == null || key.trim() == '') {
@@ -417,7 +468,7 @@ export class Book {
    * @param date - The date to format as string.
    * @param timeZone - The output timezone of the result. Default to script's timeZone
    * 
-   * @returns The date formated
+   * @returns The formatted date
    */
   public formatDate(date: Date, timeZone?: string): string {
     if (timeZone == null || timeZone.trim() == "") {
@@ -427,9 +478,11 @@ export class Book {
   }
 
   /**
-   * Parse a date string according to date pattern and timezone of the Book. 
-   * 
-   * Also parse ISO yyyy-mm-dd format.
+   * Parse a date string according to date pattern and timezone of the Book. Also parse ISO yyyy-mm-dd format.
+   *
+   * @param date - The date string to parse
+   *
+   * @returns The parsed Date object
    */
   public parseDate(date: string): Date {
     return Utils.parseDate(date, this.getDatePattern(), this.getTimeZone());
@@ -440,7 +493,7 @@ export class Book {
    * 
    * @param value - The value to be formatted.
    * 
-   * @returns The value formated
+   * @returns The formatted value
    */
   public formatValue(value: Amount | number | null | undefined): string {
     if (!value) {
@@ -451,17 +504,21 @@ export class Book {
 
   /**
    * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
+   *
+   * @param value - The value string to parse
+   *
+   * @returns The parsed Amount or undefined if parsing fails
    */
   public parseValue(value: string): Amount | undefined {
     return Utils.parseValue(value, this.getDecimalSeparator());
   }
 
   /**
-   * Rounds a value according to the number of fraction digits of the Book
+   * Rounds a value according to the number of fraction digits of the Book.
    * 
    * @param value - The value to be rounded
    * 
-   * @returns The value rounded
+   * @returns The rounded value
    */
   public round(value: Amount | number): Amount {
     return Utils.round(value, this.getFractionDigits());
@@ -470,7 +527,7 @@ export class Book {
   /**
    * Batch create [[Transactions]] on the Book.
    * 
-   * @param transactions The transactions to be created
+   * @param transactions - The transactions to be created
    * 
    * @returns The created Transactions
    */
@@ -485,8 +542,7 @@ export class Book {
   /**
    * Batch post [[Transactions]] on the Book.
    * 
-   * @param transactions The transactions to be posted
-   * 
+   * @param transactions - The transactions to be posted
    */
   public async batchPostTransactions(transactions: Transaction[]): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
@@ -497,12 +553,11 @@ export class Book {
   /**
    * Batch update [[Transactions]] on the Book.
    * 
-   * @param transactions The transactions to be updated
+   * @param transactions - The transactions to be updated
    * 
-   * @param updateChecked True to also update checked transactions
+   * @param updateChecked - True to also update checked transactions
    * 
    * @returns The updated draft Transactions
-   * 
    */
   public async batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]> {
     let transactionPayloads: bkper.Transaction[] = [];
@@ -515,8 +570,7 @@ export class Book {
   /**
    * Batch check [[Transactions]] on the Book.
    * 
-   * @param transactions The transactions to be checked
-   * 
+   * @param transactions - The transactions to be checked
    */
   public async batchCheckTransactions(transactions: Transaction[]): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
@@ -527,8 +581,7 @@ export class Book {
   /**
    * Batch uncheck [[Transactions]] on the Book.
    * 
-   * @param transactions The transactions to be unchecked
-   * 
+   * @param transactions - The transactions to be unchecked
    */
   public async batchUncheckTransactions(transactions: Transaction[]): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
@@ -539,10 +592,8 @@ export class Book {
   /**
    * Batch trash [[Transactions]] on the Book.
    * 
-   * @param transactions The transactions to be trashed
-   * 
-   * @param trashChecked True to also trash checked transactions
-   * 
+   * @param transactions - The transactions to be trashed
+   * @param trashChecked - True to also trash checked transactions
    */
   public async batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
@@ -553,8 +604,7 @@ export class Book {
   /**
    * Batch untrash [[Transactions]] on the Book.
    * 
-   * @param transactions The transactions to be untrashed
-   * 
+   * @param transactions - The transactions to be untrashed
    */
   public async batchUntrashTransactions(transactions: Transaction[]): Promise<void> {
     let transactionPayloads: bkper.Transaction[] = [];
@@ -563,7 +613,10 @@ export class Book {
   }
 
   /**
-   * Replay [[Events]] on the Book, in batch. 
+   * Replay [[Events]] on the Book, in batch.
+   * 
+   * @param events - The events to be replayed
+   * @param errorOnly - True to only replay events with errors
    */
   public async batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void> {
     const eventIds = events.map(event => event.getId());
@@ -575,7 +628,9 @@ export class Book {
   /**
    * Create [[Accounts]] on the Book, in batch.
    * 
-   * @return The created Accounts
+   * @param accounts - The accounts to be created
+   * 
+   * @returns The created Accounts
    */
   public async batchCreateAccounts(accounts: Account[]): Promise<Account[]> {
     if (accounts.length > 0) {
@@ -596,7 +651,9 @@ export class Book {
   /**
    * Create [[Groups]] on the Book, in batch.
    * 
-   * @return The created Groups
+   * @param groups - The groups to be created
+   * 
+   * @returns The created Groups
    */
   public async batchCreateGroups(groups: Group[]): Promise<Group[]> {
     if (groups.length > 0) {
@@ -622,9 +679,9 @@ export class Book {
   }
 
   /**
-   * Retrieve installed [[Apps]] for this Book
+   * Retrieve installed [[Apps]] for this Book.
    * 
-   * @returns The Apps objects
+   * @returns The retrieved Apps objects
    */
   public async getApps(): Promise<App[]> {
     if (this.apps != null) {
@@ -638,7 +695,7 @@ export class Book {
   /**
    * Gets the existing [[Integrations]] in the Book.
    * 
-   * @returns The existing Integration objects
+   * @returns The retrieved Integration objects
    */
   public async getIntegrations(): Promise<Integration[]> {
     const integrationsPlain = await IntegrationService.listIntegrations(this.getId());
@@ -649,9 +706,9 @@ export class Book {
   /**
    * Creates a new [[Integration]] in the Book.
    * 
-   * @param integration - The Integration object or wrapped plain json
+   * @param integration - The [[Integration]] object or wrapped plain json
    * 
-   * @returns The created Integration object
+   * @returns The created [[Integration]] object
    */
   public async createIntegration(integration: bkper.Integration | Integration): Promise<Integration> {
     if (integration instanceof Integration) {
@@ -665,9 +722,9 @@ export class Book {
   /**
    * Updates an existing [[Integration]] in the Book.
    * 
-   * @param integration - The Integration wrapped plain json
+   * @param integration - The [[Integration]] wrapped plain json
    * 
-   * @returns The updated Integration object
+   * @returns The updated [[Integration]] object
    */
   public async updateIntegration(integration: bkper.Integration): Promise<Integration> {
     if (integration instanceof Integration) {
@@ -679,7 +736,7 @@ export class Book {
   }
 
   /**
-   * Gets an [[Account]] object
+   * Gets an [[Account]] object.
    * 
    * @param idOrName - The id or name of the Account
    * 
@@ -802,7 +859,7 @@ export class Book {
   }
 
   /**
-   * Gets a [[Group]] object
+   * Gets a [[Group]] object.
    * 
    * @param idOrName - The id or name of the Group
    * 
@@ -836,9 +893,9 @@ export class Book {
   }
 
   /**
-   * Gets all [[Groups]] of this Book
+   * Gets all [[Groups]] of this Book.
    * 
-   * @returns The retrieved Group objects
+   * @returns The retrieved [[Group]] objects
    */
   public async getGroups(): Promise<Group[]> {
     if (this.idGroupMap) {
@@ -866,9 +923,9 @@ export class Book {
   }
 
   /**
-   * Gets all [[Accounts]] of this Book
+   * Gets all [[Accounts]] of this Book.
    * 
-   * @returns The retrieved Account objects
+   * @returns The retrieved [[Account]] objects
    */
   public async getAccounts(): Promise<Account[]> {
     if (this.idAccountMap) {
@@ -956,10 +1013,10 @@ export class Book {
    * Lists transactions in the Book based on the provided query, limit, and cursor, for pagination.
    * 
    * @param query - The query string to filter transactions
-   * @param limit - The maximum number of transactions to return. Default to 100, max to 1000;
+   * @param limit - The maximum number of transactions to return. Default to 100, max to 1000
    * @param cursor - The cursor for pagination
    * 
-   * @returns A TransactionPage object containing the list of transactions
+   * @returns A [[TransactionList]] object containing the list of transactions
    */
   public async listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList> {
     const transactionsList = await TransactionService.listTransactions(this.getId(), query, limit, cursor);
@@ -969,14 +1026,14 @@ export class Book {
   /**
    * Lists events in the Book based on the provided parameters.
    * 
-   * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null.
-   * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null.
-   * @param onError - True to search only for events on error.
-   * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null.
-   * @param limit - The maximum number of events to return.
-   * @param cursor - The cursor for pagination. Can be null.
+   * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
+   * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
+   * @param onError - True to search only for events on error
+   * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null
+   * @param limit - The maximum number of events to return
+   * @param cursor - The cursor for pagination. Can be null
    * 
-   * @returns An EventList object containing the list of events.
+   * @returns An [[EventList]] object containing the list of events
    */
   public async listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList> {
     const eventsList = await EventService.listEvents(this, afterDate, beforeDate, onError, resourceId, limit, cursor);
@@ -984,7 +1041,11 @@ export class Book {
   }
 
   /**
-   * Retrieve a transaction by id
+   * Retrieve a transaction by id.
+   *
+   * @param id - The transaction ID
+   *
+   * @returns The [[Transaction]] object
    */
   public async getTransaction(id: string): Promise<Transaction | undefined> {
     let wrapped = await TransactionService.getTransaction(this.getId(), id);
@@ -995,8 +1056,12 @@ export class Book {
     return transaction;
   }
 
-  /** 
-   * Retrieve a file by id
+  /**
+   * Retrieve a file by id.
+   *
+   * @param id - The file ID
+   *
+   * @returns The [[File]] object
    */
   public async getFile(id: string): Promise<File> {
     let wrapped = await FileService.getFile(this.getId(), id);
@@ -1017,9 +1082,9 @@ export class Book {
   /**
    * Creates a copy of this Book
    * 
-   * @param name The name for the copied book
-   * @param copyTransactions True to copy transactions from the source book (user must be the Book owner)
-   * @param fromDate Start date to consider if copying transactions (numeric value in YYYYMMDD format)
+   * @param name - The name for the copied book
+   * @param copyTransactions - True to copy transactions from the source book (user must be the Book owner)
+   * @param fromDate - Start date to consider if copying transactions (numeric value in YYYYMMDD format)
    * 
    * @returns The copied Book object
    */
@@ -1030,6 +1095,8 @@ export class Book {
 
   /**
    * Perform update Book, applying pending changes.
+   * 
+   * @returns The updated Book object
    */
   public async update(): Promise<Book> {
     this.payload = await BookService.updateBook(this.getId(), this.payload);
@@ -1037,12 +1104,11 @@ export class Book {
   }
 
   /**
-   *
-   * Create a [[BalancesReport]] based on query
+   * Create a [[BalancesReport]] based on query.
    * 
-   * @param query The balances report query
+   * @param query - The balances report query
    * 
-   * @return The balances report
+   * @returns The balances report
    * 
    * Example:
    * 
@@ -1053,6 +1119,8 @@ export class Book {
    * 
    * var accountBalance = balancesReport.getBalancesContainer("Bank Account").getCumulativeBalance();
    * ```
+   * 
+   * @returns The retrieved [[BalancesReport]] object
    */
   public async getBalancesReport(query: string): Promise<BalancesReport> {
     const balances = await BalancesService.getBalances(this.getId(), query);
@@ -1060,7 +1128,9 @@ export class Book {
   }
 
   /**
-   * @return The saved queries from this book
+   * Gets the saved queries from this book.
+   *
+   * @returns The saved queries from this book
    */
   public async getSavedQueries(): Promise<Query[]> {
     if (this.queries == null) {

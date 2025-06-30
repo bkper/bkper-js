@@ -21,27 +21,35 @@ export class BotResponse {
     }
 
     /**
-     * @return The type of this Bot Response
+     * Gets the type of this Bot Response.
+     *
+     * @returns The type of this Bot Response
      */
     public getType(): BotResponseType | undefined {
         return this.payload.type as BotResponseType | undefined;
     }
 
     /**
-     * @return The agent id of this Bot Response
+     * Gets the agent id of this Bot Response.
+     *
+     * @returns The agent id of this Bot Response
      */
     public getAgentId(): string | undefined {
         return this.payload.agentId;
     }
 
     /**
-     * @return The message of this Bot Response
+     * Gets the message of this Bot Response.
+     *
+     * @returns The message of this Bot Response
      */
     public getMessage(): string | undefined {
         return this.payload.message;
     }
 
     /**
+     * Gets the date this Bot Response was created.
+     *
      * @returns The date this Bot Response was created
      */
     public getCreatedAt(): Date | undefined {
@@ -49,6 +57,8 @@ export class BotResponse {
     }
 
     /**
+     * Gets the Event this Bot Response is associated to.
+     *
      * @returns The Event this Bot Response is associated to
      */
     public getEvent(): Event {
@@ -60,7 +70,7 @@ export class BotResponse {
      * 
      * @returns The updated Bot Response
      */
-    public async replay(): Promise<this> {
+    public async replay(): Promise<BotResponse> {
         const eventId = this.event.getId();
         if (eventId == null) {
             throw new Error("Event id null!");
@@ -80,7 +90,7 @@ export class BotResponse {
      * 
      * @returns The deleted Bot Response
      */
-    public async remove(): Promise<this> {
+    public async remove(): Promise<BotResponse> {
         const eventId = this.event.getId();
         if (eventId == null) {
             throw new Error("Event id null!");

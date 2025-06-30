@@ -25,6 +25,8 @@ export class Conversation {
     }
 
     /**
+     * Gets an immutable copy of the JSON payload for this Conversation.
+     *
      * @returns The wrapped plain json object
      */
     public json(): bkper.Conversation {
@@ -32,7 +34,8 @@ export class Conversation {
     }
 
     /**
-     * 
+     * Gets the Agent associated to this Conversation.
+     *
      * @returns The Agent associated to this Conversation
      */
     public getAgent(): Agent {
@@ -40,7 +43,8 @@ export class Conversation {
     }
 
     /**
-     * 
+     * Gets the Conversation universal identifier.
+     *
      * @returns The Conversation universal identifier
      */
     public getId(): string | undefined {
@@ -48,7 +52,8 @@ export class Conversation {
     }
 
     /**
-     * 
+     * Gets the title of the Conversation.
+     *
      * @returns The title of the Conversation
      */
     public getTitle(): string | undefined {
@@ -56,7 +61,8 @@ export class Conversation {
     }
 
     /**
-     * 
+     * Gets the Date the Conversation was created.
+     *
      * @returns The Date the Conversation was created
      */
     public getCreatedAt(): Date | undefined {
@@ -64,7 +70,8 @@ export class Conversation {
     }
 
     /**
-     * 
+     * Gets the Date the Conversation was last updated.
+     *
      * @returns The Date the Conversation was last updated
      */
     public getUpdatedAt(): Date | undefined {
@@ -72,8 +79,8 @@ export class Conversation {
     }
 
     /**
-     * Gets the Messages that compose this Conversation
-     * 
+     * Gets the Messages that compose this Conversation.
+     *
      * @returns The Messages in this Conversation
      */
     public async getMessages(): Promise<Message[]> {
@@ -111,8 +118,8 @@ export class Conversation {
     }
 
     /**
-     * Performs create Conversation
-     * 
+     * Performs create Conversation.
+     *
      * @returns The created Conversation object
      */
     public async create(): Promise<Conversation> {

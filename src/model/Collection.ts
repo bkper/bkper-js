@@ -16,6 +16,8 @@ export class Collection {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload for this Collection.
+   *
    * @returns The wrapped plain json object
    */
   public json(): bkper.Collection {
@@ -23,6 +25,8 @@ export class Collection {
   }
 
   /**
+   * Gets the unique identifier of this Collection.
+   *
    * @returns The id of this Collection
    */
   public getId(): string | undefined {
@@ -30,6 +34,8 @@ export class Collection {
   }
 
   /**
+   * Gets the name of this Collection.
+   *
    * @returns The name of this Collection
    */
   public getName(): string | undefined {
@@ -38,8 +44,10 @@ export class Collection {
 
   /**
    * Sets the name of the Collection.
-   * 
-   * @returns This Collection, for chainning.
+   *
+   * @param name - The name to set
+   *
+   * @returns This Collection, for chaining
    */
   public setName(name: string): Collection {
     this.payload.name = name;
@@ -65,7 +73,9 @@ export class Collection {
   }
 
   /**
-   * @returns All Books of this collection.
+   * Gets all Books of this collection.
+   *
+   * @returns All Books of this collection
    */
   public getBooks(): Book[] {
     let books: Book[] = [];
@@ -81,7 +91,9 @@ export class Collection {
 
   /**
    * Adds Books to this Collection.
-   * 
+   *
+   * @param books - The Books to add to this Collection
+   *
    * @returns The added Book objects
    */
   public async addBooks(books: Book[]): Promise<Book[]> {
@@ -96,7 +108,9 @@ export class Collection {
 
   /**
    * Removes Books from this Collection.
-   * 
+   *
+   * @param books - The Books to remove from this Collection
+   *
    * @returns The removed Book objects
    */
   public async removeBooks(books: Book[]): Promise<Book[]> {

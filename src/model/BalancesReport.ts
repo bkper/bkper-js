@@ -32,21 +32,27 @@ export class BalancesReport {
     }
 
     /**
-     * @returns The [[Book]] that generated the report.
+     * Gets the [[Book]] that generated the report.
+     *
+     * @returns The [[Book]] that generated the report
      */
     public getBook(): Book {
         return this.book;
     }
 
     /**
-     * @returns The [[Periodicity]] of the query used to generate the report.
+     * Gets the [[Periodicity]] of the query used to generate the report.
+     *
+     * @returns The [[Periodicity]] of the query used to generate the report
      */
     public getPeriodicity(): Periodicity {
         return this.payload.periodicity as Periodicity;
     }
 
     /**
-     * @returns All [[BalancesContainers]] of the report.
+     * Gets all [[BalancesContainers]] of the report.
+     *
+     * @returns All [[BalancesContainers]] of the report
      */
     public getBalancesContainers(): BalancesContainer[] {
         let containers: BalancesContainer[] = [];
@@ -64,9 +70,9 @@ export class BalancesReport {
     /**
      * Gets a specific [[BalancesContainer]].
      * 
-     * @param name The [[Account]] or [[Group]] name.
+     * @param name - The [[Account]] or [[Group]] name
      * 
-     * @returns The retrieved [[BalancesContainer]].
+     * @returns The retrieved [[BalancesContainer]]
      */
     public getBalancesContainer(name: string): BalancesContainer {
 

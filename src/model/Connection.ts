@@ -15,6 +15,8 @@ export class Connection {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload for this Connection.
+   *
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.Connection {
@@ -44,7 +46,7 @@ export class Connection {
    * 
    * @param agentId - The Connection agentId
    * 
-   * @returns The Connection, for chainning
+   * @returns The Connection, for chaining
    */
   public setAgentId(agentId: string): Connection {
     this.payload.agentId = agentId;
@@ -92,7 +94,7 @@ export class Connection {
    * 
    * @param name - The name of the Connection
    * 
-   * @returns The Connection, for chainning
+   * @returns The Connection, for chaining
    */
   public setName(name: string): Connection {
     this.payload.name = name;
@@ -104,7 +106,7 @@ export class Connection {
    * 
    * @param uuid - The universal unique identifier of the Connection
    * 
-   * @returns The Connection, for chainning
+   * @returns The Connection, for chaining
    */
   public setUUID(uuid: string): Connection {
     this.payload.uuid = uuid;
@@ -134,7 +136,7 @@ export class Connection {
    * 
    * @param type - The Connection type
    * 
-   * @returns The Connection, for chainning
+   * @returns The Connection, for chaining
    */
   public setType(type: "APP" | "BANK"): Connection {
     this.payload.type = type;
@@ -155,7 +157,7 @@ export class Connection {
    * 
    * @param properties - Object with key/value pair properties
    * 
-   * @returns The Connection, for chainning
+   * @returns The Connection, for chaining
    */
   public setProperties(properties: { [key: string]: string }): Connection {
     this.payload.properties = { ...properties };
@@ -207,7 +209,7 @@ export class Connection {
    * 
    * @param key - The property key
    * 
-   * @returns The Connection, for chainning
+   * @returns The Connection, for chaining
    */
   public deleteProperty(key: string): Connection {
     this.setProperty(key, null);
@@ -253,7 +255,7 @@ export class Connection {
 
   /**
    * Performs create new Connection.
-   * 
+   *
    * @returns The created Connection, for chaining
    */
   public async create(): Promise<Connection> {
@@ -263,7 +265,7 @@ export class Connection {
 
   /**
    * Performs remove Connection.
-   * 
+   *
    * @returns The removed Connection object
    */
   public async remove(): Promise<Connection> {

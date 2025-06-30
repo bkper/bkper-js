@@ -40,7 +40,7 @@ export class Bkper {
    * @param id - The universal book id - The same bookId param of URL you access at app.bkper.com
    * @param includeAccounts - Optional parameter to include accounts in the retrieved Book
    * 
-   * @returns The retrieved Book, for chaining
+   * @returns The retrieved Book
    */
   public static async getBook(id: string, includeAccounts?: boolean): Promise<Book> {
     let book = await BookService.loadBook(id, includeAccounts);
@@ -107,7 +107,7 @@ export class Bkper {
   /**
    * Gets the current logged [[User]].
    * 
-   * @returns The retrieved User, for chaining
+   * @returns The retrieved User
    */
   public static async getUser(): Promise<User> {
     let user = await UserService.getUser();
