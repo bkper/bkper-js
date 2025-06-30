@@ -22,7 +22,7 @@ import { Agent } from "./Agent.js";
  * Example:
  * 
  * ```javascript
- * Bkper.setConfig({
+ * Bkper.get().setConfig({
  *   apiKeyProvider: () => process.env.BKPER_API_KEY,
  *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
  * })
@@ -34,6 +34,17 @@ import { Agent } from "./Agent.js";
  */
 export class Bkper {
 
+
+  /**
+   * Creates a new Bkper instance with the specified API configuration.
+   * 
+   * @param config - The Config object
+   */
+  constructor(config: Config) {
+    HttpApiRequest.config = config;
+  }
+
+
   /**
    * Gets the [[Book]] with the specified bookId from url param.
    *
@@ -42,7 +53,7 @@ export class Bkper {
    * 
    * @returns The retrieved Book
    */
-  public static async getBook(id: string, includeAccounts?: boolean): Promise<Book> {
+  public async getBook(id: string, includeAccounts?: boolean): Promise<Book> {
     let book = await BookService.loadBook(id, includeAccounts);
     return new Book(book);
   }
@@ -53,7 +64,7 @@ export class Bkper {
    * @param query - Optional search term to filter books
    * @returns The retrieved list of Books
    */
-  public static async getBooks(query?: string): Promise<Book[]> {
+  public async getBooks(query?: string): Promise<Book[]> {
     let books = await BookService.loadBooks(query);
     return books.map(book => new Book(book));
   }
@@ -63,7 +74,7 @@ export class Bkper {
    * 
    * @returns The retrieved list of Collections
    */
-  public static async getCollections(): Promise<Collection[]> {
+  public async getCollections(): Promise<Collection[]> {
     let collections = await CollectionService.loadCollections();
     return collections.map(collection => new Collection(collection));
   }
@@ -73,7 +84,7 @@ export class Bkper {
    * 
    * @returns The retrieved list of Apps
    */
-  public static async getApps(): Promise<App[]> {
+  public async getApps(): Promise<App[]> {
     let apps = await AppService.getApps();
     return apps.map(app => new App(app));
   }
@@ -83,7 +94,7 @@ export class Bkper {
    * 
    * @returns The retrieved list of Conversations
    */
-  public static async getConversations(): Promise<Conversation[]> {
+  public async getConversations(): Promise<Conversation[]> {
     const conversationPayloads = await ConversationService.getConversations();
     let conversations: Conversation[] = [];
     for (const payload of conversationPayloads) {
@@ -99,7 +110,7 @@ export class Bkper {
    * 
    * @returns The retrieved list of Templates
    */
-  public static async getTemplates(): Promise<Template[]> {
+  public async getTemplates(): Promise<Template[]> {
     let templates = await TemplateService.getTemplates();
     return templates.map(template => new Template(template));
   }
@@ -109,7 +120,7 @@ export class Bkper {
    * 
    * @returns The retrieved User
    */
-  public static async getUser(): Promise<User> {
+  public async getUser(): Promise<User> {
     let user = await UserService.getUser();
     return new User(user);
   }
@@ -121,41 +132,11 @@ export class Bkper {
    * 
    * @returns The URL to redirect the User to the billing portal
    */
-  public static async getBillingPortalUrl(returnUrl: string): Promise<string | undefined> {
+  public async getBillingPortalUrl(returnUrl: string): Promise<string | undefined> {
     let url = await UserService.getBillingPortalUrl(returnUrl);
     return url.url;
   }
 
-  /**
-   * Sets the API [[Config]] object.
-   * 
-   * @param config - The Config object
-   */
-  public static setConfig(config: Config) {
-    HttpApiRequest.config = config;
-  }
 
-  /**
-   * Sets the API key to identify the agent.
-   * 
-   * @param key - The API key
-   * 
-   * @returns The defined [[App]] object
-   * 
-   * @deprecated Use `setConfig()` instead
-   */
-  public static setApiKey(key: string): App {
-    HttpApiRequest.config.apiKeyProvider = async () => key;
-    return new App({});
-  }
-
-  /**
-   * Sets the provider of the valid OAuth2 access token
-   * 
-   * @deprecated Use `setConfig()` instead
-   */
-  public static async setOAuthTokenProvider(oauthTokenProvider: () => Promise<string>) {
-    HttpApiRequest.config.oauthTokenProvider = oauthTokenProvider;
-  }
 
 }

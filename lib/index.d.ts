@@ -846,7 +846,7 @@ export declare class BalancesReport {
  * Example:
  *
  * ```javascript
- * Bkper.setConfig({
+ * Bkper.get().setConfig({
  *   apiKeyProvider: () => process.env.BKPER_API_KEY,
  *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
  * })
@@ -858,6 +858,12 @@ export declare class BalancesReport {
  */
 export declare class Bkper {
     /**
+     * Creates a new Bkper instance with the specified API configuration.
+     *
+     * @param config - The Config object
+     */
+    constructor(config: Config);
+    /**
      * Gets the [[Book]] with the specified bookId from url param.
      *
      * @param id - The universal book id - The same bookId param of URL you access at app.bkper.com
@@ -865,44 +871,44 @@ export declare class Bkper {
      *
      * @returns The retrieved Book
      */
-    static getBook(id: string, includeAccounts?: boolean): Promise<Book>;
+    getBook(id: string, includeAccounts?: boolean): Promise<Book>;
     /**
      * Gets all [[Books]] the user has access to.
      *
      * @param query - Optional search term to filter books
      * @returns The retrieved list of Books
      */
-    static getBooks(query?: string): Promise<Book[]>;
+    getBooks(query?: string): Promise<Book[]>;
     /**
      * Gets all [[Collections]] the user has access to.
      *
      * @returns The retrieved list of Collections
      */
-    static getCollections(): Promise<Collection[]>;
+    getCollections(): Promise<Collection[]>;
     /**
      * Gets all [[Apps]] available for the user.
      *
      * @returns The retrieved list of Apps
      */
-    static getApps(): Promise<App[]>;
+    getApps(): Promise<App[]>;
     /**
      * Gets all [[Conversations]] available for the user.
      *
      * @returns The retrieved list of Conversations
      */
-    static getConversations(): Promise<Conversation[]>;
+    getConversations(): Promise<Conversation[]>;
     /**
      * Gets all [[Templates]] available for the user.
      *
      * @returns The retrieved list of Templates
      */
-    static getTemplates(): Promise<Template[]>;
+    getTemplates(): Promise<Template[]>;
     /**
      * Gets the current logged [[User]].
      *
      * @returns The retrieved User
      */
-    static getUser(): Promise<User>;
+    getUser(): Promise<User>;
     /**
      * Gets the URL to redirect the User to the billing portal.
      *
@@ -910,29 +916,7 @@ export declare class Bkper {
      *
      * @returns The URL to redirect the User to the billing portal
      */
-    static getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
-    /**
-     * Sets the API [[Config]] object.
-     *
-     * @param config - The Config object
-     */
-    static setConfig(config: Config): void;
-    /**
-     * Sets the API key to identify the agent.
-     *
-     * @param key - The API key
-     *
-     * @returns The defined [[App]] object
-     *
-     * @deprecated Use `setConfig()` instead
-     */
-    static setApiKey(key: string): App;
-    /**
-     * Sets the provider of the valid OAuth2 access token
-     *
-     * @deprecated Use `setConfig()` instead
-     */
-    static setOAuthTokenProvider(oauthTokenProvider: () => Promise<string>): Promise<void>;
+    getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
 }
 
 /**

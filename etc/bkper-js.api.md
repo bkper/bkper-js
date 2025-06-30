@@ -160,19 +160,15 @@ export class BalancesReport {
 
 // @public
 export class Bkper {
-    static getApps(): Promise<App[]>;
-    static getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
-    static getBook(id: string, includeAccounts?: boolean): Promise<Book>;
-    static getBooks(query?: string): Promise<Book[]>;
-    static getCollections(): Promise<Collection[]>;
-    static getConversations(): Promise<Conversation[]>;
-    static getTemplates(): Promise<Template[]>;
-    static getUser(): Promise<User>;
-    // @deprecated
-    static setApiKey(key: string): App;
-    static setConfig(config: Config): void;
-    // @deprecated
-    static setOAuthTokenProvider(oauthTokenProvider: () => Promise<string>): Promise<void>;
+    constructor(config: Config);
+    getApps(): Promise<App[]>;
+    getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
+    getBook(id: string, includeAccounts?: boolean): Promise<Book>;
+    getBooks(query?: string): Promise<Book[]>;
+    getCollections(): Promise<Collection[]>;
+    getConversations(): Promise<Conversation[]>;
+    getTemplates(): Promise<Template[]>;
+    getUser(): Promise<User>;
 }
 
 // @public
