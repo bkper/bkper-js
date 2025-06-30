@@ -648,49 +648,63 @@ export declare class App {
  */
 export declare interface BalancesContainer {
     /**
-     * @returns The parent BalancesReport of the container
+     * Gets the parent [[BalancesReport]] of the container.
+     *
+     * @returns The parent [[BalancesReport]] of the container
      */
     getBalancesReport: () => BalancesReport;
     /**
+     * Gets the [[Account]] or [[Group]] name.
+     *
      * @returns The [[Account]] or [[Group]] name
      */
     getName: () => string | undefined;
     /**
-     * @returns The [[Account]] or [[Group]] name without spaces or special characters.
+     * Gets the [[Account]] or [[Group]] name without spaces or special characters.
+     *
+     * @returns The [[Account]] or [[Group]] name without spaces or special characters
      */
     getNormalizedName: () => string | undefined;
     /**
+     * Gets the [[Group]] associated with this container.
+     *
      * @returns The [[Group]] associated with this container
      */
     getGroup: () => Promise<Group | null>;
     /**
+     * Gets the [[Account]] associated with this container.
+     *
      * @returns The [[Account]] associated with this container
      */
     getAccount: () => Promise<Account | null>;
     /**
-     * @returns The parent BalanceContainer.
+     * Gets the parent BalanceContainer.
+     *
+     * @returns The parent BalanceContainer
      */
     getParent: () => BalancesContainer | null;
     /**
-     * @returns The depth in the parent chain up to the root.
+     * Gets the depth in the parent chain up to the root.
+     *
+     * @returns The depth in the parent chain up to the root
      */
     getDepth: () => number;
     /**
-     * @returns Gets the credit nature of the BalancesContainer, based on [[Account]] or [[Group]].
+     * Gets the credit nature of the BalancesContainer, based on [[Account]] or [[Group]].
      *
-     * For [[Account]], the credit nature will be the same as the one from the Account
+     * For [[Account]], the credit nature will be the same as the one from the Account.
      *
      * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
      *
+     * @returns The credit nature of the BalancesContainer
      */
     isCredit: () => boolean | undefined;
     /**
-     *
-     * Tell if this balance container is permament, based on the [[Account]] or [[Group]].
+     * Tell if this balance container is permanent, based on the [[Account]] or [[Group]].
      *
      * Permanent are the ones which final balance is relevant and keep its balances over time.
      *
-     * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow)
+     * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow).
      *
      * Usually represents assets or liabilities, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
      *
@@ -698,61 +712,85 @@ export declare interface BalancesContainer {
      */
     isPermanent: () => boolean | undefined;
     /**
+     * Gets whether this balance container is from an [[Account]].
+     *
      * @returns True if this balance container if from an [[Account]]
      */
     isFromAccount: () => boolean;
     /**
+     * Gets whether this balance container is from a [[Group]].
+     *
      * @returns True if this balance container if from a [[Group]]
      */
     isFromGroup: () => boolean;
     /**
+     * Gets whether the balance container is from a parent group.
+     *
      * @returns True if the balance container is from a parent group
      */
     hasGroupBalances: () => boolean;
     /**
-     * @returns The cumulative balance to the date.
+     * Gets the cumulative balance to the date.
+     *
+     * @returns The cumulative balance to the date
      */
     getCumulativeBalance: () => Amount;
     /**
-     * @returns The cumulative raw balance to the date.
+     * Gets the cumulative raw balance to the date.
+     *
+     * @returns The cumulative raw balance to the date
      */
     getCumulativeBalanceRaw: () => Amount;
     /**
-     * @returns The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
+     * Gets the cumulative balance formatted according to [[Book]] decimal format and fraction digits.
+     *
+     * @returns The cumulative balance formatted according to [[Book]] decimal format and fraction digits
      */
     getCumulativeBalanceText: () => string;
     /**
-     * @returns The cumulative raw balance formatted according to [[Book]] decimal format and fraction digits.
+     * Gets the cumulative raw balance formatted according to [[Book]] decimal format and fraction digits.
+     *
+     * @returns The cumulative raw balance formatted according to [[Book]] decimal format and fraction digits
      */
     getCumulativeBalanceRawText: () => string;
     /**
-     * @returns The balance on the date period.
+     * Gets the balance on the date period.
+     *
+     * @returns The balance on the date period
      */
     getPeriodBalance: () => Amount;
     /**
-     * @returns The raw balance on the date period.
+     * Gets the raw balance on the date period.
+     *
+     * @returns The raw balance on the date period
      */
     getPeriodBalanceRaw: () => Amount;
     /**
+     * Gets the balance on the date period formatted according to [[Book]] decimal format and fraction digits.
+     *
      * @returns The balance on the date period formatted according to [[Book]] decimal format and fraction digits
      */
     getPeriodBalanceText: () => string;
     /**
+     * Gets the raw balance on the date period formatted according to [[Book]] decimal format and fraction digits.
+     *
      * @returns The raw balance on the date period formatted according to [[Book]] decimal format and fraction digits
      */
     getPeriodBalanceRawText: () => string;
     /**
-     * @returns All child [[BalancesContainers]].
+     * Gets all child [[BalancesContainers]].
      *
      * **NOTE**: Only for Group balance containers. Accounts returns null.
+     *
+     * @returns All child [[BalancesContainers]]
      */
     getBalancesContainers: () => BalancesContainer[];
     /**
      * Gets a specific [[BalancesContainer]].
      *
-     * @param name The [[Account]] or [[Group]] name.
+     * @param name - The [[Account]] or [[Group]] name
      *
-     * @returns The retrieved [[BalancesContainer]].
+     * @returns The retrieved [[BalancesContainer]]
      */
     getBalancesContainer: (name: string) => BalancesContainer;
 }
@@ -770,23 +808,29 @@ export declare class BalancesReport {
 
     constructor(book: Book, payload: bkper.Balances);
     /**
-     * @returns The [[Book]] that generated the report.
+     * Gets the [[Book]] that generated the report.
+     *
+     * @returns The [[Book]] that generated the report
      */
     getBook(): Book;
     /**
-     * @returns The [[Periodicity]] of the query used to generate the report.
+     * Gets the [[Periodicity]] of the query used to generate the report.
+     *
+     * @returns The [[Periodicity]] of the query used to generate the report
      */
     getPeriodicity(): Periodicity;
     /**
-     * @returns All [[BalancesContainers]] of the report.
+     * Gets all [[BalancesContainers]] of the report.
+     *
+     * @returns All [[BalancesContainers]] of the report
      */
     getBalancesContainers(): BalancesContainer[];
     /**
      * Gets a specific [[BalancesContainer]].
      *
-     * @param name The [[Account]] or [[Group]] name.
+     * @param name - The [[Account]] or [[Group]] name
      *
-     * @returns The retrieved [[BalancesContainer]].
+     * @returns The retrieved [[BalancesContainer]]
      */
     getBalancesContainer(name: string): BalancesContainer;
 
@@ -819,7 +863,7 @@ export declare class Bkper {
      * @param id - The universal book id - The same bookId param of URL you access at app.bkper.com
      * @param includeAccounts - Optional parameter to include accounts in the retrieved Book
      *
-     * @returns The retrieved Book, for chaining
+     * @returns The retrieved Book
      */
     static getBook(id: string, includeAccounts?: boolean): Promise<Book>;
     /**
@@ -856,7 +900,7 @@ export declare class Bkper {
     /**
      * Gets the current logged [[User]].
      *
-     * @returns The retrieved User, for chaining
+     * @returns The retrieved User
      */
     static getUser(): Promise<User>;
     /**
@@ -931,7 +975,7 @@ export declare class Book {
      *
      * @param name - The name to set
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setName(name: string): Book;
     /**
@@ -951,7 +995,7 @@ export declare class Book {
      *
      * @param fractionDigits - The number of fraction digits to set (0 to 8)
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setFractionDigits(fractionDigits: number): Book;
     /**
@@ -965,7 +1009,7 @@ export declare class Book {
      *
      * @param period - The period to set
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setPeriod(period: Period): Book;
     /**
@@ -979,7 +1023,7 @@ export declare class Book {
      *
      * @param month - The start month to set
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setPeriodStartMonth(month: Month): Book;
     /**
@@ -993,7 +1037,7 @@ export declare class Book {
      *
      * @param pageSize - The page size to set
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setPageSize(pageSize: number): Book;
     /**
@@ -1003,15 +1047,15 @@ export declare class Book {
      */
     getOwnerName(): string | undefined;
     /**
-     * Gets the permission for the current user.
+     * Gets the permission for the current user in this Book.
      *
-     * @returns The permission for the current user
+     * @returns The permission for the current user in this Book
      */
     getPermission(): Permission;
     /**
-     * Gets the collection of this book.
+     * Gets the collection of this Book, if any.
      *
-     * @returns The collection of this book
+     * @returns The collection of this Book, if any
      */
     getCollection(): Collection | undefined;
     /**
@@ -1021,10 +1065,9 @@ export declare class Book {
      */
     getDatePattern(): string | undefined;
     /**
-     *
      * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setDatePattern(datePattern: string): Book;
     /**
@@ -1034,10 +1077,9 @@ export declare class Book {
      */
     getLockDate(): string | undefined;
     /**
-     *
      * Sets the lock date of the Book in ISO format yyyy-MM-dd.
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setLockDate(lockDate: string | null): Book;
     /**
@@ -1047,10 +1089,9 @@ export declare class Book {
      */
     getClosingDate(): string | undefined;
     /**
-     *
      * Sets the closing date of the Book in ISO format yyyy-MM-dd.
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setClosingDate(closingDate: string | null): Book;
     /**
@@ -1060,10 +1101,9 @@ export declare class Book {
      */
     getDecimalSeparator(): DecimalSeparator;
     /**
-     *
      * Sets the decimal separator of the Book
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setDecimalSeparator(decimalSeparator: DecimalSeparator): Book;
     /**
@@ -1073,10 +1113,9 @@ export declare class Book {
      */
     getTimeZone(): string | undefined;
     /**
+     * Sets the time zone of the Book.
      *
-     * Sets the time zone of the Book
-     *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setTimeZone(timeZone: string): Book;
     /**
@@ -1092,10 +1131,9 @@ export declare class Book {
      */
     getAutoPost(): boolean | undefined;
     /**
+     * Sets the auto post status of the Book.
      *
-     * Sets the auto post status of the Book
-     *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setAutoPost(autoPost: boolean): Book;
     /**
@@ -1145,11 +1183,11 @@ export declare class Book {
      */
     getProperty(...keys: string[]): string | undefined;
     /**
-     * Sets the custom properties of the Book
+     * Sets the custom properties of the Book.
      *
      * @param properties - Object with key/value pair properties
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setProperties(properties: {
         [key: string]: string;
@@ -1160,7 +1198,7 @@ export declare class Book {
      * @param key - The property key
      * @param value - The property value
      *
-     * @returns This Book, for chaining.
+     * @returns This Book, for chaining
      */
     setProperty(key: string, value: string | null): Book;
     /**
@@ -1173,9 +1211,7 @@ export declare class Book {
      */
     formatDate(date: Date, timeZone?: string): string;
     /**
-     * Parse a date string according to date pattern and timezone of the Book.
-     *
-     * Also parse ISO yyyy-mm-dd format.
+     * Parse a date string according to date pattern and timezone of the Book. Also parse ISO yyyy-mm-dd format.
      *
      * @param date - The date string to parse
      *
@@ -1199,7 +1235,7 @@ export declare class Book {
      */
     parseValue(value: string): Amount | undefined;
     /**
-     * Rounds a value according to the number of fraction digits of the Book
+     * Rounds a value according to the number of fraction digits of the Book.
      *
      * @param value - The value to be rounded
      *
@@ -1218,7 +1254,6 @@ export declare class Book {
      * Batch post [[Transactions]] on the Book.
      *
      * @param transactions - The transactions to be posted
-     *
      */
     batchPostTransactions(transactions: Transaction[]): Promise<void>;
     /**
@@ -1229,41 +1264,38 @@ export declare class Book {
      * @param updateChecked - True to also update checked transactions
      *
      * @returns The updated draft Transactions
-     *
      */
     batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]>;
     /**
      * Batch check [[Transactions]] on the Book.
      *
      * @param transactions - The transactions to be checked
-     *
      */
     batchCheckTransactions(transactions: Transaction[]): Promise<void>;
     /**
      * Batch uncheck [[Transactions]] on the Book.
      *
      * @param transactions - The transactions to be unchecked
-     *
      */
     batchUncheckTransactions(transactions: Transaction[]): Promise<void>;
     /**
      * Batch trash [[Transactions]] on the Book.
      *
      * @param transactions - The transactions to be trashed
-     *
      * @param trashChecked - True to also trash checked transactions
-     *
      */
     batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void>;
     /**
      * Batch untrash [[Transactions]] on the Book.
      *
      * @param transactions - The transactions to be untrashed
-     *
      */
     batchUntrashTransactions(transactions: Transaction[]): Promise<void>;
     /**
      * Replay [[Events]] on the Book, in batch.
+     *
+     * @param events - The events to be replayed
+     * @param errorOnly - True to only replay events with errors
      */
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     /**
@@ -1287,35 +1319,35 @@ export declare class Book {
      */
     audit(): void;
     /**
-     * Retrieve installed [[Apps]] for this Book
+     * Retrieve installed [[Apps]] for this Book.
      *
-     * @returns The Apps objects
+     * @returns The retrieved Apps objects
      */
     getApps(): Promise<App[]>;
     /**
      * Gets the existing [[Integrations]] in the Book.
      *
-     * @returns The existing Integration objects
+     * @returns The retrieved Integration objects
      */
     getIntegrations(): Promise<Integration[]>;
     /**
      * Creates a new [[Integration]] in the Book.
      *
-     * @param integration - The Integration object or wrapped plain json
+     * @param integration - The [[Integration]] object or wrapped plain json
      *
-     * @returns The created Integration object
+     * @returns The created [[Integration]] object
      */
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
     /**
      * Updates an existing [[Integration]] in the Book.
      *
-     * @param integration - The Integration wrapped plain json
+     * @param integration - The [[Integration]] wrapped plain json
      *
-     * @returns The updated Integration object
+     * @returns The updated [[Integration]] object
      */
     updateIntegration(integration: bkper.Integration): Promise<Integration>;
     /**
-     * Gets an [[Account]] object
+     * Gets an [[Account]] object.
      *
      * @param idOrName - The id or name of the Account
      *
@@ -1331,7 +1363,7 @@ export declare class Book {
 
 
     /**
-     * Gets a [[Group]] object
+     * Gets a [[Group]] object.
      *
      * @param idOrName - The id or name of the Group
      *
@@ -1339,16 +1371,16 @@ export declare class Book {
      */
     getGroup(idOrName?: string): Promise<Group | undefined>;
     /**
-     * Gets all [[Groups]] of this Book
+     * Gets all [[Groups]] of this Book.
      *
-     * @returns The retrieved Group objects
+     * @returns The retrieved [[Group]] objects
      */
     getGroups(): Promise<Group[]>;
 
     /**
-     * Gets all [[Accounts]] of this Book
+     * Gets all [[Accounts]] of this Book.
      *
-     * @returns The retrieved Account objects
+     * @returns The retrieved [[Account]] objects
      */
     getAccounts(): Promise<Account[]>;
 
@@ -1362,23 +1394,23 @@ export declare class Book {
      * Lists transactions in the Book based on the provided query, limit, and cursor, for pagination.
      *
      * @param query - The query string to filter transactions
-     * @param limit - The maximum number of transactions to return. Default to 100, max to 1000;
+     * @param limit - The maximum number of transactions to return. Default to 100, max to 1000
      * @param cursor - The cursor for pagination
      *
-     * @returns A TransactionPage object containing the list of transactions
+     * @returns A [[TransactionList]] object containing the list of transactions
      */
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
     /**
      * Lists events in the Book based on the provided parameters.
      *
-     * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null.
-     * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null.
-     * @param onError - True to search only for events on error.
-     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null.
-     * @param limit - The maximum number of events to return.
-     * @param cursor - The cursor for pagination. Can be null.
+     * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
+     * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
+     * @param onError - True to search only for events on error
+     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null
+     * @param limit - The maximum number of events to return
+     * @param cursor - The cursor for pagination. Can be null
      *
-     * @returns An EventList object containing the list of events.
+     * @returns An [[EventList]] object containing the list of events
      */
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     /**
@@ -1386,7 +1418,7 @@ export declare class Book {
      *
      * @param id - The transaction ID
      *
-     * @returns The Transaction object or undefined if not found
+     * @returns The [[Transaction]] object
      */
     getTransaction(id: string): Promise<Transaction | undefined>;
     /**
@@ -1394,7 +1426,7 @@ export declare class Book {
      *
      * @param id - The file ID
      *
-     * @returns The File object
+     * @returns The [[File]] object
      */
     getFile(id: string): Promise<File>;
     /**
@@ -1415,11 +1447,12 @@ export declare class Book {
     copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book>;
     /**
      * Perform update Book, applying pending changes.
+     *
+     * @returns The updated Book object
      */
     update(): Promise<Book>;
     /**
-     *
-     * Create a [[BalancesReport]] based on query
+     * Create a [[BalancesReport]] based on query.
      *
      * @param query - The balances report query
      *
@@ -1434,6 +1467,8 @@ export declare class Book {
      *
      * var accountBalance = balancesReport.getBalancesContainer("Bank Account").getCumulativeBalance();
      * ```
+     *
+     * @returns The retrieved [[BalancesReport]] object
      */
     getBalancesReport(query: string): Promise<BalancesReport>;
     /**
@@ -1455,22 +1490,32 @@ export declare class BotResponse {
 
     constructor(event: Event, payload?: bkper.BotResponse);
     /**
+     * Gets the type of this Bot Response.
+     *
      * @returns The type of this Bot Response
      */
     getType(): BotResponseType | undefined;
     /**
+     * Gets the agent id of this Bot Response.
+     *
      * @returns The agent id of this Bot Response
      */
     getAgentId(): string | undefined;
     /**
+     * Gets the message of this Bot Response.
+     *
      * @returns The message of this Bot Response
      */
     getMessage(): string | undefined;
     /**
+     * Gets the date this Bot Response was created.
+     *
      * @returns The date this Bot Response was created
      */
     getCreatedAt(): Date | undefined;
     /**
+     * Gets the Event this Bot Response is associated to.
+     *
      * @returns The Event this Bot Response is associated to
      */
     getEvent(): Event;
@@ -1479,13 +1524,13 @@ export declare class BotResponse {
      *
      * @returns The updated Bot Response
      */
-    replay(): Promise<this>;
+    replay(): Promise<BotResponse>;
     /**
      * Delete this Bot Response.
      *
      * @returns The deleted Bot Response
      */
-    remove(): Promise<this>;
+    remove(): Promise<BotResponse>;
 
 }
 
@@ -1518,21 +1563,29 @@ export declare class Collection {
     payload: bkper.Collection;
     constructor(payload?: bkper.Collection);
     /**
+     * Gets an immutable copy of the JSON payload for this Collection.
+     *
      * @returns The wrapped plain json object
      */
     json(): bkper.Collection;
     /**
+     * Gets the unique identifier of this Collection.
+     *
      * @returns The id of this Collection
      */
     getId(): string | undefined;
     /**
+     * Gets the name of this Collection.
+     *
      * @returns The name of this Collection
      */
     getName(): string | undefined;
     /**
      * Sets the name of the Collection.
      *
-     * @returns This Collection, for chaining.
+     * @param name - The name to set
+     *
+     * @returns This Collection, for chaining
      */
     setName(name: string): Collection;
     /**
@@ -1548,17 +1601,23 @@ export declare class Collection {
      */
     getPermission(): Permission | undefined;
     /**
-     * @returns All Books of this collection.
+     * Gets all Books of this collection.
+     *
+     * @returns All Books of this collection
      */
     getBooks(): Book[];
     /**
      * Adds Books to this Collection.
+     *
+     * @param books - The Books to add to this Collection
      *
      * @returns The added Book objects
      */
     addBooks(books: Book[]): Promise<Book[]>;
     /**
      * Removes Books from this Collection.
+     *
+     * @param books - The Books to remove from this Collection
      *
      * @returns The removed Book objects
      */
@@ -1645,6 +1704,8 @@ export declare class Connection {
     payload: bkper.Connection;
     constructor(payload?: bkper.Connection);
     /**
+     * Gets an immutable copy of the JSON payload for this Connection.
+     *
      * @returns An immutable copy of the json payload
      */
     json(): bkper.Connection;
@@ -1814,36 +1875,43 @@ export declare class Conversation {
 
     constructor(agent: Agent, payload?: bkper.Conversation);
     /**
+     * Gets an immutable copy of the JSON payload for this Conversation.
+     *
      * @returns The wrapped plain json object
      */
     json(): bkper.Conversation;
     /**
+     * Gets the Agent associated to this Conversation.
      *
      * @returns The Agent associated to this Conversation
      */
     getAgent(): Agent;
     /**
+     * Gets the Conversation universal identifier.
      *
      * @returns The Conversation universal identifier
      */
     getId(): string | undefined;
     /**
+     * Gets the title of the Conversation.
      *
      * @returns The title of the Conversation
      */
     getTitle(): string | undefined;
     /**
+     * Gets the Date the Conversation was created.
      *
      * @returns The Date the Conversation was created
      */
     getCreatedAt(): Date | undefined;
     /**
+     * Gets the Date the Conversation was last updated.
      *
      * @returns The Date the Conversation was last updated
      */
     getUpdatedAt(): Date | undefined;
     /**
-     * Gets the Messages that compose this Conversation
+     * Gets the Messages that compose this Conversation.
      *
      * @returns The Messages in this Conversation
      */
@@ -1851,7 +1919,7 @@ export declare class Conversation {
 
 
     /**
-     * Performs create Conversation
+     * Performs create Conversation.
      *
      * @returns The created Conversation object
      */
@@ -1888,38 +1956,56 @@ export declare class Event {
 
     constructor(book: Book, payload?: bkper.Event);
     /**
+     * Gets an immutable copy of the JSON payload for this Event.
+     *
      * @returns The wrapped plain json object
      */
     json(): bkper.Event;
     /**
+     * Gets the book in which the Event was created.
+     *
      * @returns The book in which the Event was created
      */
     getBook(): Book;
     /**
+     * Gets the id of the Event.
+     *
      * @returns The id of the Event
      */
     getId(): string | undefined;
     /**
+     * Gets the user who performed the Event.
+     *
      * @returns The user who performed the Event
      */
     getUser(): User | undefined;
     /**
+     * Gets the Agent who performed the Event.
+     *
      * @returns The Agent who performed the Event
      */
     getAgent(): Agent | undefined;
     /**
+     * Gets the date the Event was created.
+     *
      * @returns The date the Event was created
      */
     getCreatedAt(): Date | undefined;
     /**
+     * Gets the type of the Event.
+     *
      * @returns The type of the Event
      */
     getType(): EventType | undefined;
     /**
+     * Gets the Bot Responses associated to this Event.
+     *
      * @returns The Bot Responses associated to this Event
      */
     getBotResponses(): BotResponse[];
     /**
+     * Checks if this Event has at least one Bot Response of type ERROR.
+     *
      * @returns True if this Event has at least one Bot Response of type ERROR
      */
     hasErrorResponse(): boolean;
@@ -1927,30 +2013,35 @@ export declare class Event {
 
 /**
  * A list associated with an event query.
+ *
+ * @public
  */
 export declare class EventList {
     private payload;
 
     constructor(book: Book, payload: bkper.EventList);
     /**
-     * @returns The cursor associated with the query for pagination.
+     * Gets the cursor associated with the query for pagination.
+     *
+     * @returns The cursor associated with the query for pagination
      */
     getCursor(): string | undefined;
     /**
-     * @returns The first Event in the list.
+     * Gets the first Event in the list.
+     *
+     * @returns The first Event in the list
      */
     getFirst(): Event | undefined;
     /**
-     *
      * Get the total number of events in the list.
      *
-     * @returns The total number of events.
+     * @returns The total number of events
      */
     size(): number;
     /**
      * Get the events in the list.
      *
-     * @returns An array of Event objects.
+     * @returns An array of Event objects
      */
     getItems(): Event[];
 }
@@ -2003,56 +2094,75 @@ export declare class File {
 
     constructor(book: Book, payload?: bkper.File);
     /**
+     * Gets an immutable copy of the JSON payload for this File.
+     *
      * @returns An immutable copy of the json payload
      */
     json(): bkper.File;
     /**
-     * Gets the File id
+     * Gets the File id.
+     *
+     * @returns The File id
      */
     getId(): string | undefined;
     /**
-     * Gets the File name
+     * Gets the File name.
+     *
+     * @returns The File name
      */
     getName(): string | undefined;
     /**
-     *
      * Sets the name of the File.
      *
-     * @returns This File, for chaining.
+     * @param name - The name to set
+     *
+     * @returns This File, for chaining
      */
     setName(name: string): File;
     /**
-     * Gets the File content type
+     * Gets the File content type.
+     *
+     * @returns The File content type
      */
     getContentType(): string | undefined;
     /**
-     *
      * Sets the File content type.
      *
-     * @returns This File, for chaining.
+     * @param contentType - The content type to set
+     *
+     * @returns This File, for chaining
      */
     setContentType(contentType: string): File;
     /**
-     * Gets the file content Base64 encoded
+     * Gets the file content Base64 encoded.
+     *
+     * @returns The file content Base64 encoded
      */
     getContent(): Promise<string | undefined>;
     /**
-     *
      * Sets the File content Base64 encoded.
      *
-     * @returns This File, for chaining.
+     * @param content - The content to set (Base64 encoded)
+     *
+     * @returns This File, for chaining
      */
     setContent(content: string): File;
     /**
-     * Gets the file serving url for accessing via browser
+     * Gets the file serving url for accessing via browser.
+     *
+     * @returns The file serving url
      */
     getUrl(): string | undefined;
     /**
-     * Gets the file size in bytes
+     * Gets the file size in bytes.
+     *
+     * @returns The file size in bytes
      */
     getSize(): number | undefined;
     /**
      * Perform create new File.
+     *
+     * @returns The created File object
      */
     create(): Promise<File>;
 }
@@ -2076,27 +2186,33 @@ export declare class Group {
 
     constructor(book: Book, payload?: bkper.Group);
     /**
+     * Gets an immutable copy of the json payload.
+     *
      * @returns An immutable copy of the json payload
      */
     json(): bkper.Group;
     /**
+     * Gets the id of this Group.
+     *
      * @returns The id of this Group
      */
     getId(): string | undefined;
     /**
+     * Gets the name of this Group.
+     *
      * @returns The name of this Group
      */
     getName(): string | undefined;
     /**
      * Sets the name of the Group.
      *
-     * @returns This Group, for chaining.
+     * @returns This Group, for chaining
      */
     setName(name: string): Group;
     /**
      * Tells if the Group is locked by the Book owner.
      *
-     * @returns True if the Group is locked.
+     * @returns True if the Group is locked
      */
     isLocked(): boolean;
     /**
@@ -2104,23 +2220,31 @@ export declare class Group {
      *
      * @param locked - The locked state of the Group.
      *
-     * @returns This Group, for chaining.
+     * @returns This Group, for chaining
      */
     setLocked(locked: boolean): Group;
     /**
+     * Gets the normalized name of this group without spaces and special characters.
+     *
      * @returns The name of this group without spaces and special characters
      */
     getNormalizedName(): string;
     /**
-     * @returns All Accounts of this group.
+     * Gets all Accounts of this group.
+     *
+     * @returns All Accounts of this group
      */
     getAccounts(): Promise<Account[]>;
     /**
+     * Gets the type of the accounts of this group.
+     *
      * @returns The type for of the accounts of this group. Null if mixed
      */
     getType(): AccountType;
     /**
-     * Gets the custom properties stored in this Group
+     * Gets the custom properties stored in this Group.
+     *
+     * @returns The custom properties as a key/value object
      */
     getProperties(): {
         [key: string]: string;
@@ -2130,15 +2254,17 @@ export declare class Group {
      *
      * @param properties - Object with key/value pair properties
      *
-     * @returns This Group, for chaining.
+     * @returns This Group, for chaining
      */
     setProperties(properties: {
         [key: string]: string;
     }): Group;
     /**
-     * Gets the property value for given keys. First property found will be retrieved
+     * Gets the property value for given keys. First property found will be retrieved.
      *
      * @param keys - The property key
+     *
+     * @returns The property value, or undefined if not found
      */
     getProperty(...keys: string[]): string | undefined;
     /**
@@ -2147,7 +2273,7 @@ export declare class Group {
      * @param key - The property key
      * @param value - The property value
      *
-     * @returns This Group, for chaining.
+     * @returns This Group, for chaining
      */
     setProperty(key: string, value: string | null): Group;
     /**
@@ -2155,117 +2281,141 @@ export declare class Group {
      *
      * @param key - The property key
      *
-     * @returns This Group, for chaining.
+     * @returns This Group, for chaining
      */
     deleteProperty(key: string): Group;
     /**
-     * Tell if the Group is hidden on main transactions menu
+     * Tells if the Group is hidden on main transactions menu.
+     *
+     * @returns True if the Group is hidden, false otherwise
      */
     isHidden(): boolean | undefined;
     /**
-     *  Hide/Show group on main menu.
+     * Hide/Show group on main menu.
+     *
+     * @param hidden - Whether to hide the group
+     *
+     * @returns This Group, for chaining
      */
     setHidden(hidden: boolean): Group;
     /**
-     * Tell if this is a credit (Incoming and Liabities) group
+     * Tells if this is a credit (Incoming and Liabilities) group.
+     *
+     * @returns True if this is a credit group
      */
     isCredit(): boolean | undefined;
     /**
-     * Tell if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group
+     * Tells if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group.
+     *
+     * @returns True if this is a mixed group
      */
     isMixed(): boolean | undefined;
     /**
-     * Tell if the Group is permanent
+     * Tells if the Group is permanent.
+     *
+     * @returns True if the Group is permanent
      */
     isPermanent(): boolean | undefined;
     /**
+     * Gets the parent Group.
+     *
      * @returns The parent Group
      */
     getParent(): Group | undefined;
     /**
      * Sets the parent Group.
      *
-     * @returns This Group, for chaining.
+     * @param group - The parent Group to set
+     *
+     * @returns This Group, for chaining
      */
     setParent(group: Group | null | undefined): Group;
     /**
      * Checks if the Group has a parent.
      *
-     * @returns True if the Group has a parent, otherwise false.
+     * @returns True if the Group has a parent, otherwise false
      */
     hasParent(): boolean;
     /**
-     * Retrieves the children of the Group.
+     * Gets the children of the Group.
      *
-     * @returns An array of child Groups.
+     * @returns An array of child Groups
      */
     getChildren(): Group[];
 
     /**
-     * Retrieves all descendant Groups of the current Group.
+     * Gets all descendant Groups of the current Group.
      *
-     * @returns A set of descendant Groups.
+     * @returns A set of descendant Groups
      */
     getDescendants(): Set<Group>;
     /**
-     * Retrieves the IDs of all descendant Groups in a tree structure.
+     * Gets the IDs of all descendant Groups in a tree structure.
      *
-     * @returns A set of descendant Group IDs.
+     * @returns A set of descendant Group IDs
      */
     getDescendantTreeIds(): Set<string>;
     /**
      * Checks if the Group has any children.
      *
-     * @returns True if the Group has children, otherwise false.
+     * @returns True if the Group has children, otherwise false
      */
     hasChildren(): boolean;
     /**
      * Checks if the Group is a leaf node (i.e., has no children).
      *
-     * @returns True if the Group is a leaf, otherwise false.
+     * @returns True if the Group is a leaf, otherwise false
      */
     isLeaf(): boolean;
     /**
      * Checks if the Group is a root node (i.e., has no parent).
      *
-     * @returns True if the Group is a root, otherwise false.
+     * @returns True if the Group is a root, otherwise false
      */
     isRoot(): boolean;
     /**
-     * Retrieves the depth of the Group in the hierarchy.
+     * Gets the depth of the Group in the hierarchy.
      *
-     * @returns The depth of the Group.
+     * @returns The depth of the Group
      */
     getDepth(): number;
     /**
-     * Retrieves the root Group of the current Group.
+     * Gets the root Group of the current Group.
      *
-     * @returns The root Group.
+     * @returns The root Group
      */
     getRoot(): Group;
     /**
-     * Retrieves the name of the root Group.
+     * Gets the name of the root Group.
      *
-     * @returns The name of the root Group.
+     * @returns The name of the root Group
      */
     getRootName(): string;
 
 
 
     /**
+     * Tells if this group has any account in it.
+     *
      * @returns True if this group has any account in it
      */
     hasAccounts(): boolean | undefined;
     /**
-     * Perform create new group.
+     * Performs create new group.
+     *
+     * @returns A promise that resolves to this Group
      */
     create(): Promise<Group>;
     /**
-     * Perform update group, applying pending changes.
+     * Performs update group, applying pending changes.
+     *
+     * @returns A promise that resolves to this Group
      */
     update(): Promise<Group>;
     /**
-     * Perform delete group.
+     * Performs delete group.
+     *
+     * @returns A promise that resolves to this Group
      */
     remove(): Promise<Group>;
 
@@ -2280,6 +2430,8 @@ export declare class Integration {
     payload: bkper.Integration;
     constructor(payload?: bkper.Integration);
     /**
+     * Gets an immutable copy of the JSON payload for this Integration.
+     *
      * @returns An immutable copy of the json payload
      */
     json(): bkper.Integration;
@@ -2395,47 +2547,58 @@ export declare class Message {
 
     constructor(conversation: Conversation, payload?: bkper.Message);
     /**
+     * Gets the wrapped plain json object.
+     *
      * @returns The wrapped plain json object
      */
     json(): bkper.Message;
     /**
+     * Gets the Message universal identifier.
      *
      * @returns The Message universal identifier
      */
     getId(): string | undefined;
     /**
+     * Gets the Agent associated with the Message.
      *
-     * @returns The Agent associated with the Message, in any
+     * @returns The Agent associated with the Message, if any
      */
     getAgent(): Agent | undefined;
     /**
+     * Gets the Conversation of the Message.
      *
      * @returns The Conversation of the Message
      */
     getConversation(): Conversation;
     /**
+     * Gets the User associated with the Message.
      *
      * @returns The User associated with the Message
      */
     getUser(): User | undefined;
     /**
+     * Gets the Date the Message was created.
      *
      * @returns The Date the Message was created
      */
     getCreatedAt(): Date | undefined;
     /**
+     * Gets the text content of the Message.
      *
      * @returns The text content of the Message
      */
     getContent(): string | undefined;
     /**
+     * Sets the text content of the Message.
      *
-     * @param content The text content of the Message
+     * @param content - The text content of the Message
      *
      * @returns This Message, for chaining
      */
     setContent(content: string): Message;
     /**
+     * Gets the custom properties stored in this Message.
+     *
      * @returns The custom properties stored in this Message
      */
     getProperties(): {
@@ -2446,7 +2609,7 @@ export declare class Message {
      *
      * @param properties - Object with key/value pair properties
      *
-     * @returns This Message, for chaining.
+     * @returns This Message, for chaining
      */
     setProperties(properties: {
         [key: string]: string;
@@ -2465,7 +2628,7 @@ export declare class Message {
      * @param key - The property key
      * @param value - The property value
      *
-     * @returns This Message, for chaining.
+     * @returns This Message, for chaining
      */
     setProperty(key: string, value: string | null): Message;
     /**
@@ -2473,7 +2636,7 @@ export declare class Message {
      *
      * @param key - The property key
      *
-     * @returns This Message, for chaining.
+     * @returns This Message, for chaining
      */
     deleteProperty(key: string): Message;
     /**
@@ -2484,6 +2647,8 @@ export declare class Message {
     create(): Promise<Message>;
     /**
      * Streams the Message to the Bkper API.
+     *
+     * @returns A Promise that resolves when the streaming is complete
      */
     stream(): Promise<void>;
 }
@@ -2594,14 +2759,20 @@ export declare class Query {
 
     constructor(book: Book, payload?: bkper.Query);
     /**
+     * Gets the wrapped plain json object.
+     *
      * @returns The wrapped plain json object
      */
     json(): bkper.Query;
     /**
+     * Gets the Query universal identifier.
+     *
      * @returns The Query universal identifier
      */
     getId(): string | undefined;
     /**
+     * Gets the title of this saved Query.
+     *
      * @returns The title of this saved Query
      */
     getTitle(): string | undefined;
@@ -2614,6 +2785,8 @@ export declare class Query {
      */
     setTitle(title: string): Query;
     /**
+     * Gets the query string to be executed.
+     *
      * @returns This Query string to be executed
      */
     getQuery(): string | undefined;
@@ -2627,14 +2800,20 @@ export declare class Query {
     setQuery(query: string): Query;
     /**
      * Perform create new Query.
+     *
+     * @returns This Query, for chaining
      */
     create(): Promise<Query>;
     /**
      * Perform update Query, applying pending changes.
+     *
+     * @returns This Query, for chaining
      */
     update(): Promise<Query>;
     /**
      * Perform delete Query.
+     *
+     * @returns This Query, for chaining
      */
     remove(): Promise<Query>;
 
@@ -2651,6 +2830,8 @@ export declare class Template {
     payload: bkper.Template;
     constructor(json?: bkper.Template);
     /**
+     * Gets an immutable copy of the JSON payload for this Template.
+     *
      * @returns An immutable copy of the json payload
      */
     json(): bkper.Template;
@@ -2717,116 +2898,149 @@ export declare class Transaction {
 
     constructor(book: Book, payload?: bkper.Transaction);
     /**
+     * Gets the JSON representation of the transaction.
+     *
      * @returns An immutable copy of the json payload
      */
     json(): bkper.Transaction;
     /**
-     * @returns The book of the Transaction.
+     * Gets the book associated with this transaction.
+     *
+     * @returns The book of the Transaction
      */
     getBook(): Book;
     /**
-     * @returns The id of the Transaction.
+     * Gets the unique identifier of the transaction.
+     *
+     * @returns The id of the Transaction
      */
     getId(): string | undefined;
     /**
+     * Gets the unique identifier of the agent that created this transaction.
+     *
      * @returns The id of the agent that created this transaction
      */
     getAgentId(): string | undefined;
     /**
+     * Gets the name of the agent that created this transaction.
+     *
      * @returns The name of the agent that created this transaction
      */
     getAgentName(): string | undefined;
     /**
+     * Gets the logo URL of the agent that created this transaction.
+     *
      * @returns The logo of the agent that created this transaction
      */
     getAgentLogoUrl(): string | undefined;
     /**
+     * Gets the dark mode logo URL of the agent that created this transaction.
+     *
      * @returns The logo of the agent that created this transaction in dark mode
      */
     getAgentLogoUrlDark(): string | undefined;
     /**
-     * Remote ids are used to avoid duplication.
+     * Gets the remote IDs associated with this transaction. Remote ids are used to avoid duplication.
      *
-     * @returns The remote ids of the Transaction.
+     * @returns The remote ids of the Transaction
      */
     getRemoteIds(): string[];
     /**
      * Add a remote id to the Transaction.
      *
-     * @param remoteId - The remote id to add.
+     * @param remoteId - The remote id to add
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     addRemoteId(remoteId: string): Transaction;
     /**
-     * @returns True if transaction was already posted to the accounts. False if is still a Draft.
+     * Checks if the transaction has been posted to the accounts.
+     *
+     * @returns True if transaction was already posted to the accounts. False if is still a Draft
      */
     isPosted(): boolean | undefined;
     /**
-     * @returns True if transaction is checked.
+     * Checks if the transaction is marked as checked.
+     *
+     * @returns True if transaction is checked
      */
     isChecked(): boolean | undefined;
     /**
      * Set the check state of the Transaction.
      *
-     * @param checked - The check state.
+     * @param checked - The check state
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     setChecked(checked: boolean): Transaction;
     /**
-     * @returns True if transaction is in trash.
+     * Checks if the transaction is in the trash.
+     *
+     * @returns True if transaction is in trash
      */
     isTrashed(): boolean | undefined;
     /**
+     * Checks if the transaction is locked by the book's lock or closing date.
+     *
      * @returns True if a transaction is locked by the book lock/closing date
      */
     isLocked(): boolean;
     /**
-     * @returns All #hashtags used on the transaction.
+     * Gets all hashtags used in the transaction.
+     *
+     * @returns All #hashtags used on the transaction
      */
     getTags(): string[];
     /**
-     * @returns All urls of the transaction.
+     * Gets all URLs associated with the transaction.
+     *
+     * @returns All urls of the transaction
      */
     getUrls(): string[];
     /**
      * Sets the Transaction urls. Url starts with https://
      *
-     * @param urls - The urls array.
+     * @param urls - The urls array
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     setUrls(urls: string[]): Transaction;
     /**
      * Add a url to the Transaction. Url starts with https://
      *
-     * @param url - The url to add.
+     * @param url - The url to add
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     addUrl(url: string): Transaction;
     /**
-     * @returns The files attached to the transaction.
+     * Gets all files attached to the transaction.
+     *
+     * @returns The files attached to the transaction
      */
     getFiles(): File[];
     /**
-     *
      * Adds a file attachment to the Transaction.
      *
      * Files MUST be previously created in the Book.
      *
      * @param file - The file to add
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     addFile(file: File): Transaction;
     /**
      * Check if the transaction has the specified tag.
+     *
+     * @param tag - The tag to check for
+     *
+     * @returns True if the transaction has the specified tag
      */
     hasTag(tag: string): boolean;
     /**
      * Gets the custom properties stored in this Transaction.
+     *
+     * @returns Object with key/value pair properties
      */
     getProperties(): {
         [key: string]: string;
@@ -2836,7 +3050,7 @@ export declare class Transaction {
      *
      * @param properties - Object with key/value pair properties
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     setProperties(properties: {
         [key: string]: string;
@@ -2845,10 +3059,14 @@ export declare class Transaction {
      * Gets the property value for given keys. First property found will be retrieved
      *
      * @param keys - The property key
+     *
+     * @returns The property value or undefined if not found
      */
     getProperty(...keys: string[]): string | undefined;
     /**
      * Gets the custom properties keys stored in this Transaction.
+     *
+     * @returns Array of property keys
      */
     getPropertyKeys(): string[];
     /**
@@ -2857,7 +3075,7 @@ export declare class Transaction {
      * @param key - The property key
      * @param value - The property value
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     setProperty(key: string, value: string | null): Transaction;
     /**
@@ -2865,165 +3083,202 @@ export declare class Transaction {
      *
      * @param key - The property key
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     deleteProperty(key: string): Transaction;
     /**
-     * @returns The credit account. The same as origin account.
+     * Gets the credit account associated with this Transaction. Same as origin account
+     *
+     * @returns The credit (origin) account
      */
     getCreditAccount(): Promise<Account | undefined>;
     /**
-     * @returns The credit account name.
+     * Gets the name of this Transaction's credit account.
+     *
+     * @returns The credit account name
      */
     getCreditAccountName(): Promise<string | undefined>;
     /**
+     * Sets the credit/origin [[Account]] of this Transaction. Same as from()
      *
-     * Sets the credit/origin Account of the Transaction. Same as from().
+     * @param account - The Account object
      *
-     * @param account - Account id, name or object.
-     *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     setCreditAccount(account: Account | bkper.Account): Transaction;
     /**
+     * Sets the credit/origin [[Account]] of this Transaction. Same as setCreditAccount()
      *
-     * Sets the credit/origin Account of the Transaction. Same as setCreditAccount().
+     * @param account - The Account object
      *
-     * @param account - Account id, name or object.
-     *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     from(account: Account | bkper.Account): Transaction;
     /**
-     * @returns The debit account. The same as destination account.
+     * Gets the debit account associated with this Transaction. Same as destination account
      *
+     * @returns The debit (destination) account
      */
     getDebitAccount(): Promise<Account | undefined>;
     /**
-     * @returns The debit account name.
+     * Gets the name of this Transaction's debit account.
+     *
+     * @returns The debit account name
      */
     getDebitAccountName(): Promise<string | undefined>;
     /**
+     * Sets the debit/destination [[Account]] of this Transaction. Same as to()
      *
-     * Sets the debit/destination Account of the Transaction. Same as to().
+     * @param account - The Account object
      *
-     * @param account - Account id, name or object.
-     *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     setDebitAccount(account: Account | bkper.Account): Transaction;
     /**
+     * Sets the debit/destination [[Account]] of this Transaction. Same as setDebitAccount()
      *
-     * Sets the debit/destination Account of the Transaction. Same as setDebitAccount().
+     * @param account - The Account object
      *
-     * @param account - Account id, name or object.
-     *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     to(account: Account | bkper.Account): Transaction;
     /**
-     * @returns The amount of the transaction.
+     * Gets the amount of this Transaction.
+     *
+     * @returns The amount of this Transaction
      */
     getAmount(): Amount | undefined;
     /**
-     * @returns The amount of the transaction, formatted according to the Book format.
+     * Gets the formatted amount of this Transaction according to the Book format.
+     *
+     * @returns The amount of this Transaction, formatted according to the Book format
      */
     getAmountFormatted(): string | undefined;
     /**
+     * Sets the amount of this Transaction.
      *
-     * Sets the amount of the Transaction.
+     * @param amount - The amount to set
      *
-     * @returns This Transaction, for chaining.
+     * @returns This Transaction, for chaining
      */
     setAmount(amount: Amount | number | string): Transaction;
     /**
-     * Get the absolute amount of this transaction if the given account is at the credit side, else null.
+     * Get the absolute amount of this Transaction if the given account is at the credit side.
      *
-     * @param account - The account object, id or name.
+     * @param account - The account object, id or name
+     *
+     * @returns The credit amount or undefined
      */
     getCreditAmount(account: Account | string): Promise<Amount | undefined>;
     /**
-     * Gets the absolute amount of this transaction if the given account is at the debit side, else null.
+     * Gets the absolute amount of this Transaction if the given account is at the debit side.
      *
-     * @param account - The account object, id or name.
+     * @param account - The account object, id or name
+     *
+     * @returns The debit amount or undefined
      */
     getDebitAmount(account: Account | string): Promise<Amount | undefined>;
     /**
      * Gets the [[Account]] at the other side of the transaction given the one in one side.
      *
-     * @param account - The account object, id or name.
+     * @param account - The account object, id or name
+     *
+     * @returns The account at the other side of the transaction
      */
     getOtherAccount(account: Account | string): Promise<Account | undefined>;
     /**
+     * The Account name at the other side of this Transaction given the one in one side.
      *
-     * The account name at the other side of the transaction given the one in one side.
+     * @param account - The Account object, id or name
      *
-     * @param account - The account object, id or name.
+     * @returns The name of the Account at the other side
      */
     getOtherAccountName(account: string | Account): Promise<string | undefined>;
     /**
+     * Tell if the given account is credit on this Transaction
      *
-     * Tell if the given account is credit on the transaction
+     * @param account - The Account object
      *
-     * @param account - The account object
+     * @returns True if the account is the credit account
      */
     isCredit(account?: Account): Promise<boolean>;
     /**
+     * Tell if the given account is debit on the Transaction
      *
-     * Tell if the given account is debit on the transaction
+     * @param account - The [[Account]] object
      *
-     * @param account - The account object
+     * @returns True if the Account is the debit account
      */
     isDebit(account?: Account): Promise<boolean>;
 
     /**
-     * @returns The description of this transaction.
+     * Gets the description of this Transaction.
+     *
+     * @returns The description of this Transaction
      */
     getDescription(): string;
     /**
-     *
      * Sets the description of the Transaction.
      *
-     * @returns This Transaction, for chaining.
+     * @param description - The description to set
+     *
+     * @returns This Transaction, for chaining
      */
     setDescription(description: string): Transaction;
     /**
-     * @returns The Transaction date, in ISO format yyyy-MM-dd.
+     * Gets the transaction date in ISO format.
+     *
+     * @returns The Transaction date, in ISO format yyyy-MM-dd
      */
     getDate(): string | undefined;
     /**
-     *
      * Sets the date of the Transaction.
+     *
+     * @param date - The date to set as string or Date object
      *
      * @returns This Transaction, for chaining
      */
     setDate(date: string | Date): Transaction;
     /**
-     * @returns The Transaction Date object, on the time zone of the [[Book]].
+     * Gets the transaction date as a Date object in the book's timezone.
+     *
+     * @returns The Transaction Date object, on the time zone of the [[Book]]
      */
     getDateObject(): Date;
     /**
-     * @returns The Transaction date number, in format YYYYMMDD.
+     * Gets the transaction date as a numeric value.
+     *
+     * @returns The Transaction date number, in format YYYYMMDD
      */
     getDateValue(): number | undefined;
     /**
-     * @returns The Transaction date, formatted on the date pattern of the [[Book]].
+     * Gets the transaction date formatted according to the book's date pattern.
+     *
+     * @returns The Transaction date, formatted on the date pattern of the [[Book]]
      */
     getDateFormatted(): string | undefined;
     /**
-     * @returns The date the transaction was created.
+     * Gets the date when the transaction was created.
+     *
+     * @returns The date the transaction was created
      */
     getCreatedAt(): Date;
     /**
-     * @returns The date the transaction was created, formatted according to the date pattern of the [[Book]].
+     * Gets the formatted creation date of the transaction.
+     *
+     * @returns The date the transaction was created, formatted according to the date pattern of the [[Book]]
      */
     getCreatedAtFormatted(): string;
     /**
-     * @returns The date the transaction was last updated.
+     * Gets the date when the transaction was last updated.
+     *
+     * @returns The date the transaction was last updated
      */
     getUpdatedAt(): Date;
     /**
-     * @returns The date the transaction was last updated, formatted according to the date pattern of the [[Book]].
+     * Gets the formatted last update date of the transaction.
+     *
+     * @returns The date the transaction was last updated, formatted according to the date pattern of the [[Book]]
      */
     getUpdatedAtFormatted(): string;
 
@@ -3035,35 +3290,51 @@ export declare class Transaction {
      *
      * Only comes with the last posted transaction of the day.
      *
-     * @param raw - True to get the raw balance, no matter the credit nature of the [[Account]].
+     * @param raw - True to get the raw balance, no matter the credit nature of the [[Account]]
+     *
+     * @returns The account balance at the transaction date
      */
     getAccountBalance(raw?: boolean): Promise<Amount | undefined>;
     /**
      * Perform create new draft transaction.
+     *
+     * @returns This Transaction, for chaining
      */
     create(): Promise<Transaction>;
     /**
-     * Upddate transaction, applying pending changes.
+     * Update transaction, applying pending changes.
+     *
+     * @returns This Transaction, for chaining
      */
     update(): Promise<Transaction>;
     /**
      * Perform check transaction.
+     *
+     * @returns This Transaction, for chaining
      */
     check(): Promise<Transaction>;
     /**
      * Perform uncheck transaction.
+     *
+     * @returns This Transaction, for chaining
      */
     uncheck(): Promise<Transaction>;
     /**
      * Perform post transaction, changing credit and debit [[Account]] balances.
+     *
+     * @returns This Transaction, for chaining
      */
     post(): Promise<Transaction>;
     /**
      * Trash the transaction.
+     *
+     * @returns This Transaction, for chaining
      */
     trash(): Promise<Transaction>;
     /**
      * Untrash the transaction.
+     *
+     * @returns This Transaction, for chaining
      */
     untrash(): Promise<Transaction>;
     /** @deprecated */
@@ -3074,34 +3345,41 @@ export declare class Transaction {
 
 /**
  * A list associated with a transaction query.
+ *
+ * @public
  */
 export declare class TransactionList {
     private payload;
 
     constructor(book: Book, payload: bkper.TransactionList);
     /**
-     * @returns The cursor associated with the query for pagination.
+     * Gets the cursor associated with the query for pagination.
+     *
+     * @returns The cursor associated with the query for pagination
      */
     getCursor(): string | undefined;
     /**
      * Retrieves the account associated with the query, when filtering by account.
+     *
+     * @returns The account associated with the query, or undefined if not set
      */
     getAccount(): Promise<Account | undefined>;
     /**
-     * @returns The first Transaction in the list.
+     * Gets the first Transaction in the list.
+     *
+     * @returns The first Transaction in the list
      */
     getFirst(): Transaction | undefined;
     /**
+     * Gets the total number of transactions in the list.
      *
-     * Get the total number of transactions in the list.
-     *
-     * @returns The total number of transactions.
+     * @returns The total number of transactions
      */
     size(): number;
     /**
-     * Get the transactions in the list.
+     * Gets the transactions in the list.
      *
-     * @returns An array of Transaction objects.
+     * @returns An array of Transaction objects
      */
     getItems(): Transaction[];
 }
@@ -3110,6 +3388,7 @@ export declare class TransactionList {
  * This class defines a User on the Bkper platform.
  *
  * Users can own and collaborate on [[Books]], manage [[Collections]], and connect to external services through [[Connections]].
+ *
  * Each User has a unique identity, subscription plan details, and access permissions across the platform.
  *
  * @public
@@ -3118,6 +3397,8 @@ export declare class User {
     payload: bkper.User;
     constructor(payload?: bkper.User);
     /**
+     * Gets an immutable copy of the JSON payload for this User.
+     *
      * @returns An immutable copy of the json payload
      */
     json(): bkper.User;
