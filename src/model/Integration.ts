@@ -14,6 +14,8 @@ export class Integration {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload for this Integration.
+   *
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.Integration {
@@ -106,7 +108,7 @@ export class Integration {
    * 
    * @param properties - Object with key/value pair properties
    * 
-   * @returns The Integration, for chainning
+   * @returns The Integration, for chaining
    */
   public setProperties(properties: { [key: string]: string }): Integration {
     this.payload.properties = { ...properties };
@@ -158,7 +160,7 @@ export class Integration {
    * 
    * @param key - The property key
    * 
-   * @returns The Integration, for chainning
+   * @returns The Integration, for chaining
    */
   public deleteProperty(key: string): Integration {
     this.setProperty(key, null);

@@ -21,6 +21,8 @@ export class Query {
     }
 
     /**
+     * Gets the wrapped plain json object.
+     * 
      * @returns The wrapped plain json object
      */
     public json(): bkper.Query {
@@ -28,6 +30,8 @@ export class Query {
     }
 
     /**
+     * Gets the Query universal identifier.
+     * 
      * @returns The Query universal identifier
      */
     public getId(): string | undefined {
@@ -35,7 +39,9 @@ export class Query {
     }
 
     /**
-     * @return The title of this saved Query
+     * Gets the title of this saved Query.
+     * 
+     * @returns The title of this saved Query
      */
     public getTitle(): string | undefined {
         return this.payload.title;
@@ -44,7 +50,7 @@ export class Query {
     /**
      * Sets the title of this saved Query.
      * 
-     * @param title The title of this saved Query
+     * @param title - The title of this saved Query
      * 
      * @returns This Query, for chaining
      */
@@ -54,7 +60,9 @@ export class Query {
     }
 
     /**
-     * @return This Query string to be executed
+     * Gets the query string to be executed.
+     * 
+     * @returns This Query string to be executed
      */
     public getQuery(): string | undefined {
         return this.payload.query;
@@ -63,7 +71,7 @@ export class Query {
     /**
      * Sets the query string associated with this saved Query.
      * 
-     * @param query The query string to be executed
+     * @param query - The query string to be executed
      * 
      * @returns This Query, for chaining
      */
@@ -74,6 +82,8 @@ export class Query {
 
     /**
      * Perform create new Query.
+     * 
+     * @returns This Query, for chaining
      */
     public async create(): Promise<Query> {
         this.payload = await QueryService.createSavedQuery(this.book.getId(), this.payload);
@@ -83,6 +93,8 @@ export class Query {
 
     /**
      * Perform update Query, applying pending changes.
+     * 
+     * @returns This Query, for chaining
      */
     public async update(): Promise<Query> {
         this.payload = await QueryService.updateSavedQuery(this.book.getId(), this.payload);
@@ -92,6 +104,8 @@ export class Query {
 
     /**
      * Perform delete Query.
+     * 
+     * @returns This Query, for chaining
      */
     public async remove(): Promise<Query> {
         const queryId = this.getId();

@@ -15,6 +15,8 @@ export class Template {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload for this Template.
+   *
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.Template {

@@ -24,6 +24,8 @@ export class File {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload for this File.
+   *
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.File {
@@ -31,24 +33,29 @@ export class File {
   }
 
   /**
-   * Gets the File id
+   * Gets the File id.
+   *
+   * @returns The File id
    */
   public getId(): string | undefined {
     return this.payload.id;
   }
 
   /**
-   * Gets the File name
+   * Gets the File name.
+   *
+   * @returns The File name
    */
   public getName(): string | undefined {
     return this.payload.name;
   }
 
   /**
-   * 
    * Sets the name of the File.
-   * 
-   * @returns This File, for chainning.
+   *
+   * @param name - The name to set
+   *
+   * @returns This File, for chaining
    */    
   public setName(name: string): File {
     this.payload.name = name;
@@ -56,17 +63,20 @@ export class File {
   }  
 
   /**
-   * Gets the File content type
+   * Gets the File content type.
+   *
+   * @returns The File content type
    */
   public getContentType(): string | undefined {
     return this.payload.contentType;
   }
 
   /**
-   * 
    * Sets the File content type.
-   * 
-   * @returns This File, for chainning.
+   *
+   * @param contentType - The content type to set
+   *
+   * @returns This File, for chaining
    */    
   public setContentType(contentType: string): File {
     this.payload.contentType = contentType;
@@ -74,7 +84,9 @@ export class File {
   }    
 
   /**
-   * Gets the file content Base64 encoded
+   * Gets the file content Base64 encoded.
+   *
+   * @returns The file content Base64 encoded
    */
   public async getContent(): Promise<string | undefined> {
     const id = this.getId();
@@ -85,10 +97,11 @@ export class File {
   }
 
   /**
-   * 
    * Sets the File content Base64 encoded.
-   * 
-   * @returns This File, for chainning.
+   *
+   * @param content - The content to set (Base64 encoded)
+   *
+   * @returns This File, for chaining
    */    
   public setContent(content: string): File {
     this.payload.content = content;
@@ -96,14 +109,18 @@ export class File {
   } 
  
   /**
-   * Gets the file serving url for accessing via browser
+   * Gets the file serving url for accessing via browser.
+   *
+   * @returns The file serving url
    */
   public getUrl(): string | undefined {
     return this.payload.url;
   }
 
   /**
-   * Gets the file size in bytes
+   * Gets the file size in bytes.
+   *
+   * @returns The file size in bytes
    */  
   public getSize(): number | undefined {
     return this.payload.size;
@@ -112,6 +129,8 @@ export class File {
 
   /**
    * Perform create new File.
+   *
+   * @returns The created File object
    */
   public async create(): Promise<File> {
     if (this.book) {

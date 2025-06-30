@@ -3,6 +3,8 @@ import { Event } from "./Event.js";
 
 /**
  * A list associated with an event query.
+ *
+ * @public
  */
 export class EventList {
 
@@ -17,14 +19,18 @@ export class EventList {
   }
 
   /**
-   * @returns The cursor associated with the query for pagination.
+   * Gets the cursor associated with the query for pagination.
+   *
+   * @returns The cursor associated with the query for pagination
    */
   public getCursor(): string | undefined {
     return this.payload.cursor;
   }
 
   /**
-   * @returns The first Event in the list.
+   * Gets the first Event in the list.
+   *
+   * @returns The first Event in the list
    */
   public getFirst(): Event | undefined {
     const events = this.getItems();
@@ -32,10 +38,9 @@ export class EventList {
   }
 
   /**
-   * 
    * Get the total number of events in the list.
-   * 
-   * @returns The total number of events.
+   *
+   * @returns The total number of events
    */
   public size(): number {
     return this.payload.items?.length || 0;
@@ -43,8 +48,8 @@ export class EventList {
 
   /**
    * Get the events in the list.
-   * 
-   * @returns An array of Event objects.
+   *
+   * @returns An array of Event objects
    */
   public getItems(): Event[] {
     return this.payload.items?.map(event => new Event(this.book, event)) || [];

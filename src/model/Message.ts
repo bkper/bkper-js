@@ -26,6 +26,8 @@ export class Message {
     }
 
     /**
+     * Gets the wrapped plain json object.
+     * 
      * @returns The wrapped plain json object
      */
     public json(): bkper.Message {
@@ -33,6 +35,7 @@ export class Message {
     }
 
     /**
+     * Gets the Message universal identifier.
      * 
      * @returns The Message universal identifier
      */
@@ -41,14 +44,16 @@ export class Message {
     }
 
     /**
+     * Gets the Agent associated with the Message.
      * 
-     * @returns The Agent associated with the Message, in any
+     * @returns The Agent associated with the Message, if any
      */
     public getAgent(): Agent | undefined {
         return this.payload.agent ? new Agent(this.payload.agent) : undefined;
     }
 
     /**
+     * Gets the Conversation of the Message.
      * 
      * @returns The Conversation of the Message
      */
@@ -57,6 +62,7 @@ export class Message {
     }
 
     /**
+     * Gets the User associated with the Message.
      * 
      * @returns The User associated with the Message
      */
@@ -65,6 +71,7 @@ export class Message {
     }
 
     /**
+     * Gets the Date the Message was created.
      * 
      * @returns The Date the Message was created
      */
@@ -73,6 +80,7 @@ export class Message {
     }
 
     /**
+     * Gets the text content of the Message.
      * 
      * @returns The text content of the Message
      */
@@ -81,8 +89,9 @@ export class Message {
     }
 
     /**
+     * Sets the text content of the Message.
      * 
-     * @param content The text content of the Message
+     * @param content - The text content of the Message
      * 
      * @returns This Message, for chaining
      */
@@ -92,6 +101,8 @@ export class Message {
     }
 
     /**
+     * Gets the custom properties stored in this Message.
+     * 
      * @returns The custom properties stored in this Message
      */
     public getProperties(): { [key: string]: string } {
@@ -103,7 +114,7 @@ export class Message {
      * 
      * @param properties - Object with key/value pair properties
      * 
-     * @returns This Message, for chainning. 
+     * @returns This Message, for chaining
      */
     public setProperties(properties: { [key: string]: string }): Message {
         this.payload.properties = { ...properties };
@@ -134,7 +145,7 @@ export class Message {
      * @param key - The property key
      * @param value - The property value
      * 
-     * @returns This Message, for chainning. 
+     * @returns This Message, for chaining
      */
     public setProperty(key: string, value: string | null): Message {
         if (key == null || key.trim() == '') {
@@ -155,7 +166,7 @@ export class Message {
      * 
      * @param key - The property key
      * 
-     * @returns This Message, for chainning.
+     * @returns This Message, for chaining
      */
     public deleteProperty(key: string): Message {
         this.setProperty(key, null);
@@ -188,6 +199,8 @@ export class Message {
 
     /**
      * Streams the Message to the Bkper API.
+     * 
+     * @returns A Promise that resolves when the streaming is complete
      */
     public async stream(): Promise<void> {
         const conversationId = this.conversation.getId();

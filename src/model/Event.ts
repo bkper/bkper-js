@@ -28,6 +28,8 @@ export class Event {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload for this Event.
+   *
    * @returns The wrapped plain json object
    */
   public json(): bkper.Event {
@@ -35,6 +37,8 @@ export class Event {
   }
 
   /**
+   * Gets the book in which the Event was created.
+   *
    * @returns The book in which the Event was created
    */
   public getBook(): Book {
@@ -42,6 +46,8 @@ export class Event {
   }
 
   /**
+   * Gets the id of the Event.
+   *
    * @returns The id of the Event
    */
   public getId(): string | undefined {
@@ -49,6 +55,8 @@ export class Event {
   }
 
   /**
+   * Gets the user who performed the Event.
+   *
    * @returns The user who performed the Event
    */
   public getUser(): User | undefined {
@@ -56,6 +64,8 @@ export class Event {
   }
 
   /**
+   * Gets the Agent who performed the Event.
+   *
    * @returns The Agent who performed the Event
    */
   public getAgent(): Agent | undefined {
@@ -63,6 +73,8 @@ export class Event {
   }
 
   /**
+   * Gets the date the Event was created.
+   *
    * @returns The date the Event was created
    */
   public getCreatedAt(): Date | undefined {
@@ -70,6 +82,8 @@ export class Event {
   }
 
   /**
+   * Gets the type of the Event.
+   *
    * @returns The type of the Event
    */
   public getType(): EventType | undefined {
@@ -77,6 +91,8 @@ export class Event {
   }
 
   /**
+   * Gets the Bot Responses associated to this Event.
+   *
    * @returns The Bot Responses associated to this Event
    */
   public getBotResponses(): BotResponse[] {
@@ -94,6 +110,8 @@ export class Event {
   }
 
   /**
+   * Checks if this Event has at least one Bot Response of type ERROR.
+   *
    * @returns True if this Event has at least one Bot Response of type ERROR
    */
   public hasErrorResponse(): boolean {

@@ -2,7 +2,11 @@ import { Connection } from "./Connection.js";
 import * as ConnectionService from '../service/connection-service.js';
 
 /**
- * This class defines a User.
+ * This class defines a User on the Bkper platform.
+ * 
+ * Users can own and collaborate on [[Books]], manage [[Collections]], and connect to external services through [[Connections]].
+ * 
+ * Each User has a unique identity, subscription plan details, and access permissions across the platform.
  * 
  * @public
  */
@@ -15,6 +19,8 @@ export class User {
   }
 
   /**
+   * Gets an immutable copy of the JSON payload for this User.
+   *
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.User {

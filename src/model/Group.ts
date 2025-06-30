@@ -43,6 +43,8 @@ export class Group {
   }
 
   /**
+   * Gets an immutable copy of the json payload.
+   * 
    * @returns An immutable copy of the json payload
    */
   public json(): bkper.Group {
@@ -50,6 +52,8 @@ export class Group {
   }
 
   /**
+   * Gets the id of this Group.
+   * 
    * @returns The id of this Group
    */
   public getId(): string | undefined {
@@ -57,6 +61,8 @@ export class Group {
   }
 
   /**
+   * Gets the name of this Group.
+   * 
    * @returns The name of this Group
    */
   public getName(): string | undefined {
@@ -66,7 +72,7 @@ export class Group {
   /**
    * Sets the name of the Group.
    * 
-   * @returns This Group, for chainning.
+   * @returns This Group, for chaining
    */
   public setName(name: string): Group {
     this.payload.name = name;
@@ -76,7 +82,7 @@ export class Group {
   /**
    * Tells if the Group is locked by the Book owner.
    * 
-   * @returns True if the Group is locked.
+   * @returns True if the Group is locked
    */
   public isLocked(): boolean {
     if (this.payload.locked == null) {
@@ -90,7 +96,7 @@ export class Group {
    * 
    * @param locked - The locked state of the Group.
    * 
-   * @returns This Group, for chainning.
+   * @returns This Group, for chaining
    */
   public setLocked(locked: boolean): Group {
     this.payload.locked = locked;
@@ -98,6 +104,8 @@ export class Group {
   }
 
   /**
+   * Gets the normalized name of this group without spaces and special characters.
+   * 
    * @returns The name of this group without spaces and special characters
    */
   public getNormalizedName(): string {
@@ -109,7 +117,9 @@ export class Group {
   }
 
   /**
-   * @returns All Accounts of this group.
+   * Gets all Accounts of this group.
+   * 
+   * @returns All Accounts of this group
    */
   public async getAccounts(): Promise<Account[]> {
 
@@ -126,6 +136,8 @@ export class Group {
   }
 
   /**
+   * Gets the type of the accounts of this group.
+   * 
    * @returns The type for of the accounts of this group. Null if mixed
    */
   public getType(): AccountType {
@@ -133,7 +145,9 @@ export class Group {
   }
 
   /**
-   * Gets the custom properties stored in this Group
+   * Gets the custom properties stored in this Group.
+   * 
+   * @returns The custom properties as a key/value object
    */
   public getProperties(): { [key: string]: string } {
     return this.payload.properties != null ? { ...this.payload.properties } : {};
@@ -144,7 +158,7 @@ export class Group {
    * 
    * @param properties - Object with key/value pair properties
    * 
-   * @returns This Group, for chainning. 
+   * @returns This Group, for chaining
    */
   public setProperties(properties: { [key: string]: string }): Group {
     this.payload.properties = { ...properties };
@@ -152,9 +166,11 @@ export class Group {
   }
 
   /**
-   * Gets the property value for given keys. First property found will be retrieved
+   * Gets the property value for given keys. First property found will be retrieved.
    * 
    * @param keys - The property key
+   * 
+   * @returns The property value, or undefined if not found
    */
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
@@ -172,6 +188,8 @@ export class Group {
    * 
    * @param key - The property key
    * @param value - The property value
+   * 
+   * @returns This Group, for chaining
    */
   public setProperty(key: string, value: string | null): Group {
     if (key == null || key.trim() == '') {
@@ -192,7 +210,7 @@ export class Group {
    * 
    * @param key - The property key
    * 
-   * @returns This Group, for chainning. 
+   * @returns This Group, for chaining
    */
   public deleteProperty(key: string): Group {
     this.setProperty(key, null);
@@ -200,14 +218,20 @@ export class Group {
   }
 
   /**
-   * Tell if the Group is hidden on main transactions menu
+   * Tells if the Group is hidden on main transactions menu.
+   * 
+   * @returns True if the Group is hidden, false otherwise
    */
   public isHidden(): boolean | undefined {
     return this.payload.hidden;
   }
 
   /**
-   *  Hide/Show group on main menu.
+   * Hide/Show group on main menu.
+   * 
+   * @param hidden - Whether to hide the group
+   * 
+   * @returns This Group, for chaining
    */
   public setHidden(hidden: boolean): Group {
     this.payload.hidden = hidden;
@@ -215,27 +239,35 @@ export class Group {
   }
 
   /**
-   * Tell if this is a credit (Incoming and Liabities) group
+   * Tells if this is a credit (Incoming and Liabilities) group.
+   * 
+   * @returns True if this is a credit group
    */
   public isCredit(): boolean | undefined {
     return this.payload.credit;
   }
 
   /**
-   * Tell if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group
+   * Tells if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group.
+   * 
+   * @returns True if this is a mixed group
    */
   public isMixed(): boolean | undefined {
     return this.payload.mixed;
   }
 
   /**
-   * Tell if the Group is permanent
+   * Tells if the Group is permanent.
+   * 
+   * @returns True if the Group is permanent
    */
   public isPermanent(): boolean | undefined {
     return this.payload.permanent;
   }
 
   /**
+   * Gets the parent Group.
+   * 
    * @returns The parent Group
    */
   public getParent(): Group | undefined {
@@ -245,7 +277,9 @@ export class Group {
   /**
    * Sets the parent Group.
    * 
-   * @returns This Group, for chainning.
+   * @param group - The parent Group to set
+   * 
+   * @returns This Group, for chaining
    */
   public setParent(group: Group | null | undefined): Group {
     if (group) {
@@ -259,16 +293,16 @@ export class Group {
   /**
    * Checks if the Group has a parent.
    * 
-   * @returns True if the Group has a parent, otherwise false.
+   * @returns True if the Group has a parent, otherwise false
    */
   public hasParent(): boolean {
     return this.payload.parent != null;
   }
 
   /**
-   * Retrieves the children of the Group.
+   * Gets the children of the Group.
    * 
-   * @returns An array of child Groups.
+   * @returns An array of child Groups
    */
   public getChildren(): Group[] {
     return Array.from(this.children.values()) || [];
@@ -283,9 +317,9 @@ export class Group {
   }
 
   /**
-   * Retrieves all descendant Groups of the current Group.
+   * Gets all descendant Groups of the current Group.
    * 
-   * @returns A set of descendant Groups.
+   * @returns A set of descendant Groups
    */
   public getDescendants(): Set<Group> {
     const descendants = new Set<Group>();
@@ -294,9 +328,9 @@ export class Group {
   }
 
   /**
-   * Retrieves the IDs of all descendant Groups in a tree structure.
+   * Gets the IDs of all descendant Groups in a tree structure.
    * 
-   * @returns A set of descendant Group IDs.
+   * @returns A set of descendant Group IDs
    */
   public getDescendantTreeIds(): Set<string> {
     return new Set(Array.from(this.getDescendants()).map(g => g.getId() || ""));
@@ -305,7 +339,7 @@ export class Group {
   /**
    * Checks if the Group has any children.
    * 
-   * @returns True if the Group has children, otherwise false.
+   * @returns True if the Group has children, otherwise false
    */
   public hasChildren(): boolean {
     return this.getChildren().length > 0;
@@ -314,7 +348,7 @@ export class Group {
   /**
    * Checks if the Group is a leaf node (i.e., has no children).
    * 
-   * @returns True if the Group is a leaf, otherwise false.
+   * @returns True if the Group is a leaf, otherwise false
    */
   public isLeaf(): boolean {
     return this.getChildren().length === 0;
@@ -323,16 +357,16 @@ export class Group {
   /**
    * Checks if the Group is a root node (i.e., has no parent).
    * 
-   * @returns True if the Group is a root, otherwise false.
+   * @returns True if the Group is a root, otherwise false
    */
   public isRoot(): boolean {
     return this.getParent() == undefined;
   }
 
   /**
-   * Retrieves the depth of the Group in the hierarchy.
+   * Gets the depth of the Group in the hierarchy.
    * 
-   * @returns The depth of the Group.
+   * @returns The depth of the Group
    */
   public getDepth(): number {
     if (this.depth == undefined) {
@@ -346,9 +380,9 @@ export class Group {
   }
 
   /**
-   * Retrieves the root Group of the current Group.
+   * Gets the root Group of the current Group.
    * 
-   * @returns The root Group.
+   * @returns The root Group
    */
   public getRoot(): Group {
     if (this.root == undefined) {
@@ -362,9 +396,9 @@ export class Group {
   }
 
   /**
-   * Retrieves the name of the root Group.
+   * Gets the name of the root Group.
    * 
-   * @returns The name of the root Group.
+   * @returns The name of the root Group
    */
   public getRootName(): string {
     const root = this.getRoot();
@@ -411,6 +445,8 @@ export class Group {
   }
 
   /**
+   * Tells if this group has any account in it.
+   * 
    * @returns True if this group has any account in it
    */
   public hasAccounts(): boolean | undefined {
@@ -418,7 +454,9 @@ export class Group {
   }
 
   /**
-   * Perform create new group.
+   * Performs create new group.
+   * 
+   * @returns A promise that resolves to this Group
    */
   public async create(): Promise<Group> {
     this.payload = await GroupService.createGroup(this.book.getId(), this.payload);
@@ -427,7 +465,9 @@ export class Group {
   }
 
   /**
-   * Perform update group, applying pending changes.
+   * Performs update group, applying pending changes.
+   * 
+   * @returns A promise that resolves to this Group
    */
   public async update(): Promise<Group> {
     this.payload = await GroupService.updateGroup(this.book.getId(), this.payload);
@@ -436,7 +476,9 @@ export class Group {
   }
 
   /**
-   * Perform delete group.
+   * Performs delete group.
+   * 
+   * @returns A promise that resolves to this Group
    */
   public async remove(): Promise<Group> {
     this.payload = await GroupService.deleteGroup(this.book.getId(), this.payload);
