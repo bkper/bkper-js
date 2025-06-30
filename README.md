@@ -27,4 +27,28 @@ or
 bun add bkper-js
 ```
 
+## Usage
+
+```typescript
+import { Bkper } from 'bkper-js';
+
+// Create Bkper instance with configuration
+const bkper = new Bkper({
+  apiKeyProvider: () => process.env.BKPER_API_KEY,
+  oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
+});
+
+// Get a book and work with it
+const book = await bkper.getBook('your-book-id');
+console.log(`Book: ${book.getName()}`);
+
+// List all books
+const books = await bkper.getBooks();
+console.log(`You have ${books.length} books`);
+
+// Get current user
+const user = await bkper.getUser();
+console.log(`Logged in as: ${user.getName()}`);
+```
+
 
