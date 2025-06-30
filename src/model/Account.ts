@@ -175,35 +175,6 @@ export class Account {
     return this;
   }
 
-  /**
-   * Gets the balance based on credit nature of this Account.
-   * 
-   * @deprecated Use `Book.getBalancesReport` instead.
-   * 
-   * @returns The balance of this Account.
-   */
-  public getBalance(): Amount {
-    var balance = new Amount('0');
-    if (this.payload.balance != null) {
-      balance = round(this.payload.balance, this.book.getFractionDigits());
-    }
-    return balance;
-  }
-
-  /**
-   * Gets the raw balance, no matter credit nature of this Account.
-   * 
-   * @deprecated Use `Book.getBalancesReport` instead.
-   * 
-   * @returns The balance of this Account.
-   */
-  public getBalanceRaw(): Amount {
-    var balance = new Amount('0');
-    if (this.payload.balance != null) {
-      balance = round(this.payload.balance, this.book.getFractionDigits());
-    }
-    return balance;
-  }
 
   /**
    * Tells if this Account is archived.

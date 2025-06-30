@@ -858,14 +858,5 @@ export class Transaction {
     return this;
   }
 
-  /** @deprecated */
-  public async remove(): Promise<Transaction> {
-    return this.trash();
-  }
-
-  /** @deprecated */
-  public async restore(): Promise<Transaction> {
-    return this.untrash();
-  }
 
 }

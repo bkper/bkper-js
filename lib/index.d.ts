@@ -109,22 +109,6 @@ export declare class Account {
      */
     deleteProperty(key: string): Account;
     /**
-     * Gets the balance based on credit nature of this Account.
-     *
-     * @deprecated Use `Book.getBalancesReport` instead.
-     *
-     * @returns The balance of this Account.
-     */
-    getBalance(): Amount;
-    /**
-     * Gets the raw balance, no matter credit nature of this Account.
-     *
-     * @deprecated Use `Book.getBalancesReport` instead.
-     *
-     * @returns The balance of this Account.
-     */
-    getBalanceRaw(): Amount;
-    /**
      * Tells if this Account is archived.
      *
      * @returns True if the Account is archived
@@ -3321,10 +3305,6 @@ export declare class Transaction {
      * @returns This Transaction, for chaining
      */
     untrash(): Promise<Transaction>;
-    /** @deprecated */
-    remove(): Promise<Transaction>;
-    /** @deprecated */
-    restore(): Promise<Transaction>;
 }
 
 /**
