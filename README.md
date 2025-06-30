@@ -32,11 +32,14 @@ bun add bkper-js
 ```typescript
 import { Bkper } from 'bkper-js';
 
-// Create Bkper instance with configuration
-const bkper = new Bkper({
+// Set global configuration
+Bkper.setConfig({
   apiKeyProvider: () => process.env.BKPER_API_KEY,
   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
 });
+
+// Create Bkper instance (uses global config)
+const bkper = new Bkper();
 
 // Get a book and work with it
 const book = await bkper.getBook('your-book-id');

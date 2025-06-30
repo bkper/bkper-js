@@ -8,7 +8,6 @@ See what's new and what has changed in bkper-js
 **July 2025**
 * **BREAKING CHANGE:** Refactored `Bkper` class from static methods to constructor-based pattern
 * **BREAKING CHANGE:** Removed deprecated methods: `Transaction.remove()`, `Transaction.restore()`, `Account.getBalance()`, `Account.getBalanceRaw()`
-* **MIGRATION:** Replace `Bkper.setConfig(config); Bkper.getBook(id)` with `const bkper = new Bkper(config); bkper.getBook(id)`
 * **MIGRATION:** Use `transaction.trash()` and `transaction.untrash()` instead of `remove()` and `restore()`
 * **MIGRATION:** Use `Book.getBalancesReport()` instead of `Account.getBalance()` methods
 

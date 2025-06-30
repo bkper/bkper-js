@@ -156,7 +156,7 @@ export class BalancesReport {
 
 // @public
 export class Bkper {
-    constructor(config: Config);
+    constructor();
     getApps(): Promise<App[]>;
     getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
     getBook(id: string, includeAccounts?: boolean): Promise<Book>;
@@ -165,6 +165,7 @@ export class Bkper {
     getConversations(): Promise<Conversation[]>;
     getTemplates(): Promise<Template[]>;
     getUser(): Promise<User>;
+    static setConfig(config: Config): void;
 }
 
 // @public

@@ -17,18 +17,21 @@ import { Agent } from "./Agent.js";
 /**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
  * 
- * You start by setting the API [[Config]] object.
+ * You start by setting the API [[Config]] object using the static setConfig method.
  * 
  * Example:
  * 
  * ```javascript
- * Bkper.get().setConfig({
+ * Bkper.setConfig({
  *   apiKeyProvider: () => process.env.BKPER_API_KEY,
  *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
- * })
+ * });
+ * 
+ * const bkper = new Bkper();
+ * const book = await bkper.getBook('bookId');
  * ```
  * 
- * Once the config is set, you can start using the library.
+ * Once the config is set, you can create instances and start using the library.
  * 
  * @public
  */
@@ -36,14 +39,21 @@ export class Bkper {
 
 
   /**
-   * Creates a new Bkper instance with the specified API configuration.
+   * Sets the global API configuration for all Bkper operations.
    * 
-   * @param config - The Config object
+   * @param config - The Config object containing API key and OAuth token providers
    */
-  constructor(config: Config) {
+  public static setConfig(config: Config): void {
     HttpApiRequest.config = config;
   }
 
+  /**
+   * Creates a new Bkper instance using the global configuration set via setConfig().
+   * Make sure to call Bkper.setConfig() before creating instances.
+   */
+  constructor() {
+    // Uses global configuration set via setConfig()
+  }
 
   /**
    * Gets the [[Book]] with the specified bookId from url param.

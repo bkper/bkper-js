@@ -37,7 +37,7 @@ This is a TypeScript client library for the Bkper REST API with the following ke
 
 #### Main Entry Point
 - `src/index.ts` - Exports all public classes and enums
-- `Bkper` class (`src/model/Bkper.ts`) - Main constructor-based entry point with config and resource access methods
+- `Bkper` class (`src/model/Bkper.ts`) - Main entry point with static configuration and instance-based resource access methods
 
 #### Model Layer (`src/model/`)
 Core business entities representing Bkper resources:
@@ -59,7 +59,8 @@ HTTP API communication layer:
 - Handles multiple date formats, decimal separators, and locale-specific formatting
 
 ### Authentication & Configuration
-- Uses `Config` object passed to `new Bkper(config)` constructor with API key and OAuth token providers
+- Uses static `Bkper.setConfig(config)` method to set global configuration with API key and OAuth token providers
+- Also supports per-instance configuration via optional constructor parameter: `new Bkper(config)`
 - Supports both API key and OAuth2 authentication
 - Default API base URL: `https://app.bkper.com/_ah/api/bkper`
 
@@ -77,7 +78,8 @@ HTTP API communication layer:
 ### Key Patterns
 - All model classes follow a consistent pattern with service layer delegation
 - Async/await throughout with Promise-based APIs
-- Constructor-based instantiation of main Bkper class for resource access
+- Static configuration with instance-based resource access methods
+- Flexible configuration: global via `Bkper.setConfig()` or per-instance via constructor
 - Fluent/chainable API design for method chaining
 - Comprehensive error handling with structured HTTP error responses
 
