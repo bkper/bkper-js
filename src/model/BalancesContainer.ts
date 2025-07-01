@@ -1,5 +1,7 @@
 import { Account } from "./Account.js";
 import { Amount } from "./Amount.js";
+import { Balance } from "./Balance.js";
+import { BalancesDataTableBuilder } from "./BalancesDataTableBuilder.js";
 import { BalancesReport } from "./BalancesReport.js";
 import { Group } from "./Group.js";
 
@@ -24,14 +26,14 @@ export interface BalancesContainer {
      *
      * @returns The [[Account]] or [[Group]] name
      */
-    getName: () => string | undefined;
+    getName: () => string;
 
     /**
      * Gets the [[Account]] or [[Group]] name without spaces or special characters.
      *
      * @returns The [[Account]] or [[Group]] name without spaces or special characters
      */
-    getNormalizedName: () => string | undefined;
+    getNormalizedName: () => string;
 
     /**
      * Gets the [[Group]] associated with this container.
@@ -53,6 +55,13 @@ export interface BalancesContainer {
      * @returns The parent BalanceContainer
      */
     getParent: () => BalancesContainer | null;
+
+    /**
+     * Gets all [[Balances]] of the container
+     *
+     * @returns All [[Balances]] of the container
+     */
+    getBalances: () => Balance[];    
 
     /**
      * Gets the depth in the parent chain up to the root.
@@ -83,7 +92,7 @@ export interface BalancesContainer {
      *
      * @returns True if its a permanent Account
      */
-    isPermanent: () => boolean | undefined;
+    isPermanent: () => boolean;
 
     /**
      * Gets whether this balance container is from an [[Account]].
@@ -121,6 +130,16 @@ export interface BalancesContainer {
     getCumulativeBalanceRaw: () => Amount;
 
     /**
+     * The cumulative credit to the date.
+     */
+    getCumulativeCredit(): Amount;
+
+    /**
+     * The cumulative debit to the date.
+     */
+    getCumulativeDebit(): Amount;    
+
+    /**
      * Gets the cumulative balance formatted according to [[Book]] decimal format and fraction digits.
      *
      * @returns The cumulative balance formatted according to [[Book]] decimal format and fraction digits
@@ -133,6 +152,16 @@ export interface BalancesContainer {
      * @returns The cumulative raw balance formatted according to [[Book]] decimal format and fraction digits
      */
     getCumulativeBalanceRawText: () => string;
+
+    /**
+     * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
+     */
+    getCumulativeCreditText(): string;
+
+    /**
+     * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
+     */
+    getCumulativeDebitText(): string;    
 
     /**
      * Gets the balance on the date period.
@@ -149,6 +178,16 @@ export interface BalancesContainer {
     getPeriodBalanceRaw: () => Amount;
 
     /**
+     * The credit on the date period.
+     */
+    getPeriodCredit(): Amount;
+
+    /**
+     * The debit on the date period.
+     */
+    getPeriodDebit(): Amount;    
+
+    /**
      * Gets the balance on the date period formatted according to [[Book]] decimal format and fraction digits.
      *
      * @returns The balance on the date period formatted according to [[Book]] decimal format and fraction digits
@@ -161,6 +200,40 @@ export interface BalancesContainer {
      * @returns The raw balance on the date period formatted according to [[Book]] decimal format and fraction digits
      */
     getPeriodBalanceRawText: () => string;
+
+    /**
+     * The credit on the date period formatted according to [[Book]] decimal format and fraction digits
+     */
+    getPeriodCreditText(): string;
+
+    /**
+     * The debit on the date period formatted according to [[Book]] decimal format and fraction digits
+     */
+    getPeriodDebitText(): string;    
+
+    /**
+     * Gets the custom properties stored in this Account or Group.
+     */
+    getProperties(): { [key: string]: string };
+
+    /**
+     * 
+     * Gets the property value for given keys. First property found will be retrieved
+     * 
+     * @param keys The property key
+     */
+    getProperty(...keys: string[]): string | undefined;
+
+
+    /**
+     * Gets the custom properties keys stored in the associated [[Account]] or [[Group]].
+     */
+    getPropertyKeys(): string[];    
+
+    /**
+     * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
+     */
+    createDataTable(): BalancesDataTableBuilder;    
 
     /**
      * Gets all child [[BalancesContainers]].

@@ -232,8 +232,8 @@ export class Book {
    *
    * @returns The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    */
-  public getDatePattern(): string | undefined {
-    return this.payload.datePattern;
+  public getDatePattern(): string {
+    return this.payload.datePattern!;
   }
 
   /**

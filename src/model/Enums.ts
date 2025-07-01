@@ -129,6 +129,29 @@ export enum AccountType {
 }
 
 /**
+ * Enum that represents balance types.
+ * 
+ * @public
+ */
+export enum BalanceType {
+
+  /**
+   * Total balance
+   */
+  TOTAL = "TOTAL",
+
+  /**
+   * Period balance
+   */
+  PERIOD = "PERIOD",
+
+  /**
+   * Cumulative balance
+   */
+  CUMULATIVE = "CUMULATIVE"
+}
+
+/**
  * Enum that represents a period slice.
  * 
  * @public
@@ -231,3 +254,5 @@ export enum EventType {
   BOOK_DELETED = "BOOK_DELETED"
 
 }
+
+
