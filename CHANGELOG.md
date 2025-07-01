@@ -13,7 +13,7 @@ See what's new and what has changed in bkper-js
 * Added [Balance](/docs/bkper-js/#balance) class back for improved balance reporting
 * Added [BalancesDataTableBuilder](/docs/bkper-js/#balancesdatatablebuilder) for building balance data tables
 * Added [BalanceType](/docs/bkper-js/#balancetype) enum with TOTAL, PERIOD, and CUMULATIVE options
-* Updated `Book.getDatePattern()` to return default pattern 'dd/MM/yyyy' when not set
+
 
 **June 2025**   
 * Added [Book.copy](/docs/bkper-js/#book_copy)

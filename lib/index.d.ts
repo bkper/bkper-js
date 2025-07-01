@@ -624,6 +624,87 @@ export declare class App {
 }
 
 /**
+ * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year).
+ *
+ * @public
+ */
+declare class Balance {
+    json: bkper.Balance;
+    private container;
+    constructor(container: BalancesContainer, balancePlain: bkper.Balance);
+    /**
+     * The day of the balance. Days starts on 1 to 31.
+     *
+     * Day can be 0 (zero) in case of Monthly or Early [[Periodicity]] of the [[BalancesReport]]
+     */
+    getDay(): number;
+    /**
+     * The month of the balance. Months starts on 1 (January) to 12 (December)
+     *
+     * Month can be 0 (zero) in case of Early [[Periodicity]] of the [[BalancesReport]]
+     */
+    getMonth(): number;
+    /**
+     * The year of the balance
+     */
+    getYear(): number;
+    /**
+     * Date object constructed based on [[Book]] time zone offset. Usefull for
+     *
+     * If Month or Day is zero, the date will be constructed with first Month (January) or Day (1).
+     */
+    getDate(): Date;
+    /**
+     * The Fuzzy Date of the balance, based on [[Periodicity]] of the [[BalancesReport]] query, composed by Year, Month and Day.
+     *
+     * The format is **YYYYMMDD**. Very usefull for ordering and indexing
+     *
+     * Month and Day can be 0 (zero), depending on the granularity of the [[Periodicity]].
+     *
+     * *Example:*
+     *
+     * **20180125** - 25, January, 2018 - DAILY Periodicity
+     *
+     * **20180100** - January, 2018 - MONTHLY Periodicity
+     *
+     * **20180000** - 2018 - YEARLY Periodicity
+     */
+    getFuzzyDate(): number;
+    /**
+     * The cumulative balance to the date, based on the credit nature of the container
+     */
+    getCumulativeBalance(): Amount;
+    /**
+     * The raw cumulative balance to the date.
+     */
+    getCumulativeBalanceRaw(): Amount;
+    /**
+     * The cumulative credit to the date.
+     */
+    getCumulativeCredit(): Amount;
+    /**
+     * The cumulative debit to the date.
+     */
+    getCumulativeDebit(): Amount;
+    /**
+     * The balance on the date period, based on credit nature of the container.
+     */
+    getPeriodBalance(): Amount;
+    /**
+     * The raw balance on the date period.
+     */
+    getPeriodBalanceRaw(): Amount;
+    /**
+     * The credit on the date period.
+     */
+    getPeriodCredit(): Amount;
+    /**
+     * The debit on the date period.
+     */
+    getPeriodDebit(): Amount;
+}
+
+/**
  * The container of balances of an [[Account]] or [[Group]]
  *
  * The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
@@ -642,13 +723,13 @@ export declare interface BalancesContainer {
      *
      * @returns The [[Account]] or [[Group]] name
      */
-    getName: () => string | undefined;
+    getName: () => string;
     /**
      * Gets the [[Account]] or [[Group]] name without spaces or special characters.
      *
      * @returns The [[Account]] or [[Group]] name without spaces or special characters
      */
-    getNormalizedName: () => string | undefined;
+    getNormalizedName: () => string;
     /**
      * Gets the [[Group]] associated with this container.
      *
@@ -667,6 +748,12 @@ export declare interface BalancesContainer {
      * @returns The parent BalanceContainer
      */
     getParent: () => BalancesContainer | null;
+    /**
+     * Gets all [[Balances]] of the container
+     *
+     * @returns All [[Balances]] of the container
+     */
+    getBalances: () => Balance[];
     /**
      * Gets the depth in the parent chain up to the root.
      *
@@ -694,7 +781,7 @@ export declare interface BalancesContainer {
      *
      * @returns True if its a permanent Account
      */
-    isPermanent: () => boolean | undefined;
+    isPermanent: () => boolean;
     /**
      * Gets whether this balance container is from an [[Account]].
      *
@@ -726,6 +813,14 @@ export declare interface BalancesContainer {
      */
     getCumulativeBalanceRaw: () => Amount;
     /**
+     * The cumulative credit to the date.
+     */
+    getCumulativeCredit(): Amount;
+    /**
+     * The cumulative debit to the date.
+     */
+    getCumulativeDebit(): Amount;
+    /**
      * Gets the cumulative balance formatted according to [[Book]] decimal format and fraction digits.
      *
      * @returns The cumulative balance formatted according to [[Book]] decimal format and fraction digits
@@ -737,6 +832,14 @@ export declare interface BalancesContainer {
      * @returns The cumulative raw balance formatted according to [[Book]] decimal format and fraction digits
      */
     getCumulativeBalanceRawText: () => string;
+    /**
+     * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
+     */
+    getCumulativeCreditText(): string;
+    /**
+     * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
+     */
+    getCumulativeDebitText(): string;
     /**
      * Gets the balance on the date period.
      *
@@ -750,6 +853,14 @@ export declare interface BalancesContainer {
      */
     getPeriodBalanceRaw: () => Amount;
     /**
+     * The credit on the date period.
+     */
+    getPeriodCredit(): Amount;
+    /**
+     * The debit on the date period.
+     */
+    getPeriodDebit(): Amount;
+    /**
      * Gets the balance on the date period formatted according to [[Book]] decimal format and fraction digits.
      *
      * @returns The balance on the date period formatted according to [[Book]] decimal format and fraction digits
@@ -761,6 +872,35 @@ export declare interface BalancesContainer {
      * @returns The raw balance on the date period formatted according to [[Book]] decimal format and fraction digits
      */
     getPeriodBalanceRawText: () => string;
+    /**
+     * The credit on the date period formatted according to [[Book]] decimal format and fraction digits
+     */
+    getPeriodCreditText(): string;
+    /**
+     * The debit on the date period formatted according to [[Book]] decimal format and fraction digits
+     */
+    getPeriodDebitText(): string;
+    /**
+     * Gets the custom properties stored in this Account or Group.
+     */
+    getProperties(): {
+        [key: string]: string;
+    };
+    /**
+     *
+     * Gets the property value for given keys. First property found will be retrieved
+     *
+     * @param keys The property key
+     */
+    getProperty(...keys: string[]): string | undefined;
+    /**
+     * Gets the custom properties keys stored in the associated [[Account]] or [[Group]].
+     */
+    getPropertyKeys(): string[];
+    /**
+     * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
+     */
+    createDataTable(): BalancesDataTableBuilder;
     /**
      * Gets all child [[BalancesContainers]].
      *
@@ -777,6 +917,171 @@ export declare interface BalancesContainer {
      * @returns The retrieved [[BalancesContainer]]
      */
     getBalancesContainer: (name: string) => BalancesContainer;
+}
+
+/**
+ * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
+ *
+ * @public
+ */
+declare class BalancesDataTableBuilder implements BalancesDataTableBuilder {
+    private balanceType;
+    private balancesContainers;
+    private periodicity;
+    private shouldFormatDate;
+    private shouldHideDates;
+    private shouldHideNames;
+    private shouldFormatValue;
+    private book;
+    private shouldTranspose;
+    private shouldTrial;
+    private shouldPeriod;
+    private shouldRaw;
+    private shouldAddProperties;
+    private maxDepth;
+    private expandAllAccounts;
+    private expandAllGroups;
+    private skipRoot;
+    constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity);
+    private getBalance;
+    private getRepresentativeBalance;
+    private getBalanceText;
+    /**
+     * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
+     *
+     * @returns This builder with respective formatting option, for chaining.
+     */
+    formatDates(format: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether the value should be formatted based on decimal separator of the [[Book]].
+     *
+     * @returns This builder with respective formatting option, for chaining.
+     */
+    formatValues(format: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether Groups should expand its child accounts. true to expand itself, -1 to expand all subgroups. -2 to expand all accounts.
+     *
+     *
+     * @returns This builder with respective expanded option, for chaining.
+     */
+    expanded(expanded: boolean | number): BalancesDataTableBuilder;
+    /**
+     * Fluent method to set the [[BalanceType]] for the builder.
+     *
+     * @param type The type of balance for this data table
+     *
+     * For **TOTAL** [[BalanceType]], the table format looks like:
+     *
+     * ```
+     *   _____________________
+     *  | Expenses  | -4568.23 |
+     *  | Income    |  5678.93 |
+     *  |    ...    |    ...   |
+     *  |___________|__________|
+     *
+     * ```
+     * Two columns, and each [[Account]] or [[Group]] per line.
+     *
+     * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
+     *
+     * ```
+     *  _____________________________________________
+     *  |            |  Expenses | Income  |    ...   |
+     *  | 15/01/2014 | -2345.23  | 3452.93 |    ...   |
+     *  | 15/02/2014 | -2345.93  | 3456.46 |    ...   |
+     *  | 15/03/2014 | -2456.45  | 3567.87 |    ...   |
+     *  |    ...     |    ...    |   ...   |    ...   |
+     *  |____________|___________|_________|__________|
+     *
+     * ```
+     *
+     * First column will be the Date column, and one column for each [[Account]] or [[Group]].
+     *
+     * @returns This builder with respective balance type, for chaining.
+     */
+    type(type: BalanceType): BalancesDataTableBuilder;
+    /**
+     * Defines whether should rows and columns should be transposed.
+     *
+     * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
+     *
+     * ```
+     *   _____________________________
+     *  |  Expenses | Income  |  ...  |
+     *  | -4568.23  | 5678.93 |  ...  |
+     *  |___________|_________|_______|
+     *
+     * ```
+     * Two rows, and each [[Account]] or [[Group]] per column.
+     *
+     *
+     * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
+     *
+     * ```
+     *   _______________________________________________________________
+     *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
+     *  |  Expenses  | -2345.23   | -2345.93   | -2456.45   |    ...    |
+     *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
+     *  |     ...    |     ...    |     ...    |     ...    |    ...    |
+     *  |____________|____________|____________|____________|___________|
+     *
+     * ```
+     *
+     * First column will be each [[Account]] or [[Group]], and one column for each Date.
+     *
+     * @returns This builder with respective transposed option, for chaining.
+     */
+    transposed(transposed: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]].
+     *
+     * @returns This builder with respective hide dates option, for chaining.
+     */
+    hideDates(hide: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether the [[Accounts]] and [[Groups]] names should be hidden.
+     *
+     * @returns This builder with respective hide names option, for chaining.
+     */
+    hideNames(hide: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether include custom [[Accounts]] and [[Groups]] properties.
+     *
+     * @returns This builder with respective include properties option, for chaining.
+     */
+    properties(include: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
+     *
+     * @returns This builder with respective trial option, for chaining.
+     */
+    trial(trial: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether should force use of period balances for **TOTAL** [[BalanceType]].
+     *
+     * @returns This builder with respective trial option, for chaining.
+     */
+    period(period: boolean): BalancesDataTableBuilder;
+    /**
+     * Defines whether should show raw balances, no matter the credit nature of the Account or Group.
+     *
+     * @returns This builder with respective trial option, for chaining.
+     */
+    raw(raw: boolean): BalancesDataTableBuilder;
+    /**
+     *
+     * Builds an two-dimensional array with the balances.
+     *
+     */
+    build(): any[][];
+    private addPropertyKeys;
+    private flattenContainers;
+    private flattenAllAccounts;
+    private sortContainersFunction;
+    private flattenMaxDepth;
+    private flattenAllGroups;
+    private buildTotalDataTable_;
+    private buildTimeDataTable_;
 }
 
 /**
@@ -820,6 +1125,26 @@ export declare class BalancesReport {
 
 
 
+}
+
+/**
+ * Enum that represents balance types.
+ *
+ * @public
+ */
+declare enum BalanceType {
+    /**
+     * Total balance
+     */
+    TOTAL = "TOTAL",
+    /**
+     * Period balance
+     */
+    PERIOD = "PERIOD",
+    /**
+     * Cumulative balance
+     */
+    CUMULATIVE = "CUMULATIVE"
 }
 
 /**
@@ -1039,7 +1364,7 @@ export declare class Book {
      *
      * @returns The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
      */
-    getDatePattern(): string | undefined;
+    getDatePattern(): string;
     /**
      * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
      *

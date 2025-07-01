@@ -119,7 +119,11 @@ export class App {
 
 // @public
 export interface BalancesContainer {
+    // Warning: (ae-forgotten-export) The symbol "BalancesDataTableBuilder" needs to be exported by the entry point index.d.ts
+    createDataTable(): BalancesDataTableBuilder;
     getAccount: () => Promise<Account | null>;
+    // Warning: (ae-forgotten-export) The symbol "Balance" needs to be exported by the entry point index.d.ts
+    getBalances: () => Balance[];
     getBalancesContainer: (name: string) => BalancesContainer;
     getBalancesContainers: () => BalancesContainer[];
     getBalancesReport: () => BalancesReport;
@@ -127,20 +131,33 @@ export interface BalancesContainer {
     getCumulativeBalanceRaw: () => Amount;
     getCumulativeBalanceRawText: () => string;
     getCumulativeBalanceText: () => string;
+    getCumulativeCredit(): Amount;
+    getCumulativeCreditText(): string;
+    getCumulativeDebit(): Amount;
+    getCumulativeDebitText(): string;
     getDepth: () => number;
     getGroup: () => Promise<Group | null>;
-    getName: () => string | undefined;
-    getNormalizedName: () => string | undefined;
+    getName: () => string;
+    getNormalizedName: () => string;
     getParent: () => BalancesContainer | null;
     getPeriodBalance: () => Amount;
     getPeriodBalanceRaw: () => Amount;
     getPeriodBalanceRawText: () => string;
     getPeriodBalanceText: () => string;
+    getPeriodCredit(): Amount;
+    getPeriodCreditText(): string;
+    getPeriodDebit(): Amount;
+    getPeriodDebitText(): string;
+    getProperties(): {
+        [key: string]: string;
+    };
+    getProperty(...keys: string[]): string | undefined;
+    getPropertyKeys(): string[];
     hasGroupBalances: () => boolean;
     isCredit: () => boolean | undefined;
     isFromAccount: () => boolean;
     isFromGroup: () => boolean;
-    isPermanent: () => boolean | undefined;
+    isPermanent: () => boolean;
 }
 
 // @public
@@ -196,7 +213,7 @@ export class Book {
     getBalancesReport(query: string): Promise<BalancesReport>;
     getClosingDate(): string | undefined;
     getCollection(): Collection | undefined;
-    getDatePattern(): string | undefined;
+    getDatePattern(): string;
     getDecimalPlaces(): number | undefined;
     getDecimalSeparator(): DecimalSeparator;
     getFile(id: string): Promise<File>;
