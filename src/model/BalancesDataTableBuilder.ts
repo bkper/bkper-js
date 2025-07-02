@@ -1,7 +1,7 @@
-import { Amount } from "./Amount";
-import { BalancesContainer } from "./BalancesContainer";
-import { Book } from "./Book";
-import { BalanceType, Periodicity } from "./Enums";
+import { Amount } from "./Amount.js";
+import { BalancesContainer } from "./BalancesContainer.js";
+import { Book } from "./Book.js";
+import { BalanceType, Periodicity } from "./Enums.js";
 import * as Utils from '../utils.js';
 
 type IndexEntry = {

@@ -1,6 +1,6 @@
-import { BalancesContainer } from "./BalancesContainer";
+import { BalancesContainer } from "./BalancesContainer.js";
 import * as Utils from '../utils.js';
-import { Amount } from "./Amount";
+import { Amount } from "./Amount.js";
 
 /**
  * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year). 
