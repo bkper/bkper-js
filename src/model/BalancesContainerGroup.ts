@@ -10,15 +10,14 @@ import { BalancesDataTableBuilder } from "./BalancesDataTableBuilder.js";
 
 /** @internal */
 export class GroupBalancesContainer implements BalancesContainer {
+  
+    public payload: bkper.GroupBalances;
 
     /** @internal */
     private parent: BalancesContainer | null;
 
     /** @internal */
     private balancesReport: BalancesReport;
-
-    /** @internal */
-    private payload: bkper.GroupBalances;
 
     /** @internal */
     private depth?: number;

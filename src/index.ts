@@ -10,6 +10,8 @@ export { Account } from './model/Account.js';
 export { Agent } from './model/Agent.js';
 export { Amount } from "./model/Amount.js";
 export { App } from './model/App.js';
+export { Balance } from './model/Balance.js';
+export { BalancesDataTableBuilder } from './model/BalancesDataTableBuilder.js';
 export { BalancesContainer } from './model/BalancesContainer.js';
 export { BalancesReport } from './model/BalancesReport.js';
 export { Bkper } from './model/Bkper.js';
@@ -36,6 +38,7 @@ export {
   Permission,
   Visibility,
   AccountType,
+  BalanceType,
   Period,
   Month,
   EventType,

@@ -10,18 +10,18 @@ import { Group } from "./Group.js";
 /** @internal */
 export class AccountBalancesContainer implements BalancesContainer {
 
+    public payload: bkper.AccountBalances;
+
     /** @internal */
     private parent: BalancesContainer | null;
 
     /** @internal */
     private balancesReport: BalancesReport;
-
-    /** @internal */
-    private payload: bkper.AccountBalances;
-
+    
     /** @internal */
     private depth?: number;
 
+    
     constructor(parent: BalancesContainer | null, balancesReport: BalancesReport, payload: bkper.AccountBalances) {
         this.parent = parent;
         this.balancesReport = balancesReport;

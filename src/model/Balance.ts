@@ -9,12 +9,12 @@ import { Amount } from "./Amount.js";
  */
 export class Balance {
 
-  json: bkper.Balance;
+  payload: bkper.Balance;
   private container: BalancesContainer;
 
   constructor(container: BalancesContainer, balancePlain: bkper.Balance) {
     this.container = container;
-    this.json = balancePlain;
+    this.payload = balancePlain;
   }
 
   /**
@@ -23,7 +23,7 @@ export class Balance {
    * Day can be 0 (zero) in case of Monthly or Early [[Periodicity]] of the [[BalancesReport]]
    */
   public getDay(): number {
-    return this.json.day!;
+    return this.payload.day!;
   }
 
   /**
@@ -32,20 +32,20 @@ export class Balance {
    * Month can be 0 (zero) in case of Early [[Periodicity]] of the [[BalancesReport]]
    */
   public getMonth(): number {
-    return this.json.month!;
+    return this.payload.month!;
   }
 
   /**
    * The year of the balance
    */
   public getYear(): number {
-    return this.json.year!;
+    return this.payload.year!;
   }
 
   /**
    * Date object constructed based on [[Book]] time zone offset. Usefull for 
    * 
-   * If Month or Day is zero, the date will be constructed with first Month (January) or Day (1).
+   * If Month or Day is zero, the date will be constructed with first Month (January) or Day (1) of the next period.
    */
   public getDate(): Date {
     var year = this.getYear();
@@ -78,7 +78,7 @@ export class Balance {
    * **20180000** - 2018 - YEARLY Periodicity
    */
   public getFuzzyDate(): number {
-    return this.json.fuzzyDate!;
+    return this.payload.fuzzyDate!;
   }
 
   /**
@@ -92,21 +92,21 @@ export class Balance {
    * The raw cumulative balance to the date.
    */
   public getCumulativeBalanceRaw(): Amount {
-    return new Amount(this.json.cumulativeBalance!);
+    return new Amount(this.payload.cumulativeBalance!);
   }
 
   /**
    * The cumulative credit to the date.
    */
   public getCumulativeCredit(): Amount {
-    return new Amount(this.json.cumulativeCredit!);
+    return new Amount(this.payload.cumulativeCredit!);
   }
 
   /**
    * The cumulative debit to the date.
    */
   public getCumulativeDebit(): Amount {
-    return new Amount(this.json.cumulativeDebit!);
+    return new Amount(this.payload.cumulativeDebit!);
   }
 
   /**
@@ -120,21 +120,21 @@ export class Balance {
    * The raw balance on the date period.
    */
   public getPeriodBalanceRaw(): Amount {
-    return new Amount(this.json.periodBalance!);
+    return new Amount(this.payload.periodBalance!);
   }
 
   /**
    * The credit on the date period.
    */
   public getPeriodCredit(): Amount {
-    return new Amount(this.json.periodCredit!);
+    return new Amount(this.payload.periodCredit!);
   }
 
   /**
    * The debit on the date period.
    */
   public getPeriodDebit(): Amount {
-    return new Amount(this.json.periodDebit!);
+    return new Amount(this.payload.periodDebit!);
   }
 
 }

@@ -72,7 +72,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
 
   /**
-   * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
+   * Defines whether the dates should be ISO formatted YYYY-MM-DD. E.g. 2025-01-01
    *
    * @returns This builder with respective formatting option, for chaining.
    */
@@ -350,8 +350,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         if (depth <= this.maxDepth) {
             
             if (!this.skipRoot && !this.shouldTranspose) {
-                //@ts-ignore
-                container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+                container.payload.name = Utils.repeatString(" ", depth * 4) + container.payload.name;
             }
             if (!this.skipRoot || depth != 0) {
                 containersFlat.push(container);
@@ -373,8 +372,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         if (container.isFromGroup()) {
             if (!this.shouldTranspose) {
               let depth = container.getDepth();
-              //@ts-ignore
-              container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+              container.payload.name = Utils.repeatString(" ", depth * 4) + container.payload.name;
             }
             containersFlat.push(container);
             if (this.shouldAddProperties) {
@@ -624,7 +622,6 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           row[0] = Utils.formatDate(row[0], pattern, this.book.getTimeZone());
         }
       }
-
     }
 
     if (this.shouldAddProperties) {

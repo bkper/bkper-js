@@ -14,6 +14,9 @@ import { Group } from "./Group.js";
  */
 export interface BalancesContainer {
 
+
+  payload: bkper.AccountBalances | bkper.GroupBalances;
+
     /**
      * Gets the parent [[BalancesReport]] of the container.
      *

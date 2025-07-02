@@ -14,6 +14,16 @@ export function base64Decode(data: string): Buffer {
   return Buffer.from(data, 'base64');
 }
 
+export function repeatString(text: string, times: number): string {
+  if (times <= 0) {
+    return "";
+  }
+  if (times === 1) {
+    return text;
+  }
+  return text + repeatString(text, times - 1);;
+}
+
 
 //SAME AS bkper-app
 
