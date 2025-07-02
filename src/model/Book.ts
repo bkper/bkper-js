@@ -239,6 +239,8 @@ export class Book {
   /**
    * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    * 
+   * @param datePattern - The date pattern to set
+   * 
    * @returns This Book, for chaining
    */
   public setDatePattern(datePattern: string): Book {
@@ -257,6 +259,8 @@ export class Book {
 
   /**
    * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+   * 
+   * @param lockDate - The lock date to set in ISO format yyyy-MM-dd
    * 
    * @returns This Book, for chaining
    */
@@ -280,6 +284,8 @@ export class Book {
   /**
    * Sets the closing date of the Book in ISO format yyyy-MM-dd.
    * 
+   * @param closingDate - The closing date to set in ISO format yyyy-MM-dd
+   * 
    * @returns This Book, for chaining
    */
   public setClosingDate(closingDate: string | null): Book {
@@ -302,6 +308,8 @@ export class Book {
   /**
    * Sets the decimal separator of the Book
    * 
+   * @param decimalSeparator - The decimal separator to set
+   * 
    * @returns This Book, for chaining
    */
   public setDecimalSeparator(decimalSeparator: DecimalSeparator): Book {
@@ -320,6 +328,8 @@ export class Book {
 
   /**
    * Sets the time zone of the Book.
+   * 
+   * @param timeZone - The time zone to set
    * 
    * @returns This Book, for chaining
    */
@@ -348,6 +358,8 @@ export class Book {
 
   /**
    * Sets the auto post status of the Book.
+   * 
+   * @param autoPost - The auto post status to set
    * 
    * @returns This Book, for chaining
    */

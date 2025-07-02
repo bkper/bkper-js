@@ -220,7 +220,7 @@ export interface BalancesContainer {
      * 
      * Gets the property value for given keys. First property found will be retrieved
      * 
-     * @param keys The property key
+     * @param keys - The property key
      */
     getProperty(...keys: string[]): string | undefined;
 

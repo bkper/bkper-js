@@ -72,6 +72,8 @@ export class Group {
   /**
    * Sets the name of the Group.
    * 
+   * @param name - The name to set
+   * 
    * @returns This Group, for chaining
    */
   public setName(name: string): Group {
