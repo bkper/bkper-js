@@ -132,17 +132,16 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
    * 
    * ```
-   *  _____________________________________________
-   *  |            |  Expenses | Income  |    ...   |
-   *  | 15/01/2014 | -2345.23  | 3452.93 |    ...   |
-   *  | 15/02/2014 | -2345.93  | 3456.46 |    ...   |
-   *  | 15/03/2014 | -2456.45  | 3567.87 |    ...   |
-   *  |    ...     |    ...    |   ...   |    ...   |
-   *  |____________|___________|_________|__________|
+   *  _______________________________________________________________
+   *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
+   *  |  Expenses  | -2345.23   | -2345.93   | -2456.45   |    ...    |
+   *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
+   *  |     ...    |     ...    |     ...    |     ...    |    ...    |
+   *  |____________|____________|____________|____________|___________|
    * 
    * ```
    * 
-   * First column will be the Date column, and one column for each [[Account]] or [[Group]].
+   * First column will be the [[Account]] or [[Group]] name, and one column for each Date.
    * 
    * @returns This builder with respective balance type, for chaining.
    */
@@ -170,15 +169,16 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * 
    * ```
    *   _______________________________________________________________
-   *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
-   *  |  Expenses  | -2345.23   | -2345.93   | -2456.45   |    ...    |
-   *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
+   *  |            | Expenses   | Income     |     ...    |    ...    |
+   *  | 15/01/2014 | -2345.23   |  3452.93   |     ...    |    ...    |
+   *  | 15/02/2014 | -2345.93   |  3456.46   |     ...    |    ...    |
+   *  | 15/03/2014 | -2456.45   |  3567.87   |     ...    |    ...    |
    *  |     ...    |     ...    |     ...    |     ...    |    ...    |
    *  |____________|____________|____________|____________|___________|
    * 
    * ```
    * 
-   * First column will be each [[Account]] or [[Group]], and one column for each Date.
+   * First column will be each Date, and one column for each [[Account]] or [[Group]].
    * 
    * @returns This builder with respective transposed option, for chaining.
    */
@@ -407,6 +407,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     let propertyKeys: string[] = [];
 
     let containers = new Array<BalancesContainer>();
+    
     this.flattenContainers(containers, propertyKeys)
 
     if (this.shouldAddProperties) {
@@ -511,6 +512,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     var header = new Array();
     header.push("");
 
+
     if (this.balancesContainers == null) {
       return table;
     }
@@ -518,6 +520,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     let containers = new Array<BalancesContainer>();
 
     this.flattenContainers(containers, propertyKeys);
+
 
     for (const container of containers) {
       header.push(container.getName());
@@ -614,12 +617,12 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     }
 
     if (this.shouldFormatDate && table.length > 0) {
-      var pattern = Utils.getDateFormatterPattern(this.book.getDatePattern(), this.periodicity);
+      // var pattern = Utils.getDateFormatterPattern(this.book.getDatePattern(), this.periodicity);
       for (var j = 1; j < table.length; j++) {
         var row = table[j];
         if (row.length > 0) {
           //first column
-          row[0] = Utils.formatDate(row[0], pattern, this.book.getTimeZone());
+          row[0] = Utils.formatDateISO(row[0], this.book.getTimeZone());
         }
       }
     }
@@ -644,9 +647,10 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
       table = table.map(row => row.slice(1));
     }
 
-    if (this.shouldTranspose && table.length > 0) {
+    if (!this.shouldTranspose && table.length > 0) {
       table = table[0].map((col: any, i: number) => table.map(row => row[i]));
     }
+
 
     return table;
   }
