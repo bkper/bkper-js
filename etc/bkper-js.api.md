@@ -118,11 +118,29 @@ export class App {
 }
 
 // @public
+export class Balance {
+    constructor(container: BalancesContainer, balancePlain: bkper.Balance);
+    getCumulativeBalance(): Amount;
+    getCumulativeBalanceRaw(): Amount;
+    getCumulativeCredit(): Amount;
+    getCumulativeDebit(): Amount;
+    getDate(): Date;
+    getDay(): number;
+    getFuzzyDate(): number;
+    getMonth(): number;
+    getPeriodBalance(): Amount;
+    getPeriodBalanceRaw(): Amount;
+    getPeriodCredit(): Amount;
+    getPeriodDebit(): Amount;
+    getYear(): number;
+    // (undocumented)
+    payload: bkper.Balance;
+}
+
+// @public
 export interface BalancesContainer {
-    // Warning: (ae-forgotten-export) The symbol "BalancesDataTableBuilder" needs to be exported by the entry point index.d.ts
     createDataTable(): BalancesDataTableBuilder;
     getAccount: () => Promise<Account | null>;
-    // Warning: (ae-forgotten-export) The symbol "Balance" needs to be exported by the entry point index.d.ts
     getBalances: () => Balance[];
     getBalancesContainer: (name: string) => BalancesContainer;
     getBalancesContainers: () => BalancesContainer[];
@@ -158,17 +176,44 @@ export interface BalancesContainer {
     isFromAccount: () => boolean;
     isFromGroup: () => boolean;
     isPermanent: () => boolean;
+    // (undocumented)
+    payload: bkper.AccountBalances | bkper.GroupBalances;
+}
+
+// @public
+export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
+    constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity);
+    build(): any[][];
+    expanded(expanded: boolean | number): BalancesDataTableBuilder;
+    formatDates(format: boolean): BalancesDataTableBuilder;
+    formatValues(format: boolean): BalancesDataTableBuilder;
+    hideDates(hide: boolean): BalancesDataTableBuilder;
+    hideNames(hide: boolean): BalancesDataTableBuilder;
+    period(period: boolean): BalancesDataTableBuilder;
+    properties(include: boolean): BalancesDataTableBuilder;
+    raw(raw: boolean): BalancesDataTableBuilder;
+    transposed(transposed: boolean): BalancesDataTableBuilder;
+    trial(trial: boolean): BalancesDataTableBuilder;
+    type(type: BalanceType): BalancesDataTableBuilder;
 }
 
 // @public
 export class BalancesReport {
     constructor(book: Book, payload: bkper.Balances);
+    createDataTable(): BalancesDataTableBuilder;
     getBalancesContainer(name: string): BalancesContainer;
     getBalancesContainers(): BalancesContainer[];
     getBook(): Book;
     getPeriodicity(): Periodicity;
     // (undocumented)
     payload: bkper.Balances;
+}
+
+// @public
+export enum BalanceType {
+    CUMULATIVE = "CUMULATIVE",
+    PERIOD = "PERIOD",
+    TOTAL = "TOTAL"
 }
 
 // @public
