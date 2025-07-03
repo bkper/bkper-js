@@ -2,6 +2,7 @@ import { normalizeName } from '../utils.js';
 import { BalancesContainer } from "./BalancesContainer.js";
 import { AccountBalancesContainer } from "./BalancesContainerAccount.js";
 import { GroupBalancesContainer } from "./BalancesContainerGroup.js";
+import { BalancesDataTableBuilder } from './BalancesDataTableBuilder.js';
 import { Book } from "./Book.js";
 import { Periodicity } from "./Enums.js";
 
@@ -41,6 +42,13 @@ export class BalancesReport {
     }
 
     /**
+     * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
+     */
+    public createDataTable(): BalancesDataTableBuilder {
+      return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity());
+    }
+
+    /**
      * Gets the [[Periodicity]] of the query used to generate the report.
      *
      * @returns The [[Periodicity]] of the query used to generate the report
@@ -57,11 +65,11 @@ export class BalancesReport {
     public getBalancesContainers(): BalancesContainer[] {
         let containers: BalancesContainer[] = [];
         const accountContainers = this.getRootAccountBalancesContainers();
-        if (accountContainers && accountContainers.length > 0) {
+        if (accountContainers != null && accountContainers.length > 0) {
             containers = containers.concat(accountContainers);
         }
         const groupContainers = this.getGroupBalancesContainers();
-        if (groupContainers && groupContainers.length > 0) {
+        if (groupContainers != null && groupContainers.length > 0) {
             containers = containers.concat(groupContainers);
         }
         return containers;
