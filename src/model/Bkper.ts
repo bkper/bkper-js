@@ -60,11 +60,18 @@ export class Bkper {
    *
    * @param id - The universal book id - The same bookId param of URL you access at app.bkper.com
    * @param includeAccounts - Optional parameter to include accounts in the retrieved Book
+   * @param includeGroups - Optional parameter to include groups in the retrieved Book
+   * 
+   * If both includeAccounts and includeGroups are false, the Book will be returned with only the basic information.
+   * 
+   * If includeAccounts is true, the Book will be returned with the accounts and groups.
+   * 
+   * If includeGroups is true, the Book will be returned with the groups.
    * 
    * @returns The retrieved Book
    */
-  public async getBook(id: string, includeAccounts?: boolean): Promise<Book> {
-    let book = await BookService.loadBook(id, includeAccounts);
+  public async getBook(id: string, includeAccounts?: boolean, includeGroups?: boolean): Promise<Book> {
+    let book = await BookService.loadBook(id, includeAccounts, includeGroups);
     return new Book(book);
   }
 

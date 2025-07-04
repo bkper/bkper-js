@@ -17,12 +17,13 @@ export async function loadBooks(query?: string): Promise<bkper.Book[]> {
   return booksJson;
 }
 
-export async function loadBook(bookId: string, loadAccounts?: boolean): Promise<bkper.Book> {
+export async function loadBook(bookId: string, loadAccounts?: boolean, loadGroups?: boolean): Promise<bkper.Book> {
   if (bookId == null) {
     throw new Error("Book id null!");
   }
   loadAccounts = loadAccounts || false;
-  let response = await new HttpBooksApiV5Request(bookId).addParam('loadAccounts', loadAccounts).fetch();
+  loadGroups = loadGroups || false;
+  let response = await new HttpBooksApiV5Request(bookId).addParam('loadAccounts', loadAccounts).addParam('loadGroups', loadGroups).fetch();
   return response.data;
 }
 

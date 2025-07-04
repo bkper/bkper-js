@@ -221,7 +221,7 @@ export class Bkper {
     constructor();
     getApps(): Promise<App[]>;
     getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
-    getBook(id: string, includeAccounts?: boolean): Promise<Book>;
+    getBook(id: string, includeAccounts?: boolean, includeGroups?: boolean): Promise<Book>;
     getBooks(query?: string): Promise<Book[]>;
     getCollections(): Promise<Collection[]>;
     getConversations(): Promise<Conversation[]>;
