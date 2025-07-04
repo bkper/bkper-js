@@ -14,6 +14,7 @@ See what's new and what has changed in bkper-js
 * Added `Balance` class back for improved balance reporting
 * Added `BalancesDataTableBuilder` for building balance data tables
 * Added `BalanceType` enum with TOTAL, PERIOD, and CUMULATIVE options
+* Added `includeGroups` parameter to `Bkper.getBook()` method for selective group loading
 
 
 **June 2025**   
