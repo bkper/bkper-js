@@ -5,6 +5,10 @@ See what's new and what has changed in bkper-js
 2025
 ----
 
+**August 2025**
+
+* Added `Transaction.setFiles`
+
 **July 2025**
 
 * **BREAKING CHANGE:** Refactored `Bkper` class from static methods to constructor-based pattern
