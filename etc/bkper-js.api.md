@@ -787,6 +787,7 @@ export class Transaction {
     setDate(date: string | Date): Transaction;
     setDebitAccount(account: Account | bkper.Account): Transaction;
     setDescription(description: string): Transaction;
+    setFiles(files: File[]): Transaction;
     setProperties(properties: {
         [key: string]: string;
     }): Transaction;

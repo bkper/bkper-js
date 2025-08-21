@@ -960,8 +960,15 @@ export declare class BalancesDataTableBuilder implements BalancesDataTableBuilde
      */
     formatValues(format: boolean): BalancesDataTableBuilder;
     /**
-     * Defines whether Groups should expand its child accounts. true to expand itself, -1 to expand all subgroups. -2 to expand all accounts.
+     * Defines whether Groups should expand its child accounts.
      *
+     * true to expand itself
+     * -1 to expand all subgroups
+     * -2 to expand all accounts
+     * 0 to expand nothing
+     * 1 to expand itself and its first level of children
+     * 2 to expand itself and its first two levels of children
+     * etc.
      *
      * @returns This builder with respective expanded option, for chaining.
      */
@@ -3346,6 +3353,14 @@ export declare class Transaction {
      * @returns The files attached to the transaction
      */
     getFiles(): File[];
+    /**
+     * Sets the files attached to the Transaction.
+     *
+     * @param files - The files to set
+     *
+     * @returns This Transaction, for chaining
+     */
+    setFiles(files: File[]): Transaction;
     /**
      * Adds a file attachment to the Transaction.
      *

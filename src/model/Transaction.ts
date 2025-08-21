@@ -235,6 +235,19 @@ export class Transaction {
   }
 
   /**
+   * Sets the files attached to the Transaction.
+   * 
+   * @param files - The files to set
+   * 
+   * @returns This Transaction, for chaining
+   */
+  public setFiles(files: File[]): Transaction {
+    const filePayloads = files.map(file => file.payload);
+    this.payload.files = [...filePayloads];
+    return this;
+  }
+
+  /**
    * Adds a file attachment to the Transaction.
    * 
    * Files MUST be previously created in the Book.
@@ -318,19 +331,19 @@ export class Transaction {
    * 
    * @returns Array of property keys
    */  
-    public getPropertyKeys(): string[] {
-      let properties = this.getProperties();
-      let propertyKeys:string[] = []
-      if (properties) {
-        for (var key in properties) {
-          if (Object.prototype.hasOwnProperty.call(properties, key)) {
-              propertyKeys.push(key)
-          }
+  public getPropertyKeys(): string[] {
+    let properties = this.getProperties();
+    let propertyKeys:string[] = []
+    if (properties) {
+      for (var key in properties) {
+        if (Object.prototype.hasOwnProperty.call(properties, key)) {
+            propertyKeys.push(key)
         }
       }
-      propertyKeys = propertyKeys.sort();
-      return propertyKeys;
-    } 
+    }
+    propertyKeys = propertyKeys.sort();
+    return propertyKeys;
+  }
 
   /**
    * Sets a custom property in the Transaction.
