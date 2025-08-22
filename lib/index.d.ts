@@ -1760,7 +1760,7 @@ export declare class Book {
      *
      * @returns The [[File]] object
      */
-    getFile(id: string): Promise<File>;
+    getFile(id: string): Promise<File | undefined>;
     /**
      * Performs create new Book.
      *

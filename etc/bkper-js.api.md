@@ -261,7 +261,7 @@ export class Book {
     getDatePattern(): string;
     getDecimalPlaces(): number | undefined;
     getDecimalSeparator(): DecimalSeparator;
-    getFile(id: string): Promise<File>;
+    getFile(id: string): Promise<File | undefined>;
     getFractionDigits(): number | undefined;
     getGroup(idOrName?: string): Promise<Group | undefined>;
     getGroups(): Promise<Group[]>;

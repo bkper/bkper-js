@@ -1075,8 +1075,11 @@ export class Book {
    *
    * @returns The [[File]] object
    */
-  public async getFile(id: string): Promise<File> {
+  public async getFile(id: string): Promise<File | undefined> {
     let wrapped = await FileService.getFile(this.getId(), id);
+    if (!wrapped) {
+      return undefined;
+    }
     let file = new File(this, wrapped);
     return file;
   }
