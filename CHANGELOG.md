@@ -8,6 +8,11 @@ See what's new and what has changed in bkper-js
 **August 2025**
 
 * Added `Transaction.setFiles`
+* Added `File.getProperties`
+* Added `File.setProperties`
+* Added `File.getProperty`
+* Added `File.setProperty`
+* Added `File.deleteProperty`
 
 **July 2025**
 
