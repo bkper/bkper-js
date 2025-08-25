@@ -12,7 +12,7 @@ import * as FileService from '../service/file-service.js';
 export class File {
 
   public payload: bkper.File;
-  
+
   /** @internal */
   private book: Book;
 
@@ -56,11 +56,11 @@ export class File {
    * @param name - The name to set
    *
    * @returns This File, for chaining
-   */    
+   */
   public setName(name: string): File {
     this.payload.name = name;
     return this;
-  }  
+  }
 
   /**
    * Gets the File content type.
@@ -77,11 +77,11 @@ export class File {
    * @param contentType - The content type to set
    *
    * @returns This File, for chaining
-   */    
+   */
   public setContentType(contentType: string): File {
     this.payload.contentType = contentType;
     return this;
-  }    
+  }
 
   /**
    * Gets the file content Base64 encoded.
@@ -102,12 +102,12 @@ export class File {
    * @param content - The content to set (Base64 encoded)
    *
    * @returns This File, for chaining
-   */    
+   */
   public setContent(content: string): File {
     this.payload.content = content;
     return this;
-  } 
- 
+  }
+
   /**
    * Gets the file serving url for accessing via browser.
    *
@@ -121,11 +121,83 @@ export class File {
    * Gets the file size in bytes.
    *
    * @returns The file size in bytes
-   */  
+   */
   public getSize(): number | undefined {
     return this.payload.size;
   }
 
+  /**
+   * Gets the custom properties stored in this File.
+   *
+   * @returns The custom properties object
+   */
+  public getProperties(): { [key: string]: string } {
+    return this.payload.properties != null ? { ...this.payload.properties } : {};
+  }
+
+  /**
+   * Sets the custom properties of the File.
+   *
+   * @param properties - Object with key/value pair properties
+   *
+   * @returns This File, for chaining
+   */
+  public setProperties(properties: { [key: string]: string }): File {
+    this.payload.properties = { ...properties };
+    return this;
+  }
+
+  /**
+   * Gets the property value for given keys. First property found will be retrieved.
+   *
+   * @param keys - The property key
+   *
+   * @returns The property value or undefined if not found
+   */
+  public getProperty(...keys: string[]): string | undefined {
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index];
+      let value = this.payload.properties != null ? this.payload.properties[key] : null
+      if (value != null && value.trim() != '') {
+        return value;
+      }
+    }
+    return undefined;
+  }
+
+  /**
+   * Sets a custom property in the File.
+   *
+   * @param key - The property key
+   * @param value - The property value
+   *
+   * @returns This File, for chaining
+   */
+  public setProperty(key: string, value: string | null): File {
+    if (key == null || key.trim() == '') {
+      return this;
+    }
+    if (this.payload.properties == null) {
+      this.payload.properties = {};
+    }
+    if (!value) {
+      value = ''
+    }
+    this.payload.properties[key] = value;
+    return this;
+  }
+
+  /**
+   * Deletes a custom property.
+   *
+   * @param key - The property key
+   *
+   * @returns This File, for chaining
+   */
+  public deleteProperty(key: string): File {
+    this.setProperty(key, null);
+    return this;
+  }
 
   /**
    * Perform create new File.

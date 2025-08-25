@@ -523,10 +523,15 @@ export enum EventType {
 export class File {
     constructor(book: Book, payload?: bkper.File);
     create(): Promise<File>;
+    deleteProperty(key: string): File;
     getContent(): Promise<string | undefined>;
     getContentType(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
+    getProperties(): {
+        [key: string]: string;
+    };
+    getProperty(...keys: string[]): string | undefined;
     getSize(): number | undefined;
     getUrl(): string | undefined;
     json(): bkper.File;
@@ -535,6 +540,10 @@ export class File {
     setContent(content: string): File;
     setContentType(contentType: string): File;
     setName(name: string): File;
+    setProperties(properties: {
+        [key: string]: string;
+    }): File;
+    setProperty(key: string, value: string | null): File;
 }
 
 // @public

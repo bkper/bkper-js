@@ -2492,6 +2492,49 @@ export declare class File {
      */
     getSize(): number | undefined;
     /**
+     * Gets the custom properties stored in this File.
+     *
+     * @returns The custom properties object
+     */
+    getProperties(): {
+        [key: string]: string;
+    };
+    /**
+     * Sets the custom properties of the File.
+     *
+     * @param properties - Object with key/value pair properties
+     *
+     * @returns This File, for chaining
+     */
+    setProperties(properties: {
+        [key: string]: string;
+    }): File;
+    /**
+     * Gets the property value for given keys. First property found will be retrieved.
+     *
+     * @param keys - The property key
+     *
+     * @returns The property value or undefined if not found
+     */
+    getProperty(...keys: string[]): string | undefined;
+    /**
+     * Sets a custom property in the File.
+     *
+     * @param key - The property key
+     * @param value - The property value
+     *
+     * @returns This File, for chaining
+     */
+    setProperty(key: string, value: string | null): File;
+    /**
+     * Deletes a custom property.
+     *
+     * @param key - The property key
+     *
+     * @returns This File, for chaining
+     */
+    deleteProperty(key: string): File;
+    /**
      * Perform create new File.
      *
      * @returns The created File object
