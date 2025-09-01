@@ -7,9 +7,11 @@ import * as GroupService from '../service/group-service.js';
 import * as IntegrationService from '../service/integration-service.js';
 import * as TransactionService from '../service/transaction-service.js';
 import * as EventService from '../service/event-service.js';
+import * as CollaboratorService from '../service/collaborator-service.js';
 import * as Utils from '../utils.js';
 import { Account } from './Account.js';
 import { Amount } from './Amount.js';
+import { Collaborator } from './Collaborator.js';
 import { Collection } from './Collection.js';
 import { DecimalSeparator, Month, Period, Permission, Visibility } from './Enums.js';
 import { EventList } from './EventList.js';
@@ -1153,6 +1155,16 @@ export class Book {
       this.queries = queryPayloads.map(payload => new Query(this, payload));
     }
     return this.queries;
+  }
+
+  /**
+   * Gets all collaborators of this Book.
+   *
+   * @returns Array of Collaborator objects
+   */
+  public async getCollaborators(): Promise<Collaborator[]> {
+    const collaboratorPayloads = await CollaboratorService.listCollaborators(this.getId());
+    return collaboratorPayloads.map(payload => new Collaborator(this, payload));
   }
 
 }
