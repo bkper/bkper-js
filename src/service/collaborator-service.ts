@@ -2,7 +2,7 @@ import { HttpBooksApiV5Request } from './http-api-request.js';
 
 export async function listCollaborators(bookId: string): Promise<bkper.Collaborator[]> {
   const response = await new HttpBooksApiV5Request(`${bookId}/collaborators`).setMethod('GET').fetch();
-  return response.data || [];
+  return response?.data?.items || [];
 }
 
 export async function addOrUpdateCollaborator(bookId: string, collaborator: bkper.Collaborator, message?: string): Promise<bkper.Collaborator> {
