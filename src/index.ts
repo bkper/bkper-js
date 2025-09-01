@@ -16,6 +16,7 @@ export { BalancesContainer } from './model/BalancesContainer.js';
 export { BalancesReport } from './model/BalancesReport.js';
 export { Bkper } from './model/Bkper.js';
 export { Book } from './model/Book.js';
+export { Collaborator } from './model/Collaborator.js';
 export { Collection } from './model/Collection.js';
 export { Config } from './model/Config.js';
 export { Connection } from './model/Connection.js';
