@@ -34,7 +34,7 @@
     "postversion": "git push --tags && yarn publish --new-version $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\""
   },
   "peerDependencies": {
-    "@bkper/bkper-api-types": "^5.24.0"
+    "@bkper/bkper-api-types": "^5.25.0"
   },
   "dependencies": {
     "axios": "^1.7.7",
