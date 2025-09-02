@@ -257,6 +257,7 @@ export class Book {
     getAutoPost(): boolean | undefined;
     getBalancesReport(query: string): Promise<BalancesReport>;
     getClosingDate(): string | undefined;
+    getCollaborators(): Promise<Collaborator[]>;
     getCollection(): Collection | undefined;
     getDatePattern(): string;
     getDecimalPlaces(): number | undefined;
@@ -318,6 +319,7 @@ export class Book {
     }): Book;
     setProperty(key: string, value: string | null): Book;
     setTimeZone(timeZone: string): Book;
+    setVisibility(visibility: Visibility): Book;
     update(): Promise<Book>;
     updateIntegration(integration: bkper.Integration): Promise<Integration>;
 }
@@ -341,6 +343,22 @@ export enum BotResponseType {
     ERROR = "ERROR",
     INFO = "INFO",
     WARNING = "WARNING"
+}
+
+// @public
+export class Collaborator {
+    constructor(book: Book, payload?: bkper.Collaborator);
+    create(message?: string): Promise<Collaborator>;
+    getEmail(): string | undefined;
+    getId(): string | undefined;
+    getPermission(): Permission | undefined;
+    json(): bkper.Collaborator;
+    // (undocumented)
+    payload: bkper.Collaborator;
+    remove(): Promise<Collaborator>;
+    setEmail(email: string): Collaborator;
+    setPermission(permission: Permission): Collaborator;
+    update(): Promise<Collaborator>;
 }
 
 // @public

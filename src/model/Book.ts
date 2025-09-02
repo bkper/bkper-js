@@ -416,6 +416,18 @@ export class Book {
   }
 
   /**
+   * Sets the visibility of the book.
+   * 
+   * @param visibility - The visibility to set
+   * 
+   * @returns This Book, for chaining
+   */
+  public setVisibility(visibility: Visibility): Book {
+    this.payload.visibility = visibility;
+    return this;
+  }
+
+  /**
    * Gets the custom properties stored in this Book.
    *
    * @returns The custom properties object
