@@ -246,6 +246,10 @@ export class Book {
     batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]>;
     // @internal (undocumented)
     clearCache(): void;
+    // @internal (undocumented)
+    clearCollaboratorCache(): void;
+    // @internal (undocumented)
+    collaborators?: Collaborator[];
     copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book>;
     create(): Promise<Book>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;

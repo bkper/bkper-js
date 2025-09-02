@@ -46,6 +46,9 @@ export class Book {
   queries?: Query[];
 
   /** @internal */
+  collaborators?: Collaborator[];
+
+  /** @internal */
   private idGroupMap?: Map<string, Group>;
 
   /** @internal */
@@ -1006,6 +1009,11 @@ export class Book {
   }
 
   /** @internal */
+  clearCollaboratorCache(): void {
+    this.collaborators = undefined;
+  }
+
+  /** @internal */
   setAccount(account: bkper.Account, remove?: boolean): void {
     const accountPayloads = this.payload.accounts || [];
     if (remove) {
@@ -1175,8 +1183,11 @@ export class Book {
    * @returns Array of Collaborator objects
    */
   public async getCollaborators(): Promise<Collaborator[]> {
-    const collaboratorPayloads = await CollaboratorService.listCollaborators(this.getId());
-    return collaboratorPayloads.map(payload => new Collaborator(this, payload));
+    if (!this.collaborators) {
+      const collaboratorPayloads = await CollaboratorService.listCollaborators(this.getId());
+      this.collaborators = collaboratorPayloads.map(payload => new Collaborator(this, payload));
+    }
+    return this.collaborators;
   }
 
 }

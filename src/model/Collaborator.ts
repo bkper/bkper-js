@@ -88,6 +88,7 @@ export class Collaborator {
    */
   public async create(message?: string): Promise<Collaborator> {
     this.payload = await CollaboratorService.addOrUpdateCollaborator(this.book.getId(), this.payload, message);
+    this.book.clearCollaboratorCache();
     return this;
   }
 
@@ -98,6 +99,7 @@ export class Collaborator {
    */
   public async update(): Promise<Collaborator> {
     this.payload = await CollaboratorService.addOrUpdateCollaborator(this.book.getId(), this.payload);
+    this.book.clearCollaboratorCache();
     return this;
   }
 
@@ -112,6 +114,7 @@ export class Collaborator {
       throw new Error('Collaborator email is required');
     }
     this.payload = await CollaboratorService.removeCollaborator(this.book.getId(), email);
+    this.book.clearCollaboratorCache();
     return this;
   }
 
