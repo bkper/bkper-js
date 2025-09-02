@@ -37,7 +37,6 @@
     "@bkper/bkper-api-types": "^5.24.0"
   },
   "dependencies": {
-    "@google-cloud/local-auth": "^3.0.1",
     "axios": "^1.7.7",
     "big.js": "^6.0.3",
     "dayjs": "^1.10.3",

@@ -71,7 +71,7 @@ HTTP API communication layer:
 - Target: ES2015 with strict mode enabled
 
 ### Dependencies
-- **Runtime**: axios (HTTP), big.js (decimals), dayjs/luxon (dates), @google-cloud/local-auth
+- **Runtime**: axios (HTTP), big.js (decimals), dayjs/luxon (dates)
 - **Peer**: @bkper/bkper-api-types (API type definitions)
 - **Dev**: TypeScript, Mocha, Chai, API Extractor, gts
 
