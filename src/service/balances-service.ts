@@ -1,14 +1,16 @@
 import { HttpBooksApiV5Request } from "./http-api-request.js";
+import { HttpRequest } from "./http-request.js";
 
 export async function getBalances(bookId: string, query: string): Promise<bkper.Balances> {
-  var response = await new HttpBooksApiV5Request(`${bookId}/balances`).addParam('query', query).addParam('time', Date.now()).fetch();
 
-  if (response.data.balancesUrl) {
-    const fetchResponse = await fetch(response.data.balancesUrl);
-    const data = await fetchResponse.json();
-    response = { data: data, status: fetchResponse.status };
+  let response = await new HttpBooksApiV5Request(`${bookId}/balances`).addParam('query', query).addParam('time', Date.now()).fetch();
+
+  const balancesUrl = response.data?.balancesUrl; // Expected for large payloads
+  if (balancesUrl) {
+    const balancesResponse = await new HttpRequest(balancesUrl).setMethod('GET').execute();
+    response = { data: balancesResponse.data, status: balancesResponse.status };
   }
 
   return response.data;
-}
 
+}
