@@ -101,9 +101,15 @@ export class App {
     getName(): string | undefined;
     getOwnerLogoUrl(): string | undefined;
     getOwnerName(): string | undefined;
+    getOwnerWebsiteUrl(): string | undefined;
+    getReadme(): string | undefined;
+    getRepositoryUrl(): string | undefined;
+    getWebsiteUrl(): string | undefined;
     hasEvents(): boolean;
     isConversational(): boolean;
+    isInstallable(): boolean;
     isPublished(): boolean;
+    isRepositoryPrivate(): boolean | undefined;
     json(): bkper.App;
     patch(): Promise<App>;
     // (undocumented)

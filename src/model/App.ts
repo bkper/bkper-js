@@ -96,6 +96,15 @@ export class App {
   }
 
   /**
+   * Tells if this App is installable.
+   *
+   * @returns True if this App is installable
+   */
+  public isInstallable(): boolean {
+    return this.payload.installable || false;
+  }
+
+  /**
    * Checks if this App is conversational.
    *
    * @returns True if this App is conversational
@@ -144,15 +153,6 @@ export class App {
   }
 
   /**
-   * Gets the name of the owner of this App.
-   *
-   * @returns The name of the owner of this App
-   */
-  public getOwnerName(): string | undefined {
-    return this.payload.ownerName;
-  }
-
-  /**
    * Gets the menu url of this App.
    *
    * @returns The menu url of this App
@@ -198,12 +198,30 @@ export class App {
   }
 
   /**
+   * Gets the name of the owner of this App.
+   *
+   * @returns The name of the owner of this App
+   */
+  public getOwnerName(): string | undefined {
+    return this.payload.ownerName;
+  }
+
+  /**
    * Gets the logo url of the owner of this App.
    *
    * @returns The logo url of the owner of this App
    */
   public getOwnerLogoUrl(): string | undefined {
     return this.payload.ownerLogoUrl;
+  }
+
+  /**
+   * Gets the website url of the owner of this App.
+   *
+   * @returns The website url of the owner of this App
+   */
+  public getOwnerWebsiteUrl(): string | undefined {
+    return this.payload.ownerWebsite;
   }
 
   /**
@@ -240,11 +258,47 @@ export class App {
   }
 
   /**
-   * Sets the readme text.
+   * Gets the website url of this App.
+   *
+   * @returns The website url of this App
+   */
+  public getWebsiteUrl(): string | undefined {
+    return this.payload.website;
+  }
+
+  /**
+   * Tells if the repository is private.
+   *
+   * @returns True if the repository is private
+   */
+  public isRepositoryPrivate(): boolean | undefined {
+    return this.payload.repoPrivate;
+  }
+
+  /**
+   * Gets the repository url of this App.
+   *
+   * @returns The repository url of this App
+   */
+  public getRepositoryUrl(): string | undefined {
+    return this.payload.repoUrl;
+  }
+
+  /**
+   * Gets the readme.md file as text.
+   * 
+   * @returns The readme text
+   */
+  public getReadme(): string | undefined {
+    return this.payload.readme;
+  }
+
+  /**
+   * Sets the readme.md file as text.
    * 
    * @param readme - The readme text to set
    * 
-   * @returns This App for chaining
+   * @returns This App, for chaining
    */
   public setReadme(readme?: string): App {
     this.payload.readme = readme;
