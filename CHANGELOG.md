@@ -5,6 +5,21 @@ See what's new and what has changed in bkper-js
 2025
 ----
 
+**September 2025**
+
+* Added `Collaborator`
+* Added `Collaborator.json`
+* Added `Collaborator.getId`
+* Added `Collaborator.getEmail`
+* Added `Collaborator.getPermission`
+* Added `Collaborator.setEmail`
+* Added `Collaborator.setPermission`
+* Added `Collaborator.create`
+* Added `Collaborator.update`
+* Added `Collaborator.remove`
+* Added `Book.getCollaborators`
+* Replaced axios with native Fetch API for better compatibility with multiple environments
+
 **August 2025**
 
 * Added `Transaction.setFiles`
