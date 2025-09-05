@@ -6,7 +6,18 @@ See what's new and what has changed in bkper-js
 ----
 
 **September 2025**
-
+* **v2.8.0 - INTERNAL REFACTOR:**
+    * Introduced abstract `Resource` class for all model entities
+    * Improved config management with `getConfig()` pattern for config resolution
+    * Enhanced type safety with explicit Config type usage throughout
+    * Standardized `json()` method across resources for consistent JSON serialization
+    * Maintained full backward compatibility - no breaking changes to existing APIs
+* Added `App.getOwnerWebsiteUrl`
+* Added `App.getReadme`
+* Added `App.getRepositoryUrl`
+* Added `App.getWebsiteUrl`
+* Added `App.isInstallable`
+* Added `App.isRepositoryPrivate`
 * Added `Collaborator`
 * Added `Collaborator.json`
 * Added `Collaborator.getId`
