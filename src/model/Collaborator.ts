@@ -20,6 +20,11 @@ export class Collaborator extends Resource<bkper.Collaborator> {
     this.book = book;
   }
 
+  /**
+   * Gets the configuration object for this Collaborator.
+   *
+   * @returns The Config object from the parent Book
+   */
   public getConfig(): Config {
     return this.book.getConfig();
   }

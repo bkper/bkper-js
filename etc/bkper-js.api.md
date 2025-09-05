@@ -12,7 +12,6 @@ export class Account extends Resource<bkper.Account> {
     addGroup(group: Group | bkper.Group): Account;
     create(): Promise<Account>;
     deleteProperty(key: string): Account;
-    // (undocumented)
     getConfig(): Config;
     getGroups(): Promise<Group[]>;
     getId(): string | undefined;
@@ -88,7 +87,6 @@ export class Amount {
 export class App extends Resource<bkper.App> {
     constructor(payload?: bkper.App, config?: Config);
     create(): Promise<App>;
-    // (undocumented)
     getConfig(): Config;
     getDescription(): string | undefined;
     getEvents(): EventType[] | undefined;
@@ -271,7 +269,6 @@ export class Book extends Resource<bkper.Book> {
     getClosingDate(): string | undefined;
     getCollaborators(): Promise<Collaborator[]>;
     getCollection(): Collection | undefined;
-    // (undocumented)
     getConfig(): Config;
     getDatePattern(): string;
     getDecimalPlaces(): number | undefined;
@@ -360,7 +357,6 @@ export enum BotResponseType {
 export class Collaborator extends Resource<bkper.Collaborator> {
     constructor(book: Book, payload?: bkper.Collaborator);
     create(message?: string): Promise<Collaborator>;
-    // (undocumented)
     getConfig(): Config;
     getEmail(): string | undefined;
     getId(): string | undefined;
@@ -377,7 +373,6 @@ export class Collection extends Resource<bkper.Collection> {
     addBooks(books: Book[]): Promise<Book[]>;
     create(): Promise<Collection>;
     getBooks(): Book[];
-    // (undocumented)
     getConfig(): Config;
     getId(): string | undefined;
     getName(): string | undefined;
@@ -409,7 +404,6 @@ export class Connection extends Resource<bkper.Connection> {
     create(): Promise<Connection>;
     deleteProperty(key: string): Connection;
     getAgentId(): string | undefined;
-    // (undocumented)
     getConfig(): Config;
     getDateAddedMs(): string | undefined;
     getEmail(): string | undefined;
@@ -440,7 +434,6 @@ export class Conversation extends Resource<bkper.Conversation> {
     constructor(agent: Agent, payload?: bkper.Conversation, config?: Config);
     create(): Promise<Conversation>;
     getAgent(): Agent;
-    // (undocumented)
     getConfig(): Config;
     getCreatedAt(): Date | undefined;
     getId(): string | undefined;
@@ -549,7 +542,6 @@ export class File extends Resource<bkper.File> {
     constructor(book: Book, payload?: bkper.File);
     create(): Promise<File>;
     deleteProperty(key: string): File;
-    // (undocumented)
     getConfig(): Config;
     getContent(): Promise<string | undefined>;
     getContentType(): string | undefined;
@@ -583,7 +575,6 @@ export class Group extends Resource<bkper.Group> {
     deleteProperty(key: string): Group;
     getAccounts(): Promise<Account[]>;
     getChildren(): Group[];
-    // (undocumented)
     getConfig(): Config;
     getDepth(): number;
     getDescendants(): Set<Group>;
@@ -628,7 +619,6 @@ export class Integration extends Resource<bkper.Integration> {
     getAddedBy(): string | undefined;
     getAgentId(): string | undefined;
     getBookId(): string | undefined;
-    // (undocumented)
     getConfig(): Config;
     getDateAddedMs(): string | undefined;
     getId(): string | undefined;
@@ -652,7 +642,6 @@ export class Message extends Resource<bkper.Message> {
     create(): Promise<Message>;
     deleteProperty(key: string): Message;
     getAgent(): Agent | undefined;
-    // (undocumented)
     getConfig(): Config;
     getContent(): string | undefined;
     getConversation(): Conversation;
@@ -727,7 +716,6 @@ export enum Permission {
 export class Query extends Resource<bkper.Query> {
     constructor(book: Book, payload?: bkper.Query);
     create(): Promise<Query>;
-    // (undocumented)
     getConfig(): Config;
     getId(): string | undefined;
     getQuery(): string | undefined;
@@ -744,7 +732,6 @@ export class Template extends Resource<bkper.Template> {
     getBookId(): string | undefined;
     getBookLink(): string | undefined;
     getCategory(): string | undefined;
-    // (undocumented)
     getConfig(): Config;
     getDescription(): string | undefined;
     getImageUrl(): string | undefined;
@@ -771,7 +758,6 @@ export class Transaction extends Resource<bkper.Transaction> {
     getAmount(): Amount | undefined;
     getAmountFormatted(): string | undefined;
     getBook(): Book;
-    // (undocumented)
     getConfig(): Config;
     getCreatedAt(): Date;
     getCreatedAtFormatted(): string;
@@ -841,7 +827,6 @@ export class TransactionList {
 export class User extends Resource<bkper.User> {
     constructor(payload?: bkper.User, config?: Config);
     getAvatarUrl(): string | undefined;
-    // (undocumented)
     getConfig(): Config;
     getConnection(id: string): Promise<Connection>;
     getConnections(): Promise<Connection[]>;

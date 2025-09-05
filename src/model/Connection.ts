@@ -17,6 +17,11 @@ export class Connection extends Resource<bkper.Connection> {
     this.config = config;
   }
 
+  /**
+   * Gets the configuration object for this Connection.
+   *
+   * @returns The Config object for this Connection or the global config
+   */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }

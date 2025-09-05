@@ -18,6 +18,11 @@ export class Collection extends Resource<bkper.Collection> {
     this.config = config;
   }
 
+  /**
+   * Gets the configuration object for this Collection.
+   *
+   * @returns The Config object for this Collection or the global config
+   */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }

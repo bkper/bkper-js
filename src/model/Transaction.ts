@@ -24,6 +24,11 @@ export class Transaction extends Resource<bkper.Transaction> {
     this.book = book;
   }
 
+  /**
+   * Gets the configuration object for this Transaction.
+   *
+   * @returns The Config object from the parent Book
+   */
   public getConfig(): Config {
     return this.book.getConfig();
   }

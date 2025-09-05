@@ -25,6 +25,11 @@ export class Account extends Resource<bkper.Account> {
     this.book = book;
   }
 
+  /**
+   * Gets the configuration object for this Account.
+   *
+   * @returns The Config object from the parent Book
+   */
   public getConfig(): Config {
     return this.book.getConfig();
   }

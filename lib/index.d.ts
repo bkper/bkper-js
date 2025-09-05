@@ -18,6 +18,11 @@
 export declare class Account extends Resource<bkper.Account> {
 
     constructor(book: Book, payload?: bkper.Account);
+    /**
+     * Gets the configuration object for this Account.
+     *
+     * @returns The Config object from the parent Book
+     */
     getConfig(): Config;
     /**
      * Gets the Account internal id.
@@ -439,6 +444,11 @@ export declare class Amount {
 export declare class App extends Resource<bkper.App> {
     private config?;
     constructor(payload?: bkper.App, config?: Config);
+    /**
+     * Gets the configuration object for this App.
+     *
+     * @returns The Config object for this App or the global config
+     */
     getConfig(): Config;
     /**
      * Sets the webhook url for development.
@@ -1311,6 +1321,11 @@ export declare class Book extends Resource<bkper.Book> {
 
 
     constructor(payload?: bkper.Book, config?: Config);
+    /**
+     * Gets the configuration object for this Book.
+     *
+     * @returns The Config object for this Book or the global config
+     */
     getConfig(): Config;
     /**
      * Gets the unique identifier of this Book.
@@ -1945,6 +1960,11 @@ export declare enum BotResponseType {
 export declare class Collaborator extends Resource<bkper.Collaborator> {
 
     constructor(book: Book, payload?: bkper.Collaborator);
+    /**
+     * Gets the configuration object for this Collaborator.
+     *
+     * @returns The Config object from the parent Book
+     */
     getConfig(): Config;
     /**
      * Gets the Collaborator internal id.
@@ -2008,6 +2028,11 @@ export declare class Collaborator extends Resource<bkper.Collaborator> {
 export declare class Collection extends Resource<bkper.Collection> {
     private config?;
     constructor(payload?: bkper.Collection, config?: Config);
+    /**
+     * Gets the configuration object for this Collection.
+     *
+     * @returns The Config object for this Collection or the global config
+     */
     getConfig(): Config;
     /**
      * Gets the unique identifier of this Collection.
@@ -2144,6 +2169,11 @@ export declare interface Config {
 export declare class Connection extends Resource<bkper.Connection> {
     private config?;
     constructor(payload?: bkper.Connection, config?: Config);
+    /**
+     * Gets the configuration object for this Connection.
+     *
+     * @returns The Config object for this Connection or the global config
+     */
     getConfig(): Config;
     /**
      * Gets the id of the Connection.
@@ -2310,6 +2340,11 @@ export declare class Conversation extends Resource<bkper.Conversation> {
 
     private config?;
     constructor(agent: Agent, payload?: bkper.Conversation, config?: Config);
+    /**
+     * Gets the configuration object for this Conversation.
+     *
+     * @returns The Config object for this Conversation or the global config
+     */
     getConfig(): Config;
     /**
      * Gets the Agent associated to this Conversation.
@@ -2523,6 +2558,11 @@ export declare enum EventType {
 export declare class File extends Resource<bkper.File> {
 
     constructor(book: Book, payload?: bkper.File);
+    /**
+     * Gets the configuration object for this File.
+     *
+     * @returns The Config object from the parent Book
+     */
     getConfig(): Config;
     /**
      * Gets the File id.
@@ -2652,6 +2692,11 @@ export declare class Group extends Resource<bkper.Group> {
 
 
     constructor(book: Book, payload?: bkper.Group);
+    /**
+     * Gets the configuration object for this Group.
+     *
+     * @returns The Config object from the parent Book
+     */
     getConfig(): Config;
     /**
      * Gets the id of this Group.
@@ -2893,6 +2938,11 @@ export declare class Group extends Resource<bkper.Group> {
 export declare class Integration extends Resource<bkper.Integration> {
     private config?;
     constructor(payload?: bkper.Integration, config?: Config);
+    /**
+     * Gets the configuration object for this Integration.
+     *
+     * @returns The Config object for this Integration or the global config
+     */
     getConfig(): Config;
     /**
      * Gets the [[Book]] id of the Integration.
@@ -3004,6 +3054,11 @@ export declare class Message extends Resource<bkper.Message> {
 
 
     constructor(conversation: Conversation, payload?: bkper.Message, config?: Config);
+    /**
+     * Gets the configuration object for this Message.
+     *
+     * @returns The Config object from the parent Conversation
+     */
     getConfig(): Config;
     /**
      * Gets the Message universal identifier.
@@ -3210,6 +3265,11 @@ export declare enum Permission {
 export declare class Query extends Resource<bkper.Query> {
 
     constructor(book: Book, payload?: bkper.Query);
+    /**
+     * Gets the configuration object for this Query.
+     *
+     * @returns The Config object from the parent Book
+     */
     getConfig(): Config;
     /**
      * Gets the Query universal identifier.
@@ -3276,7 +3336,7 @@ declare abstract class Resource<T = any> {
     /**
      * The underlying payload data for this resource
      */
-    protected payload: T;
+    payload: T;
     /**
      * Constructs a new Resource
      * @param payload - The data payload for this resource
@@ -3307,6 +3367,11 @@ declare abstract class Resource<T = any> {
 export declare class Template extends Resource<bkper.Template> {
     private config?;
     constructor(json?: bkper.Template, config?: Config);
+    /**
+     * Gets the configuration object for this Template.
+     *
+     * @returns The Config object for this Template or the global config
+     */
     getConfig(): Config;
     /**
      * Gets the name of the Template.
@@ -3369,6 +3434,11 @@ export declare class Template extends Resource<bkper.Template> {
 export declare class Transaction extends Resource<bkper.Transaction> {
 
     constructor(book: Book, payload?: bkper.Transaction);
+    /**
+     * Gets the configuration object for this Transaction.
+     *
+     * @returns The Config object from the parent Book
+     */
     getConfig(): Config;
     /**
      * Gets the book associated with this transaction.
@@ -3867,6 +3937,11 @@ export declare class TransactionList {
 export declare class User extends Resource<bkper.User> {
     private config?;
     constructor(payload?: bkper.User, config?: Config);
+    /**
+     * Gets the configuration object for this User.
+     *
+     * @returns The Config object for this User or the global config
+     */
     getConfig(): Config;
     /**
      * Gets the id of the User.

@@ -39,6 +39,11 @@ export class Group extends Resource<bkper.Group> {
     this.book = book;
   }
 
+  /**
+   * Gets the configuration object for this Group.
+   *
+   * @returns The Config object from the parent Book
+   */
   public getConfig(): Config {
     return this.book.getConfig();
   }

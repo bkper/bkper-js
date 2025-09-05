@@ -80,6 +80,11 @@ export class Book extends Resource<bkper.Book> {
     this.mapAccounts(this.payload.accounts);
   }
 
+  /**
+   * Gets the configuration object for this Book.
+   *
+   * @returns The Config object for this Book or the global config
+   */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }

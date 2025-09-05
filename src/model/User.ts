@@ -21,6 +21,11 @@ export class User extends Resource<bkper.User> {
     this.config = config;
   }
 
+  /**
+   * Gets the configuration object for this User.
+   *
+   * @returns The Config object for this User or the global config
+   */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }

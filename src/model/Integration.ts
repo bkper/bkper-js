@@ -16,6 +16,11 @@ export class Integration extends Resource<bkper.Integration> {
     this.config = config;
   }
 
+  /**
+   * Gets the configuration object for this Integration.
+   *
+   * @returns The Config object for this Integration or the global config
+   */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }

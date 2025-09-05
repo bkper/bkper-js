@@ -17,6 +17,11 @@ export class Template extends Resource<bkper.Template> {
     this.config = config;
   }
 
+  /**
+   * Gets the configuration object for this Template.
+   *
+   * @returns The Config object for this Template or the global config
+   */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }

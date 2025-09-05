@@ -27,6 +27,11 @@ export class Conversation extends Resource<bkper.Conversation> {
     this.config = config;
   }
 
+  /**
+   * Gets the configuration object for this Conversation.
+   *
+   * @returns The Config object for this Conversation or the global config
+   */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }
