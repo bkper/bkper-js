@@ -1218,13 +1218,15 @@ export declare class Bkper {
     /**
      * Sets the global API configuration for all Bkper operations.
      *
+     * WARNING: This configuration will be shared and should NOT be used on shared environments.
+     *
      * @param config - The Config object containing API key and OAuth token providers
      */
     static setConfig(config: Config): void;
     /**
-     * Creates a new Bkper instance.
+     * Creates a new Bkper instance with the provided configuration.
      *
-     * @param config - Optional Config object containing API key and OAuth token providers.
+     * @param config - The Config object containing API key and OAuth token providers.
      *                 If not provided, uses the global configuration set via setConfig().
      */
     constructor(config?: Config);
