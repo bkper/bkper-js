@@ -1,27 +1,25 @@
 import { Book } from "./Book.js";
 import { Permission } from "./Enums.js";
-import * as CollectionService from '../service/collection-service.js';
+import { Config } from "./Config.js";
+import { Resource } from "./Resource.js";
+import { Bkper } from "./Bkper.js";
+import * as CollectionService from "../service/collection-service.js";
 
 /**
  * This class defines a Collection of [[Books]].
- * 
+ *
  * @public
  */
-export class Collection {
+export class Collection extends Resource<bkper.Collection> {
+  private config?: Config;
 
-  public payload: bkper.Collection;
-
-  constructor(payload?: bkper.Collection) {
-    this.payload = payload || {};
+  constructor(payload?: bkper.Collection, config?: Config) {
+    super(payload);
+    this.config = config;
   }
 
-  /**
-   * Gets an immutable copy of the JSON payload for this Collection.
-   *
-   * @returns The wrapped plain json object
-   */
-  public json(): bkper.Collection {
-    return { ...this.payload };
+  public getConfig(): Config {
+    return this.config || Bkper.globalConfig;
   }
 
   /**
@@ -56,7 +54,7 @@ export class Collection {
 
   /**
    * Gets the username of the owner of this Collection
-   * 
+   *
    * @returns The Collection's owner username
    */
   public getOwnerUsername(): string | undefined {
@@ -65,11 +63,13 @@ export class Collection {
 
   /**
    * Gets the user permission for this Collection
-   * 
+   *
    * @returns The permission for the current user
    */
   public getPermission(): Permission | undefined {
-    return this.payload.permission ? (this.payload.permission as Permission) : undefined;
+    return this.payload.permission
+      ? (this.payload.permission as Permission)
+      : undefined;
   }
 
   /**
@@ -99,9 +99,13 @@ export class Collection {
   public async addBooks(books: Book[]): Promise<Book[]> {
     const collectionId = this.getId();
     if (collectionId && books.length > 0) {
-      const bookList: bkper.BookList = { items: books.map(b => b.json()) };
-      let addedBooks = await CollectionService.addBooksToCollection(collectionId, bookList);
-      return addedBooks.map(book => new Book(book));
+      const bookList: bkper.BookList = { items: books.map((b) => b.json()) };
+      let addedBooks = await CollectionService.addBooksToCollection(
+        collectionId,
+        bookList,
+        this.getConfig()
+      );
+      return addedBooks.map((book) => new Book(book));
     }
     return [];
   }
@@ -116,16 +120,20 @@ export class Collection {
   public async removeBooks(books: Book[]): Promise<Book[]> {
     const collectionId = this.getId();
     if (collectionId && books.length > 0) {
-      const bookList: bkper.BookList = { items: books.map(b => b.json()) };
-      let removedBooks = await CollectionService.removeBooksFromCollection(collectionId, bookList);
-      return removedBooks.map(book => new Book(book));
+      const bookList: bkper.BookList = { items: books.map((b) => b.json()) };
+      let removedBooks = await CollectionService.removeBooksFromCollection(
+        collectionId,
+        bookList,
+        this.getConfig()
+      );
+      return removedBooks.map((book) => new Book(book));
     }
     return [];
   }
 
   /**
    * Gets the last update date of this Collection
-   * 
+   *
    * @returns The Collection's last update timestamp, in milliseconds
    */
   public getUpdatedAt(): string | undefined {
@@ -134,32 +142,40 @@ export class Collection {
 
   /**
    * Performs create new Collection.
-   * 
+   *
    * @returns The created Collection object
    */
   public async create(): Promise<Collection> {
-    this.payload = await CollectionService.createCollection(this.payload);
+    this.payload = await CollectionService.createCollection(
+      this.payload,
+      this.getConfig()
+    );
     return this;
   }
 
   /**
    * Performs update Collection, applying pending changes.
-   * 
+   *
    * @returns The updated Collection object
    */
   public async update(): Promise<Collection> {
-    this.payload = await CollectionService.updateCollection(this.payload);
+    this.payload = await CollectionService.updateCollection(
+      this.payload,
+      this.getConfig()
+    );
     return this;
   }
 
   /**
    * Performs delete Collection.
-   * 
+   *
    * @returns The list of Books the user has access to that were affected by the deletion of this Collection
    */
   public async remove(): Promise<Book[]> {
-    let books = await CollectionService.deleteCollection(this.payload);
-    return books.map(book => new Book(book));
+    let books = await CollectionService.deleteCollection(
+      this.payload,
+      this.getConfig()
+    );
+    return books.map((book) => new Book(book));
   }
-
 }

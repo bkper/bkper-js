@@ -1,45 +1,36 @@
 import { File } from "./File.js";
 import { Book } from "./Book.js";
 import { Account } from "./Account.js";
-import * as TransactionService from '../service/transaction-service.js';
-import * as Utils from '../utils.js';
-import { Amount } from './Amount.js';
-
+import { Config } from "./Config.js";
+import { Resource } from "./Resource.js";
+import * as TransactionService from "../service/transaction-service.js";
+import * as Utils from "../utils.js";
+import { Amount } from "./Amount.js";
 
 /**
- * 
+ *
  * This class defines a Transaction between [credit and debit](http://en.wikipedia.org/wiki/Debits_and_credits) [[Accounts]].
  *
  * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
- * 
+ *
  * @public
  */
-export class Transaction {
-  
-  public payload: bkper.Transaction
-  
+export class Transaction extends Resource<bkper.Transaction> {
   /** @internal */
   private book: Book;
 
   constructor(book: Book, payload?: bkper.Transaction) {
+    super(payload || { createdAt: `${Date.now()}` });
     this.book = book;
-    this.payload = payload || {
-      createdAt: `${Date.now()}`
-    };
   }
 
-  /**
-   * Gets the JSON representation of the transaction.
-   * 
-   * @returns An immutable copy of the json payload
-   */
-  public json(): bkper.Transaction {
-    return { ...this.payload };
+  public getConfig(): Config {
+    return this.book.getConfig();
   }
 
   /**
    * Gets the book associated with this transaction.
-   * 
+   *
    * @returns The book of the Transaction
    */
   public getBook(): Book {
@@ -48,16 +39,16 @@ export class Transaction {
 
   /**
    * Gets the unique identifier of the transaction.
-   * 
+   *
    * @returns The id of the Transaction
    */
-  public getId(): string | undefined{
+  public getId(): string | undefined {
     return this.payload.id;
   }
 
   /**
    * Gets the unique identifier of the agent that created this transaction.
-   * 
+   *
    * @returns The id of the agent that created this transaction
    */
   public getAgentId(): string | undefined {
@@ -66,7 +57,7 @@ export class Transaction {
 
   /**
    * Gets the name of the agent that created this transaction.
-   * 
+   *
    * @returns The name of the agent that created this transaction
    */
   public getAgentName(): string | undefined {
@@ -75,7 +66,7 @@ export class Transaction {
 
   /**
    * Gets the logo URL of the agent that created this transaction.
-   * 
+   *
    * @returns The logo of the agent that created this transaction
    */
   public getAgentLogoUrl(): string | undefined {
@@ -84,16 +75,16 @@ export class Transaction {
 
   /**
    * Gets the dark mode logo URL of the agent that created this transaction.
-   * 
+   *
    * @returns The logo of the agent that created this transaction in dark mode
    */
   public getAgentLogoUrlDark(): string | undefined {
     return this.payload.agentLogoDark;
   }
-  
+
   /**
    * Gets the remote IDs associated with this transaction. Remote ids are used to avoid duplication.
-   * 
+   *
    * @returns The remote ids of the Transaction
    */
   public getRemoteIds(): string[] {
@@ -102,9 +93,9 @@ export class Transaction {
 
   /**
    * Add a remote id to the Transaction.
-   * 
+   *
    * @param remoteId - The remote id to add
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public addRemoteId(remoteId: string): Transaction {
@@ -119,7 +110,7 @@ export class Transaction {
 
   /**
    * Checks if the transaction has been posted to the accounts.
-   * 
+   *
    * @returns True if transaction was already posted to the accounts. False if is still a Draft
    */
   public isPosted(): boolean | undefined {
@@ -128,7 +119,7 @@ export class Transaction {
 
   /**
    * Checks if the transaction is marked as checked.
-   * 
+   *
    * @returns True if transaction is checked
    */
   public isChecked(): boolean | undefined {
@@ -136,12 +127,12 @@ export class Transaction {
   }
 
   /**
-    * Set the check state of the Transaction.
-    * 
-    * @param checked - The check state
-    * 
-    * @returns This Transaction, for chaining
-  */
+   * Set the check state of the Transaction.
+   *
+   * @param checked - The check state
+   *
+   * @returns This Transaction, for chaining
+   */
   public setChecked(checked: boolean): Transaction {
     this.payload.checked = checked;
     return this;
@@ -149,7 +140,7 @@ export class Transaction {
 
   /**
    * Checks if the transaction is in the trash.
-   * 
+   *
    * @returns True if transaction is in trash
    */
   public isTrashed(): boolean | undefined {
@@ -158,28 +149,32 @@ export class Transaction {
 
   /**
    * Checks if the transaction is locked by the book's lock or closing date.
-   * 
+   *
    * @returns True if a transaction is locked by the book lock/closing date
    */
   public isLocked(): boolean {
-    const date = this.getDate() || Utils.formatDateISO(new Date(), this.book.getTimeZone());
+    const date =
+      this.getDate() ||
+      Utils.formatDateISO(new Date(), this.book.getTimeZone());
     const lockOrClosingDate = this.book.getMostRecentLockDate_();
-    return lockOrClosingDate != null && (Utils.getIsoDateValue(lockOrClosingDate) >= Utils.getIsoDateValue(date));
+    return (
+      lockOrClosingDate != null &&
+      Utils.getIsoDateValue(lockOrClosingDate) >= Utils.getIsoDateValue(date)
+    );
   }
 
   /**
    * Gets all hashtags used in the transaction.
-   * 
+   *
    * @returns All #hashtags used on the transaction
    */
   public getTags(): string[] {
     return this.payload.tags || [];
   }
 
-
   /**
    * Gets all URLs associated with the transaction.
-   * 
+   *
    * @returns All urls of the transaction
    */
   public getUrls(): string[] {
@@ -188,15 +183,15 @@ export class Transaction {
 
   /**
    * Sets the Transaction urls. Url starts with https://
-   * 
+   *
    * @param urls - The urls array
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setUrls(urls: string[]): Transaction {
     this.payload.urls = undefined;
     if (urls) {
-      urls.forEach(url => {
+      urls.forEach((url) => {
         this.addUrl(url);
       });
     }
@@ -205,9 +200,9 @@ export class Transaction {
 
   /**
    * Add a url to the Transaction. Url starts with https://
-   * 
+   *
    * @param url - The url to add
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public addUrl(url: string): Transaction {
@@ -222,13 +217,13 @@ export class Transaction {
 
   /**
    * Gets all files attached to the transaction.
-   * 
+   *
    * @returns The files attached to the transaction
    */
   public getFiles(): File[] {
     if (this.payload.files && this.payload.files.length > 0) {
-      const files = this.payload.files.map(file => new File(this.book, file));
-      return files
+      const files = this.payload.files.map((file) => new File(this.book, file));
+      return files;
     } else {
       return [];
     }
@@ -236,45 +231,43 @@ export class Transaction {
 
   /**
    * Sets the files attached to the Transaction.
-   * 
+   *
    * @param files - The files to set
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setFiles(files: File[]): Transaction {
-    const filePayloads = files.map(file => file.payload);
+    const filePayloads = files.map((file) => file.json());
     this.payload.files = [...filePayloads];
     return this;
   }
 
   /**
    * Adds a file attachment to the Transaction.
-   * 
+   *
    * Files MUST be previously created in the Book.
-   * 
+   *
    * @param file - The file to add
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public addFile(file: File): Transaction {
-
     if (this.payload.files == null) {
       this.payload.files = [];
     }
 
-    this.payload.files.push(file.json())
+    this.payload.files.push(file.json());
     return this;
   }
 
   /**
    * Check if the transaction has the specified tag.
-   * 
+   *
    * @param tag - The tag to check for
-   * 
+   *
    * @returns True if the transaction has the specified tag
    */
   public hasTag(tag: string): boolean {
-
     var tags = this.getTags();
 
     for (var i = 0; i < tags.length; i++) {
@@ -286,21 +279,22 @@ export class Transaction {
     return false;
   }
 
-
   /**
    * Gets the custom properties stored in this Transaction.
-   * 
+   *
    * @returns Object with key/value pair properties
    */
   public getProperties(): { [key: string]: string } {
-    return this.payload.properties != null ? { ...this.payload.properties } : {};
+    return this.payload.properties != null
+      ? { ...this.payload.properties }
+      : {};
   }
 
   /**
    * Sets the custom properties of the Transaction
-   * 
+   *
    * @param properties - Object with key/value pair properties
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setProperties(properties: { [key: string]: string }): Transaction {
@@ -310,16 +304,17 @@ export class Transaction {
 
   /**
    * Gets the property value for given keys. First property found will be retrieved
-   * 
+   *
    * @param keys - The property key
-   * 
+   *
    * @returns The property value or undefined if not found
    */
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.payload.properties != null ? this.payload.properties[key] : null
-      if (value != null && value.trim() != '') {
+      let value =
+        this.payload.properties != null ? this.payload.properties[key] : null;
+      if (value != null && value.trim() != "") {
         return value;
       }
     }
@@ -328,16 +323,16 @@ export class Transaction {
 
   /**
    * Gets the custom properties keys stored in this Transaction.
-   * 
+   *
    * @returns Array of property keys
-   */  
+   */
   public getPropertyKeys(): string[] {
     let properties = this.getProperties();
-    let propertyKeys:string[] = []
+    let propertyKeys: string[] = [];
     if (properties) {
       for (var key in properties) {
         if (Object.prototype.hasOwnProperty.call(properties, key)) {
-            propertyKeys.push(key)
+          propertyKeys.push(key);
         }
       }
     }
@@ -347,21 +342,21 @@ export class Transaction {
 
   /**
    * Sets a custom property in the Transaction.
-   * 
+   *
    * @param key - The property key
    * @param value - The property value
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setProperty(key: string, value: string | null): Transaction {
-    if (key == null || key.trim() == '') {
+    if (key == null || key.trim() == "") {
       return this;
     }
     if (this.payload.properties == null) {
       this.payload.properties = {};
     }
     if (!value) {
-      value = ''
+      value = "";
     }
     this.payload.properties[key] = value;
     return this;
@@ -369,9 +364,9 @@ export class Transaction {
 
   /**
    * Delete a custom property
-   * 
+   *
    * @param key - The property key
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public deleteProperty(key: string): Transaction {
@@ -379,10 +374,9 @@ export class Transaction {
     return this;
   }
 
-
   /**
    * Gets the credit account associated with this Transaction. Same as origin account
-   * 
+   *
    * @returns The credit (origin) account
    */
   public async getCreditAccount(): Promise<Account | undefined> {
@@ -390,16 +384,15 @@ export class Transaction {
       return undefined;
     }
     return await this.book.getAccount(this.payload.creditAccount.id);
-
   }
 
   /**
    * Gets the name of this Transaction's credit account.
-   * 
+   *
    * @returns The credit account name
    */
   public async getCreditAccountName(): Promise<string | undefined> {
-    if (await this.getCreditAccount() != null) {
+    if ((await this.getCreditAccount()) != null) {
       return (await this.getCreditAccount())?.getName();
     } else {
       return "";
@@ -408,19 +401,19 @@ export class Transaction {
 
   /**
    * Sets the credit/origin [[Account]] of this Transaction. Same as from()
-   * 
+   *
    * @param account - The Account object
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setCreditAccount(account: Account | bkper.Account): Transaction {
     if (account instanceof Account) {
       if (account != null && account.getId() != null) {
-        this.payload.creditAccount = account.json()
+        this.payload.creditAccount = account.json();
       }
     } else {
       if (account != null && account.id != null) {
-        this.payload.creditAccount = account
+        this.payload.creditAccount = account;
       }
     }
     return this;
@@ -428,9 +421,9 @@ export class Transaction {
 
   /**
    * Sets the credit/origin [[Account]] of this Transaction. Same as setCreditAccount()
-   * 
+   *
    * @param account - The Account object
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public from(account: Account | bkper.Account): Transaction {
@@ -439,7 +432,7 @@ export class Transaction {
 
   /**
    * Gets the debit account associated with this Transaction. Same as destination account
-   * 
+   *
    * @returns The debit (destination) account
    */
   public async getDebitAccount(): Promise<Account | undefined> {
@@ -451,11 +444,11 @@ export class Transaction {
 
   /**
    * Gets the name of this Transaction's debit account.
-   * 
+   *
    * @returns The debit account name
    */
   public async getDebitAccountName(): Promise<string | undefined> {
-    if (await this.getDebitAccount() != null) {
+    if ((await this.getDebitAccount()) != null) {
       return (await this.getDebitAccount())?.getName();
     } else {
       return "";
@@ -464,19 +457,19 @@ export class Transaction {
 
   /**
    * Sets the debit/destination [[Account]] of this Transaction. Same as to()
-   * 
+   *
    * @param account - The Account object
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setDebitAccount(account: Account | bkper.Account): Transaction {
     if (account instanceof Account) {
       if (account != null && account.getId() != null) {
-        this.payload.debitAccount = account.json()
+        this.payload.debitAccount = account.json();
       }
     } else {
       if (account != null && account.id != null) {
-        this.payload.debitAccount = account
+        this.payload.debitAccount = account;
       }
     }
     return this;
@@ -484,9 +477,9 @@ export class Transaction {
 
   /**
    * Sets the debit/destination [[Account]] of this Transaction. Same as setDebitAccount()
-   * 
+   *
    * @param account - The Account object
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public to(account: Account | bkper.Account): Transaction {
@@ -495,16 +488,18 @@ export class Transaction {
 
   /**
    * Gets the amount of this Transaction.
-   * 
+   *
    * @returns The amount of this Transaction
    */
   public getAmount(): Amount | undefined {
-    return this.payload.amount != null && this.payload.amount.trim() != '' ? new Amount(this.payload.amount) : undefined;
+    return this.payload.amount != null && this.payload.amount.trim() != ""
+      ? new Amount(this.payload.amount)
+      : undefined;
   }
 
   /**
    * Gets the formatted amount of this Transaction according to the Book format.
-   * 
+   *
    * @returns The amount of this Transaction, formatted according to the Book format
    */
   public getAmountFormatted(): string | undefined {
@@ -517,15 +512,14 @@ export class Transaction {
 
   /**
    * Sets the amount of this Transaction.
-   * 
+   *
    * @param amount - The amount to set
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setAmount(amount: Amount | number | string): Transaction {
-
     if (typeof amount == "string") {
-      amount = Utils.parseValue(amount, this.book.getDecimalSeparator()) + '';
+      amount = Utils.parseValue(amount, this.book.getDecimalSeparator()) + "";
       this.payload.amount = amount.toString();
       return this;
     }
@@ -544,12 +538,14 @@ export class Transaction {
 
   /**
    * Get the absolute amount of this Transaction if the given account is at the credit side.
-   * 
+   *
    * @param account - The account object, id or name
-   * 
+   *
    * @returns The credit amount or undefined
    */
-  public async getCreditAmount(account: Account | string): Promise<Amount | undefined> {
+  public async getCreditAmount(
+    account: Account | string
+  ): Promise<Amount | undefined> {
     let accountObject = await this.getAccount_(account);
     if (await this.isCredit(accountObject)) {
       return this.getAmount();
@@ -559,12 +555,14 @@ export class Transaction {
 
   /**
    * Gets the absolute amount of this Transaction if the given account is at the debit side.
-   * 
+   *
    * @param account - The account object, id or name
-   * 
+   *
    * @returns The debit amount or undefined
    */
-  public async getDebitAmount(account: Account | string): Promise<Amount | undefined> {
+  public async getDebitAmount(
+    account: Account | string
+  ): Promise<Amount | undefined> {
     let accountObject = await this.getAccount_(account);
     if (await this.isDebit(accountObject)) {
       return this.getAmount();
@@ -574,12 +572,14 @@ export class Transaction {
 
   /**
    * Gets the [[Account]] at the other side of the transaction given the one in one side.
-   * 
+   *
    * @param account - The account object, id or name
-   * 
+   *
    * @returns The account at the other side of the transaction
    */
-  public async getOtherAccount(account: Account | string): Promise<Account | undefined> {
+  public async getOtherAccount(
+    account: Account | string
+  ): Promise<Account | undefined> {
     let accountObject = await this.getAccount_(account);
     if (await this.isCredit(accountObject)) {
       return await this.getDebitAccount();
@@ -592,12 +592,14 @@ export class Transaction {
 
   /**
    * The Account name at the other side of this Transaction given the one in one side.
-   * 
+   *
    * @param account - The Account object, id or name
-   * 
+   *
    * @returns The name of the Account at the other side
    */
-  public async getOtherAccountName(account: string | Account): Promise<string | undefined> {
+  public async getOtherAccountName(
+    account: string | Account
+  ): Promise<string | undefined> {
     var otherAccount = await this.getOtherAccount(account);
     if (otherAccount != null) {
       return otherAccount.getName();
@@ -608,38 +610,49 @@ export class Transaction {
 
   /**
    * Tell if the given account is credit on this Transaction
-   * 
+   *
    * @param account - The Account object
-   * 
+   *
    * @returns True if the account is the credit account
-   */  
+   */
   public async isCredit(account?: Account): Promise<boolean> {
-    return (await this.getCreditAccount()) != null && account != null && (await this.getCreditAccount())?.getNormalizedName() == account.getNormalizedName();
+    return (
+      (await this.getCreditAccount()) != null &&
+      account != null &&
+      (await this.getCreditAccount())?.getNormalizedName() ==
+        account.getNormalizedName()
+    );
   }
 
   /**
    * Tell if the given account is debit on the Transaction
-   * 
+   *
    * @param account - The [[Account]] object
-   * 
+   *
    * @returns True if the Account is the debit account
-   */  
+   */
   public async isDebit(account?: Account): Promise<boolean> {
-    return (await this.getDebitAccount()) != null && account != null && (await this.getDebitAccount())?.getNormalizedName() == account.getNormalizedName();
+    return (
+      (await this.getDebitAccount()) != null &&
+      account != null &&
+      (await this.getDebitAccount())?.getNormalizedName() ==
+        account.getNormalizedName()
+    );
   }
 
-
   /** @internal */
-  private async getAccount_(account: Account | string): Promise<Account | undefined> {
+  private async getAccount_(
+    account: Account | string
+  ): Promise<Account | undefined> {
     if (account == null || account instanceof Account) {
       return account as Account;
     }
     return await this.book.getAccount(account);
-  }  
+  }
 
   /**
    * Gets the description of this Transaction.
-   * 
+   *
    * @returns The description of this Transaction
    */
   public getDescription(): string {
@@ -651,9 +664,9 @@ export class Transaction {
 
   /**
    * Sets the description of the Transaction.
-   * 
+   *
    * @param description - The description to set
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setDescription(description: string): Transaction {
@@ -663,46 +676,56 @@ export class Transaction {
 
   /**
    * Gets the transaction date in ISO format.
-   * 
+   *
    * @returns The Transaction date, in ISO format yyyy-MM-dd
    */
-  public getDate(): string | undefined{
+  public getDate(): string | undefined {
     return this.payload.date;
   }
 
   /**
    * Sets the date of the Transaction.
-   * 
+   *
    * @param date - The date to set as string or Date object
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public setDate(date: string | Date): Transaction {
     if (typeof date == "string") {
-      if (date.indexOf('/') > 0) {
-        let dateObject = Utils.parseDate(date, this.book.getDatePattern(), this.book.getTimeZone())
-        this.payload.date = Utils.formatDateISO(dateObject, this.book.getTimeZone())
-      } else if (date.indexOf('-')) {
+      if (date.indexOf("/") > 0) {
+        let dateObject = Utils.parseDate(
+          date,
+          this.book.getDatePattern(),
+          this.book.getTimeZone()
+        );
+        this.payload.date = Utils.formatDateISO(
+          dateObject,
+          this.book.getTimeZone()
+        );
+      } else if (date.indexOf("-")) {
         this.payload.date = date;
       }
-    } else if (Object.prototype.toString.call(date) === '[object Date]') {
-      this.payload.date = Utils.formatDateISO(date, this.book.getTimeZone())
+    } else if (Object.prototype.toString.call(date) === "[object Date]") {
+      this.payload.date = Utils.formatDateISO(date, this.book.getTimeZone());
     }
     return this;
   }
 
   /**
    * Gets the transaction date as a Date object in the book's timezone.
-   * 
+   *
    * @returns The Transaction Date object, on the time zone of the [[Book]]
    */
   public getDateObject(): Date {
-    return Utils.convertValueToDate(this.getDateValue(), this.book.getTimeZoneOffset());
+    return Utils.convertValueToDate(
+      this.getDateValue(),
+      this.book.getTimeZoneOffset()
+    );
   }
 
   /**
    * Gets the transaction date as a numeric value.
-   * 
+   *
    * @returns The Transaction date number, in format YYYYMMDD
    */
   public getDateValue(): number | undefined {
@@ -711,7 +734,7 @@ export class Transaction {
 
   /**
    * Gets the transaction date formatted according to the book's date pattern.
-   * 
+   *
    * @returns The Transaction date, formatted on the date pattern of the [[Book]]
    */
   public getDateFormatted(): string | undefined {
@@ -720,7 +743,7 @@ export class Transaction {
 
   /**
    * Gets the date when the transaction was created.
-   * 
+   *
    * @returns The date the transaction was created
    */
   public getCreatedAt(): Date {
@@ -729,16 +752,20 @@ export class Transaction {
 
   /**
    * Gets the formatted creation date of the transaction.
-   * 
+   *
    * @returns The date the transaction was created, formatted according to the date pattern of the [[Book]]
    */
   public getCreatedAtFormatted(): string {
-    return Utils.formatDate(this.getCreatedAt(), this.book.getDatePattern() + " HH:mm:ss", this.book.getTimeZone());
+    return Utils.formatDate(
+      this.getCreatedAt(),
+      this.book.getDatePattern() + " HH:mm:ss",
+      this.book.getTimeZone()
+    );
   }
 
   /**
    * Gets the date when the transaction was last updated.
-   * 
+   *
    * @returns The date the transaction was last updated
    */
   public getUpdatedAt(): Date {
@@ -747,32 +774,42 @@ export class Transaction {
 
   /**
    * Gets the formatted last update date of the transaction.
-   * 
+   *
    * @returns The date the transaction was last updated, formatted according to the date pattern of the [[Book]]
    */
   public getUpdatedAtFormatted(): string {
-    return Utils.formatDate(this.getUpdatedAt(), this.book.getDatePattern() + " HH:mm:ss", this.book.getTimeZone());
+    return Utils.formatDate(
+      this.getUpdatedAt(),
+      this.book.getDatePattern() + " HH:mm:ss",
+      this.book.getTimeZone()
+    );
   }
 
   /** @internal */
   private getCaEvolvedBalance_(): Amount | undefined {
-    return this.payload.creditAccount != null && this.payload.creditAccount.balance != null ? new Amount(this.payload.creditAccount.balance) : undefined;
+    return this.payload.creditAccount != null &&
+      this.payload.creditAccount.balance != null
+      ? new Amount(this.payload.creditAccount.balance)
+      : undefined;
   }
 
   /** @internal */
   private getDaEvolvedBalance_(): Amount | undefined {
-    return this.payload.debitAccount != null && this.payload.debitAccount.balance != null ? new Amount(this.payload.debitAccount.balance) : undefined;
+    return this.payload.debitAccount != null &&
+      this.payload.debitAccount.balance != null
+      ? new Amount(this.payload.debitAccount.balance)
+      : undefined;
   }
 
   /**
    * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
-   * 
+   *
    * Evolved balances is returned when searching for transactions of a permanent [[Account]].
-   * 
+   *
    * Only comes with the last posted transaction of the day.
-   * 
+   *
    * @param raw - True to get the raw balance, no matter the credit nature of the [[Account]]
-   * 
+   *
    * @returns The account balance at the transaction date
    */
   public async getAccountBalance(raw?: boolean): Promise<Amount | undefined> {
@@ -784,8 +821,13 @@ export class Transaction {
     }
     if (accountBalance != null) {
       if (!raw) {
-        var account = isCa ? await this.getCreditAccount() : await this.getDebitAccount();
-        accountBalance = Utils.getRepresentativeValue(accountBalance, account?.isCredit());
+        var account = isCa
+          ? await this.getCreditAccount()
+          : await this.getDebitAccount();
+        accountBalance = Utils.getRepresentativeValue(
+          accountBalance,
+          account?.isCredit()
+        );
       }
       return Utils.round(accountBalance, this.book.getFractionDigits());
     } else {
@@ -795,81 +837,106 @@ export class Transaction {
 
   /**
    * Perform create new draft transaction.
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public async create(): Promise<Transaction> {
-    let operation = await TransactionService.createTransaction(this.book.getId(), this.payload);
+    let operation = await TransactionService.createTransaction(
+      this.book.getId(),
+      this.payload,
+      this.getConfig()
+    );
     this.payload = operation.transaction || {};
     return this;
   }
 
   /**
    * Update transaction, applying pending changes.
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public async update(): Promise<Transaction> {
-    let operation = await TransactionService.updateTransaction(this.book.getId(), this.payload);
+    let operation = await TransactionService.updateTransaction(
+      this.book.getId(),
+      this.payload,
+      this.getConfig()
+    );
     this.payload = operation.transaction || {};
     return this;
   }
 
-
   /**
    * Perform check transaction.
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public async check(): Promise<Transaction> {
-    let operation = await TransactionService.checkTransaction(this.book.getId(), this.payload);
+    let operation = await TransactionService.checkTransaction(
+      this.book.getId(),
+      this.payload,
+      this.getConfig()
+    );
     this.payload.checked = operation.transaction?.checked;
     return this;
   }
 
   /**
    * Perform uncheck transaction.
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public async uncheck(): Promise<Transaction> {
-    let operation = await TransactionService.uncheckTransaction(this.book.getId(), this.payload);
+    let operation = await TransactionService.uncheckTransaction(
+      this.book.getId(),
+      this.payload,
+      this.getConfig()
+    );
     this.payload.checked = operation.transaction?.checked;
     return this;
   }
 
   /**
    * Perform post transaction, changing credit and debit [[Account]] balances.
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public async post(): Promise<Transaction> {
-    let operation = await TransactionService.postTransaction(this.book.getId(), this.payload);
+    let operation = await TransactionService.postTransaction(
+      this.book.getId(),
+      this.payload,
+      this.getConfig()
+    );
     this.payload = operation.transaction || {};
     return this;
   }
 
   /**
    * Trash the transaction.
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public async trash(): Promise<Transaction> {
-    let operation = await TransactionService.trashTransaction(this.book.getId(), this.payload);
+    let operation = await TransactionService.trashTransaction(
+      this.book.getId(),
+      this.payload,
+      this.getConfig()
+    );
     this.payload.trashed = operation.transaction?.trashed;
     return this;
   }
 
   /**
    * Untrash the transaction.
-   * 
+   *
    * @returns This Transaction, for chaining
    */
   public async untrash(): Promise<Transaction> {
-    let operation = await TransactionService.restoreTransaction(this.book.getId(), this.payload);
+    let operation = await TransactionService.restoreTransaction(
+      this.book.getId(),
+      this.payload,
+      this.getConfig()
+    );
     this.payload.trashed = operation.transaction?.trashed;
     return this;
   }
-
-
 }

@@ -1,36 +1,39 @@
-import { Config } from '../model/Config.js';
-import { HttpRequest } from './http-request.js';
+import { Config } from "../model/Config.js";
+import { HttpRequest } from "./http-request.js";
 
 export interface HttpError {
-  errors:
-  {
-    domain: string,
-    reason: string,
-    message: string
-  }[]
-  code: number,
-  message: string
+  errors: {
+    domain: string;
+    reason: string;
+    message: string;
+  }[];
+  code: number;
+  message: string;
 }
 
 export interface HttpResponse {
-  data: any,
-  status?: number
+  data: any;
+  status?: number;
 }
 
 export class HttpApiRequest extends HttpRequest {
-
-  public static config: Config = {};
   private retry = 0;
+  private config: Config;
 
-  constructor(path: string) {
-    super(`${HttpApiRequest.config.apiBaseUrl || "https://app.bkper.com/_ah/api/bkper"}/${path}`);
+  constructor(path: string, config: Config) {
+    const effectiveConfig = config;
+    super(
+      `${
+        effectiveConfig.apiBaseUrl || "https://app.bkper.com/_ah/api/bkper"
+      }/${path}`
+    );
+    this.config = config;
   }
 
   async fetch(): Promise<HttpResponse> {
-
     this.addCustomHeaders();
-    this.setHeader('Authorization', `Bearer ${await getAccessToken()}`);
-    this.addParam('key', await getApiKey());
+    this.setHeader("Authorization", `Bearer ${await this.getAccessToken()}`);
+    this.addParam("key", await this.getApiKey());
 
     try {
       let resp = await super.execute();
@@ -40,8 +43,13 @@ export class HttpApiRequest extends HttpRequest {
         return { data: null, status: resp.status };
       } else if (resp.status != 400 && this.retry <= 3) {
         this.retry++;
-        if (HttpApiRequest.config.requestRetryHandler) {
-          await HttpApiRequest.config.requestRetryHandler(resp.status, resp.data, this.retry);
+        const effectiveConfig = this.config;
+        if (effectiveConfig.requestRetryHandler) {
+          await effectiveConfig.requestRetryHandler(
+            resp.status,
+            resp.data,
+            this.retry
+          );
         } else {
           console.log(`${JSON.stringify(resp.data)} - Retrying... `);
         }
@@ -51,8 +59,8 @@ export class HttpApiRequest extends HttpRequest {
         const errorObj = {
           response: {
             status: resp.status,
-            data: resp.data
-          }
+            data: resp.data,
+          },
         };
         throw this.handleError(errorObj);
       }
@@ -62,12 +70,17 @@ export class HttpApiRequest extends HttpRequest {
         throw error;
       }
       // Network error or fetch failure
-      if (error instanceof TypeError && error.message.includes('fetch')) {
+      if (error instanceof TypeError && error.message.includes("fetch")) {
         // Network error - retry if within retry limit
         if (this.retry <= 3) {
           this.retry++;
-          if (HttpApiRequest.config.requestRetryHandler) {
-            await HttpApiRequest.config.requestRetryHandler(520, undefined, this.retry);
+          const effectiveConfig = this.config;
+          if (effectiveConfig.requestRetryHandler) {
+            await effectiveConfig.requestRetryHandler(
+              520,
+              undefined,
+              this.retry
+            );
           } else {
             console.log(`Network error - Retrying... `);
           }
@@ -76,18 +89,22 @@ export class HttpApiRequest extends HttpRequest {
       }
 
       // Other errors
-      console.log('Error', error.message);
+      console.log("Error", error.message);
       throw this.handleError(error);
     }
   }
 
   private handleError(err: any) {
-    const customError = HttpApiRequest.config.requestErrorHandler ? HttpApiRequest.config.requestErrorHandler(err) : undefined;
+    const effectiveConfig = this.config;
+    const customError = effectiveConfig.requestErrorHandler
+      ? effectiveConfig.requestErrorHandler(err)
+      : undefined;
     if (customError) {
       return customError;
     } else {
       //Default error handler
-      let error: HttpError = err.response?.data?.error || err.data?.error || err.error;
+      let error: HttpError =
+        err.response?.data?.error || err.data?.error || err.error;
       if (error) {
         return error.message;
       } else {
@@ -97,45 +114,49 @@ export class HttpApiRequest extends HttpRequest {
   }
 
   private async addCustomHeaders() {
-    if (HttpApiRequest.config.requestHeadersProvider) {
-      const headers = await HttpApiRequest.config.requestHeadersProvider();
-      Object.entries(headers).forEach(([key, value]) => this.setHeader(key, value));
+    const effectiveConfig = this.config;
+    if (effectiveConfig.requestHeadersProvider) {
+      const headers = await effectiveConfig.requestHeadersProvider();
+      Object.entries(headers).forEach(([key, value]) =>
+        this.setHeader(key, value)
+      );
     }
   }
-}
 
-
-async function getApiKey() {
-  if (HttpApiRequest.config.apiKeyProvider) {
-    return await HttpApiRequest.config.apiKeyProvider()
-  }
-  return null;
-}
-
-async function getAccessToken(): Promise<string | undefined> {
-  let token: string | undefined = undefined;
-  if (HttpApiRequest.config.oauthTokenProvider) {
-    token = await HttpApiRequest.config.oauthTokenProvider();
-  } else {
-    console.warn(`Token provider NOT configured!`);
+  private async getApiKey() {
+    const effectiveConfig = this.config;
+    if (effectiveConfig.apiKeyProvider) {
+      return await effectiveConfig.apiKeyProvider();
+    }
+    return null;
   }
 
-  if (token) {
-    token = token.replace('Bearer ', '')
-    token = token.replace('bearer ', '')
-  }
+  private async getAccessToken(): Promise<string | undefined> {
+    let token: string | undefined = undefined;
+    const effectiveConfig = this.config;
+    if (effectiveConfig.oauthTokenProvider) {
+      token = await effectiveConfig.oauthTokenProvider();
+    } else {
+      console.warn(`Token provider NOT configured!`);
+    }
 
-  return token;
+    if (token) {
+      token = token.replace("Bearer ", "");
+      token = token.replace("bearer ", "");
+    }
+
+    return token;
+  }
 }
 
 export class HttpBooksApiV5Request extends HttpApiRequest {
-  constructor(service: string) {
-    super(`v5/books/${service}`)
+  constructor(service: string, config: Config) {
+    super(`v5/books/${service}`, config);
   }
 }
 
 export class HttpApiV5Request extends HttpApiRequest {
-  constructor(service: string) {
-    super(`v5/${service}`)
+  constructor(service: string, config: Config) {
+    super(`v5/${service}`, config);
   }
 }

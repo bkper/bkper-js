@@ -1,26 +1,24 @@
+import { Config } from "./Config.js";
+import { Resource } from "./Resource.js";
+import { Bkper } from "./Bkper.js";
 
 /**
  * This class defines a Template.
- * 
+ *
  * A Template is a pre-configured setup for [[Books]] and associated Google Sheets that provides users with a starting point for specific accounting or financial management needs.
- * 
+ *
  * @public
  */
-export class Template {
+export class Template extends Resource<bkper.Template> {
+  private config?: Config;
 
-  public payload: bkper.Template;
-
-  constructor(json?: bkper.Template) {
-    this.payload = json || {};
+  constructor(json?: bkper.Template, config?: Config) {
+    super(json);
+    this.config = config;
   }
 
-  /**
-   * Gets an immutable copy of the JSON payload for this Template.
-   *
-   * @returns An immutable copy of the json payload
-   */
-  public json(): bkper.Template {
-    return { ...this.payload };
+  public getConfig(): Config {
+    return this.config || Bkper.globalConfig;
   }
 
   /**

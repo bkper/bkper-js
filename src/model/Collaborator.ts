@@ -1,33 +1,27 @@
-import { Book } from './Book.js';
-import { Permission } from './Enums.js';
-import * as CollaboratorService from '../service/collaborator-service.js';
+import { Book } from "./Book.js";
+import { Config } from "./Config.js";
+import { Permission } from "./Enums.js";
+import * as CollaboratorService from "../service/collaborator-service.js";
+import { Resource } from "./Resource.js";
 
 /**
  * This class defines a Collaborator of a [[Book]].
- * 
+ *
  * A Collaborator represents a user that has been granted access to a Book with specific permissions.
- * 
+ *
  * @public
  */
-export class Collaborator {
-
-  public payload: bkper.Collaborator;
-
+export class Collaborator extends Resource<bkper.Collaborator> {
   /** @internal */
   private book: Book;
 
   constructor(book: Book, payload?: bkper.Collaborator) {
+    super(payload);
     this.book = book;
-    this.payload = payload || {};
   }
 
-  /**
-   * Gets an immutable copy of the JSON payload.
-   *
-   * @returns An immutable copy of the json payload
-   */
-  public json(): bkper.Collaborator {
-    return { ...this.payload };
+  public getConfig(): Config {
+    return this.book.getConfig();
   }
 
   /**
@@ -87,7 +81,12 @@ export class Collaborator {
    * @returns Promise with the created Collaborator
    */
   public async create(message?: string): Promise<Collaborator> {
-    this.payload = await CollaboratorService.addOrUpdateCollaborator(this.book.getId(), this.payload, message);
+    this.payload = await CollaboratorService.addOrUpdateCollaborator(
+      this.book.getId(),
+      this.payload,
+      message,
+      this.getConfig()
+    );
     this.book.clearCollaboratorCache();
     return this;
   }
@@ -98,7 +97,12 @@ export class Collaborator {
    * @returns Promise with the updated Collaborator
    */
   public async update(): Promise<Collaborator> {
-    this.payload = await CollaboratorService.addOrUpdateCollaborator(this.book.getId(), this.payload);
+    this.payload = await CollaboratorService.addOrUpdateCollaborator(
+      this.book.getId(),
+      this.payload,
+      undefined,
+      this.getConfig()
+    );
     this.book.clearCollaboratorCache();
     return this;
   }
@@ -111,11 +115,14 @@ export class Collaborator {
   public async remove(): Promise<Collaborator> {
     const email = this.getEmail();
     if (!email) {
-      throw new Error('Collaborator email is required');
+      throw new Error("Collaborator email is required");
     }
-    this.payload = await CollaboratorService.removeCollaborator(this.book.getId(), email);
+    this.payload = await CollaboratorService.removeCollaborator(
+      this.book.getId(),
+      email,
+      this.getConfig()
+    );
     this.book.clearCollaboratorCache();
     return this;
   }
-
 }

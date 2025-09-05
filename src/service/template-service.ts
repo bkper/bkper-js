@@ -1,7 +1,8 @@
 import { HttpApiRequest } from "./http-api-request.js";
+import { Config } from '../model/Config.js';
 
-export async function getTemplates(): Promise<bkper.Template[]> {
-  let response = await new HttpApiRequest(`v5/templates`).setMethod('GET').fetch();
+export async function getTemplates(config: Config): Promise<bkper.Template[]> {
+  let response = await new HttpApiRequest(`v5/templates`, config).setMethod('GET').fetch();
   if (response.data == null) {
     return [];
   }

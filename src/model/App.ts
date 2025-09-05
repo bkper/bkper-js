@@ -1,35 +1,33 @@
-import * as AppService  from '../service/app-service.js';
+import * as AppService from "../service/app-service.js";
 import { EventType } from "./Enums.js";
+import { Config } from "./Config.js";
+import { Resource } from "./Resource.js";
+import { Bkper } from "./Bkper.js";
 
 /**
  * Defines an App on Bkper.
- * 
+ *
  * Apps can be installed on Books by users.
- * 
+ *
  * @public
  */
-export class App {
+export class App extends Resource<bkper.App> {
+  private config?: Config;
 
-  public payload: bkper.App;
-
-  constructor(payload?: bkper.App) {
-    this.payload = payload || {};
+  constructor(payload?: bkper.App, config?: Config) {
+    super(payload);
+    this.config = config;
   }
 
-  /**
-   * Gets the wrapped plain JSON object.
-   *
-   * @returns The wrapped plain json object
-   */
-  public json(): bkper.App {
-    return {...this.payload };
+  public getConfig(): Config {
+    return this.config || Bkper.globalConfig;
   }
 
   /**
    * Sets the webhook url for development.
-   * 
+   *
    * @param webhookUrlDev - The webhook URL for development
-   * 
+   *
    * @returns This App, for chaining
    */
   public setWebhookUrlDev(webhookUrlDev: string): App {
@@ -39,9 +37,9 @@ export class App {
 
   /**
    * Sets the conversation url for development.
-   * 
+   *
    * @param conversationUrlDev - The conversation URL for development
-   * 
+   *
    * @returns This App, for chaining
    */
   public setConversationUrlDev(conversationUrlDev: string): App {
@@ -142,9 +140,9 @@ export class App {
 
   /**
    * Sets the whitelabeled user emails.
-   * 
+   *
    * @param emails - The user emails to whitelist
-   * 
+   *
    * @returns This App for chaining
    */
   public setUserEmails(emails?: string): App {
@@ -235,9 +233,9 @@ export class App {
 
   /**
    * Sets the developer email.
-   * 
+   *
    * @param email - The developer email to set
-   * 
+   *
    * @returns This App for chaining
    */
   public setDeveloperEmail(email?: string): App {
@@ -247,9 +245,9 @@ export class App {
 
   /**
    * Sets the client secret.
-   * 
+   *
    * @param clientSecret - The client secret to set
-   * 
+   *
    * @returns This App for chaining
    */
   public setClientSecret(clientSecret?: string): App {
@@ -286,7 +284,7 @@ export class App {
 
   /**
    * Gets the readme.md file as text.
-   * 
+   *
    * @returns The readme text
    */
   public getReadme(): string | undefined {
@@ -295,9 +293,9 @@ export class App {
 
   /**
    * Sets the readme.md file as text.
-   * 
+   *
    * @param readme - The readme text to set
-   * 
+   *
    * @returns This App, for chaining
    */
   public setReadme(readme?: string): App {
@@ -307,13 +305,13 @@ export class App {
 
   /**
    * Performs the app creation, applying pending changes.
-   * 
+   *
    * The App id MUST be unique. If another app is already existing, an error will be thrown.
    *
    * @returns This App after creation
    */
   public async create(): Promise<App> {
-    await AppService.createApp(this.payload);
+    await AppService.createApp(this.payload, this.getConfig());
     return this;
   }
 
@@ -323,7 +321,7 @@ export class App {
    * @returns This App after the partial update
    */
   public async patch(): Promise<App> {
-    await AppService.patchApp(this.payload);
+    await AppService.patchApp(this.payload, this.getConfig());
     return this;
   }
 
@@ -333,8 +331,7 @@ export class App {
    * @returns This App after the update
    */
   public async update(): Promise<App> {
-    await AppService.updateApp(this.payload);
+    await AppService.updateApp(this.payload, this.getConfig());
     return this;
   }
-
 }

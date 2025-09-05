@@ -15,16 +15,10 @@
  *
  * @public
  */
-export declare class Account {
-    payload: bkper.Account;
+export declare class Account extends Resource<bkper.Account> {
 
     constructor(book: Book, payload?: bkper.Account);
-    /**
-     * Gets an immutable copy of the JSON payload.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.Account;
+    getConfig(): Config;
     /**
      * Gets the Account internal id.
      *
@@ -442,15 +436,10 @@ export declare class Amount {
  *
  * @public
  */
-export declare class App {
-    payload: bkper.App;
-    constructor(payload?: bkper.App);
-    /**
-     * Gets the wrapped plain JSON object.
-     *
-     * @returns The wrapped plain json object
-     */
-    json(): bkper.App;
+export declare class App extends Resource<bkper.App> {
+    private config?;
+    constructor(payload?: bkper.App, config?: Config);
+    getConfig(): Config;
     /**
      * Sets the webhook url for development.
      *
@@ -1198,10 +1187,9 @@ export declare enum BalanceType {
 /**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
  *
- * You start by setting the API [[Config]] object using the static setConfig method.
+ * You can configure the library in two ways:
  *
- * Example:
- *
+ * 1. Using static configuration (traditional approach):
  * ```javascript
  * Bkper.setConfig({
  *   apiKeyProvider: () => process.env.BKPER_API_KEY,
@@ -1212,11 +1200,21 @@ export declare enum BalanceType {
  * const book = await bkper.getBook('bookId');
  * ```
  *
- * Once the config is set, you can create instances and start using the library.
+ * 2. Using per-instance configuration (recommended for Cloudflare Workers):
+ * ```javascript
+ * const bkper = new Bkper({
+ *   apiKeyProvider: () => process.env.BKPER_API_KEY,
+ *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
+ * });
+ *
+ * const book = await bkper.getBook('bookId');
+ * ```
  *
  * @public
  */
 export declare class Bkper {
+
+    private config;
     /**
      * Sets the global API configuration for all Bkper operations.
      *
@@ -1224,10 +1222,12 @@ export declare class Bkper {
      */
     static setConfig(config: Config): void;
     /**
-     * Creates a new Bkper instance using the global configuration set via setConfig().
-     * Make sure to call Bkper.setConfig() before creating instances.
+     * Creates a new Bkper instance.
+     *
+     * @param config - Optional Config object containing API key and OAuth token providers.
+     *                 If not provided, uses the global configuration set via setConfig().
      */
-    constructor();
+    constructor(config?: Config);
     /**
      * Gets the [[Book]] with the specified bookId from url param.
      *
@@ -1298,8 +1298,8 @@ export declare class Bkper {
  *
  * @public
  */
-export declare class Book {
-    payload: bkper.Book;
+export declare class Book extends Resource<bkper.Book> {
+    private config?;
 
 
 
@@ -1308,13 +1308,8 @@ export declare class Book {
 
 
 
-    constructor(payload?: bkper.Book);
-    /**
-     * Gets an immutable copy of the JSON payload for this Book.
-     *
-     * @returns An immutable copy of the JSON payload
-     */
-    json(): bkper.Book;
+    constructor(payload?: bkper.Book, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the unique identifier of this Book.
      *
@@ -1945,16 +1940,10 @@ export declare enum BotResponseType {
  *
  * @public
  */
-export declare class Collaborator {
-    payload: bkper.Collaborator;
+export declare class Collaborator extends Resource<bkper.Collaborator> {
 
     constructor(book: Book, payload?: bkper.Collaborator);
-    /**
-     * Gets an immutable copy of the JSON payload.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.Collaborator;
+    getConfig(): Config;
     /**
      * Gets the Collaborator internal id.
      *
@@ -2014,15 +2003,10 @@ export declare class Collaborator {
  *
  * @public
  */
-export declare class Collection {
-    payload: bkper.Collection;
-    constructor(payload?: bkper.Collection);
-    /**
-     * Gets an immutable copy of the JSON payload for this Collection.
-     *
-     * @returns The wrapped plain json object
-     */
-    json(): bkper.Collection;
+export declare class Collection extends Resource<bkper.Collection> {
+    private config?;
+    constructor(payload?: bkper.Collection, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the unique identifier of this Collection.
      *
@@ -2155,15 +2139,10 @@ export declare interface Config {
  *
  * @public
  */
-export declare class Connection {
-    payload: bkper.Connection;
-    constructor(payload?: bkper.Connection);
-    /**
-     * Gets an immutable copy of the JSON payload for this Connection.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.Connection;
+export declare class Connection extends Resource<bkper.Connection> {
+    private config?;
+    constructor(payload?: bkper.Connection, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the id of the Connection.
      *
@@ -2324,17 +2303,12 @@ export declare class Connection {
  *
  * @public
  */
-export declare class Conversation {
-    payload: bkper.Conversation;
+export declare class Conversation extends Resource<bkper.Conversation> {
 
 
-    constructor(agent: Agent, payload?: bkper.Conversation);
-    /**
-     * Gets an immutable copy of the JSON payload for this Conversation.
-     *
-     * @returns The wrapped plain json object
-     */
-    json(): bkper.Conversation;
+    private config?;
+    constructor(agent: Agent, payload?: bkper.Conversation, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the Agent associated to this Conversation.
      *
@@ -2544,16 +2518,10 @@ export declare enum EventType {
  *
  * @public
  */
-export declare class File {
-    payload: bkper.File;
+export declare class File extends Resource<bkper.File> {
 
     constructor(book: Book, payload?: bkper.File);
-    /**
-     * Gets an immutable copy of the JSON payload for this File.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.File;
+    getConfig(): Config;
     /**
      * Gets the File id.
      *
@@ -2674,8 +2642,7 @@ export declare class File {
  *
  * @public
  */
-export declare class Group {
-    payload: bkper.Group;
+export declare class Group extends Resource<bkper.Group> {
 
 
 
@@ -2683,12 +2650,7 @@ export declare class Group {
 
 
     constructor(book: Book, payload?: bkper.Group);
-    /**
-     * Gets an immutable copy of the json payload.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.Group;
+    getConfig(): Config;
     /**
      * Gets the id of this Group.
      *
@@ -2926,15 +2888,10 @@ export declare class Group {
  *
  * @public
  */
-export declare class Integration {
-    payload: bkper.Integration;
-    constructor(payload?: bkper.Integration);
-    /**
-     * Gets an immutable copy of the JSON payload for this Integration.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.Integration;
+export declare class Integration extends Resource<bkper.Integration> {
+    private config?;
+    constructor(payload?: bkper.Integration, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the [[Book]] id of the Integration.
      *
@@ -3041,17 +2998,11 @@ export declare class Integration {
  *
  * @public
  */
-export declare class Message {
-    payload: bkper.Message;
+export declare class Message extends Resource<bkper.Message> {
 
 
-    constructor(conversation: Conversation, payload?: bkper.Message);
-    /**
-     * Gets the wrapped plain json object.
-     *
-     * @returns The wrapped plain json object
-     */
-    json(): bkper.Message;
+    constructor(conversation: Conversation, payload?: bkper.Message, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the Message universal identifier.
      *
@@ -3254,16 +3205,10 @@ export declare enum Permission {
  *
  * @public
  */
-export declare class Query {
-    payload: bkper.Query;
+export declare class Query extends Resource<bkper.Query> {
 
     constructor(book: Book, payload?: bkper.Query);
-    /**
-     * Gets the wrapped plain json object.
-     *
-     * @returns The wrapped plain json object
-     */
-    json(): bkper.Query;
+    getConfig(): Config;
     /**
      * Gets the Query universal identifier.
      *
@@ -3320,21 +3265,47 @@ export declare class Query {
 }
 
 /**
+ * Abstract base class for all Bkper resources.
+ * Provides common functionality for config management and JSON serialization.
+ *
+ * @public
+ */
+declare abstract class Resource<T = any> {
+    /**
+     * The underlying payload data for this resource
+     */
+    protected payload: T;
+    /**
+     * Constructs a new Resource
+     * @param payload - The data payload for this resource
+     */
+    constructor(payload?: T);
+    /**
+     * Gets an immutable copy of the JSON payload for this resource.
+     * @returns An immutable copy of the json payload
+     */
+    json(): T;
+    /**
+     * Gets the effective configuration for this resource.
+     * Each resource must implement this to either:
+     * - Return its own config (for root containers like Book, Collection)
+     * - Delegate to its container (for contained resources like Account, Transaction)
+     * @returns The resolved configuration
+     */
+    abstract getConfig(): Config;
+}
+
+/**
  * This class defines a Template.
  *
  * A Template is a pre-configured setup for [[Books]] and associated Google Sheets that provides users with a starting point for specific accounting or financial management needs.
  *
  * @public
  */
-export declare class Template {
-    payload: bkper.Template;
-    constructor(json?: bkper.Template);
-    /**
-     * Gets an immutable copy of the JSON payload for this Template.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.Template;
+export declare class Template extends Resource<bkper.Template> {
+    private config?;
+    constructor(json?: bkper.Template, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the name of the Template.
      *
@@ -3393,16 +3364,10 @@ export declare class Template {
  *
  * @public
  */
-export declare class Transaction {
-    payload: bkper.Transaction;
+export declare class Transaction extends Resource<bkper.Transaction> {
 
     constructor(book: Book, payload?: bkper.Transaction);
-    /**
-     * Gets the JSON representation of the transaction.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.Transaction;
+    getConfig(): Config;
     /**
      * Gets the book associated with this transaction.
      *
@@ -3897,15 +3862,10 @@ export declare class TransactionList {
  *
  * @public
  */
-export declare class User {
-    payload: bkper.User;
-    constructor(payload?: bkper.User);
-    /**
-     * Gets an immutable copy of the JSON payload for this User.
-     *
-     * @returns An immutable copy of the json payload
-     */
-    json(): bkper.User;
+export declare class User extends Resource<bkper.User> {
+    private config?;
+    constructor(payload?: bkper.User, config?: Config);
+    getConfig(): Config;
     /**
      * Gets the id of the User.
      *

@@ -1,35 +1,27 @@
 import { Book } from "./Book.js";
-import * as FileService from '../service/file-service.js';
+import { Config } from "./Config.js";
+import * as FileService from "../service/file-service.js";
+import { Resource } from "./Resource.js";
 
 /**
- * 
+ *
  * This class defines a File uploaded to a [[Book]].
- * 
+ *
  * A File can be attached to a [[Transaction]] or used to import data.
- * 
+ *
  * @public
  */
-export class File {
-
-  public payload: bkper.File;
-
+export class File extends Resource<bkper.File> {
   /** @internal */
   private book: Book;
 
   constructor(book: Book, payload?: bkper.File) {
+    super(payload || { createdAt: `${Date.now()}` });
     this.book = book;
-    this.payload = payload || {
-      createdAt: `${Date.now()}`
-    };;
   }
 
-  /**
-   * Gets an immutable copy of the JSON payload for this File.
-   *
-   * @returns An immutable copy of the json payload
-   */
-  public json(): bkper.File {
-    return { ...this.payload };
+  public getConfig(): Config {
+    return this.book.getConfig();
   }
 
   /**
@@ -90,8 +82,17 @@ export class File {
    */
   public async getContent(): Promise<string | undefined> {
     const id = this.getId();
-    if (this.getId() != null && (this.payload == null || this.payload.content == null) && this.book && id) {
-      this.payload = await FileService.getFile(this.book.getId(), id);
+    if (
+      this.getId() != null &&
+      (this.payload == null || this.payload.content == null) &&
+      this.book &&
+      id
+    ) {
+      this.payload = await FileService.getFile(
+        this.book.getId(),
+        id,
+        this.getConfig()
+      );
     }
     return this.payload.content;
   }
@@ -132,7 +133,9 @@ export class File {
    * @returns The custom properties object
    */
   public getProperties(): { [key: string]: string } {
-    return this.payload.properties != null ? { ...this.payload.properties } : {};
+    return this.payload.properties != null
+      ? { ...this.payload.properties }
+      : {};
   }
 
   /**
@@ -157,8 +160,9 @@ export class File {
   public getProperty(...keys: string[]): string | undefined {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.payload.properties != null ? this.payload.properties[key] : null
-      if (value != null && value.trim() != '') {
+      let value =
+        this.payload.properties != null ? this.payload.properties[key] : null;
+      if (value != null && value.trim() != "") {
         return value;
       }
     }
@@ -174,14 +178,14 @@ export class File {
    * @returns This File, for chaining
    */
   public setProperty(key: string, value: string | null): File {
-    if (key == null || key.trim() == '') {
+    if (key == null || key.trim() == "") {
       return this;
     }
     if (this.payload.properties == null) {
       this.payload.properties = {};
     }
     if (!value) {
-      value = ''
+      value = "";
     }
     this.payload.properties[key] = value;
     return this;
@@ -206,9 +210,12 @@ export class File {
    */
   public async create(): Promise<File> {
     if (this.book) {
-      this.payload = await FileService.createFile(this.book.getId(), this.payload);
+      this.payload = await FileService.createFile(
+        this.book.getId(),
+        this.payload,
+        this.getConfig()
+      );
     }
     return this;
   }
-
 }
