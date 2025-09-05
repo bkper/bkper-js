@@ -10,7 +10,7 @@ export abstract class Resource<T = any> {
   /**
    * The underlying payload data for this resource
    */
-  protected payload: T;
+  public payload: T;
 
   /**
    * Constructs a new Resource
