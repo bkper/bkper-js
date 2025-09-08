@@ -65,6 +65,15 @@ export class Account extends Resource<bkper.Account> {
   }
 
   /**
+   * Tells if the balance of this Account has been verified/audited.
+   *
+   * @returns True if the balance of this Account has been verified/audited
+   */
+  public isBalanceVerified(): boolean | undefined {
+    return this.payload.balanceVerified;
+  }
+
+  /**
    * Gets the normalized name of this Account without spaces or special characters.
    *
    * @returns The name of this Account without spaces or special characters

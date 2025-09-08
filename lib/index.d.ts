@@ -45,6 +45,12 @@ export declare class Account extends Resource<bkper.Account> {
      */
     setName(name: string): Account;
     /**
+     * Tells if the balance of this Account has been verified/audited.
+     *
+     * @returns True if the balance of this Account has been verified/audited
+     */
+    isBalanceVerified(): boolean | undefined;
+    /**
      * Gets the normalized name of this Account without spaces or special characters.
      *
      * @returns The name of this Account without spaces or special characters
@@ -2718,6 +2724,12 @@ export declare class Group extends Resource<bkper.Group> {
      * @returns This Group, for chaining
      */
     setName(name: string): Group;
+    /**
+     * Tells if the balance of this Group has been verified/audited.
+     *
+     * @returns True if the balance of this Group has been verified/audited
+     */
+    isBalanceVerified(): Promise<boolean | undefined>;
     /**
      * Tells if the Group is locked by the Book owner.
      *

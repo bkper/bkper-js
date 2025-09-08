@@ -79,6 +79,21 @@ export class Group extends Resource<bkper.Group> {
   }
 
   /**
+   * Tells if the balance of this Group has been verified/audited.
+   *
+   * @returns True if the balance of this Group has been verified/audited
+   */
+  public async isBalanceVerified(): Promise<boolean | undefined> {
+    const accounts = await this.getAccounts();
+    for (const account of accounts) {
+      if (!account.isBalanceVerified()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * Tells if the Group is locked by the Book owner.
    *
    * @returns True if the Group is locked

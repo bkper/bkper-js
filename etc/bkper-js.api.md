@@ -24,6 +24,7 @@ export class Account extends Resource<bkper.Account> {
     getType(): AccountType;
     hasTransactionPosted(): boolean | undefined;
     isArchived(): boolean | undefined;
+    isBalanceVerified(): boolean | undefined;
     isCredit(): boolean | undefined;
     isInGroup(group: string | Group): Promise<boolean>;
     isPermanent(): boolean | undefined;
@@ -593,6 +594,7 @@ export class Group extends Resource<bkper.Group> {
     hasAccounts(): boolean | undefined;
     hasChildren(): boolean;
     hasParent(): boolean;
+    isBalanceVerified(): Promise<boolean | undefined>;
     isCredit(): boolean | undefined;
     isHidden(): boolean | undefined;
     isLeaf(): boolean;
