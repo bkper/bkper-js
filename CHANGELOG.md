@@ -12,12 +12,14 @@ See what's new and what has changed in bkper-js
     * Enhanced type safety with explicit Config type usage throughout
     * Standardized `json()` method across resources for consistent JSON serialization
     * Maintained full backward compatibility - no breaking changes to existing APIs
+* Added `Account.isBalanceVerified`
 * Added `App.getOwnerWebsiteUrl`
 * Added `App.getReadme`
 * Added `App.getRepositoryUrl`
 * Added `App.getWebsiteUrl`
 * Added `App.isInstallable`
 * Added `App.isRepositoryPrivate`
+* Added `Book.getCollaborators`
 * Added `Collaborator`
 * Added `Collaborator.json`
 * Added `Collaborator.getId`
@@ -28,7 +30,7 @@ See what's new and what has changed in bkper-js
 * Added `Collaborator.create`
 * Added `Collaborator.update`
 * Added `Collaborator.remove`
-* Added `Book.getCollaborators`
+* Added `Group.isBalanceVerified`
 * Replaced axios with native Fetch API for better compatibility with multiple environments
 
 **August 2025**
