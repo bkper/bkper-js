@@ -28,12 +28,6 @@ export abstract class Resource<T = any> {
     return { ...this.payload };
   }
 
-  /**
-   * Gets the effective configuration for this resource.
-   * Each resource must implement this to either:
-   * - Return its own config (for root containers like Book, Collection)
-   * - Delegate to its container (for contained resources like Account, Transaction)
-   * @returns The resolved configuration
-   */
-  public abstract getConfig(): Config;
+  /** @internal */
+  protected abstract getConfig(): Config;
 }

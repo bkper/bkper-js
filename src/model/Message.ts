@@ -28,11 +28,7 @@ export class Message extends Resource<bkper.Message> {
     this.conversation = conversation;
   }
 
-  /**
-   * Gets the configuration object for this Message.
-   *
-   * @returns The Config object from the parent Conversation
-   */
+  /** @internal */
   public getConfig(): Config {
     return this.conversation.getConfig();
   }

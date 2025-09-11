@@ -19,11 +19,7 @@ export class Query extends Resource<bkper.Query> {
     this.book = book;
   }
 
-  /**
-   * Gets the configuration object for this Query.
-   *
-   * @returns The Config object from the parent Book
-   */
+  /** @internal */
   public getConfig(): Config {
     return this.book.getConfig();
   }

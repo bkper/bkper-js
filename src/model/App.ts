@@ -19,11 +19,7 @@ export class App extends Resource<bkper.App> {
     this.config = config;
   }
 
-  /**
-   * Gets the configuration object for this App.
-   *
-   * @returns The Config object for this App or the global config
-   */
+  /** @internal */
   public getConfig(): Config {
     return this.config || Bkper.globalConfig;
   }
