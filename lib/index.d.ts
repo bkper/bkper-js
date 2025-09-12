@@ -2446,6 +2446,7 @@ export declare class Event {
      * @returns True if this Event has at least one Bot Response of type ERROR
      */
     hasErrorResponse(): boolean;
+
 }
 
 /**

@@ -80,8 +80,7 @@ export class BotResponse {
             throw new Error("Agent id null!");
         }
         const updatedEventPayload = await EventService.replayBotResponse(this.event.getBook(), eventId, agentId, this.event.getBook().getConfig());
-        this.event.payload = updatedEventPayload;
-        this.findAndUpdateBotResponsePayload(updatedEventPayload);
+        this.updateCache(updatedEventPayload);
         return this;
     }
 
@@ -100,19 +99,18 @@ export class BotResponse {
             throw new Error("Agent id null!");
         }
         const updatedEventPayload = await EventService.deleteBotResponse(this.event.getBook(), eventId, agentId, this.event.getBook().getConfig());
-        this.event.payload = updatedEventPayload;
-        this.findAndUpdateBotResponsePayload(updatedEventPayload);
+        this.updateCache(updatedEventPayload);
         return this;
     }
 
     /** @internal */
-    private findAndUpdateBotResponsePayload(event: bkper.Event): void {
-        if (event && event.botResponses) {
-            const updatedPayload = event.botResponses.find(r => r.agentId && r.agentId === this.getAgentId());
-            if (updatedPayload) {
-                this.payload = updatedPayload;
-            }
-        }
+    private updateCache(updatedEventPayload: bkper.Event): void {
+        // Update event
+        this.event.payload = updatedEventPayload;
+        this.event.clearCache();
+        // Update bot response
+        const updatedBotResponsePayload = updatedEventPayload?.botResponses?.find(r => r.agentId && r.agentId === this.getAgentId());
+        this.payload = updatedBotResponsePayload || {};
     }
 
 }

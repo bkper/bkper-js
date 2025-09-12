@@ -465,6 +465,8 @@ export enum DecimalSeparator {
 // @public
 export class Event {
     constructor(book: Book, payload?: bkper.Event);
+    // @internal (undocumented)
+    clearCache(): void;
     getAgent(): Agent | undefined;
     getBook(): Book;
     getBotResponses(): BotResponse[];
