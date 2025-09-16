@@ -1,7 +1,6 @@
 import { Book } from "./Book.js";
 import { App } from "./App.js";
 import * as AppService from "../service/app-service.js";
-import * as ConversationService from "../service/conversation-service.js";
 import * as BookService from "../service/book-service.js";
 import * as CollectionService from "../service/collection-service.js";
 import * as UserService from "../service/user-service.js";
@@ -10,8 +9,6 @@ import { User } from "./User.js";
 import { Config } from "./Config.js";
 import { Template } from "./Template.js";
 import { Collection } from "./Collection.js";
-import { Conversation } from "./Conversation.js";
-import { Agent } from "./Agent.js";
 
 /**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
@@ -49,7 +46,7 @@ export class Bkper {
 
   /**
    * Sets the global API configuration for all Bkper operations.
-   *  
+   *
    * WARNING: This configuration will be shared and should NOT be used on shared environments.
    *
    * @param config - The Config object containing API key and OAuth token providers
@@ -60,7 +57,7 @@ export class Bkper {
 
   /**
    * Creates a new Bkper instance with the provided configuration.
-   * 
+   *
    * @param config - The Config object containing API key and OAuth token providers.
    *                 If not provided, uses the global configuration set via setConfig().
    */
@@ -128,24 +125,6 @@ export class Bkper {
   public async getApps(): Promise<App[]> {
     let apps = await AppService.getApps(this.config);
     return apps.map((app) => new App(app));
-  }
-
-  /**
-   * Gets all [[Conversations]] available for the user.
-   *
-   * @returns The retrieved list of Conversations
-   */
-  public async getConversations(): Promise<Conversation[]> {
-    const conversationPayloads = await ConversationService.getConversations(
-      this.config
-    );
-    let conversations: Conversation[] = [];
-    for (const payload of conversationPayloads) {
-      const agent = new Agent(payload.agent);
-      const conversation = new Conversation(agent, payload);
-      conversations.push(conversation);
-    }
-    return conversations;
   }
 
   /**

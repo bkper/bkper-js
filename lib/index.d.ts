@@ -455,14 +455,6 @@ export declare class App extends Resource<bkper.App> {
      */
     setWebhookUrlDev(webhookUrlDev: string): App;
     /**
-     * Sets the conversation url for development.
-     *
-     * @param conversationUrlDev - The conversation URL for development
-     *
-     * @returns This App, for chaining
-     */
-    setConversationUrlDev(conversationUrlDev: string): App;
-    /**
      * Gets the App universal identifier.
      *
      * @returns The App universal identifier
@@ -498,12 +490,6 @@ export declare class App extends Resource<bkper.App> {
      * @returns True if this App is installable
      */
     isInstallable(): boolean;
-    /**
-     * Checks if this App is conversational.
-     *
-     * @returns True if this App is conversational
-     */
-    isConversational(): boolean;
     /**
      * Gets the logo url of this App.
      *
@@ -1271,12 +1257,6 @@ export declare class Bkper {
      * @returns The retrieved list of Apps
      */
     getApps(): Promise<App[]>;
-    /**
-     * Gets all [[Conversations]] available for the user.
-     *
-     * @returns The retrieved list of Conversations
-     */
-    getConversations(): Promise<Conversation[]>;
     /**
      * Gets all [[Templates]] available for the user.
      *
@@ -2305,65 +2285,6 @@ export declare class Connection extends Resource<bkper.Connection> {
 }
 
 /**
- * Defines a Conversation on Bkper.
- *
- * A Conversation represents an interaction between [[Users]] and [[Apps]].
- *
- * @public
- */
-export declare class Conversation extends Resource<bkper.Conversation> {
-
-
-    private config?;
-    constructor(agent: Agent, payload?: bkper.Conversation, config?: Config);
-
-    /**
-     * Gets the Agent associated to this Conversation.
-     *
-     * @returns The Agent associated to this Conversation
-     */
-    getAgent(): Agent;
-    /**
-     * Gets the Conversation universal identifier.
-     *
-     * @returns The Conversation universal identifier
-     */
-    getId(): string | undefined;
-    /**
-     * Gets the title of the Conversation.
-     *
-     * @returns The title of the Conversation
-     */
-    getTitle(): string | undefined;
-    /**
-     * Gets the Date the Conversation was created.
-     *
-     * @returns The Date the Conversation was created
-     */
-    getCreatedAt(): Date | undefined;
-    /**
-     * Gets the Date the Conversation was last updated.
-     *
-     * @returns The Date the Conversation was last updated
-     */
-    getUpdatedAt(): Date | undefined;
-    /**
-     * Gets the Messages that compose this Conversation.
-     *
-     * @returns The Messages in this Conversation
-     */
-    getMessages(): Promise<Message[]>;
-
-
-    /**
-     * Performs create Conversation.
-     *
-     * @returns The created Conversation object
-     */
-    create(): Promise<Conversation>;
-}
-
-/**
  * Decimal separator of numbers on book
  *
  * @public
@@ -3004,119 +2925,6 @@ export declare class Integration extends Resource<bkper.Integration> {
      * @returns The removed Integration object
      */
     remove(): Promise<Integration>;
-}
-
-/**
- * Defines a Message on Bkper.
- *
- * A Message is a building block of a [[Conversation]].
- *
- * @public
- */
-export declare class Message extends Resource<bkper.Message> {
-
-
-    constructor(conversation: Conversation, payload?: bkper.Message, config?: Config);
-
-    /**
-     * Gets the Message universal identifier.
-     *
-     * @returns The Message universal identifier
-     */
-    getId(): string | undefined;
-    /**
-     * Gets the Agent associated with the Message.
-     *
-     * @returns The Agent associated with the Message, if any
-     */
-    getAgent(): Agent | undefined;
-    /**
-     * Gets the Conversation of the Message.
-     *
-     * @returns The Conversation of the Message
-     */
-    getConversation(): Conversation;
-    /**
-     * Gets the User associated with the Message.
-     *
-     * @returns The User associated with the Message
-     */
-    getUser(): User | undefined;
-    /**
-     * Gets the Date the Message was created.
-     *
-     * @returns The Date the Message was created
-     */
-    getCreatedAt(): Date | undefined;
-    /**
-     * Gets the text content of the Message.
-     *
-     * @returns The text content of the Message
-     */
-    getContent(): string | undefined;
-    /**
-     * Sets the text content of the Message.
-     *
-     * @param content - The text content of the Message
-     *
-     * @returns This Message, for chaining
-     */
-    setContent(content: string): Message;
-    /**
-     * Gets the custom properties stored in this Message.
-     *
-     * @returns The custom properties stored in this Message
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Sets the custom properties of the Message
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Message, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): Message;
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The retrieved property value
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Sets a custom property in the Message.
-     *
-     * @param key - The property key
-     * @param value - The property value
-     *
-     * @returns This Message, for chaining
-     */
-    setProperty(key: string, value: string | null): Message;
-    /**
-     * Deletes a custom property from the Message.
-     *
-     * @param key - The property key
-     *
-     * @returns This Message, for chaining
-     */
-    deleteProperty(key: string): Message;
-    /**
-     * Creates the Message and receives the synchronous Agent response.
-     *
-     * @returns The Agent response Message, with the created Message as its parent
-     */
-    create(): Promise<Message>;
-    /**
-     * Streams the Message to the Bkper API.
-     *
-     * @returns A Promise that resolves when the streaming is complete
-     */
-    stream(): Promise<void>;
 }
 
 /**

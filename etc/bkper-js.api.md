@@ -110,13 +110,11 @@ export class App extends Resource<bkper.App> {
     getRepositoryUrl(): string | undefined;
     getWebsiteUrl(): string | undefined;
     hasEvents(): boolean;
-    isConversational(): boolean;
     isInstallable(): boolean;
     isPublished(): boolean;
     isRepositoryPrivate(): boolean | undefined;
     patch(): Promise<App>;
     setClientSecret(clientSecret?: string): App;
-    setConversationUrlDev(conversationUrlDev: string): App;
     setDeveloperEmail(email?: string): App;
     setReadme(readme?: string): App;
     setUserEmails(emails?: string): App;
@@ -231,7 +229,6 @@ export class Bkper {
     getBook(id: string, includeAccounts?: boolean, includeGroups?: boolean): Promise<Book>;
     getBooks(query?: string): Promise<Book[]>;
     getCollections(): Promise<Collection[]>;
-    getConversations(): Promise<Conversation[]>;
     getTemplates(): Promise<Template[]>;
     getUser(): Promise<User>;
     // @internal (undocumented)
@@ -437,24 +434,6 @@ export class Connection extends Resource<bkper.Connection> {
 }
 
 // @public
-export class Conversation extends Resource<bkper.Conversation> {
-    constructor(agent: Agent, payload?: bkper.Conversation, config?: Config);
-    create(): Promise<Conversation>;
-    getAgent(): Agent;
-    // @internal (undocumented)
-    getConfig(): Config;
-    getCreatedAt(): Date | undefined;
-    getId(): string | undefined;
-    getMessages(): Promise<Message[]>;
-    getTitle(): string | undefined;
-    getUpdatedAt(): Date | undefined;
-    // @internal (undocumented)
-    setUpdatedAt(updatedAtMs: string): void;
-    // @internal (undocumented)
-    updateMessagesCache(message: Message): void;
-}
-
-// @public
 export enum DecimalSeparator {
     // (undocumented)
     COMMA = "COMMA",
@@ -648,31 +627,6 @@ export class Integration extends Resource<bkper.Integration> {
         [key: string]: string;
     }): Integration;
     setProperty(key: string, value: string | null): Integration;
-}
-
-// @public
-export class Message extends Resource<bkper.Message> {
-    constructor(conversation: Conversation, payload?: bkper.Message, config?: Config);
-    create(): Promise<Message>;
-    deleteProperty(key: string): Message;
-    getAgent(): Agent | undefined;
-    // @internal (undocumented)
-    getConfig(): Config;
-    getContent(): string | undefined;
-    getConversation(): Conversation;
-    getCreatedAt(): Date | undefined;
-    getId(): string | undefined;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
-    getUser(): User | undefined;
-    setContent(content: string): Message;
-    setProperties(properties: {
-        [key: string]: string;
-    }): Message;
-    setProperty(key: string, value: string | null): Message;
-    stream(): Promise<void>;
 }
 
 // @public

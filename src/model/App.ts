@@ -37,18 +37,6 @@ export class App extends Resource<bkper.App> {
   }
 
   /**
-   * Sets the conversation url for development.
-   *
-   * @param conversationUrlDev - The conversation URL for development
-   *
-   * @returns This App, for chaining
-   */
-  public setConversationUrlDev(conversationUrlDev: string): App {
-    this.payload.conversationUrlDev = conversationUrlDev;
-    return this;
-  }
-
-  /**
    * Gets the App universal identifier.
    *
    * @returns The App universal identifier
@@ -101,15 +89,6 @@ export class App extends Resource<bkper.App> {
    */
   public isInstallable(): boolean {
     return this.payload.installable || false;
-  }
-
-  /**
-   * Checks if this App is conversational.
-   *
-   * @returns True if this App is conversational
-   */
-  public isConversational(): boolean {
-    return this.payload.conversational || false;
   }
 
   /**
