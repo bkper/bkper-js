@@ -531,6 +531,7 @@ export class File extends Resource<bkper.File> {
     constructor(book: Book, payload?: bkper.File);
     create(): Promise<File>;
     deleteProperty(key: string): File;
+    getBook(): Book;
     // @internal (undocumented)
     getConfig(): Config;
     getContent(): Promise<string | undefined>;

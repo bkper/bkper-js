@@ -2451,6 +2451,12 @@ export declare enum EventType {
 export declare class File extends Resource<bkper.File> {
 
     constructor(book: Book, payload?: bkper.File);
+    /**
+     * Gets the Book this File belongs to.
+     *
+     * @returns The Book instance that owns this File
+     */
+    getBook(): Book;
 
     /**
      * Gets the File id.
