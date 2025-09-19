@@ -20,6 +20,15 @@ export class File extends Resource<bkper.File> {
     this.book = book;
   }
 
+  /**
+   * Gets the Book this File belongs to.
+   *
+   * @returns The Book instance that owns this File
+   */
+  public getBook(): Book {
+    return this.book;
+  }
+
   /** @internal */
   public getConfig(): Config {
     return this.book.getConfig();
