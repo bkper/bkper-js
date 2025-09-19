@@ -238,8 +238,13 @@ export class Transaction extends Resource<bkper.Transaction> {
    * @returns This Transaction, for chaining
    */
   public setFiles(files: File[]): Transaction {
-    const filePayloads = files.map((file) => file.json());
-    this.payload.files = [...filePayloads];
+    const filePayloads: bkper.File[] = files.map((file) => {
+      return {
+        id: file.getId(), 
+        name: file.getName()
+      }
+    });
+    this.payload.files = filePayloads;
     return this;
   }
 
@@ -466,11 +471,11 @@ export class Transaction extends Resource<bkper.Transaction> {
   public setDebitAccount(account: Account | bkper.Account): Transaction {
     if (account instanceof Account) {
       if (account != null && account.getId() != null) {
-        this.payload.debitAccount = account.json();
+        this.payload.debitAccount = {id: account.getId(), name: account.getName()};
       }
     } else {
       if (account != null && account.id != null) {
-        this.payload.debitAccount = account;
+        this.payload.debitAccount = {id: account.id, name: account.name};
       }
     }
     return this;
