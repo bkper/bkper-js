@@ -620,6 +620,7 @@ export class Integration extends Resource<bkper.Integration> {
     // @deprecated
     getLogo(): string | undefined;
     getLogoUrl(): string | undefined;
+    getLogoUrlDark(): string | undefined;
     getName(): string | undefined;
     getProperties(): {
         [key: string]: string;

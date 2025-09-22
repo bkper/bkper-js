@@ -88,6 +88,15 @@ export class Integration extends Resource<bkper.Integration> {
   }
 
   /**
+   * Gets the logo url of this Integration in dark mode.
+   *
+   * @returns The logo url of this Integration in dark mode
+   */
+  public getLogoUrlDark(): string | undefined {
+    return this.payload.logoDark;
+  }
+
+  /**
    * Gets the date when the Integration was added.
    *
    * @returns The Integration add date in milliseconds
