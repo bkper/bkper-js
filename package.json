@@ -1,6 +1,6 @@
 {
   "name": "bkper-js",
-  "version": "2.10.2",
+  "version": "2.11.0",
   "description": "Javascript client for Bkper REST API",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
