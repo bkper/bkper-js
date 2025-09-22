@@ -2868,8 +2868,16 @@ export declare class Integration extends Resource<bkper.Integration> {
      * Gets the logo of the Integration.
      *
      * @returns The Integration's logo
+     *
+     * @deprecated Use getLogoUrl instead.
      */
     getLogo(): string | undefined;
+    /**
+     * Gets the logo url of this Integration.
+     *
+     * @returns The logo url of this Integration
+     */
+    getLogoUrl(): string | undefined;
     /**
      * Gets the date when the Integration was added.
      *

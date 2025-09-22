@@ -617,7 +617,9 @@ export class Integration extends Resource<bkper.Integration> {
     getDateAddedMs(): string | undefined;
     getId(): string | undefined;
     getLastUpdateMs(): string | undefined;
+    // @deprecated
     getLogo(): string | undefined;
+    getLogoUrl(): string | undefined;
     getName(): string | undefined;
     getProperties(): {
         [key: string]: string;

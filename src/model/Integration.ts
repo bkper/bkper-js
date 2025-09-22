@@ -9,6 +9,7 @@ import { Bkper } from "./Bkper.js";
  * @public
  */
 export class Integration extends Resource<bkper.Integration> {
+
   private config?: Config;
 
   constructor(payload?: bkper.Integration, config?: Config) {
@@ -70,8 +71,19 @@ export class Integration extends Resource<bkper.Integration> {
    * Gets the logo of the Integration.
    *
    * @returns The Integration's logo
+   * 
+   * @deprecated Use getLogoUrl instead.
    */
   public getLogo(): string | undefined {
+    return this.payload.logo;
+  }
+
+  /**
+   * Gets the logo url of this Integration.
+   *
+   * @returns The logo url of this Integration
+   */
+  public getLogoUrl(): string | undefined {
     return this.payload.logo;
   }
 
