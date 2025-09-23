@@ -123,6 +123,15 @@ export class App extends Resource<bkper.App> {
 }
 
 // @public
+export class Backlog extends Resource<bkper.Backlog> {
+    constructor(payload?: bkper.Backlog, config?: Config);
+    // @internal (undocumented)
+    getConfig(): Config;
+    // (undocumented)
+    getCount(): number | undefined;
+}
+
+// @public
 export class Balance {
     constructor(container: BalancesContainer, balancePlain: bkper.Balance);
     getCumulativeBalance(): Amount;
@@ -265,6 +274,7 @@ export class Book extends Resource<bkper.Book> {
     getAccounts(): Promise<Account[]>;
     getApps(): Promise<App[]>;
     getAutoPost(): boolean | undefined;
+    getBacklog(): Promise<Backlog>;
     getBalancesReport(query: string): Promise<BalancesReport>;
     getClosingDate(): string | undefined;
     getCollaborators(): Promise<Collaborator[]>;
