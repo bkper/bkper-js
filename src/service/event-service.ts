@@ -33,3 +33,8 @@ export async function replayEventsBatch(book: Book, eventList: bkper.EventList, 
   }
   await request.fetch();
 }
+
+export async function getBacklog(book: Book, config: Config): Promise<bkper.Backlog> {
+  const response = await new HttpBooksApiV5Request(`${book.getId()}/events/backlog`, config).setMethod("GET").fetch();
+  return response.data;
+}

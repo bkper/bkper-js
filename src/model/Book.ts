@@ -33,6 +33,7 @@ import { App } from "./App.js";
 import { Event } from "./Event.js";
 import { Query } from "./Query.js";
 import { Bkper } from "./Bkper.js";
+import { Backlog } from "./Backlog.js";
 
 /**
  * A Book represents a [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
@@ -1366,4 +1367,15 @@ export class Book extends Resource<bkper.Book> {
     }
     return this.collaborators;
   }
+
+  /**
+   * Gets the Backlog of this Book.
+   *
+   * @returns The Backlog object
+   */
+  public async getBacklog(): Promise<Backlog> {
+    const backlogPayload = await EventService.getBacklog(this, this.getConfig());
+    return new Backlog(backlogPayload);
+  }
+
 }
