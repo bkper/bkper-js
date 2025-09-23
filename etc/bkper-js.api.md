@@ -127,7 +127,6 @@ export class Backlog extends Resource<bkper.Backlog> {
     constructor(payload?: bkper.Backlog, config?: Config);
     // @internal (undocumented)
     getConfig(): Config;
-    // (undocumented)
     getCount(): number | undefined;
 }
 
