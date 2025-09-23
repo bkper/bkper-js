@@ -20,6 +20,9 @@ See what's new and what has changed in bkper-js
 - Added `App.isInstallable`
 - Added `App.isRepositoryPrivate`
 - Added `Book.getCollaborators`
+- Added `Book.getBacklog`
+- Added `Backlog`
+- Added `Backlog.getCount`
 - Added `Collaborator`
 - Added `Collaborator.json`
 - Added `Collaborator.getId`
