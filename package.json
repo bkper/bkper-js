@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"rootDir\": \".\" }' mocha -r ts-node/register 'test/**/*.ts'",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"rootDir\": \".\", \"lib\": [\"es2020\", \"dom\"] }' mocha -r ts-node/register 'test/**/*.ts'",
     "clean": "rm -rf ./lib & rm -rf ./node_modules & wait",
     "prebuild": "bun install",
     "build": "run-s build:*",

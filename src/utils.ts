@@ -24,6 +24,23 @@ export function repeatString(text: string, times: number): string {
   return text + repeatString(text, times - 1);;
 }
 
+export function extractTagsFromText(text?: string): string[] {
+  if (!text || typeof text !== 'string') {
+    return [];
+  }
+
+  const tagRegex = /#([a-zA-Z0-9_]+)/g;
+  const tagsSet = new Set<string>();
+  let match: RegExpExecArray | null;
+
+  while ((match = tagRegex.exec(text)) !== null) {
+    if (match[1]) {
+      tagsSet.add(match[1]);
+    }
+  }
+
+  return Array.from(tagsSet);
+}
 
 //SAME AS bkper-app
 

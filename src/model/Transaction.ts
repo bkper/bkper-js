@@ -170,7 +170,16 @@ export class Transaction extends Resource<bkper.Transaction> {
    * @returns All #hashtags used on the transaction
    */
   public getTags(): string[] {
-    return this.payload.tags || [];
+    if (this.payload.tags && this.payload.tags.length > 0) {
+      return this.payload.tags;
+    }
+
+    const description = this.getDescription();
+    if (description && description.includes('#')) {
+      return Utils.extractTagsFromText(description);
+    }
+
+    return [];
   }
 
   /**
