@@ -3605,6 +3605,12 @@ export declare class Transaction extends Resource<bkper.Transaction> {
      */
     getCreatedAtFormatted(): string;
     /**
+     * Gets the username of the user who created the transaction.
+     *
+     * @returns The username of the user who created the transaction
+     */
+    getCreatedBy(): string | undefined;
+    /**
      * Gets the date when the transaction was last updated.
      *
      * @returns The date the transaction was last updated

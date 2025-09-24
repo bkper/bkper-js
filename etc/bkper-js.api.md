@@ -746,6 +746,7 @@ export class Transaction extends Resource<bkper.Transaction> {
     getConfig(): Config;
     getCreatedAt(): Date;
     getCreatedAtFormatted(): string;
+    getCreatedBy(): string | undefined;
     getCreditAccount(): Promise<Account | undefined>;
     getCreditAccountName(): Promise<string | undefined>;
     getCreditAmount(account: Account | string): Promise<Amount | undefined>;
