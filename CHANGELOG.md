@@ -37,6 +37,7 @@ See what's new and what has changed in bkper-js
 - Deprecated `Integration.getLogo`
 - Added `Integration.getLogoUrl`
 - Added `Integration.getLogoUrlDark`
+- Added `Transaction.getCreatedBy`
 - Replaced axios with native Fetch API for better compatibility with multiple environments
 
 **August 2025**
