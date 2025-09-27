@@ -46,6 +46,9 @@ export class Book extends Resource<bkper.Book> {
 
   private config?: Config;
 
+  private allGroupsLoaded: boolean = false;
+  private allAccountsLoaded: boolean = false;
+
   /** @internal */
   private collection?: Collection;
 
@@ -77,8 +80,8 @@ export class Book extends Resource<bkper.Book> {
       this.payload.groups = this.payload.groups || [];
       this.payload.accounts = this.payload.accounts || [];
     }
-    this.mapGroups(this.payload.groups);
-    this.mapAccounts(this.payload.accounts);
+    this.allGroupsLoaded = this.mapGroups(this.payload.groups);
+    this.allAccountsLoaded = this.mapAccounts(this.payload.accounts);
   }
 
   /** @internal */
@@ -889,7 +892,7 @@ export class Book extends Resource<bkper.Book> {
     }
     // Try to get account by name
     if (!account && this.nameAccountMap) {
-      account = this.nameAccountMap.get(idOrName);
+      account = this.nameAccountMap.get(Utils.normalizeName(idOrName));
     }
     // Try to fetch account from server
     if (!account) {
@@ -900,6 +903,7 @@ export class Book extends Resource<bkper.Book> {
       );
       if (accountPayload) {
         account = new Account(this, accountPayload);
+        this.updateAccountCache(account);
       }
     }
 
@@ -910,28 +914,23 @@ export class Book extends Resource<bkper.Book> {
   private updateGroupCache(group: Group): void {
     this.updateGroupIdMap(group);
     this.updateGroupNameMap(group);
-    if (this.idGroupMap) {
-      group.buildGroupTree(this.idGroupMap);
-    }
   }
 
   /** @internal */
   private updateGroupIdMap(group: Group): void {
-    if (this.idGroupMap) {
-      const id = group.getId();
-      if (id) {
-        this.idGroupMap.set(id, group);
-      }
+    this.idGroupMap = this.idGroupMap || new Map<string, Group>();
+    const id = group.getId();
+    if (id) {
+      this.idGroupMap.set(id, group);
     }
   }
 
   /** @internal */
   private updateGroupNameMap(group: Group): void {
-    if (this.nameGroupMap) {
-      const normalizedName = group.getNormalizedName();
-      if (normalizedName) {
-        this.nameGroupMap.set(normalizedName, group);
-      }
+    this.nameGroupMap = this.nameGroupMap || new Map<string, Group>();
+    const normalizedName = group.getNormalizedName();
+    if (normalizedName) {
+      this.nameGroupMap.set(normalizedName, group);
     }
   }
 
@@ -939,41 +938,27 @@ export class Book extends Resource<bkper.Book> {
   private updateAccountCache(account: Account): void {
     this.updateAccountIdMap(account);
     this.updateAccountNameMap(account);
-    if (this.idAccountMap || this.nameAccountMap) {
-      this.linkAccountsAndGroups(account);
-    }
   }
 
   /** @internal */
   private updateAccountIdMap(account: Account): void {
-    if (this.idAccountMap) {
-      const id = account.getId();
-      if (id) {
-        this.idAccountMap.set(id, account);
-      }
+    this.idAccountMap = this.idAccountMap || new Map<string, Account>();
+    const id = account.getId();
+    if (id) {
+      this.idAccountMap.set(id, account);
     }
   }
 
   /** @internal */
   private updateAccountNameMap(account: Account): void {
-    if (this.nameAccountMap) {
-      const normalizedName = account.getNormalizedName();
-      if (normalizedName) {
-        this.nameAccountMap.set(normalizedName, account);
-      }
+    this.nameAccountMap = this.nameAccountMap || new Map<string, Account>();
+    const normalizedName = account.getNormalizedName();
+    if (normalizedName) {
+    this.nameAccountMap.set(normalizedName, account);
     }
   }
 
-  /** @internal */
-  private linkAccountsAndGroups(account: Account) {
-    const groupPayloads = account.json().groups || [];
-    for (const groupPayload of groupPayloads) {
-      const group = this.idGroupMap?.get(groupPayload.id || "");
-      if (group != null) {
-        group.addAccount(account);
-      }
-    }
-  }
+
 
   /** @internal */
   getMostRecentLockDate_(): string | null {
@@ -1017,7 +1002,7 @@ export class Book extends Resource<bkper.Book> {
     }
     // Try to get group by name
     if (!group && this.nameGroupMap) {
-      group = this.nameGroupMap.get(idOrName);
+      group = this.nameGroupMap.get(Utils.normalizeName(idOrName));
     }
     // Try to fetch group from server
     if (!group) {
@@ -1028,6 +1013,7 @@ export class Book extends Resource<bkper.Book> {
       );
       if (groupPayload) {
         group = new Group(this, groupPayload);
+        this.updateGroupCache(group);
       }
     }
 
@@ -1040,28 +1026,31 @@ export class Book extends Resource<bkper.Book> {
    * @returns The retrieved [[Group]] objects
    */
   public async getGroups(): Promise<Group[]> {
-    if (this.idGroupMap) {
-      return Array.from(this.idGroupMap.values());
+    if (this.allGroupsLoaded) {
+      return Array.from(this.idGroupMap?.values() || []);
     }
     let groups = await GroupService.getGroups(this.getId(), this.getConfig());
-    return this.mapGroups(groups);
+    this.allGroupsLoaded = this.mapGroups(groups);
+    return Array.from(this.idGroupMap?.values() || []);
   }
 
   /** @internal */
-  private mapGroups(groups?: bkper.Group[]): Group[] {
+  private mapGroups(groups?: bkper.Group[]): boolean {
     if (!groups) {
-      return [];
+      return false;
     }
     let groupsObj = groups.map((group) => new Group(this, group));
     this.idGroupMap = new Map<string, Group>();
     this.nameGroupMap = new Map<string, Group>();
     for (const group of groupsObj) {
       this.updateGroupCache(group);
+      group.buildGroupTree(this.idGroupMap);
+
     }
     for (const group of groupsObj) {
       group.buildGroupTree(this.idGroupMap);
     }
-    return groupsObj;
+    return true;
   }
 
   /**
@@ -1070,29 +1059,47 @@ export class Book extends Resource<bkper.Book> {
    * @returns The retrieved [[Account]] objects
    */
   public async getAccounts(): Promise<Account[]> {
-    if (this.idAccountMap) {
-      return Array.from(this.idAccountMap.values());
+    if (this.allAccountsLoaded) {
+      return Array.from(this.idAccountMap?.values() || []);
     }
+
+    //Ensure groups are loaded
+    await this.getGroups();
+    
     let accounts = await AccountService.getAccounts(
       this.getId(),
       this.getConfig()
     );
-    return this.mapAccounts(accounts);
+    this.allAccountsLoaded = this.mapAccounts(accounts);
+    return Array.from(this.idAccountMap?.values() || []);
   }
 
   /** @internal */
-  private mapAccounts(accounts?: bkper.Account[]) {
+  private mapAccounts(accounts?: bkper.Account[]): boolean {
     if (!accounts) {
-      return [];
+      return false;
     }
     let accountsObj = accounts.map((account) => new Account(this, account));
     this.idAccountMap = new Map<string, Account>();
     this.nameAccountMap = new Map<string, Account>();
     for (const account of accountsObj) {
       this.updateAccountCache(account);
+      this.linkAccountsAndGroups(account);
     }
+
     this.ensureGroupsAccountMapsLoaded();
-    return accountsObj;
+    return true;
+  }
+
+  /** @internal */
+  private linkAccountsAndGroups(account: Account) {
+    const groupPayloads = account.json().groups || [];
+    for (const groupPayload of groupPayloads) {
+      const group = this.idGroupMap?.get(groupPayload.id || "");
+      if (group != null) {
+        group.addAccount(account);
+      }
+    }
   }
 
   /** @internal */
