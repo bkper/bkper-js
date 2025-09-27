@@ -873,11 +873,30 @@ export class Book extends Resource<bkper.Book> {
   }
 
   /**
-   * Gets an [[Account]] object.
+   * Gets an [[Account]] object by id or name.
+   *
+   * Results are cached to avoid repeated server calls. Account-group relationships
+   * are included if the full chart was loaded via getAccounts() or when the Book
+   * was loaded with includeAccounts=true.
    *
    * @param idOrName - The id or name of the Account
    *
    * @returns The matching Account object
+   *
+   * @example
+   * ```typescript
+   * // Get individual account (basic data, cached)
+   * const account = await book.getAccount('Bank Account');
+   *
+   * // For account-group relationships, use one of these approaches:
+   * // Option 1: Load book with full data upfront
+   * const bookWithAccounts = await Bkper.getBook(bookId, true);
+   * const accountWithGroups = await bookWithAccounts.getAccount('Bank Account');
+   *
+   * // Option 2: Load full chart when needed
+   * await book.getAccounts();
+   * const accountWithGroups2 = await book.getAccount('Bank Account');
+   * ```
    */
   public async getAccount(idOrName?: string): Promise<Account | undefined> {
     if (!idOrName || idOrName.trim() == "") {
@@ -983,11 +1002,31 @@ export class Book extends Resource<bkper.Book> {
   }
 
   /**
-   * Gets a [[Group]] object.
+   * Gets a [[Group]] object by id or name.
+   *
+   * Results are cached to avoid repeated server calls. Parent/child relationships
+   * are included if all groups were loaded via getGroups() or when the Book was
+   * loaded with includeGroups=true.
    *
    * @param idOrName - The id or name of the Group
    *
    * @returns The matching Group object
+   *
+   * @example
+   * ```typescript
+   * // Get individual group (basic data, cached)
+   * const group = await book.getGroup('Assets');
+   *
+   * // For parent/child relationships, use one of these approaches:
+   * // Option 1: Load book with full hierarchy upfront
+   * const bookWithGroups = await Bkper.getBook(bookId, false, true);
+   * const groupWithTree = await bookWithGroups.getGroup('Assets');
+   *
+   * // Option 2: Load full hierarchy when needed
+   * await book.getGroups();
+   * const groupWithTree2 = await book.getGroup('Assets');
+   * console.log(groupWithTree2.getParent(), groupWithTree2.getChildren());
+   * ```
    */
   public async getGroup(idOrName?: string): Promise<Group | undefined> {
     if (!idOrName || idOrName.trim() == "") {
@@ -1021,9 +1060,23 @@ export class Book extends Resource<bkper.Book> {
   }
 
   /**
-   * Gets all [[Groups]] of this Book.
+   * Gets all [[Groups]] of this Book with complete parent/child hierarchy.
+   *
+   * Results are cached for performance. Group tree relationships are built
+   * during loading. Consider using Bkper.getBook(id, false, true) for
+   * upfront loading when you know you'll need all groups.
    *
    * @returns The retrieved [[Group]] objects
+   *
+   * @example
+   * ```typescript
+   * // Load all groups with complete hierarchy
+   * const groups = await book.getGroups();
+   *
+   * // Alternative: Load book with groups upfront (more efficient)
+   * const bookWithGroups = await Bkper.getBook(bookId, false, true);
+   * const groups2 = await bookWithGroups.getGroups(); // Already cached
+   * ```
    */
   public async getGroups(): Promise<Group[]> {
     if (this.allGroupsLoaded) {
@@ -1054,9 +1107,23 @@ export class Book extends Resource<bkper.Book> {
   }
 
   /**
-   * Gets all [[Accounts]] of this Book.
+   * Gets all [[Accounts]] of this Book with full account-group relationships.
+   *
+   * Results are cached for performance. Groups are automatically loaded first
+   * to ensure proper linking. Consider using Bkper.getBook(id, true) for
+   * upfront loading when you know you'll need all accounts.
    *
    * @returns The retrieved [[Account]] objects
+   *
+   * @example
+   * ```typescript
+   * // Load all accounts with complete relationships
+   * const accounts = await book.getAccounts();
+   *
+   * // Alternative: Load book with accounts upfront (more efficient)
+   * const bookWithAccounts = await Bkper.getBook(bookId, true);
+   * const accounts2 = await bookWithAccounts.getAccounts(); // Already cached
+   * ```
    */
   public async getAccounts(): Promise<Account[]> {
     if (this.allAccountsLoaded) {
