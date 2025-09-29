@@ -1079,7 +1079,7 @@ export class Book extends Resource<bkper.Book> {
    * ```
    */
   public async getGroups(): Promise<Group[]> {
-    if (this.allGroupsLoaded) {
+    if (this.idGroupMap && this.allGroupsLoaded) {
       return Array.from(this.idGroupMap?.values() || []);
     }
     let groups = await GroupService.getGroups(this.getId(), this.getConfig());
@@ -1126,7 +1126,7 @@ export class Book extends Resource<bkper.Book> {
    * ```
    */
   public async getAccounts(): Promise<Account[]> {
-    if (this.allAccountsLoaded) {
+    if (this.idAccountMap && this.allAccountsLoaded) {
       return Array.from(this.idAccountMap?.values() || []);
     }
 
@@ -1171,7 +1171,7 @@ export class Book extends Resource<bkper.Book> {
 
   /** @internal */
   private ensureGroupsAccountMapsLoaded(): void {
-    if (this.idGroupMap) {
+    if (this.idGroupMap && !this.allGroupsLoaded) {
       for (const group of this.idGroupMap.values()) {
         if (group.accounts == null) {
           group.accounts = new Map<string, Account>();
@@ -1188,12 +1188,14 @@ export class Book extends Resource<bkper.Book> {
 
   /** @internal */
   private clearGroupCache(): void {
+    this.allGroupsLoaded = false;
     this.idGroupMap = undefined;
     this.nameGroupMap = undefined;
   }
 
   /** @internal */
   private clearAccountCache(): void {
+    this.allAccountsLoaded = false;
     this.idAccountMap = undefined;
     this.nameAccountMap = undefined;
   }
