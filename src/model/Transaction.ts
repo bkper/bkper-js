@@ -6,6 +6,7 @@ import { Resource } from "./Resource.js";
 import * as TransactionService from "../service/transaction-service.js";
 import * as Utils from "../utils.js";
 import { Amount } from "./Amount.js";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  *
@@ -16,8 +17,12 @@ import { Amount } from "./Amount.js";
  * @public
  */
 export class Transaction extends Resource<bkper.Transaction> {
+
   /** @internal */
   private book: Book;
+
+  /** @internal */
+  private pendingFiles: Map<string, File> = new Map();
 
   constructor(book: Book, payload?: bkper.Transaction) {
     super(payload || { createdAt: `${Date.now()}` });
@@ -260,26 +265,59 @@ export class Transaction extends Resource<bkper.Transaction> {
   /**
    * Adds a file attachment to the Transaction.
    *
-   * Files not previously created in the Book will be automatically created.
+   * Files not previously created in the Book will be automatically created when the transaction is persisted.
    *
    * @param file - The File to add to this Transaction
    *
    * @returns This Transaction, for chaining
    */
-  public async addFile(file: File): Promise<Transaction> {
+  public addFile(file: File): Transaction {
 
     if (this.payload.files == null) {
       this.payload.files = [];
     }
 
-    // Make sure file is already created
-    if (file.getId() == null || file.getBook()?.getId() != this.book.getId()) {
-      file.setProperty('upload_method', 'attachment');
-      await file.create();
+    // Store file reference for later creation if needed
+    const fileId = file.getId();
+    const fileBookId = file.getBook()?.getId();
+    if (fileId == null || fileBookId != this.book.getId()) {
+      // Generate temporary ID if file doesn't have one
+      if (fileId == null) {
+        file.payload.id = `temporary_${uuidv4()}`;
+      }
+      this.pendingFiles.set(file.getId()!, file);
     }
 
     this.payload.files.push(file.json());
     return this;
+  }
+
+  /** @internal */
+  private async createPendingFiles(): Promise<void> {
+
+    if (this.pendingFiles.size === 0) {
+      return;
+    }
+
+    if (this.payload.files == null) {
+      this.payload.files = [];
+    }
+
+    // Create all pending files
+    for (const [fileId, file] of this.pendingFiles.entries()) {
+      file.setProperty('upload_method', 'attachment');
+      const createdFile = await file.create();
+      // Update the payload with the created file
+      const fileIndex = this.payload.files.findIndex(f => f.id === fileId);
+      if (fileIndex >= 0) {
+        this.payload.files[fileIndex] = createdFile.json();
+      } else {
+        this.payload.files.push(createdFile.json());
+      }
+    }
+
+    // Clear pending files after creation
+    this.pendingFiles.clear();
   }
 
   /**
@@ -872,6 +910,7 @@ export class Transaction extends Resource<bkper.Transaction> {
    * @returns This Transaction, for chaining
    */
   public async create(): Promise<Transaction> {
+    await this.createPendingFiles();
     let operation = await TransactionService.createTransaction(
       this.book.getId(),
       this.payload,
@@ -887,6 +926,7 @@ export class Transaction extends Resource<bkper.Transaction> {
    * @returns This Transaction, for chaining
    */
   public async update(): Promise<Transaction> {
+    await this.createPendingFiles();
     let operation = await TransactionService.updateTransaction(
       this.book.getId(),
       this.payload,
@@ -932,6 +972,7 @@ export class Transaction extends Resource<bkper.Transaction> {
    * @returns This Transaction, for chaining
    */
   public async post(): Promise<Transaction> {
+    await this.createPendingFiles();
     let operation = await TransactionService.postTransaction(
       this.book.getId(),
       this.payload,
