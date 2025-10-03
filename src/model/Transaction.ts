@@ -303,11 +303,17 @@ export class Transaction extends Resource<bkper.Transaction> {
       this.payload.files = [];
     }
 
-    // Create all pending files
-    for (const [fileId, file] of this.pendingFiles.entries()) {
+    // Create all pending files in parallel
+    const promises = Array.from(this.pendingFiles.entries()).map(async ([fileId, file]) => {
       file.setProperty('upload_method', 'attachment');
       const createdFile = await file.create();
-      // Update the payload with the created file
+      return { fileId, createdFile };
+    });
+
+    const results = await Promise.all(promises);
+
+    // Update payload with all created files
+    for (const { fileId, createdFile } of results) {
       const fileIndex = this.payload.files.findIndex(f => f.id === fileId);
       if (fileIndex >= 0) {
         this.payload.files[fileIndex] = createdFile.json();
