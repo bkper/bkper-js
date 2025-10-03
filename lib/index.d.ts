@@ -3297,6 +3297,7 @@ export declare class Template extends Resource<bkper.Template> {
  */
 export declare class Transaction extends Resource<bkper.Transaction> {
 
+
     constructor(book: Book, payload?: bkper.Transaction);
 
     /**
@@ -3426,13 +3427,14 @@ export declare class Transaction extends Resource<bkper.Transaction> {
     /**
      * Adds a file attachment to the Transaction.
      *
-     * Files MUST be previously created in the Book.
+     * Files not previously created in the Book will be automatically created when the transaction is persisted.
      *
-     * @param file - The file to add
+     * @param file - The File to add to this Transaction
      *
      * @returns This Transaction, for chaining
      */
     addFile(file: File): Transaction;
+
     /**
      * Check if the transaction has the specified tag.
      *
