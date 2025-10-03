@@ -4,6 +4,10 @@ See what's new and what has changed in bkper-js
 
 ## 2025
 
+**October 2025**
+
+- Files attached to transactions are now automatically tagged with `upload_method` property for better tracking
+
 **September 2025**
 
 - **v2.8.0 - INTERNAL REFACTOR:**

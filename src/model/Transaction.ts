@@ -260,15 +260,22 @@ export class Transaction extends Resource<bkper.Transaction> {
   /**
    * Adds a file attachment to the Transaction.
    *
-   * Files MUST be previously created in the Book.
+   * Files not previously created in the Book will be automatically created.
    *
-   * @param file - The file to add
+   * @param file - The File to add to this Transaction
    *
    * @returns This Transaction, for chaining
    */
-  public addFile(file: File): Transaction {
+  public async addFile(file: File): Promise<Transaction> {
+
     if (this.payload.files == null) {
       this.payload.files = [];
+    }
+
+    // Make sure file is already created
+    if (file.getId() == null || file.getBook()?.getId() != this.book.getId()) {
+      file.setProperty('upload_method', 'attachment');
+      await file.create();
     }
 
     this.payload.files.push(file.json());
