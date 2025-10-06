@@ -7,6 +7,7 @@ See what's new and what has changed in bkper-js
 **October 2025**
 
 - Files attached to transactions are now created internally when transaction is persisted
+- Added `Transaction.removeFile`
 
 **September 2025**
 
@@ -46,7 +47,6 @@ See what's new and what has changed in bkper-js
 
 **August 2025**
 
-- Added `Transaction.setFiles`
 - Added `File.getProperties`
 - Added `File.setProperties`
 - Added `File.getProperty`
