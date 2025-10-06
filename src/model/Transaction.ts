@@ -305,6 +305,7 @@ export class Transaction extends Resource<bkper.Transaction> {
 
     // Create all pending files in parallel
     const promises = Array.from(this.pendingFiles.entries()).map(async ([fileId, file]) => {
+      file.book = this.book;
       file.setProperty('upload_method_', 'attachment');
       const createdFile = await file.create();
       return { fileId, createdFile };

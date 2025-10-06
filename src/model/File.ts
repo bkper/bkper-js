@@ -12,8 +12,9 @@ import { Resource } from "./Resource.js";
  * @public
  */
 export class File extends Resource<bkper.File> {
+
   /** @internal */
-  private book: Book;
+  book: Book;
 
   constructor(book: Book, payload?: bkper.File) {
     super(payload || { createdAt: `${Date.now()}` });
