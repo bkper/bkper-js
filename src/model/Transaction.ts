@@ -245,20 +245,20 @@ export class Transaction extends Resource<bkper.Transaction> {
   }
 
   /**
-   * Sets the files attached to the Transaction.
+   * Removes a file attachment from the Transaction.
    *
-   * @param files - The files to set
+   * @param file - The File to remove from this Transaction
    *
    * @returns This Transaction, for chaining
    */
-  public setFiles(files: File[]): Transaction {
-    const filePayloads: bkper.File[] = files.map((file) => {
-      return {
-        id: file.getId(), 
-        name: file.getName()
+  public removeFile(file: File): Transaction {
+    const fileId = file.getId();
+    if (fileId) {
+      if (this.payload.files != null) {
+        this.payload.files = this.payload.files.filter(f => f.id !== fileId);
       }
-    });
-    this.payload.files = filePayloads;
+      this.pendingFiles.delete(fileId);
+    }
     return this;
   }
 

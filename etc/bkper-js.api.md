@@ -538,6 +538,8 @@ export enum EventType {
 // @public
 export class File extends Resource<bkper.File> {
     constructor(book: Book, payload?: bkper.File);
+    // @internal (undocumented)
+    book: Book;
     create(): Promise<File>;
     deleteProperty(key: string): File;
     getBook(): Book;
@@ -780,13 +782,13 @@ export class Transaction extends Resource<bkper.Transaction> {
     isPosted(): boolean | undefined;
     isTrashed(): boolean | undefined;
     post(): Promise<Transaction>;
+    removeFile(file: File): Transaction;
     setAmount(amount: Amount | number | string): Transaction;
     setChecked(checked: boolean): Transaction;
     setCreditAccount(account: Account | bkper.Account): Transaction;
     setDate(date: string | Date): Transaction;
     setDebitAccount(account: Account | bkper.Account): Transaction;
     setDescription(description: string): Transaction;
-    setFiles(files: File[]): Transaction;
     setProperties(properties: {
         [key: string]: string;
     }): Transaction;
