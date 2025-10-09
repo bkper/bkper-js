@@ -1266,6 +1266,18 @@ export class Book extends Resource<bkper.Book> {
   }
 
   /**
+   * Retrieve the number of transactions based on a query.
+   *
+   * @param query - The query string
+   *
+   * @returns The number of matching transactions
+   */
+  public async countTransactions(query?: string): Promise<number | undefined> {
+    const count = await TransactionService.countTransactions(this.getId(), query, this.getConfig());
+    return count.total;
+  }
+
+  /**
    * Lists events in the Book based on the provided parameters.
    *
    * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null

@@ -103,3 +103,9 @@ export async function listTransactions(bookId: string, query: string | undefined
   var response = await request.fetch();
   return response.data;
 }
+
+export async function countTransactions(bookId: string, query: string | undefined, config: Config): Promise<bkper.Count> {
+  const request = new HttpBooksApiV5Request(`${bookId}/transactions/count`, config).setMethod('GET').addParam('query', query);
+  const response = await request.fetch();
+  return response.data;
+}
