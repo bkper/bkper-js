@@ -8,6 +8,7 @@ See what's new and what has changed in bkper-js
 
 - Files attached to transactions are now created internally when transaction is persisted
 - Added `Transaction.removeFile`
+- Added `Book.countTransactions`
 
 **September 2025**
 
