@@ -265,6 +265,7 @@ export class Book extends Resource<bkper.Book> {
     // @internal (undocumented)
     collaborators?: Collaborator[];
     copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book>;
+    countTransactions(query?: string): Promise<number | undefined>;
     create(): Promise<Book>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
     formatDate(date: Date, timeZone?: string): string;
