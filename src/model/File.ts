@@ -184,11 +184,11 @@ export class File extends Resource<bkper.File> {
    * Sets a custom property in the File.
    *
    * @param key - The property key
-   * @param value - The property value
+   * @param value - The property value, or null/undefined to clean it
    *
    * @returns This File, for chaining
    */
-  public setProperty(key: string, value: string | null): File {
+  public setProperty(key: string, value: string | null | undefined): File {
     if (key == null || key.trim() == "") {
       return this;
     }

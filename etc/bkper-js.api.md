@@ -37,7 +37,7 @@ export class Account extends Resource<bkper.Account> {
     setProperties(properties: {
         [key: string]: string;
     }): Account;
-    setProperty(key: string, value: string | null): Account;
+    setProperty(key: string, value: string | null | undefined): Account;
     setType(type: AccountType): Account;
     update(): Promise<Account>;
 }
@@ -336,7 +336,7 @@ export class Book extends Resource<bkper.Book> {
     setProperties(properties: {
         [key: string]: string;
     }): Book;
-    setProperty(key: string, value: string | null): Book;
+    setProperty(key: string, value: string | null | undefined): Book;
     setTimeZone(timeZone: string): Book;
     setVisibility(visibility: Visibility): Book;
     update(): Promise<Book>;
@@ -438,7 +438,7 @@ export class Connection extends Resource<bkper.Connection> {
     setProperties(properties: {
         [key: string]: string;
     }): Connection;
-    setProperty(key: string, value: string | null): Connection;
+    setProperty(key: string, value: string | null | undefined): Connection;
     setType(type: "APP" | "BANK"): Connection;
     setUUID(uuid: string): Connection;
 }
@@ -562,7 +562,7 @@ export class File extends Resource<bkper.File> {
     setProperties(properties: {
         [key: string]: string;
     }): File;
-    setProperty(key: string, value: string | null): File;
+    setProperty(key: string, value: string | null | undefined): File;
 }
 
 // @public
@@ -613,7 +613,7 @@ export class Group extends Resource<bkper.Group> {
     setProperties(properties: {
         [key: string]: string;
     }): Group;
-    setProperty(key: string, value: string | null): Group;
+    setProperty(key: string, value: string | null | undefined): Group;
     update(): Promise<Group>;
 }
 
@@ -642,7 +642,7 @@ export class Integration extends Resource<bkper.Integration> {
     setProperties(properties: {
         [key: string]: string;
     }): Integration;
-    setProperty(key: string, value: string | null): Integration;
+    setProperty(key: string, value: string | null | undefined): Integration;
 }
 
 // @public
@@ -793,7 +793,7 @@ export class Transaction extends Resource<bkper.Transaction> {
     setProperties(properties: {
         [key: string]: string;
     }): Transaction;
-    setProperty(key: string, value: string | null): Transaction;
+    setProperty(key: string, value: string | null | undefined): Transaction;
     setUrls(urls: string[]): Transaction;
     to(account: Account | bkper.Account): Transaction;
     trash(): Promise<Transaction>;

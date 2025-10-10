@@ -160,11 +160,11 @@ export class Integration extends Resource<bkper.Integration> {
    * Sets a custom property in the Integration.
    *
    * @param key - The property key
-   * @param value - The property value
+   * @param value - The property value, or null/undefined to clean it
    *
    * @returns The Integration, for chaining
    */
-  public setProperty(key: string, value: string | null): Integration {
+  public setProperty(key: string, value: string | null | undefined): Integration {
     if (key == null || key.trim() == "") {
       return this;
     }

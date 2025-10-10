@@ -490,11 +490,11 @@ export class Book extends Resource<bkper.Book> {
    * Sets a custom property in the Book.
    *
    * @param key - The property key
-   * @param value - The property value
+   * @param value - The property value, or null/undefined to clean it
    *
    * @returns This Book, for chaining
    */
-  public setProperty(key: string, value: string | null): Book {
+  public setProperty(key: string, value: string | null | undefined): Book {
     if (key == null || key.trim() == "") {
       return this;
     }
