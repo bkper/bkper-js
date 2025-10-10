@@ -27,7 +27,7 @@
         "typescript": "^5.5.4",
       },
       "peerDependencies": {
-        "@bkper/bkper-api-types": "^5.29.0",
+        "@bkper/bkper-api-types": "^5.30.0",
       },
     },
   },
