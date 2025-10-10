@@ -58,3 +58,8 @@ export async function copyBook(bookId: string, name: string, copyTransactions: b
   const response = await request.fetch();
   return response.data;
 }
+
+export async function deleteBook(bookId: string, config: Config): Promise<bkper.Book> {
+  const response = await new HttpBooksApiV5Request(`${bookId}`, config).setMethod('DELETE').fetch();
+  return response.data;
+}

@@ -1395,6 +1395,18 @@ export class Book extends Resource<bkper.Book> {
   }
 
   /**
+   * Warning!
+   * 
+   * Deletes this Book and all its data (transactions, accounts, groups). Book owner only.
+   *
+   * @returns This Book after deletion
+   */
+  public async remove(): Promise<Book> {
+    this.payload = await BookService.deleteBook(this.getId(), this.getConfig());
+    return this;
+  }
+
+  /**
    * Create a [[BalancesReport]] based on query.
    *
    * @param query - The balances report query
