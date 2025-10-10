@@ -318,6 +318,7 @@ export class Book extends Resource<bkper.Book> {
     parseValue(value: string): Amount | undefined;
     // @internal (undocumented)
     queries?: Query[];
+    remove(): Promise<Book>;
     round(value: Amount | number): Amount;
     // @internal (undocumented)
     setAccount(account: bkper.Account, remove?: boolean): void;

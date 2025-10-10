@@ -1910,6 +1910,14 @@ export declare class Book extends Resource<bkper.Book> {
      */
     update(): Promise<Book>;
     /**
+     * Warning!
+     *
+     * Deletes this Book and all its data (transactions, accounts, groups). Book owner only.
+     *
+     * @returns This Book after deletion
+     */
+    remove(): Promise<Book>;
+    /**
      * Create a [[BalancesReport]] based on query.
      *
      * @param query - The balances report query
