@@ -737,7 +737,7 @@ export class Transaction extends Resource<bkper.Transaction> {
     check(): Promise<Transaction>;
     create(): Promise<Transaction>;
     deleteProperty(key: string): Transaction;
-    from(account: Account | bkper.Account): Transaction;
+    from(account: Account | bkper.Account | null | undefined): Transaction;
     getAccountBalance(raw?: boolean): Promise<Amount | undefined>;
     getAgentId(): string | undefined;
     getAgentLogoUrl(): string | undefined;
@@ -787,16 +787,16 @@ export class Transaction extends Resource<bkper.Transaction> {
     removeFile(file: File): Transaction;
     setAmount(amount: Amount | number | string): Transaction;
     setChecked(checked: boolean): Transaction;
-    setCreditAccount(account: Account | bkper.Account): Transaction;
+    setCreditAccount(account: Account | bkper.Account | null | undefined): Transaction;
     setDate(date: string | Date): Transaction;
-    setDebitAccount(account: Account | bkper.Account): Transaction;
+    setDebitAccount(account: Account | bkper.Account | null | undefined): Transaction;
     setDescription(description: string): Transaction;
     setProperties(properties: {
         [key: string]: string;
     }): Transaction;
     setProperty(key: string, value: string | null | undefined): Transaction;
     setUrls(urls: string[]): Transaction;
-    to(account: Account | bkper.Account): Transaction;
+    to(account: Account | bkper.Account | null | undefined): Transaction;
     trash(): Promise<Transaction>;
     uncheck(): Promise<Transaction>;
     untrash(): Promise<Transaction>;

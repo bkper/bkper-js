@@ -3523,19 +3523,19 @@ export declare class Transaction extends Resource<bkper.Transaction> {
     /**
      * Sets the credit/origin [[Account]] of this Transaction. Same as from()
      *
-     * @param account - The Account object
+     * @param account - The Account object, or null/undefined to clear
      *
      * @returns This Transaction, for chaining
      */
-    setCreditAccount(account: Account | bkper.Account): Transaction;
+    setCreditAccount(account: Account | bkper.Account | null | undefined): Transaction;
     /**
      * Sets the credit/origin [[Account]] of this Transaction. Same as setCreditAccount()
      *
-     * @param account - The Account object
+     * @param account - The Account object, or null/undefined to clear
      *
      * @returns This Transaction, for chaining
      */
-    from(account: Account | bkper.Account): Transaction;
+    from(account: Account | bkper.Account | null | undefined): Transaction;
     /**
      * Gets the debit account associated with this Transaction. Same as destination account
      *
@@ -3551,19 +3551,19 @@ export declare class Transaction extends Resource<bkper.Transaction> {
     /**
      * Sets the debit/destination [[Account]] of this Transaction. Same as to()
      *
-     * @param account - The Account object
+     * @param account - The Account object, or null/undefined to clear
      *
      * @returns This Transaction, for chaining
      */
-    setDebitAccount(account: Account | bkper.Account): Transaction;
+    setDebitAccount(account: Account | bkper.Account | null | undefined): Transaction;
     /**
      * Sets the debit/destination [[Account]] of this Transaction. Same as setDebitAccount()
      *
-     * @param account - The Account object
+     * @param account - The Account object, or null/undefined to clear
      *
      * @returns This Transaction, for chaining
      */
-    to(account: Account | bkper.Account): Transaction;
+    to(account: Account | bkper.Account | null | undefined): Transaction;
     /**
      * Gets the amount of this Transaction.
      *

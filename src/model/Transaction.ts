@@ -469,17 +469,22 @@ export class Transaction extends Resource<bkper.Transaction> {
   /**
    * Sets the credit/origin [[Account]] of this Transaction. Same as from()
    *
-   * @param account - The Account object
+   * @param account - The Account object, or null/undefined to clear
    *
    * @returns This Transaction, for chaining
    */
-  public setCreditAccount(account: Account | bkper.Account): Transaction {
+  public setCreditAccount(account: Account | bkper.Account | null | undefined): Transaction {
+    if (account == null) {
+      this.payload.creditAccount = undefined;
+      return this;
+    }
+    
     if (account instanceof Account) {
-      if (account != null && account.getId() != null) {
+      if (account.getId() != null) {
         this.payload.creditAccount = account.json();
       }
     } else {
-      if (account != null && account.id != null) {
+      if (account.id != null) {
         this.payload.creditAccount = account;
       }
     }
@@ -489,11 +494,11 @@ export class Transaction extends Resource<bkper.Transaction> {
   /**
    * Sets the credit/origin [[Account]] of this Transaction. Same as setCreditAccount()
    *
-   * @param account - The Account object
+   * @param account - The Account object, or null/undefined to clear
    *
    * @returns This Transaction, for chaining
    */
-  public from(account: Account | bkper.Account): Transaction {
+  public from(account: Account | bkper.Account | null | undefined): Transaction {
     return this.setCreditAccount(account);
   }
 
@@ -525,17 +530,22 @@ export class Transaction extends Resource<bkper.Transaction> {
   /**
    * Sets the debit/destination [[Account]] of this Transaction. Same as to()
    *
-   * @param account - The Account object
+   * @param account - The Account object, or null/undefined to clear
    *
    * @returns This Transaction, for chaining
    */
-  public setDebitAccount(account: Account | bkper.Account): Transaction {
+  public setDebitAccount(account: Account | bkper.Account | null | undefined): Transaction {
+    if (account == null) {
+      this.payload.debitAccount = undefined;
+      return this;
+    }
+    
     if (account instanceof Account) {
-      if (account != null && account.getId() != null) {
+      if (account.getId() != null) {
         this.payload.debitAccount = {id: account.getId(), name: account.getName()};
       }
     } else {
-      if (account != null && account.id != null) {
+      if (account.id != null) {
         this.payload.debitAccount = {id: account.id, name: account.name};
       }
     }
@@ -545,11 +555,11 @@ export class Transaction extends Resource<bkper.Transaction> {
   /**
    * Sets the debit/destination [[Account]] of this Transaction. Same as setDebitAccount()
    *
-   * @param account - The Account object
+   * @param account - The Account object, or null/undefined to clear
    *
    * @returns This Transaction, for chaining
    */
-  public to(account: Account | bkper.Account): Transaction {
+  public to(account: Account | bkper.Account | null | undefined): Transaction {
     return this.setDebitAccount(account);
   }
 
