@@ -5,20 +5,20 @@
  */
 export enum Periodicity {
 
-  /**
-   * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
-   */
-  DAILY = "DAILY",
+    /**
+     * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
+     */
+    DAILY = "DAILY",
 
-  /**
-   * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
-   */
-  MONTHLY = "MONTHLY",
+    /**
+     * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
+     */
+    MONTHLY = "MONTHLY",
 
-  /**
-   * Example: on:2013, after:2013, $y
-   */
-  YEARLY = "YEARLY"
+    /**
+     * Example: on:2013, after:2013, $y
+     */
+    YEARLY = "YEARLY"
 }
 
 /**
@@ -28,15 +28,15 @@ export enum Periodicity {
  */
 export enum DecimalSeparator {
 
-  /**
-   * ,
-   */
-  COMMA = "COMMA",
+    /**
+     * ,
+     */
+    COMMA = "COMMA",
 
-  /**
-   * .
-   */
-  DOT = "DOT"
+    /**
+     * .
+     */
+    DOT = "DOT"
 }
 
 
@@ -50,35 +50,35 @@ export enum DecimalSeparator {
 
 export enum Permission {
 
-  /**
-   * No permission
-   */
-  NONE = "NONE",
+    /**
+     * No permission
+     */
+    NONE = "NONE",
 
-  /**
-   * View transactions, accounts and balances.
-   */
-  VIEWER = "VIEWER",
+    /**
+     * View transactions, accounts and balances.
+     */
+    VIEWER = "VIEWER",
 
-  /**
-   * Record and delete drafts only. Useful to collect data only
-   */
-  RECORDER = "RECORDER",
+    /**
+     * Record and delete drafts only. Useful to collect data only
+     */
+    RECORDER = "RECORDER",
 
-  /**
-   * View transactions, accounts, record and delete drafts
-   */
-  POSTER = "POSTER",
+    /**
+     * View transactions, accounts, record and delete drafts
+     */
+    POSTER = "POSTER",
 
-  /**
-   * Manage accounts, transactions, book configuration and sharing
-   */
-  EDITOR = "EDITOR",
+    /**
+     * Manage accounts, transactions, book configuration and sharing
+     */
+    EDITOR = "EDITOR",
 
-  /**
-   * Manage everything, including book visibility and deletion. Only one owner per book.
-   */
-  OWNER = "OWNER"
+    /**
+     * Manage everything, including book visibility and deletion. Only one owner per book.
+     */
+    OWNER = "OWNER"
 }
 
 /**
@@ -88,15 +88,15 @@ export enum Permission {
  */
 export enum Visibility {
 
-  /**
-   * The book can be accessed by anyone with the link
-   */
-  PUBLIC = "PUBLIC",
+    /**
+     * The book can be accessed by anyone with the link
+     */
+    PUBLIC = "PUBLIC",
 
-  /**
-   * The book can be accessed by the owner and collaborators
-   */
-  PRIVATE = "PRIVATE"
+    /**
+     * The book can be accessed by the owner and collaborators
+     */
+    PRIVATE = "PRIVATE"
 
 }
 
@@ -107,25 +107,25 @@ export enum Visibility {
  */
 export enum AccountType {
 
-  /**
-   * Asset account type
-   */
-  ASSET = "ASSET",
+    /**
+     * Asset account type
+     */
+    ASSET = "ASSET",
 
-  /**
-   * Liability account type
-   */
-  LIABILITY = "LIABILITY",
+    /**
+     * Liability account type
+     */
+    LIABILITY = "LIABILITY",
 
-  /**
-   * Incoming account type
-   */
-  INCOMING = "INCOMING",
+    /**
+     * Incoming account type
+     */
+    INCOMING = "INCOMING",
 
-  /**
-   * Outgoing account type
-   */
-  OUTGOING = "OUTGOING"
+    /**
+     * Outgoing account type
+     */
+    OUTGOING = "OUTGOING"
 }
 
 /**
@@ -135,20 +135,20 @@ export enum AccountType {
  */
 export enum BalanceType {
 
-  /**
-   * Total balance
-   */
-  TOTAL = "TOTAL",
+    /**
+     * Total balance
+     */
+    TOTAL = "TOTAL",
 
-  /**
-   * Period balance
-   */
-  PERIOD = "PERIOD",
+    /**
+     * Period balance
+     */
+    PERIOD = "PERIOD",
 
-  /**
-   * Cumulative balance
-   */
-  CUMULATIVE = "CUMULATIVE"
+    /**
+     * Cumulative balance
+     */
+    CUMULATIVE = "CUMULATIVE"
 }
 
 /**
@@ -158,20 +158,20 @@ export enum BalanceType {
  */
 export enum Period {
 
-  /**
-   *  Monthly period
-   */
-  MONTH = "MONTH",
+    /**
+     *  Monthly period
+     */
+    MONTH = "MONTH",
 
-  /**
-   * Quarterly period
-   */
-  QUARTER = "QUARTER",
+    /**
+     * Quarterly period
+     */
+    QUARTER = "QUARTER",
 
-  /**
-   * Yearly period
-   */
-  YEAR = "YEAR"
+    /**
+     * Yearly period
+     */
+    YEAR = "YEAR"
 }
 
 /**
@@ -181,18 +181,18 @@ export enum Period {
  */
 export enum Month {
 
-  JANUARY = "JANUARY",
-  FEBRUARY = "FEBRUARY",
-  MARCH = "MARCH",
-  APRIL = "APRIL",
-  MAY = "MAY",
-  JUNE = "JUNE",
-  JULY = "JULY",
-  AUGUST = "AUGUST",
-  SEPTEMBER = "SEPTEMBER",
-  OCTOBER = "OCTOBER",
-  NOVEMBER = "NOVEMBER",
-  DECEMBER = "DECEMBER"
+    JANUARY = "JANUARY",
+    FEBRUARY = "FEBRUARY",
+    MARCH = "MARCH",
+    APRIL = "APRIL",
+    MAY = "MAY",
+    JUNE = "JUNE",
+    JULY = "JULY",
+    AUGUST = "AUGUST",
+    SEPTEMBER = "SEPTEMBER",
+    OCTOBER = "OCTOBER",
+    NOVEMBER = "NOVEMBER",
+    DECEMBER = "DECEMBER"
 }
 
 /**
@@ -202,20 +202,20 @@ export enum Month {
  */
 export enum BotResponseType {
 
-  /**
-   * Info bot response
-   */
-  INFO = "INFO",
+    /**
+     * Info bot response
+     */
+    INFO = "INFO",
 
-  /**
-   * Warning bot response
-   */
-  WARNING = "WARNING",
+    /**
+     * Warning bot response
+     */
+    WARNING = "WARNING",
 
-  /**
-   * Error bot response
-   */
-  ERROR = "ERROR",
+    /**
+     * Error bot response
+     */
+    ERROR = "ERROR",
 }
 
 /**
@@ -225,33 +225,33 @@ export enum BotResponseType {
  */
 export enum EventType {
 
-  FILE_CREATED = "FILE_CREATED",
-  TRANSACTION_CREATED = "TRANSACTION_CREATED",
-  TRANSACTION_UPDATED = "TRANSACTION_UPDATED",
-  TRANSACTION_DELETED = "TRANSACTION_DELETED",
-  TRANSACTION_POSTED = "TRANSACTION_POSTED",
-  TRANSACTION_CHECKED = "TRANSACTION_CHECKED",
-  TRANSACTION_UNCHECKED = "TRANSACTION_UNCHECKED",
-  TRANSACTION_RESTORED = "TRANSACTION_RESTORED",
-  ACCOUNT_CREATED = "ACCOUNT_CREATED",
-  ACCOUNT_UPDATED = "ACCOUNT_UPDATED",
-  ACCOUNT_DELETED = "ACCOUNT_DELETED",
-  QUERY_CREATED = "QUERY_CREATED",
-  QUERY_UPDATED = "QUERY_UPDATED",
-  QUERY_DELETED = "QUERY_DELETED",
-  GROUP_CREATED = "GROUP_CREATED",
-  GROUP_UPDATED = "GROUP_UPDATED",
-  GROUP_DELETED = "GROUP_DELETED",
-  COMMENT_CREATED = "COMMENT_CREATED",
-  COMMENT_DELETED = "COMMENT_DELETED",
-  COLLABORATOR_ADDED = "COLLABORATOR_ADDED",
-  COLLABORATOR_UPDATED = "COLLABORATOR_UPDATED",
-  COLLABORATOR_REMOVED = "COLLABORATOR_REMOVED",
-  INTEGRATION_CREATED = "INTEGRATION_CREATED",
-  INTEGRATION_UPDATED = "INTEGRATION_UPDATED",
-  INTEGRATION_DELETED = "INTEGRATION_DELETED",
-  BOOK_UPDATED = "BOOK_UPDATED",
-  BOOK_DELETED = "BOOK_DELETED"
+    FILE_CREATED = "FILE_CREATED",
+    TRANSACTION_CREATED = "TRANSACTION_CREATED",
+    TRANSACTION_UPDATED = "TRANSACTION_UPDATED",
+    TRANSACTION_DELETED = "TRANSACTION_DELETED",
+    TRANSACTION_POSTED = "TRANSACTION_POSTED",
+    TRANSACTION_CHECKED = "TRANSACTION_CHECKED",
+    TRANSACTION_UNCHECKED = "TRANSACTION_UNCHECKED",
+    TRANSACTION_RESTORED = "TRANSACTION_RESTORED",
+    ACCOUNT_CREATED = "ACCOUNT_CREATED",
+    ACCOUNT_UPDATED = "ACCOUNT_UPDATED",
+    ACCOUNT_DELETED = "ACCOUNT_DELETED",
+    QUERY_CREATED = "QUERY_CREATED",
+    QUERY_UPDATED = "QUERY_UPDATED",
+    QUERY_DELETED = "QUERY_DELETED",
+    GROUP_CREATED = "GROUP_CREATED",
+    GROUP_UPDATED = "GROUP_UPDATED",
+    GROUP_DELETED = "GROUP_DELETED",
+    COMMENT_CREATED = "COMMENT_CREATED",
+    COMMENT_DELETED = "COMMENT_DELETED",
+    COLLABORATOR_ADDED = "COLLABORATOR_ADDED",
+    COLLABORATOR_UPDATED = "COLLABORATOR_UPDATED",
+    COLLABORATOR_REMOVED = "COLLABORATOR_REMOVED",
+    INTEGRATION_CREATED = "INTEGRATION_CREATED",
+    INTEGRATION_UPDATED = "INTEGRATION_UPDATED",
+    INTEGRATION_DELETED = "INTEGRATION_DELETED",
+    BOOK_UPDATED = "BOOK_UPDATED",
+    BOOK_DELETED = "BOOK_DELETED"
 
 }
 

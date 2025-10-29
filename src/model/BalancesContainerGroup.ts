@@ -10,7 +10,7 @@ import { BalancesDataTableBuilder } from "./BalancesDataTableBuilder.js";
 
 /** @internal */
 export class GroupBalancesContainer implements BalancesContainer {
-  
+
     public payload: bkper.GroupBalances;
 
     /** @internal */
@@ -100,7 +100,7 @@ export class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getCumulativeCredit(): Amount {
-      return new Amount(this.payload.cumulativeCredit || 0);
+        return new Amount(this.payload.cumulativeCredit || 0);
     }
 
     public getCumulativeDebit(): Amount {
@@ -116,7 +116,7 @@ export class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getCumulativeCreditText(): string {
-      return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
+        return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
     }
 
     public getCumulativeDebitText(): string {
@@ -133,7 +133,7 @@ export class GroupBalancesContainer implements BalancesContainer {
 
 
     public getPeriodCredit(): Amount {
-      return new Amount(this.payload.periodCredit || 0);
+        return new Amount(this.payload.periodCredit || 0);
     }
 
     public getPeriodDebit(): Amount {
@@ -150,7 +150,7 @@ export class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getPeriodCreditText(): string {
-      return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
+        return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
     }
 
     public getPeriodDebitText(): string {
@@ -158,47 +158,47 @@ export class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getBalances(): Balance[] {
-      if (!this.payload.balances) {
-          return new Array<Balance>();
-      }
-      return this.payload.balances.map(balancePlain => new Balance(this, balancePlain));
-    }    
+        if (!this.payload.balances) {
+            return new Array<Balance>();
+        }
+        return this.payload.balances.map(balancePlain => new Balance(this, balancePlain));
+    }
 
     public createDataTable() {
-      return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.balancesReport.getPeriodicity());
-    }  
+        return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.balancesReport.getPeriodicity());
+    }
 
     public getProperties(): { [key: string]: string } {
-      return this.payload.properties != null ? { ...this.payload.properties } : {};
+        return this.payload.properties != null ? { ...this.payload.properties } : {};
     }
-  
-  
+
+
     public getProperty(...keys: string[]): string | undefined {
-      for (let index = 0; index < keys.length; index++) {
-        const key = keys[index];
-        let value = this.payload.properties != null ? this.payload.properties[key] : null
-        if (value != null && value.trim() != '') {
-          return value;
+        for (let index = 0; index < keys.length; index++) {
+            const key = keys[index];
+            let value = this.payload.properties != null ? this.payload.properties[key] : null
+            if (value != null && value.trim() != '') {
+                return value;
+            }
         }
-      }
-      return undefined;
+        return undefined;
     }
-  
-   
+
+
     public getPropertyKeys(): string[] {
-      let properties = this.getProperties();
-      let propertyKeys:string[] = []
-      if (properties) {
-        for (var key in properties) {
-          if (Object.prototype.hasOwnProperty.call(properties, key)) {
-              propertyKeys.push(key)
-          }
+        let properties = this.getProperties();
+        let propertyKeys: string[] = []
+        if (properties) {
+            for (var key in properties) {
+                if (Object.prototype.hasOwnProperty.call(properties, key)) {
+                    propertyKeys.push(key)
+                }
+            }
         }
-      }
-      propertyKeys = propertyKeys.sort();
-      return propertyKeys;
-    }   
-  
+        propertyKeys = propertyKeys.sort();
+        return propertyKeys;
+    }
+
 
     public getBalancesContainers(): BalancesContainer[] {
         let containers: BalancesContainer[] = [];

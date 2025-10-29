@@ -33,14 +33,14 @@ export { BotResponse } from "./model/BotResponse.js";
 export { EventList } from "./model/EventList.js";
 export { User } from "./model/User.js";
 export {
-  Periodicity,
-  DecimalSeparator,
-  Permission,
-  Visibility,
-  AccountType,
-  BalanceType,
-  Period,
-  Month,
-  EventType,
-  BotResponseType,
+    Periodicity,
+    DecimalSeparator,
+    Permission,
+    Visibility,
+    AccountType,
+    BalanceType,
+    Period,
+    Month,
+    EventType,
+    BotResponseType,
 } from "./model/Enums.js";

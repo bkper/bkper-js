@@ -4,14 +4,14 @@ import { Config } from '../model/Config.js';
 
 export async function getBalances(bookId: string, query: string, config: Config): Promise<bkper.Balances> {
 
-  let response = await new HttpBooksApiV5Request(`${bookId}/balances`, config).addParam('query', query).addParam('time', Date.now()).fetch();
+    let response = await new HttpBooksApiV5Request(`${bookId}/balances`, config).addParam('query', query).addParam('time', Date.now()).fetch();
 
-  const balancesUrl = response.data?.balancesUrl; // Expected for large payloads
-  if (balancesUrl) {
-    const balancesResponse = await new HttpRequest(balancesUrl).setMethod('GET').execute();
-    response = { data: balancesResponse.data, status: balancesResponse.status };
-  }
+    const balancesUrl = response.data?.balancesUrl; // Expected for large payloads
+    if (balancesUrl) {
+        const balancesResponse = await new HttpRequest(balancesUrl).setMethod('GET').execute();
+        response = { data: balancesResponse.data, status: balancesResponse.status };
+    }
 
-  return response.data;
+    return response.data;
 
 }

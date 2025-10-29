@@ -17,11 +17,11 @@ export class AccountBalancesContainer implements BalancesContainer {
 
     /** @internal */
     private balancesReport: BalancesReport;
-    
+
     /** @internal */
     private depth?: number;
 
-    
+
     constructor(parent: BalancesContainer | null, balancesReport: BalancesReport, payload: bkper.AccountBalances) {
         this.parent = parent;
         this.balancesReport = balancesReport;
@@ -90,12 +90,12 @@ export class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getCumulativeCredit(): Amount {
-      return new Amount(this.payload.cumulativeCredit || 0);
+        return new Amount(this.payload.cumulativeCredit || 0);
     }
 
     public getCumulativeDebit(): Amount {
         return new Amount(this.payload.cumulativeDebit || 0);
-    }    
+    }
 
     public getCumulativeBalanceText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
@@ -106,12 +106,12 @@ export class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getCumulativeCreditText(): string {
-      return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
+        return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
     }
 
     public getCumulativeDebitText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeDebit());
-    }    
+    }
 
     public getPeriodBalance(): Amount {
         return getRepresentativeValue(new Amount(this.payload.periodBalance || 0), this.isCredit());
@@ -139,65 +139,65 @@ export class AccountBalancesContainer implements BalancesContainer {
 
 
     public getPeriodCreditText(): string {
-      return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
+        return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
     }
 
     public getPeriodDebitText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodDebit());
-    }    
+    }
 
     public createDataTable(): BalancesDataTableBuilder {
         return new BalancesDataTableBuilder(this.balancesReport.getBook(), [this], this.balancesReport.getPeriodicity());
-    }    
+    }
 
     public getBalancesContainers(): BalancesContainer[] {
         return [];
     }
 
     public getBalances(): Balance[] {
-      if (!this.payload.balances) {
-          return new Array<Balance>();
-      }
+        if (!this.payload.balances) {
+            return new Array<Balance>();
+        }
         return this.payload.balances.map(balancePlain => new Balance(this, balancePlain));
     }
 
     public getProperties(): { [key: string]: string } {
-      return this.payload.properties != null ? { ...this.payload.properties } : {};
+        return this.payload.properties != null ? { ...this.payload.properties } : {};
     }
 
 
     public getProperty(...keys: string[]): string | undefined {
-      for (let index = 0; index < keys.length; index++) {
-        const key = keys[index];
-        let value = this.payload.properties != null ? this.payload.properties[key] : null
-        if (value != null && value.trim() != '') {
-          return value;
+        for (let index = 0; index < keys.length; index++) {
+            const key = keys[index];
+            let value = this.payload.properties != null ? this.payload.properties[key] : null
+            if (value != null && value.trim() != '') {
+                return value;
+            }
         }
-      }
-      return undefined;
+        return undefined;
     }
 
-  
-    public getPropertyKeys(): string[] {
-      let properties = this.getProperties();
-      let propertyKeys:string[] = []
-      if (properties) {
-        for (var key in properties) {
-          if (Object.prototype.hasOwnProperty.call(properties, key)) {
-              propertyKeys.push(key)
-          }
-        }
-      }
-      propertyKeys = propertyKeys.sort();
-      return propertyKeys;
-    }   
 
-  public getBalancesContainer(name: string): BalancesContainer {
-      const normalizedName = normalizeName(name);
-      if (this.getNormalizedName() == normalizedName) {
-          return this;
-      }
-      throw `${name} does not match ${this.getName()}`;
-  }
+    public getPropertyKeys(): string[] {
+        let properties = this.getProperties();
+        let propertyKeys: string[] = []
+        if (properties) {
+            for (var key in properties) {
+                if (Object.prototype.hasOwnProperty.call(properties, key)) {
+                    propertyKeys.push(key)
+                }
+            }
+        }
+        propertyKeys = propertyKeys.sort();
+        return propertyKeys;
+    }
+
+    public getBalancesContainer(name: string): BalancesContainer {
+        const normalizedName = normalizeName(name);
+        if (this.getNormalizedName() == normalizedName) {
+            return this;
+        }
+        throw `${name} does not match ${this.getName()}`;
+    }
 
 }

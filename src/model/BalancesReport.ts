@@ -45,7 +45,7 @@ export class BalancesReport {
      * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
      */
     public createDataTable(): BalancesDataTableBuilder {
-      return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity());
+        return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity());
     }
 
     /**

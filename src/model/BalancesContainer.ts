@@ -15,7 +15,7 @@ import { Group } from "./Group.js";
 export interface BalancesContainer {
 
 
-  payload: bkper.AccountBalances | bkper.GroupBalances;
+    payload: bkper.AccountBalances | bkper.GroupBalances;
 
     /**
      * Gets the parent [[BalancesReport]] of the container.
@@ -64,7 +64,7 @@ export interface BalancesContainer {
      *
      * @returns All [[Balances]] of the container
      */
-    getBalances: () => Balance[];    
+    getBalances: () => Balance[];
 
     /**
      * Gets the depth in the parent chain up to the root.
@@ -140,7 +140,7 @@ export interface BalancesContainer {
     /**
      * The cumulative debit to the date.
      */
-    getCumulativeDebit(): Amount;    
+    getCumulativeDebit(): Amount;
 
     /**
      * Gets the cumulative balance formatted according to [[Book]] decimal format and fraction digits.
@@ -164,7 +164,7 @@ export interface BalancesContainer {
     /**
      * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
      */
-    getCumulativeDebitText(): string;    
+    getCumulativeDebitText(): string;
 
     /**
      * Gets the balance on the date period.
@@ -188,7 +188,7 @@ export interface BalancesContainer {
     /**
      * The debit on the date period.
      */
-    getPeriodDebit(): Amount;    
+    getPeriodDebit(): Amount;
 
     /**
      * Gets the balance on the date period formatted according to [[Book]] decimal format and fraction digits.
@@ -212,7 +212,7 @@ export interface BalancesContainer {
     /**
      * The debit on the date period formatted according to [[Book]] decimal format and fraction digits
      */
-    getPeriodDebitText(): string;    
+    getPeriodDebitText(): string;
 
     /**
      * Gets the custom properties stored in this Account or Group.
@@ -231,12 +231,12 @@ export interface BalancesContainer {
     /**
      * Gets the custom properties keys stored in the associated [[Account]] or [[Group]].
      */
-    getPropertyKeys(): string[];    
+    getPropertyKeys(): string[];
 
     /**
      * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
      */
-    createDataTable(): BalancesDataTableBuilder;    
+    createDataTable(): BalancesDataTableBuilder;
 
     /**
      * Gets all child [[BalancesContainers]].

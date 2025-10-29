@@ -12,25 +12,25 @@ import { Bkper } from "./Bkper.js";
  */
 export class Backlog extends Resource<bkper.Backlog> {
 
-  private config?: Config;
+    private config?: Config;
 
-  constructor(payload?: bkper.Backlog, config?: Config) {
-    super(payload);
-    this.config = config;
-  }
+    constructor(payload?: bkper.Backlog, config?: Config) {
+        super(payload);
+        this.config = config;
+    }
 
-  /** @internal */
-  public getConfig(): Config {
-    return this.config || Bkper.globalConfig;
-  }
+    /** @internal */
+    public getConfig(): Config {
+        return this.config || Bkper.globalConfig;
+    }
 
-  /**
-   * Returns the number of pending tasks in this Backlog.
-   *
-   * @returns The number of tasks in the Backlog, or undefined if not available.
-   */
-  public getCount(): number | undefined {
-    return this.payload.count;
-  }
+    /**
+     * Returns the number of pending tasks in this Backlog.
+     *
+     * @returns The number of tasks in the Backlog, or undefined if not available.
+     */
+    public getCount(): number | undefined {
+        return this.payload.count;
+    }
 
 }
