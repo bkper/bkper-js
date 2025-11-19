@@ -9,15 +9,28 @@ import { Resource } from "./Resource.js";
  * @public
  */
 export abstract class ResourceProperty<T extends { properties?: { [key: string]: string } }> extends Resource<T> {
-    
+
+    /**
+     * Checks if a property key represents a hidden property.
+     * Hidden properties are those whose keys end with an underscore "_".
+     *
+     * @param key - The property key to check
+     * @returns True if the property is hidden, false otherwise
+     * 
+     * @internal
+     */
+    private isHiddenProperty(key: string): boolean {
+        return key.endsWith('_');
+    }
+
     /**
      * Gets the custom properties stored in this resource.
      *
      * @returns Object with key/value pair properties
      */
     public getProperties(): { [key: string]: string } {
-        return this.payload.properties != null 
-            ? { ...this.payload.properties } 
+        return this.payload.properties != null
+            ? { ...this.payload.properties }
             : {};
     }
 
@@ -25,11 +38,25 @@ export abstract class ResourceProperty<T extends { properties?: { [key: string]:
      * Sets the custom properties of this resource.
      *
      * @param properties - Object with key/value pair properties
+     * @param filterHidden - If true, hidden properties (ending with "_") will not be set. Defaults to false.
      *
      * @returns This resource, for chaining
      */
-    public setProperties(properties: { [key: string]: string }): this {
-        this.payload.properties = { ...properties };
+    public setProperties(properties: { [key: string]: string }, filterHidden = false): this {
+        if (!filterHidden) {
+            this.payload.properties = { ...properties };
+            return this;
+        }
+
+        const filteredProperties: { [key: string]: string } = {};
+        for (const key in properties) {
+            if (Object.prototype.hasOwnProperty.call(properties, key)) {
+                if (!this.isHiddenProperty(key)) {
+                    filteredProperties[key] = properties[key];
+                }
+            }
+        }
+        this.payload.properties = { ...filteredProperties };
         return this;
     }
 
@@ -43,8 +70,8 @@ export abstract class ResourceProperty<T extends { properties?: { [key: string]:
     public getProperty(...keys: string[]): string | undefined {
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
-            let value = this.payload.properties != null 
-                ? this.payload.properties[key] 
+            let value = this.payload.properties != null
+                ? this.payload.properties[key]
                 : null;
             if (value != null && value.trim() != "") {
                 return value;
@@ -58,11 +85,15 @@ export abstract class ResourceProperty<T extends { properties?: { [key: string]:
      *
      * @param key - The property key
      * @param value - The property value, or null/undefined to clean it
+     * @param filterHidden - If true, hidden properties (ending with "_") will not be set. Defaults to false.
      *
      * @returns This resource, for chaining
      */
-    public setProperty(key: string, value: string | null | undefined): this {
+    public setProperty(key: string, value: string | null | undefined, filterHidden = false): this {
         if (key == null || key.trim() == "") {
+            return this;
+        }
+        if (filterHidden && this.isHiddenProperty(key)) {
             return this;
         }
         if (this.payload.properties == null) {
