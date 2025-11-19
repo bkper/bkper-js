@@ -38,25 +38,11 @@ export abstract class ResourceProperty<T extends { properties?: { [key: string]:
      * Sets the custom properties of this resource.
      *
      * @param properties - Object with key/value pair properties
-     * @param filterHidden - If true, hidden properties (ending with "_") will not be set. Defaults to false.
      *
      * @returns This resource, for chaining
      */
-    public setProperties(properties: { [key: string]: string }, filterHidden = false): this {
-        if (!filterHidden) {
-            this.payload.properties = { ...properties };
-            return this;
-        }
-
-        const filteredProperties: { [key: string]: string } = {};
-        for (const key in properties) {
-            if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    filteredProperties[key] = properties[key];
-                }
-            }
-        }
-        this.payload.properties = { ...filteredProperties };
+    public setProperties(properties: { [key: string]: string }): this {
+        this.payload.properties = { ...properties };
         return this;
     }
 
@@ -85,15 +71,11 @@ export abstract class ResourceProperty<T extends { properties?: { [key: string]:
      *
      * @param key - The property key
      * @param value - The property value, or null/undefined to clean it
-     * @param filterHidden - If true, hidden properties (ending with "_") will not be set. Defaults to false.
      *
      * @returns This resource, for chaining
      */
-    public setProperty(key: string, value: string | null | undefined, filterHidden = false): this {
+    public setProperty(key: string, value: string | null | undefined): this {
         if (key == null || key.trim() == "") {
-            return this;
-        }
-        if (filterHidden && this.isHiddenProperty(key)) {
             return this;
         }
         if (this.payload.properties == null) {
@@ -135,5 +117,63 @@ export abstract class ResourceProperty<T extends { properties?: { [key: string]:
         }
         propertyKeys = propertyKeys.sort();
         return propertyKeys;
+    }
+
+    /**
+     * Sets a custom property in this resource, filtering out hidden properties.
+     * Hidden properties are those whose keys end with an underscore "_".
+     *
+     * @param key - The property key
+     * @param value - The property value, or null/undefined to clean it
+     *
+     * @returns This resource, for chaining
+     */
+    public setVisibleProperty(key: string, value: string | null | undefined): this {
+        if (this.isHiddenProperty(key)) {
+            return this;
+        }
+        return this.setProperty(key, value);
+    }
+
+    /**
+     * Sets the custom properties of this resource, filtering out hidden properties.
+     * Hidden properties are those whose keys end with an underscore "_".
+     *
+     * @param properties - Object with key/value pair properties
+     *
+     * @returns This resource, for chaining
+     */
+    public setVisibleProperties(properties: { [key: string]: string }): this {
+        if (properties == null) {
+            return this;
+        }
+        const filteredProperties: { [key: string]: string } = {};
+        for (const key in properties) {
+            if (Object.prototype.hasOwnProperty.call(properties, key)) {
+                if (!this.isHiddenProperty(key)) {
+                    filteredProperties[key] = properties[key];
+                }
+            }
+        }
+        return this.setProperties(filteredProperties);
+    }
+
+    /**
+     * Gets the visible custom properties stored in this resource.
+     * Hidden properties (those ending with "_") are excluded from the result.
+     *
+     * @returns Object with key/value pair properties, excluding hidden properties
+     */
+    public getVisibleProperties(): { [key: string]: string } {
+        const allProperties = this.getProperties();
+        const visibleProperties: { [key: string]: string } = {};
+        for (const key in allProperties) {
+            if (Object.prototype.hasOwnProperty.call(allProperties, key)) {
+                if (!this.isHiddenProperty(key)) {
+                    visibleProperties[key] = allProperties[key];
+                }
+            }
+        }
+        return visibleProperties;
     }
 }

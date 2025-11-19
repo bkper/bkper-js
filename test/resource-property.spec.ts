@@ -184,74 +184,79 @@ describe('ResourceProperty', () => {
         });
     });
 
-    describe('hidden property filtering', () => {
+    describe('visible property methods', () => {
         
-        describe('setProperty with filterHidden', () => {
-            it('should skip hidden property when filterHidden is true', () => {
+        describe('setVisibleProperty', () => {
+            it('should skip hidden property', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperty('hidden_', 'value', true);
+                resource.setVisibleProperty('hidden_', 'value');
                 
                 expect(resource.getProperties()).to.deep.equal({});
             });
 
-            it('should set hidden property when filterHidden is false', () => {
+            it('should set non-hidden property', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperty('hidden_', 'value', false);
-                
-                expect(resource.getProperty('hidden_')).to.equal('value');
-            });
-
-            it('should set hidden property when filterHidden is omitted (backward compat)', () => {
-                const resource = new TestResourceProperty({});
-                resource.setProperty('hidden_', 'value');
-                
-                expect(resource.getProperty('hidden_')).to.equal('value');
-            });
-
-            it('should set non-hidden property when filterHidden is true', () => {
-                const resource = new TestResourceProperty({});
-                resource.setProperty('normal', 'value', true);
+                resource.setVisibleProperty('normal', 'value');
                 
                 expect(resource.getProperty('normal')).to.equal('value');
             });
 
             it('should handle single underscore as hidden', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperty('_', 'value', true);
+                resource.setVisibleProperty('_', 'value');
                 
                 expect(resource.getProperties()).to.deep.equal({});
             });
 
             it('should handle multiple underscores as hidden', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperty('key__', 'value', true);
+                resource.setVisibleProperty('key__', 'value');
                 
                 expect(resource.getProperties()).to.deep.equal({});
             });
 
             it('should not treat underscore in middle as hidden', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperty('key_middle', 'value', true);
+                resource.setVisibleProperty('key_middle', 'value');
                 
                 expect(resource.getProperty('key_middle')).to.equal('value');
             });
 
-            it('should return this for chaining when filtering', () => {
+            it('should return this for chaining', () => {
                 const resource = new TestResourceProperty({});
-                const result = resource.setProperty('hidden_', 'value', true);
+                const result = resource.setVisibleProperty('hidden_', 'value');
                 
                 expect(result).to.equal(resource);
             });
+
+            it('should allow chaining with regular setProperty', () => {
+                const resource = new TestResourceProperty({});
+                resource
+                    .setVisibleProperty('visible', 'value1')
+                    .setProperty('hidden_', 'value2');
+                
+                expect(resource.getProperties()).to.deep.equal({
+                    visible: 'value1',
+                    hidden_: 'value2'
+                });
+            });
+
+            it('should update existing visible property', () => {
+                const resource = new TestResourceProperty({ properties: { key1: 'old' } });
+                resource.setVisibleProperty('key1', 'new');
+                
+                expect(resource.getProperty('key1')).to.equal('new');
+            });
         });
 
-        describe('setProperties with filterHidden', () => {
-            it('should filter out hidden properties when filterHidden is true', () => {
+        describe('setVisibleProperties', () => {
+            it('should filter out hidden properties', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperties({ 
+                resource.setVisibleProperties({ 
                     normal1: 'value1', 
                     hidden_: 'value2',
                     normal2: 'value3'
-                }, true);
+                });
                 
                 expect(resource.getProperties()).to.deep.equal({ 
                     normal1: 'value1',
@@ -259,40 +264,14 @@ describe('ResourceProperty', () => {
                 });
             });
 
-            it('should set all properties when filterHidden is false', () => {
-                const resource = new TestResourceProperty({});
-                resource.setProperties({ 
-                    normal: 'value1', 
-                    hidden_: 'value2'
-                }, false);
-                
-                expect(resource.getProperties()).to.deep.equal({ 
-                    normal: 'value1',
-                    hidden_: 'value2'
-                });
-            });
-
-            it('should set all properties when filterHidden is omitted (backward compat)', () => {
-                const resource = new TestResourceProperty({});
-                resource.setProperties({ 
-                    normal: 'value1', 
-                    hidden_: 'value2'
-                });
-                
-                expect(resource.getProperties()).to.deep.equal({ 
-                    normal: 'value1',
-                    hidden_: 'value2'
-                });
-            });
-
             it('should filter multiple hidden properties', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperties({ 
+                resource.setVisibleProperties({ 
                     normal: 'value1', 
                     hidden1_: 'value2',
                     hidden2_: 'value3',
                     another: 'value4'
-                }, true);
+                });
                 
                 expect(resource.getProperties()).to.deep.equal({ 
                     normal: 'value1',
@@ -302,19 +281,107 @@ describe('ResourceProperty', () => {
 
             it('should handle all hidden properties', () => {
                 const resource = new TestResourceProperty({});
-                resource.setProperties({ 
+                resource.setVisibleProperties({ 
                     hidden1_: 'value1', 
                     hidden2_: 'value2'
-                }, true);
+                });
                 
                 expect(resource.getProperties()).to.deep.equal({});
             });
 
-            it('should return this for chaining when filtering', () => {
+            it('should return this for chaining', () => {
                 const resource = new TestResourceProperty({});
-                const result = resource.setProperties({ hidden_: 'value' }, true);
+                const result = resource.setVisibleProperties({ hidden_: 'value' });
                 
                 expect(result).to.equal(resource);
+            });
+
+            it('should allow chaining with regular setProperty', () => {
+                const resource = new TestResourceProperty({});
+                resource
+                    .setVisibleProperties({ visible: 'value1', hidden1_: 'skip' })
+                    .setProperty('hidden2_', 'value2');
+                
+                expect(resource.getProperties()).to.deep.equal({
+                    visible: 'value1',
+                    hidden2_: 'value2'
+                });
+            });
+
+            it('should handle null properties gracefully', () => {
+                const resource = new TestResourceProperty({});
+                resource.setVisibleProperties(null as any);
+                
+                expect(resource.getProperties()).to.deep.equal({});
+            });
+        });
+
+        describe('getVisibleProperties', () => {
+            it('should return only visible properties', () => {
+                const resource = new TestResourceProperty({ 
+                    properties: { 
+                        visible1: 'value1', 
+                        hidden_: 'value2',
+                        visible2: 'value3'
+                    } 
+                });
+                
+                expect(resource.getVisibleProperties()).to.deep.equal({
+                    visible1: 'value1',
+                    visible2: 'value3'
+                });
+            });
+
+            it('should return empty object when no properties', () => {
+                const resource = new TestResourceProperty({});
+                expect(resource.getVisibleProperties()).to.deep.equal({});
+            });
+
+            it('should return empty object when all properties are hidden', () => {
+                const resource = new TestResourceProperty({ 
+                    properties: { 
+                        hidden1_: 'value1', 
+                        hidden2_: 'value2'
+                    } 
+                });
+                
+                expect(resource.getVisibleProperties()).to.deep.equal({});
+            });
+
+            it('should return copy not reference', () => {
+                const resource = new TestResourceProperty({ 
+                    properties: { visible: 'value1', hidden_: 'value2' } 
+                });
+                const props = resource.getVisibleProperties();
+                
+                props.newKey = 'newValue';
+                expect(resource.getVisibleProperties()).to.deep.equal({ visible: 'value1' });
+            });
+
+            it('should handle properties with underscore in middle', () => {
+                const resource = new TestResourceProperty({ 
+                    properties: { 
+                        key_middle: 'value1',
+                        hidden_: 'value2'
+                    } 
+                });
+                
+                expect(resource.getVisibleProperties()).to.deep.equal({
+                    key_middle: 'value1'
+                });
+            });
+
+            it('should handle single underscore as hidden', () => {
+                const resource = new TestResourceProperty({ 
+                    properties: { 
+                        normal: 'value1',
+                        _: 'value2'
+                    } 
+                });
+                
+                expect(resource.getVisibleProperties()).to.deep.equal({
+                    normal: 'value1'
+                });
             });
         });
     });
