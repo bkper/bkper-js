@@ -230,6 +230,7 @@ export class Bkper {
     getBook(id: string, includeAccounts?: boolean, includeGroups?: boolean): Promise<Book>;
     getBooks(query?: string): Promise<Book[]>;
     getCollections(): Promise<Collection[]>;
+    getConfig(): Config;
     getTemplates(): Promise<Template[]>;
     getUser(): Promise<User>;
     // @internal (undocumented)

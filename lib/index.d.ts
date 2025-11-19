@@ -1200,6 +1200,12 @@ export declare class Bkper {
      */
     constructor(config?: Config);
     /**
+     * Gets the current instance configuration.
+     *
+     * @returns The Config object for this Bkper instance
+     */
+    getConfig(): Config;
+    /**
      * Gets the [[Book]] with the specified bookId from url param.
      *
      * @param id - The universal book id - The same bookId param of URL you access at app.bkper.com
