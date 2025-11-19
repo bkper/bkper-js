@@ -1,5 +1,5 @@
 import { Config } from "./Config.js";
-import { Resource } from "./Resource.js";
+import { ResourceProperty } from "./ResourceProperty.js";
 import { Bkper } from "./Bkper.js";
 import * as ConnectionService from "../service/connection-service.js";
 import { Integration } from "./Integration.js";
@@ -9,7 +9,7 @@ import { Integration } from "./Integration.js";
  *
  * @public
  */
-export class Connection extends Resource<bkper.Connection> {
+export class Connection extends ResourceProperty<bkper.Connection> {
     private config?: Config;
 
     constructor(payload?: bkper.Connection, config?: Config) {
@@ -143,107 +143,12 @@ export class Connection extends Resource<bkper.Connection> {
     }
 
     /**
-     * Gets the custom properties stored in the Connection
-     *
-     * @returns Object with key/value pair properties
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.payload.properties != null
-            ? { ...this.payload.properties }
-            : {};
-    }
-
-    /**
-     * Sets the custom properties of the Connection.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns The Connection, for chaining
-     */
-    public setProperties(properties: { [key: string]: string }): Connection {
-        this.payload.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The retrieved property value
-     */
-    public getProperty(...keys: string[]): string | undefined {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value =
-                this.payload.properties != null ? this.payload.properties[key] : null;
-            if (value != null && value.trim() != "") {
-                return value;
-            }
-        }
-        return undefined;
-    }
-
-    /**
-     * Sets a custom property in the Connection.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns The Connection, for chaining
-     */
-    public setProperty(key: string, value: string | null | undefined): Connection {
-        if (key == null || key.trim() == "") {
-            return this;
-        }
-        if (this.payload.properties == null) {
-            this.payload.properties = {};
-        }
-        if (!value) {
-            value = "";
-        }
-        this.payload.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Deletes a custom property stored in the Connection.
-     *
-     * @param key - The property key
-     *
-     * @returns The Connection, for chaining
-     */
-    public deleteProperty(key: string): Connection {
-        this.setProperty(key, null);
-        return this;
-    }
-
-    /**
      * Cleans any token property stored in the Connection.
      */
     public clearTokenProperties(): void {
         this.getPropertyKeys()
             .filter((key) => key.includes("token"))
             .forEach((key) => this.deleteProperty(key));
-    }
-
-    /**
-     * Gets the custom properties keys stored in the Connection.
-     *
-     * @returns The retrieved property keys
-     */
-    public getPropertyKeys(): string[] {
-        let properties = this.getProperties();
-        let propertyKeys: string[] = [];
-        if (properties) {
-            for (var key in properties) {
-                if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                    propertyKeys.push(key);
-                }
-            }
-        }
-        propertyKeys = propertyKeys.sort();
-        return propertyKeys;
     }
 
     /**

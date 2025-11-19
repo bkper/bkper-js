@@ -15,7 +15,7 @@
  *
  * @public
  */
-export declare class Account extends Resource<bkper.Account> {
+export declare class Account extends ResourceProperty<bkper.Account> {
 
     constructor(book: Book, payload?: bkper.Account);
 
@@ -65,49 +65,6 @@ export declare class Account extends Resource<bkper.Account> {
      * @returns This Account, for chaining
      */
     setType(type: AccountType): Account;
-    /**
-     * Gets the custom properties stored in this Account.
-     *
-     * @returns The custom properties object
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Sets the custom properties of the Account.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Account, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): Account;
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The property value or undefined if not found
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Sets a custom property in the Account.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Account, for chaining
-     */
-    setProperty(key: string, value: string | null | undefined): Account;
-    /**
-     * Deletes a custom property.
-     *
-     * @param key - The property key
-     *
-     * @returns This Account, for chaining
-     */
-    deleteProperty(key: string): Account;
     /**
      * Tells if this Account is archived.
      *
@@ -1306,7 +1263,7 @@ export declare class Bkper {
  *
  * @public
  */
-export declare class Book extends Resource<bkper.Book> {
+export declare class Book extends ResourceProperty<bkper.Book> {
     private config?;
     private allGroupsLoaded;
     private allAccountsLoaded;
@@ -1548,41 +1505,6 @@ export declare class Book extends Resource<bkper.Book> {
      * @returns This Book, for chaining
      */
     setVisibility(visibility: Visibility): Book;
-    /**
-     * Gets the custom properties stored in this Book.
-     *
-     * @returns The custom properties object
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property keys to search for
-     *
-     * @returns The property value or undefined if not found
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Sets the custom properties of the Book.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Book, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): Book;
-    /**
-     * Sets a custom property in the Book.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Book, for chaining
-     */
-    setProperty(key: string, value: string | null | undefined): Book;
     /**
      * Formats a date according to date pattern of the Book.
      *
@@ -2238,7 +2160,7 @@ export declare interface Config {
  *
  * @public
  */
-export declare class Connection extends Resource<bkper.Connection> {
+export declare class Connection extends ResourceProperty<bkper.Connection> {
     private config?;
     constructor(payload?: bkper.Connection, config?: Config);
 
@@ -2323,58 +2245,9 @@ export declare class Connection extends Resource<bkper.Connection> {
      */
     setType(type: "APP" | "BANK"): Connection;
     /**
-     * Gets the custom properties stored in the Connection
-     *
-     * @returns Object with key/value pair properties
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Sets the custom properties of the Connection.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns The Connection, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): Connection;
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The retrieved property value
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Sets a custom property in the Connection.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns The Connection, for chaining
-     */
-    setProperty(key: string, value: string | null | undefined): Connection;
-    /**
-     * Deletes a custom property stored in the Connection.
-     *
-     * @param key - The property key
-     *
-     * @returns The Connection, for chaining
-     */
-    deleteProperty(key: string): Connection;
-    /**
      * Cleans any token property stored in the Connection.
      */
     clearTokenProperties(): void;
-    /**
-     * Gets the custom properties keys stored in the Connection.
-     *
-     * @returns The retrieved property keys
-     */
-    getPropertyKeys(): string[];
     /**
      * Gets the existing [[Integrations]] on the Connection.
      *
@@ -2559,7 +2432,7 @@ export declare enum EventType {
  *
  * @public
  */
-export declare class File extends Resource<bkper.File> {
+export declare class File extends ResourceProperty<bkper.File> {
 
     constructor(book: Book, payload?: bkper.File);
     /**
@@ -2630,49 +2503,6 @@ export declare class File extends Resource<bkper.File> {
      */
     getSize(): number | undefined;
     /**
-     * Gets the custom properties stored in this File.
-     *
-     * @returns The custom properties object
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Sets the custom properties of the File.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This File, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): File;
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The property value or undefined if not found
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Sets a custom property in the File.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This File, for chaining
-     */
-    setProperty(key: string, value: string | null | undefined): File;
-    /**
-     * Deletes a custom property.
-     *
-     * @param key - The property key
-     *
-     * @returns This File, for chaining
-     */
-    deleteProperty(key: string): File;
-    /**
      * Perform create new File.
      *
      * @returns The created File object
@@ -2689,7 +2519,7 @@ export declare class File extends Resource<bkper.File> {
  *
  * @public
  */
-export declare class Group extends Resource<bkper.Group> {
+export declare class Group extends ResourceProperty<bkper.Group> {
 
 
 
@@ -2756,49 +2586,6 @@ export declare class Group extends Resource<bkper.Group> {
      * @returns The type for of the accounts of this group. Null if mixed
      */
     getType(): AccountType;
-    /**
-     * Gets the custom properties stored in this Group.
-     *
-     * @returns The custom properties as a key/value object
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Sets the custom properties of the Group
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Group, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): Group;
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The property value, or undefined if not found
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Sets a custom property in the Group.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Group, for chaining
-     */
-    setProperty(key: string, value: string | null | undefined): Group;
-    /**
-     * Delete a custom property
-     *
-     * @param key - The property key
-     *
-     * @returns This Group, for chaining
-     */
-    deleteProperty(key: string): Group;
     /**
      * Tells if the Group is hidden on main transactions menu.
      *
@@ -2941,7 +2728,7 @@ export declare class Group extends Resource<bkper.Group> {
  *
  * @public
  */
-export declare class Integration extends Resource<bkper.Integration> {
+export declare class Integration extends ResourceProperty<bkper.Integration> {
     private config?;
     constructor(payload?: bkper.Integration, config?: Config);
 
@@ -3007,49 +2794,6 @@ export declare class Integration extends Resource<bkper.Integration> {
      * @returns The Integration last update date in milliseconds
      */
     getLastUpdateMs(): string | undefined;
-    /**
-     * Gets the custom properties stored in the Integration.
-     *
-     * @returns Object with key/value pair properties
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Sets the custom properties of the Integration.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns The Integration, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): Integration;
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The retrieved property value
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Sets a custom property in the Integration.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns The Integration, for chaining
-     */
-    setProperty(key: string, value: string | null | undefined): Integration;
-    /**
-     * Deletes a custom property stored in the Integration.
-     *
-     * @param key - The property key
-     *
-     * @returns The Integration, for chaining
-     */
-    deleteProperty(key: string): Integration;
     /**
      * Performs remove Integration.
      *
@@ -3243,6 +2987,70 @@ declare abstract class Resource<T = any> {
 }
 
 /**
+ * Abstract base class for Bkper resources that support custom properties.
+ *
+ * Extends Resource<T> and adds property management methods for entities
+ * that have a properties field in their payload.
+ *
+ * @public
+ */
+declare abstract class ResourceProperty<T extends {
+    properties?: {
+        [key: string]: string;
+    };
+}> extends Resource<T> {
+    /**
+     * Gets the custom properties stored in this resource.
+     *
+     * @returns Object with key/value pair properties
+     */
+    getProperties(): {
+        [key: string]: string;
+    };
+    /**
+     * Sets the custom properties of this resource.
+     *
+     * @param properties - Object with key/value pair properties
+     *
+     * @returns This resource, for chaining
+     */
+    setProperties(properties: {
+        [key: string]: string;
+    }): this;
+    /**
+     * Gets the property value for given keys. First property found will be retrieved.
+     *
+     * @param keys - The property keys to search for
+     *
+     * @returns The property value or undefined if not found
+     */
+    getProperty(...keys: string[]): string | undefined;
+    /**
+     * Sets a custom property in this resource.
+     *
+     * @param key - The property key
+     * @param value - The property value, or null/undefined to clean it
+     *
+     * @returns This resource, for chaining
+     */
+    setProperty(key: string, value: string | null | undefined): this;
+    /**
+     * Deletes a custom property.
+     *
+     * @param key - The property key
+     *
+     * @returns This resource, for chaining
+     */
+    deleteProperty(key: string): this;
+    /**
+     * Gets the custom properties keys stored in this resource.
+     *
+     * @returns Array of property keys sorted alphabetically
+     */
+    getPropertyKeys(): string[];
+}
+
+/**
  * This class defines a Template.
  *
  * A Template is a pre-configured setup for [[Books]] and associated Google Sheets that provides users with a starting point for specific accounting or financial management needs.
@@ -3311,7 +3119,7 @@ export declare class Template extends Resource<bkper.Template> {
  *
  * @public
  */
-export declare class Transaction extends Resource<bkper.Transaction> {
+export declare class Transaction extends ResourceProperty<bkper.Transaction> {
 
 
     constructor(book: Book, payload?: bkper.Transaction);
@@ -3459,55 +3267,6 @@ export declare class Transaction extends Resource<bkper.Transaction> {
      * @returns True if the transaction has the specified tag
      */
     hasTag(tag: string): boolean;
-    /**
-     * Gets the custom properties stored in this Transaction.
-     *
-     * @returns Object with key/value pair properties
-     */
-    getProperties(): {
-        [key: string]: string;
-    };
-    /**
-     * Sets the custom properties of the Transaction
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Transaction, for chaining
-     */
-    setProperties(properties: {
-        [key: string]: string;
-    }): Transaction;
-    /**
-     * Gets the property value for given keys. First property found will be retrieved
-     *
-     * @param keys - The property key
-     *
-     * @returns The property value or undefined if not found
-     */
-    getProperty(...keys: string[]): string | undefined;
-    /**
-     * Gets the custom properties keys stored in this Transaction.
-     *
-     * @returns Array of property keys
-     */
-    getPropertyKeys(): string[];
-    /**
-     * Sets a custom property in the Transaction.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Transaction, for chaining
-     */
-    setProperty(key: string, value: string | null | undefined): Transaction;
-    /**
-     * Delete a custom property
-     *
-     * @param key - The property key
-     *
-     * @returns This Transaction, for chaining
-     */
-    deleteProperty(key: string): Transaction;
     /**
      * Gets the credit account associated with this Transaction. Same as origin account
      *

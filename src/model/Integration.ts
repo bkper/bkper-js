@@ -1,5 +1,5 @@
 import * as IntegrationService from "../service/integration-service.js";
-import { Resource } from "./Resource.js";
+import { ResourceProperty } from "./ResourceProperty.js";
 import { Config } from "./Config.js";
 import { Bkper } from "./Bkper.js";
 
@@ -8,7 +8,7 @@ import { Bkper } from "./Bkper.js";
  *
  * @public
  */
-export class Integration extends Resource<bkper.Integration> {
+export class Integration extends ResourceProperty<bkper.Integration> {
 
     private config?: Config;
 
@@ -114,81 +114,7 @@ export class Integration extends Resource<bkper.Integration> {
         return this.payload.lastUpdateMs;
     }
 
-    /**
-     * Gets the custom properties stored in the Integration.
-     *
-     * @returns Object with key/value pair properties
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.payload.properties != null
-            ? { ...this.payload.properties }
-            : {};
-    }
 
-    /**
-     * Sets the custom properties of the Integration.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns The Integration, for chaining
-     */
-    public setProperties(properties: { [key: string]: string }): Integration {
-        this.payload.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The retrieved property value
-     */
-    public getProperty(...keys: string[]): string | undefined {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value =
-                this.payload.properties != null ? this.payload.properties[key] : null;
-            if (value != null && value.trim() != "") {
-                return value;
-            }
-        }
-        return undefined;
-    }
-
-    /**
-     * Sets a custom property in the Integration.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns The Integration, for chaining
-     */
-    public setProperty(key: string, value: string | null | undefined): Integration {
-        if (key == null || key.trim() == "") {
-            return this;
-        }
-        if (this.payload.properties == null) {
-            this.payload.properties = {};
-        }
-        if (!value) {
-            value = "";
-        }
-        this.payload.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Deletes a custom property stored in the Integration.
-     *
-     * @param key - The property key
-     *
-     * @returns The Integration, for chaining
-     */
-    public deleteProperty(key: string): Integration {
-        this.setProperty(key, null);
-        return this;
-    }
 
     /**
      * Performs remove Integration.

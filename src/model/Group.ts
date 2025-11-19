@@ -4,7 +4,7 @@ import { Account } from "./Account.js";
 import { Book } from "./Book.js";
 import { Config } from "./Config.js";
 import { AccountType } from "./Enums.js";
-import { Resource } from "./Resource.js";
+import { ResourceProperty } from "./ResourceProperty.js";
 
 /**
  * This class defines a Group of [[Accounts]].
@@ -15,7 +15,7 @@ import { Resource } from "./Resource.js";
  *
  * @public
  */
-export class Group extends Resource<bkper.Group> {
+export class Group extends ResourceProperty<bkper.Group> {
     /** @internal */
     private parent?: Group;
 
@@ -161,81 +161,7 @@ export class Group extends Resource<bkper.Group> {
         return this.payload.type as AccountType;
     }
 
-    /**
-     * Gets the custom properties stored in this Group.
-     *
-     * @returns The custom properties as a key/value object
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.payload.properties != null
-            ? { ...this.payload.properties }
-            : {};
-    }
 
-    /**
-     * Sets the custom properties of the Group
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Group, for chaining
-     */
-    public setProperties(properties: { [key: string]: string }): Group {
-        this.payload.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The property value, or undefined if not found
-     */
-    public getProperty(...keys: string[]): string | undefined {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value =
-                this.payload.properties != null ? this.payload.properties[key] : null;
-            if (value != null && value.trim() != "") {
-                return value;
-            }
-        }
-        return undefined;
-    }
-
-    /**
-     * Sets a custom property in the Group.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Group, for chaining
-     */
-    public setProperty(key: string, value: string | null | undefined): Group {
-        if (key == null || key.trim() == "") {
-            return this;
-        }
-        if (this.payload.properties == null) {
-            this.payload.properties = {};
-        }
-        if (!value) {
-            value = "";
-        }
-        this.payload.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Delete a custom property
-     *
-     * @param key - The property key
-     *
-     * @returns This Group, for chaining
-     */
-    public deleteProperty(key: string): Group {
-        this.setProperty(key, null);
-        return this;
-    }
 
     /**
      * Tells if the Group is hidden on main transactions menu.

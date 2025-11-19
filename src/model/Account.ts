@@ -5,7 +5,7 @@ import { Config } from "./Config.js";
 import { AccountType } from "./Enums.js";
 import { Group } from "./Group.js";
 import { normalizeText } from "../utils.js";
-import { Resource } from "./Resource.js";
+import { ResourceProperty } from "./ResourceProperty.js";
 
 /**
  * This class defines an [Account](https://en.wikipedia.org/wiki/Account_(bookkeeping)) of a [[Book]].
@@ -16,7 +16,7 @@ import { Resource } from "./Resource.js";
  *
  * @public
  */
-export class Account extends Resource<bkper.Account> {
+export class Account extends ResourceProperty<bkper.Account> {
     /** @internal */
     private book: Book;
 
@@ -103,78 +103,7 @@ export class Account extends Resource<bkper.Account> {
         return this;
     }
 
-    /**
-     * Gets the custom properties stored in this Account.
-     *
-     * @returns The custom properties object
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.payload.properties != null ? { ...this.payload.properties } : {};
-    }
 
-    /**
-     * Sets the custom properties of the Account.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Account, for chaining
-     */
-    public setProperties(properties: { [key: string]: string }): Account {
-        this.payload.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property key
-     *
-     * @returns The property value or undefined if not found
-     */
-    public getProperty(...keys: string[]): string | undefined {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value = this.payload.properties != null ? this.payload.properties[key] : null;
-            if (value != null && value.trim() != "") {
-                return value;
-            }
-        }
-        return undefined;
-    }
-
-    /**
-     * Sets a custom property in the Account.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Account, for chaining
-     */
-    public setProperty(key: string, value: string | null | undefined): Account {
-        if (key == null || key.trim() == "") {
-            return this;
-        }
-        if (this.payload.properties == null) {
-            this.payload.properties = {};
-        }
-        if (!value) {
-            value = "";
-        }
-        this.payload.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Deletes a custom property.
-     *
-     * @param key - The property key
-     *
-     * @returns This Account, for chaining
-     */
-    public deleteProperty(key: string): Account {
-        this.setProperty(key, null);
-        return this;
-    }
 
     /**
      * Tells if this Account is archived.

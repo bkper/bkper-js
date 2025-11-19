@@ -2,7 +2,7 @@ import { File } from "./File.js";
 import { Book } from "./Book.js";
 import { Account } from "./Account.js";
 import { Config } from "./Config.js";
-import { Resource } from "./Resource.js";
+import { ResourceProperty } from "./ResourceProperty.js";
 import * as TransactionService from "../service/transaction-service.js";
 import * as Utils from "../utils.js";
 import { Amount } from "./Amount.js";
@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from "uuid";
  *
  * @public
  */
-export class Transaction extends Resource<bkper.Transaction> {
+export class Transaction extends ResourceProperty<bkper.Transaction> {
 
     /** @internal */
     private book: Book;
@@ -346,100 +346,7 @@ export class Transaction extends Resource<bkper.Transaction> {
         return false;
     }
 
-    /**
-     * Gets the custom properties stored in this Transaction.
-     *
-     * @returns Object with key/value pair properties
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.payload.properties != null
-            ? { ...this.payload.properties }
-            : {};
-    }
 
-    /**
-     * Sets the custom properties of the Transaction
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Transaction, for chaining
-     */
-    public setProperties(properties: { [key: string]: string }): Transaction {
-        this.payload.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved
-     *
-     * @param keys - The property key
-     *
-     * @returns The property value or undefined if not found
-     */
-    public getProperty(...keys: string[]): string | undefined {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value =
-                this.payload.properties != null ? this.payload.properties[key] : null;
-            if (value != null && value.trim() != "") {
-                return value;
-            }
-        }
-        return undefined;
-    }
-
-    /**
-     * Gets the custom properties keys stored in this Transaction.
-     *
-     * @returns Array of property keys
-     */
-    public getPropertyKeys(): string[] {
-        let properties = this.getProperties();
-        let propertyKeys: string[] = [];
-        if (properties) {
-            for (var key in properties) {
-                if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                    propertyKeys.push(key);
-                }
-            }
-        }
-        propertyKeys = propertyKeys.sort();
-        return propertyKeys;
-    }
-
-    /**
-     * Sets a custom property in the Transaction.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Transaction, for chaining
-     */
-    public setProperty(key: string, value: string | null | undefined): Transaction {
-        if (key == null || key.trim() == "") {
-            return this;
-        }
-        if (this.payload.properties == null) {
-            this.payload.properties = {};
-        }
-        if (!value) {
-            value = "";
-        }
-        this.payload.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Delete a custom property
-     *
-     * @param key - The property key
-     *
-     * @returns This Transaction, for chaining
-     */
-    public deleteProperty(key: string): Transaction {
-        this.setProperty(key, null);
-        return this;
-    }
 
     /**
      * Gets the credit account associated with this Transaction. Same as origin account

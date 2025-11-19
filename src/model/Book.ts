@@ -10,7 +10,7 @@ import * as EventService from "../service/event-service.js";
 import * as CollaboratorService from "../service/collaborator-service.js";
 import * as Utils from "../utils.js";
 import { Config } from "./Config.js";
-import { Resource } from "./Resource.js";
+import { ResourceProperty } from "./ResourceProperty.js";
 import { Account } from "./Account.js";
 import { Amount } from "./Amount.js";
 import { Collaborator } from "./Collaborator.js";
@@ -42,7 +42,7 @@ import { Backlog } from "./Backlog.js";
  *
  * @public
  */
-export class Book extends Resource<bkper.Book> {
+export class Book extends ResourceProperty<bkper.Book> {
 
     private config?: Config;
 
@@ -444,69 +444,7 @@ export class Book extends Resource<bkper.Book> {
         return this;
     }
 
-    /**
-     * Gets the custom properties stored in this Book.
-     *
-     * @returns The custom properties object
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.payload.properties != null
-            ? { ...this.payload.properties }
-            : {};
-    }
 
-    /**
-     * Gets the property value for given keys. First property found will be retrieved.
-     *
-     * @param keys - The property keys to search for
-     *
-     * @returns The property value or undefined if not found
-     */
-    public getProperty(...keys: string[]): string | undefined {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value =
-                this.payload.properties != null ? this.payload.properties[key] : null;
-            if (value != null && value.trim() != "") {
-                return value;
-            }
-        }
-        return undefined;
-    }
-
-    /**
-     * Sets the custom properties of the Book.
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Book, for chaining
-     */
-    public setProperties(properties: { [key: string]: string }): Book {
-        this.payload.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Sets a custom property in the Book.
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Book, for chaining
-     */
-    public setProperty(key: string, value: string | null | undefined): Book {
-        if (key == null || key.trim() == "") {
-            return this;
-        }
-        if (this.payload.properties == null) {
-            this.payload.properties = {};
-        }
-        if (!value) {
-            value = "";
-        }
-        this.payload.properties[key] = value;
-        return this;
-    }
 
     /**
      * Formats a date according to date pattern of the Book.

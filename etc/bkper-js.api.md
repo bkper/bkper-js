@@ -4,24 +4,19 @@
 
 ```ts
 
-// Warning: (ae-forgotten-export) The symbol "Resource" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ResourceProperty" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class Account extends Resource<bkper.Account> {
+export class Account extends ResourceProperty<bkper.Account> {
     constructor(book: Book, payload?: bkper.Account);
     addGroup(group: Group | bkper.Group): Account;
     create(): Promise<Account>;
-    deleteProperty(key: string): Account;
     // @internal (undocumented)
     getConfig(): Config;
     getGroups(): Promise<Group[]>;
     getId(): string | undefined;
     getName(): string | undefined;
     getNormalizedName(): string;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
     getType(): AccountType;
     hasTransactionPosted(): boolean | undefined;
     isArchived(): boolean | undefined;
@@ -34,10 +29,6 @@ export class Account extends Resource<bkper.Account> {
     setArchived(archived: boolean): Account;
     setGroups(groups: Group[] | bkper.Group[]): Account;
     setName(name: string): Account;
-    setProperties(properties: {
-        [key: string]: string;
-    }): Account;
-    setProperty(key: string, value: string | null | undefined): Account;
     setType(type: AccountType): Account;
     update(): Promise<Account>;
 }
@@ -85,6 +76,8 @@ export class Amount {
     toString(): string;
 }
 
+// Warning: (ae-forgotten-export) The symbol "Resource" needs to be exported by the entry point index.d.ts
+//
 // @public
 export class App extends Resource<bkper.App> {
     constructor(payload?: bkper.App, config?: Config);
@@ -245,7 +238,7 @@ export class Bkper {
 }
 
 // @public
-export class Book extends Resource<bkper.Book> {
+export class Book extends ResourceProperty<bkper.Book> {
     constructor(payload?: bkper.Book, config?: Config);
     audit(): void;
     batchCheckTransactions(transactions: Transaction[]): Promise<void>;
@@ -300,10 +293,6 @@ export class Book extends Resource<bkper.Book> {
     getPeriod(): Period;
     getPeriodStartMonth(): Month;
     getPermission(): Permission;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
     getSavedQueries(): Promise<Query[]>;
     getTimeZone(): string | undefined;
     getTimeZoneOffset(): number | undefined;
@@ -334,10 +323,6 @@ export class Book extends Resource<bkper.Book> {
     setPageSize(pageSize: number): Book;
     setPeriod(period: Period): Book;
     setPeriodStartMonth(month: Month): Book;
-    setProperties(properties: {
-        [key: string]: string;
-    }): Book;
-    setProperty(key: string, value: string | null | undefined): Book;
     setTimeZone(timeZone: string): Book;
     setVisibility(visibility: Visibility): Book;
     update(): Promise<Book>;
@@ -412,11 +397,10 @@ export interface Config {
 }
 
 // @public
-export class Connection extends Resource<bkper.Connection> {
+export class Connection extends ResourceProperty<bkper.Connection> {
     constructor(payload?: bkper.Connection, config?: Config);
     clearTokenProperties(): void;
     create(): Promise<Connection>;
-    deleteProperty(key: string): Connection;
     getAgentId(): string | undefined;
     // @internal (undocumented)
     getConfig(): Config;
@@ -426,20 +410,11 @@ export class Connection extends Resource<bkper.Connection> {
     getIntegrations(): Promise<Integration[]>;
     getLogo(): string | undefined;
     getName(): string | undefined;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
-    getPropertyKeys(): string[];
     getType(): "APP" | "BANK" | undefined;
     getUUID(): string | undefined;
     remove(): Promise<Connection>;
     setAgentId(agentId: string): Connection;
     setName(name: string): Connection;
-    setProperties(properties: {
-        [key: string]: string;
-    }): Connection;
-    setProperty(key: string, value: string | null | undefined): Connection;
     setType(type: "APP" | "BANK"): Connection;
     setUUID(uuid: string): Connection;
 }
@@ -538,12 +513,11 @@ export enum EventType {
 }
 
 // @public
-export class File extends Resource<bkper.File> {
+export class File extends ResourceProperty<bkper.File> {
     constructor(book: Book, payload?: bkper.File);
     // @internal (undocumented)
     book: Book;
     create(): Promise<File>;
-    deleteProperty(key: string): File;
     getBook(): Book;
     // @internal (undocumented)
     getConfig(): Config;
@@ -551,23 +525,15 @@ export class File extends Resource<bkper.File> {
     getContentType(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
     getSize(): number | undefined;
     getUrl(): string | undefined;
     setContent(content: string): File;
     setContentType(contentType: string): File;
     setName(name: string): File;
-    setProperties(properties: {
-        [key: string]: string;
-    }): File;
-    setProperty(key: string, value: string | null | undefined): File;
 }
 
 // @public
-export class Group extends Resource<bkper.Group> {
+export class Group extends ResourceProperty<bkper.Group> {
     constructor(book: Book, payload?: bkper.Group);
     // @internal (undocumented)
     accounts?: Map<string, Account>;
@@ -576,7 +542,6 @@ export class Group extends Resource<bkper.Group> {
     // @internal (undocumented)
     buildGroupTree(idGroupMap: Map<string, Group>): void;
     create(): Promise<Group>;
-    deleteProperty(key: string): Group;
     getAccounts(): Promise<Account[]>;
     getChildren(): Group[];
     // @internal (undocumented)
@@ -588,10 +553,6 @@ export class Group extends Resource<bkper.Group> {
     getName(): string | undefined;
     getNormalizedName(): string;
     getParent(): Group | undefined;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
     getRoot(): Group;
     getRootName(): string;
     getType(): AccountType;
@@ -611,17 +572,12 @@ export class Group extends Resource<bkper.Group> {
     setLocked(locked: boolean): Group;
     setName(name: string): Group;
     setParent(group: Group | null | undefined): Group;
-    setProperties(properties: {
-        [key: string]: string;
-    }): Group;
-    setProperty(key: string, value: string | null | undefined): Group;
     update(): Promise<Group>;
 }
 
 // @public
-export class Integration extends Resource<bkper.Integration> {
+export class Integration extends ResourceProperty<bkper.Integration> {
     constructor(payload?: bkper.Integration, config?: Config);
-    deleteProperty(key: string): Integration;
     getAddedBy(): string | undefined;
     getAgentId(): string | undefined;
     getBookId(): string | undefined;
@@ -635,15 +591,7 @@ export class Integration extends Resource<bkper.Integration> {
     getLogoUrl(): string | undefined;
     getLogoUrlDark(): string | undefined;
     getName(): string | undefined;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
     remove(): Promise<Integration>;
-    setProperties(properties: {
-        [key: string]: string;
-    }): Integration;
-    setProperty(key: string, value: string | null | undefined): Integration;
 }
 
 // @public
@@ -729,14 +677,13 @@ export class Template extends Resource<bkper.Template> {
 }
 
 // @public
-export class Transaction extends Resource<bkper.Transaction> {
+export class Transaction extends ResourceProperty<bkper.Transaction> {
     constructor(book: Book, payload?: bkper.Transaction);
     addFile(file: File): Transaction;
     addRemoteId(remoteId: string): Transaction;
     addUrl(url: string): Transaction;
     check(): Promise<Transaction>;
     create(): Promise<Transaction>;
-    deleteProperty(key: string): Transaction;
     from(account: Account | bkper.Account | null | undefined): Transaction;
     getAccountBalance(raw?: boolean): Promise<Amount | undefined>;
     getAgentId(): string | undefined;
@@ -766,11 +713,6 @@ export class Transaction extends Resource<bkper.Transaction> {
     getId(): string | undefined;
     getOtherAccount(account: Account | string): Promise<Account | undefined>;
     getOtherAccountName(account: string | Account): Promise<string | undefined>;
-    getProperties(): {
-        [key: string]: string;
-    };
-    getProperty(...keys: string[]): string | undefined;
-    getPropertyKeys(): string[];
     getRemoteIds(): string[];
     getTags(): string[];
     getUpdatedAt(): Date;
@@ -791,10 +733,6 @@ export class Transaction extends Resource<bkper.Transaction> {
     setDate(date: string | Date): Transaction;
     setDebitAccount(account: Account | bkper.Account | null | undefined): Transaction;
     setDescription(description: string): Transaction;
-    setProperties(properties: {
-        [key: string]: string;
-    }): Transaction;
-    setProperty(key: string, value: string | null | undefined): Transaction;
     setUrls(urls: string[]): Transaction;
     to(account: Account | bkper.Account | null | undefined): Transaction;
     trash(): Promise<Transaction>;
