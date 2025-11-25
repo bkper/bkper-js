@@ -237,7 +237,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      */
     public getCollection(): Collection | undefined {
         if (this.payload.collection != null && this.collection == null) {
-            this.collection = new Collection(this.payload.collection);
+            this.collection = new Collection(this.payload.collection, this.config);
         }
         return this.collection;
     }
@@ -740,7 +740,7 @@ export class Book extends ResourceProperty<bkper.Book> {
             return this.apps;
         }
         const appsPlain = await BookService.getApps(this.getId(), this.getConfig());
-        this.apps = appsPlain.map((a) => new App(a));
+        this.apps = appsPlain.map((a) => new App(a, this.config));
         return this.apps;
     }
 
@@ -754,7 +754,7 @@ export class Book extends ResourceProperty<bkper.Book> {
             this.getId(),
             this.getConfig()
         );
-        const integrations = integrationsPlain.map((i) => new Integration(i));
+        const integrations = integrationsPlain.map((i) => new Integration(i, this.config));
         return integrations;
     }
 
@@ -781,7 +781,7 @@ export class Book extends ResourceProperty<bkper.Book> {
                 this.getConfig()
             );
         }
-        return new Integration(integration);
+        return new Integration(integration, this.config);
     }
 
     /**
@@ -807,7 +807,7 @@ export class Book extends ResourceProperty<bkper.Book> {
                 this.getConfig()
             );
         }
-        return new Integration(integration);
+        return new Integration(integration, this.config);
     }
 
     /**
@@ -1315,7 +1315,7 @@ export class Book extends ResourceProperty<bkper.Book> {
             fromDate,
             this.getConfig()
         );
-        return new Book(copiedBookPayload);
+        return new Book(copiedBookPayload, this.config);
     }
 
     /**
@@ -1413,7 +1413,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      */
     public async getBacklog(): Promise<Backlog> {
         const backlogPayload = await EventService.getBacklog(this, this.getConfig());
-        return new Backlog(backlogPayload);
+        return new Backlog(backlogPayload, this.config);
     }
 
 }

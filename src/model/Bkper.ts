@@ -133,7 +133,7 @@ export class Bkper {
      */
     public async getApps(): Promise<App[]> {
         let apps = await AppService.getApps(this.config);
-        return apps.map((app) => new App(app));
+        return apps.map((app) => new App(app, this.config));
     }
 
     /**
@@ -143,7 +143,7 @@ export class Bkper {
      */
     public async getTemplates(): Promise<Template[]> {
         let templates = await TemplateService.getTemplates(this.config);
-        return templates.map((template) => new Template(template));
+        return templates.map((template) => new Template(template, this.config));
     }
 
     /**

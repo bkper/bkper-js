@@ -141,7 +141,7 @@ export class User extends Resource<bkper.User> {
      */
     public async getConnections(): Promise<Connection[]> {
         const json = await ConnectionService.listConnections(this.getConfig());
-        return json.map((c) => new Connection(c));
+        return json.map((c) => new Connection(c, this.config));
     }
 
     /**
@@ -153,6 +153,6 @@ export class User extends Resource<bkper.User> {
      */
     public async getConnection(id: string): Promise<Connection> {
         const json = await ConnectionService.getConnection(id, this.getConfig());
-        return new Connection(json);
+        return new Connection(json, this.config);
     }
 }

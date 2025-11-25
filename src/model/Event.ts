@@ -60,7 +60,7 @@ export class Event {
      * @returns The user who performed the Event
      */
     public getUser(): User | undefined {
-        return this.payload.user ? new User(this.payload.user) : undefined;
+        return this.payload.user ? new User(this.payload.user, this.book.getConfig()) : undefined;
     }
 
     /**

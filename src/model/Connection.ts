@@ -165,7 +165,7 @@ export class Connection extends ResourceProperty<bkper.Connection> {
             id,
             this.getConfig()
         );
-        const integrations = integrationsPlain.map((i) => new Integration(i));
+        const integrations = integrationsPlain.map((i) => new Integration(i, this.config));
         return integrations;
     }
 
