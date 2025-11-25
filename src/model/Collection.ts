@@ -84,7 +84,7 @@ export class Collection extends Resource<bkper.Collection> {
             return books;
         }
         for (const bookPayload of this.payload.books) {
-            let book = new Book(bookPayload);
+            let book = new Book(bookPayload, this.config);
             books.push(book);
         }
         return books;
@@ -106,7 +106,7 @@ export class Collection extends Resource<bkper.Collection> {
                 bookList,
                 this.getConfig()
             );
-            return addedBooks.map((book) => new Book(book));
+            return addedBooks.map((book) => new Book(book, this.config));
         }
         return [];
     }
@@ -127,7 +127,7 @@ export class Collection extends Resource<bkper.Collection> {
                 bookList,
                 this.getConfig()
             );
-            return removedBooks.map((book) => new Book(book));
+            return removedBooks.map((book) => new Book(book, this.config));
         }
         return [];
     }
@@ -177,6 +177,6 @@ export class Collection extends Resource<bkper.Collection> {
             this.payload,
             this.getConfig()
         );
-        return books.map((book) => new Book(book));
+        return books.map((book) => new Book(book, this.config));
     }
 }
