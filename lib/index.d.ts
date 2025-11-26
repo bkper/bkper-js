@@ -2514,6 +2514,12 @@ export declare class File extends ResourceProperty<bkper.File> {
      * @returns The created File object
      */
     create(): Promise<File>;
+    /**
+     * Perform update File, applying pending changes.
+     *
+     * @returns The updated File object
+     */
+    update(): Promise<File>;
 }
 
 /**

@@ -531,6 +531,7 @@ export class File extends ResourceProperty<bkper.File> {
     setContent(content: string): File;
     setContentType(contentType: string): File;
     setName(name: string): File;
+    update(): Promise<File>;
 }
 
 // @public

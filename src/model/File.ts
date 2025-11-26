@@ -146,13 +146,26 @@ export class File extends ResourceProperty<bkper.File> {
      * @returns The created File object
      */
     public async create(): Promise<File> {
-        if (this.book) {
-            this.payload = await FileService.createFile(
-                this.book.getId(),
-                this.payload,
-                this.getConfig()
-            );
-        }
+        this.payload = await FileService.createFile(
+            this.book.getId(),
+            this.payload,
+            this.getConfig()
+        );
         return this;
     }
+
+    /**
+     * Perform update File, applying pending changes.
+     *
+     * @returns The updated File object
+     */
+    public async update(): Promise<File> {
+        this.payload = await FileService.updateFile(
+            this.book.getId(),
+            this.payload,
+            this.getConfig()
+        );
+        return this;
+    }
+
 }
