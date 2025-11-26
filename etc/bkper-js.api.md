@@ -480,6 +480,8 @@ export enum EventType {
     // (undocumented)
     FILE_CREATED = "FILE_CREATED",
     // (undocumented)
+    FILE_UPDATED = "FILE_UPDATED",
+    // (undocumented)
     GROUP_CREATED = "GROUP_CREATED",
     // (undocumented)
     GROUP_DELETED = "GROUP_DELETED",

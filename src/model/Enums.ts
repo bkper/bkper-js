@@ -180,7 +180,6 @@ export enum Period {
  * @public
  */
 export enum Month {
-
     JANUARY = "JANUARY",
     FEBRUARY = "FEBRUARY",
     MARCH = "MARCH",
@@ -224,8 +223,8 @@ export enum BotResponseType {
  * @public
  */
 export enum EventType {
-
     FILE_CREATED = "FILE_CREATED",
+    FILE_UPDATED = "FILE_UPDATED",
     TRANSACTION_CREATED = "TRANSACTION_CREATED",
     TRANSACTION_UPDATED = "TRANSACTION_UPDATED",
     TRANSACTION_DELETED = "TRANSACTION_DELETED",
@@ -252,7 +251,4 @@ export enum EventType {
     INTEGRATION_DELETED = "INTEGRATION_DELETED",
     BOOK_UPDATED = "BOOK_UPDATED",
     BOOK_DELETED = "BOOK_DELETED"
-
 }
-
-
