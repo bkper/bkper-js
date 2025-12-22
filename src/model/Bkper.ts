@@ -16,7 +16,8 @@ import { Collection } from "./Collection.js";
  * You can configure the library in two ways:
  *
  * 1. Using static configuration (traditional approach):
- * ```javascript
+ * 
+ * ```typescript
  * Bkper.setConfig({
  *   apiKeyProvider: () => process.env.BKPER_API_KEY,
  *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
@@ -27,7 +28,8 @@ import { Collection } from "./Collection.js";
  * ```
  *
  * 2. Using per-instance configuration (recommended for Cloudflare Workers):
- * ```javascript
+ * 
+ * ```typescript
  * const bkper = new Bkper({
  *   apiKeyProvider: () => process.env.BKPER_API_KEY,
  *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
