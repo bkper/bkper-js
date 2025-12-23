@@ -4,6 +4,22 @@ See what's new and what has changed in bkper-js
 
 ## 2025
 
+**December 2025**
+- Added `File.update`
+- Added `EventType.FILE_UPDATED`
+
+**November 2025**
+- **v2.15.2 - INTERNAL REFACTOR:**
+  - Introduced `ResourceProperty` abstract class for model entities that support custom properties
+  - Moved shared property methods to ResourceProperty
+  - Refactor 7 model classes to extend ResourceProperty instead of Resource
+  - Eliminate ~350 lines of duplicated property management code
+  - Maintained full backward compatibility - no breaking changes to existing APIs
+- Added `ResourceProperty.setVisibleProperty`
+- Added `ResourceProperty.setVisibleProperties`
+- Added `ResourceProperty.getVisibleProperties`
+- Added `Bkper.getConfig`
+
 **October 2025**
 
 - Files attached to transactions are now created internally when transaction is persisted
