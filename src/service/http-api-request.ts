@@ -31,6 +31,7 @@ export class HttpApiRequest extends HttpRequest {
 
     async fetch(): Promise<HttpResponse> {
         this.addCustomHeaders();
+        await this.addAgentIdHeader();
         this.setHeader("Authorization", `Bearer ${await this.getAccessToken()}`);
         this.addParam("key", await this.getApiKey());
 
@@ -119,6 +120,16 @@ export class HttpApiRequest extends HttpRequest {
             Object.entries(headers).forEach(([key, value]) =>
                 this.setHeader(key, value)
             );
+        }
+    }
+
+    private async addAgentIdHeader() {
+        const effectiveConfig = this.config;
+        if (effectiveConfig.agentIdProvider) {
+            const agentId = await effectiveConfig.agentIdProvider();
+            if (agentId) {
+                this.setHeader('bkper-agent-id', agentId);
+            }
         }
     }
 

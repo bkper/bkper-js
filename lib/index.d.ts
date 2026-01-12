@@ -2135,6 +2135,13 @@ export declare interface Config {
      */
     oauthTokenProvider?: () => Promise<string | undefined>;
     /**
+     * Provides the agent ID to identify the calling agent for attribution purposes.
+     *
+     * This ID is sent via the `bkper-agent-id` header with each API request,
+     * allowing the server to attribute actions to the correct agent.
+     */
+    agentIdProvider?: () => Promise<string | undefined>;
+    /**
      * Provides additional headers to append to the API request
      */
     requestHeadersProvider?: () => Promise<{
