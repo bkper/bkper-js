@@ -1,6 +1,35 @@
 import { Config } from "../model/Config.js";
 import { HttpRequest } from "./http-request.js";
 
+/**
+ * Proxy URL for clients without their own API key.
+ * The proxy injects a managed API key server-side.
+ */
+export const PROXY_BASE_URL = "https://api.bkper.app";
+
+/**
+ * Direct API URL for clients with their own API key.
+ */
+export const DIRECT_BASE_URL = "https://app.bkper.com/_ah/api/bkper";
+
+/**
+ * Resolves the base URL based on config.
+ *
+ * Priority:
+ * 1. If apiBaseUrl is set, use it (power user / dev mode)
+ * 2. If apiKeyProvider is set, use direct URL (power user with own key)
+ * 3. Otherwise, use proxy URL (default for most users)
+ */
+export function resolveBaseUrl(config: Config): string {
+    if (config.apiBaseUrl) {
+        return config.apiBaseUrl;
+    }
+    if (config.apiKeyProvider) {
+        return DIRECT_BASE_URL;
+    }
+    return PROXY_BASE_URL;
+}
+
 export interface HttpError {
     errors: {
         domain: string;
@@ -21,11 +50,8 @@ export class HttpApiRequest extends HttpRequest {
     private config: Config;
 
     constructor(path: string, config: Config) {
-        const effectiveConfig = config;
-        super(
-            `${effectiveConfig.apiBaseUrl || "https://app.bkper.com/_ah/api/bkper"
-            }/${path}`
-        );
+        const baseUrl = resolveBaseUrl(config);
+        super(`${baseUrl}/${path}`);
         this.config = config;
     }
 
@@ -45,11 +71,7 @@ export class HttpApiRequest extends HttpRequest {
                 this.retry++;
                 const effectiveConfig = this.config;
                 if (effectiveConfig.requestRetryHandler) {
-                    await effectiveConfig.requestRetryHandler(
-                        resp.status,
-                        resp.data,
-                        this.retry
-                    );
+                    await effectiveConfig.requestRetryHandler(resp.status, resp.data, this.retry);
                 } else {
                     console.log(`${JSON.stringify(resp.data)} - Retrying... `);
                 }
@@ -76,11 +98,7 @@ export class HttpApiRequest extends HttpRequest {
                     this.retry++;
                     const effectiveConfig = this.config;
                     if (effectiveConfig.requestRetryHandler) {
-                        await effectiveConfig.requestRetryHandler(
-                            520,
-                            undefined,
-                            this.retry
-                        );
+                        await effectiveConfig.requestRetryHandler(520, undefined, this.retry);
                     } else {
                         console.log(`Network error - Retrying... `);
                     }
@@ -89,7 +107,7 @@ export class HttpApiRequest extends HttpRequest {
             }
 
             // Other errors
-            console.log("Error", error.message);
+            console.log("Error", error);
             throw this.handleError(error);
         }
     }
@@ -103,8 +121,7 @@ export class HttpApiRequest extends HttpRequest {
             return customError;
         } else {
             //Default error handler
-            let error: HttpError =
-                err.response?.data?.error || err.data?.error || err.error;
+            let error: HttpError = err.response?.data?.error || err.data?.error || err.error;
             if (error) {
                 return error.message;
             } else {
@@ -117,9 +134,7 @@ export class HttpApiRequest extends HttpRequest {
         const effectiveConfig = this.config;
         if (effectiveConfig.requestHeadersProvider) {
             const headers = await effectiveConfig.requestHeadersProvider();
-            Object.entries(headers).forEach(([key, value]) =>
-                this.setHeader(key, value)
-            );
+            Object.entries(headers).forEach(([key, value]) => this.setHeader(key, value));
         }
     }
 
@@ -128,7 +143,7 @@ export class HttpApiRequest extends HttpRequest {
         if (effectiveConfig.agentIdProvider) {
             const agentId = await effectiveConfig.agentIdProvider();
             if (agentId) {
-                this.setHeader('bkper-agent-id', agentId);
+                this.setHeader("bkper-agent-id", agentId);
             }
         }
     }
