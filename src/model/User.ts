@@ -14,6 +14,7 @@ import * as ConnectionService from "../service/connection-service.js";
  * @public
  */
 export class User extends Resource<bkper.User> {
+
     private config?: Config;
 
     constructor(payload?: bkper.User, config?: Config) {
@@ -108,12 +109,30 @@ export class User extends Resource<bkper.User> {
     }
 
     /**
+     * Tells if the User's subscription payment is overdue.
+     *
+     * @returns True if the subscription payment is overdue
+     */
+    public isPlanOverdue(): boolean | undefined {
+        return this.payload.planOverdue;
+    }
+
+    /**
      * Tells if billing is enabled for the User.
      *
      * @returns True if billing is enabled for the User
      */
     public hasBillingEnabled(): boolean | undefined {
         return this.payload.billingEnabled;
+    }
+
+    /**
+     * Gets the billing admin email for this User's billing account.
+     *
+     * @returns The billing admin email
+     */
+    public getBillingAdminEmail(): string | undefined {
+        return this.payload.billingAdminEmail;
     }
 
     /**
@@ -144,6 +163,24 @@ export class User extends Resource<bkper.User> {
     }
 
     /**
+     * Gets the User's total transactions this month.
+     *
+     * @returns The total transactions this month
+     */
+    public getTotalTransactionsThisMonth(): number | undefined {
+        return this.payload.totalTransactionsThisMonth;
+    }
+
+    /**
+     * Gets the User's total transactions this year.
+     *
+     * @returns The total transactions this year
+     */
+    public getTotalTransactionsThisYear(): number | undefined {
+        return this.payload.totalTransactionsThisYear;
+    }
+
+    /**
      * Gets the [[Connections]] of the User.
      *
      * @returns The retrieved Connection objects
@@ -164,4 +201,5 @@ export class User extends Resource<bkper.User> {
         const json = await ConnectionService.getConnection(id, this.getConfig());
         return new Connection(json, this.config);
     }
+
 }
