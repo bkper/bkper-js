@@ -85,6 +85,7 @@ export class App extends Resource<bkper.App> {
     // @internal (undocumented)
     getConfig(): Config;
     getDescription(): string | undefined;
+    getDevelopers(): string | undefined;
     getEvents(): EventType[] | undefined;
     getFilePatterns(): string[] | undefined;
     getId(): string | undefined;
@@ -101,6 +102,7 @@ export class App extends Resource<bkper.App> {
     getOwnerWebsiteUrl(): string | undefined;
     getReadme(): string | undefined;
     getRepositoryUrl(): string | undefined;
+    getUsers(): string | undefined;
     getWebsiteUrl(): string | undefined;
     hasEvents(): boolean;
     isInstallable(): boolean;
@@ -108,9 +110,9 @@ export class App extends Resource<bkper.App> {
     isRepositoryPrivate(): boolean | undefined;
     patch(): Promise<App>;
     setClientSecret(clientSecret?: string): App;
-    setDeveloperEmail(email?: string): App;
+    setDevelopers(developers?: string): App;
     setReadme(readme?: string): App;
-    setUserEmails(emails?: string): App;
+    setUsers(users?: string): App;
     setWebhookUrlDev(webhookUrlDev: string): App;
     update(): Promise<App>;
 }
@@ -771,6 +773,7 @@ export class User extends Resource<bkper.User> {
     getId(): string | undefined;
     getName(): string | undefined;
     getPlan(): string | undefined;
+    getUsername(): string | undefined;
     hasBillingEnabled(): boolean | undefined;
     hasStartedTrial(): boolean | undefined;
     hasUsedConnections(): boolean | undefined;

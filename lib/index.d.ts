@@ -466,13 +466,19 @@ export declare class App extends Resource<bkper.App> {
      */
     getDescription(): string | undefined;
     /**
-     * Sets the whitelabeled user emails.
+     * Sets the whitelisted users (usernames and domain patterns).
      *
-     * @param emails - The user emails to whitelist
+     * @param users - The users to whitelist (comma or space separated usernames and domain patterns like *@domain.com)
      *
      * @returns This App for chaining
      */
-    setUserEmails(emails?: string): App;
+    setUsers(users?: string): App;
+    /**
+     * Gets the whitelisted users (usernames and domain patterns).
+     *
+     * @returns The users string
+     */
+    getUsers(): string | undefined;
     /**
      * Gets the menu url of this App.
      *
@@ -528,13 +534,19 @@ export declare class App extends Resource<bkper.App> {
      */
     getFilePatterns(): string[] | undefined;
     /**
-     * Sets the developer email.
+     * Sets the developers (usernames and domain patterns).
      *
-     * @param email - The developer email to set
+     * @param developers - The developers (comma or space separated usernames and domain patterns like *@domain.com)
      *
      * @returns This App for chaining
      */
-    setDeveloperEmail(email?: string): App;
+    setDevelopers(developers?: string): App;
+    /**
+     * Gets the developers (usernames and domain patterns).
+     *
+     * @returns The developers string
+     */
+    getDevelopers(): string | undefined;
     /**
      * Sets the client secret.
      *
@@ -3669,6 +3681,12 @@ export declare class User extends Resource<bkper.User> {
      * @returns The User's hosted domain
      */
     getHostedDomain(): string | undefined;
+    /**
+     * Gets the username of the User.
+     *
+     * @returns The User's username
+     */
+    getUsername(): string | undefined;
     /**
      * Tells if the User is in the free plan.
      *

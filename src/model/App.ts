@@ -119,15 +119,24 @@ export class App extends Resource<bkper.App> {
     }
 
     /**
-     * Sets the whitelabeled user emails.
+     * Sets the whitelisted users (usernames and domain patterns).
      *
-     * @param emails - The user emails to whitelist
+     * @param users - The users to whitelist (comma or space separated usernames and domain patterns like *@domain.com)
      *
      * @returns This App for chaining
      */
-    public setUserEmails(emails?: string): App {
-        this.payload.userEmails = emails;
+    public setUsers(users?: string): App {
+        this.payload.users = users;
         return this;
+    }
+
+    /**
+     * Gets the whitelisted users (usernames and domain patterns).
+     *
+     * @returns The users string
+     */
+    public getUsers(): string | undefined {
+        return this.payload.users;
     }
 
     /**
@@ -212,15 +221,24 @@ export class App extends Resource<bkper.App> {
     }
 
     /**
-     * Sets the developer email.
+     * Sets the developers (usernames and domain patterns).
      *
-     * @param email - The developer email to set
+     * @param developers - The developers (comma or space separated usernames and domain patterns like *@domain.com)
      *
      * @returns This App for chaining
      */
-    public setDeveloperEmail(email?: string): App {
-        this.payload.developerEmail = email;
+    public setDevelopers(developers?: string): App {
+        this.payload.developers = developers;
         return this;
+    }
+
+    /**
+     * Gets the developers (usernames and domain patterns).
+     *
+     * @returns The developers string
+     */
+    public getDevelopers(): string | undefined {
+        return this.payload.developers;
     }
 
     /**

@@ -81,6 +81,15 @@ export class User extends Resource<bkper.User> {
     }
 
     /**
+     * Gets the username of the User.
+     *
+     * @returns The User's username
+     */
+    public getUsername(): string | undefined {
+        return this.payload.username;
+    }
+
+    /**
      * Tells if the User is in the free plan.
      *
      * @returns True if the User is in the free plan
