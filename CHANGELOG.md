@@ -2,6 +2,22 @@
 
 See what's new and what has changed in bkper-js
 
+## 2026
+
+**January 2026**
+- Added `App.setUsers`
+- Added `App.getUsers`
+- Added `App.setDevelopers`
+- Added `App.getDevelopers`
+- Added `Config.agentIdProvider`
+- Added `User.getBillingAdminEmail`
+- Added `User.getTotalTransactionsThisMonth`
+- Added `User.getTotalTransactionsThisYear`
+- Added `User.getUsername`
+- Added `User.isPlanOverdue`
+- Removed `App.setUserEmails` from `App`. Use `App.setUsers` instead
+- Removed `App.setDeveloperEmail` from `App`. Use `App.setDevelopers` instead
+
 ## 2025
 
 **December 2025**
