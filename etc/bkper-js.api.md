@@ -762,26 +762,17 @@ export class TransactionList {
 export class User extends Resource<bkper.User> {
     constructor(payload?: bkper.User, config?: Config);
     getAvatarUrl(): string | undefined;
-    getBillingAdminEmail(): string | undefined;
     // @internal (undocumented)
     getConfig(): Config;
     getConnection(id: string): Promise<Connection>;
     getConnections(): Promise<Connection[]>;
-    getDaysLeftInTrial(): number | undefined;
     getEmail(): string | undefined;
     getFullName(): string | undefined;
     getHostedDomain(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
-    getPlan(): string | undefined;
-    getTotalTransactionsThisMonth(): number | undefined;
-    getTotalTransactionsThisYear(): number | undefined;
     getUsername(): string | undefined;
-    hasBillingEnabled(): boolean | undefined;
-    hasStartedTrial(): boolean | undefined;
     hasUsedConnections(): boolean | undefined;
-    isFree(): boolean | undefined;
-    isPlanOverdue(): boolean | undefined;
 }
 
 // @public

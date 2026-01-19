@@ -3688,65 +3688,11 @@ export declare class User extends Resource<bkper.User> {
      */
     getUsername(): string | undefined;
     /**
-     * Tells if the User is in the free plan.
-     *
-     * @returns True if the User is in the free plan
-     */
-    isFree(): boolean | undefined;
-    /**
-     * Gets the plan of the User.
-     *
-     * @returns The User's plan
-     */
-    getPlan(): string | undefined;
-    /**
-     * Tells if the User's subscription payment is overdue.
-     *
-     * @returns True if the subscription payment is overdue
-     */
-    isPlanOverdue(): boolean | undefined;
-    /**
-     * Tells if billing is enabled for the User.
-     *
-     * @returns True if billing is enabled for the User
-     */
-    hasBillingEnabled(): boolean | undefined;
-    /**
-     * Gets the billing admin email for this User's billing account.
-     *
-     * @returns The billing admin email
-     */
-    getBillingAdminEmail(): string | undefined;
-    /**
-     * Tells if the User has started the trial.
-     *
-     * @returns True if the User has started the trial
-     */
-    hasStartedTrial(): boolean | undefined;
-    /**
-     * Gets the days left in User's trial.
-     *
-     * @returns The User's days left in trial
-     */
-    getDaysLeftInTrial(): number | undefined;
-    /**
      * Tells if the User has already used [[Connections]].
      *
      * @returns True if the User has already used Connections
      */
     hasUsedConnections(): boolean | undefined;
-    /**
-     * Gets the User's total transactions this month.
-     *
-     * @returns The total transactions this month
-     */
-    getTotalTransactionsThisMonth(): number | undefined;
-    /**
-     * Gets the User's total transactions this year.
-     *
-     * @returns The total transactions this year
-     */
-    getTotalTransactionsThisYear(): number | undefined;
     /**
      * Gets the [[Connections]] of the User.
      *

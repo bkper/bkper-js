@@ -91,93 +91,12 @@ export class User extends Resource<bkper.User> {
     }
 
     /**
-     * Tells if the User is in the free plan.
-     *
-     * @returns True if the User is in the free plan
-     */
-    public isFree(): boolean | undefined {
-        return this.payload.free;
-    }
-
-    /**
-     * Gets the plan of the User.
-     *
-     * @returns The User's plan
-     */
-    public getPlan(): string | undefined {
-        return this.payload.plan;
-    }
-
-    /**
-     * Tells if the User's subscription payment is overdue.
-     *
-     * @returns True if the subscription payment is overdue
-     */
-    public isPlanOverdue(): boolean | undefined {
-        return this.payload.planOverdue;
-    }
-
-    /**
-     * Tells if billing is enabled for the User.
-     *
-     * @returns True if billing is enabled for the User
-     */
-    public hasBillingEnabled(): boolean | undefined {
-        return this.payload.billingEnabled;
-    }
-
-    /**
-     * Gets the billing admin email for this User's billing account.
-     *
-     * @returns The billing admin email
-     */
-    public getBillingAdminEmail(): string | undefined {
-        return this.payload.billingAdminEmail;
-    }
-
-    /**
-     * Tells if the User has started the trial.
-     *
-     * @returns True if the User has started the trial
-     */
-    public hasStartedTrial(): boolean | undefined {
-        return this.payload.startedTrial;
-    }
-
-    /**
-     * Gets the days left in User's trial.
-     *
-     * @returns The User's days left in trial
-     */
-    public getDaysLeftInTrial(): number | undefined {
-        return this.payload.daysLeftInTrial;
-    }
-
-    /**
      * Tells if the User has already used [[Connections]].
      *
      * @returns True if the User has already used Connections
      */
     public hasUsedConnections(): boolean | undefined {
         return this.payload.bankConnections;
-    }
-
-    /**
-     * Gets the User's total transactions this month.
-     *
-     * @returns The total transactions this month
-     */
-    public getTotalTransactionsThisMonth(): number | undefined {
-        return this.payload.totalTransactionsThisMonth;
-    }
-
-    /**
-     * Gets the User's total transactions this year.
-     *
-     * @returns The total transactions this year
-     */
-    public getTotalTransactionsThisYear(): number | undefined {
-        return this.payload.totalTransactionsThisYear;
     }
 
     /**
