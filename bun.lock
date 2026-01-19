@@ -28,7 +28,7 @@
         "typescript": "^5.5.4",
       },
       "peerDependencies": {
-        "@bkper/bkper-api-types": "^5.33.0",
+        "@bkper/bkper-api-types": "^5.34.0",
       },
     },
   },
@@ -39,7 +39,7 @@
 
     "@babel/highlight": ["@babel/highlight@7.25.9", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.25.9", "chalk": "^2.4.2", "js-tokens": "^4.0.0", "picocolors": "^1.0.0" } }, "sha512-llL88JShoCsth8fF8R4SJnIn+WLvR6ccFxu1H3FlMhDontdcmZWf2HgIZ7AIqV3Xcck1idlohrN4EUBQz6klbw=="],
 
-    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.33.0", "", {}, "sha512-IzNEXg6/deDFuhMq7QcwJfyHqHqkhc7TRE4W3K7nxkgSvi3ekZzPIrCyP2CEA8GLh2iTd/BwqyiXAMIpWuLKTA=="],
+    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.34.0", "", {}, "sha512-CCXMmLPdQC547I9CgHW7q7JNNosTuPB1jpeWfO2/kw5LhhxtLO3/GrOaTgq0zWrzEGHCIWJsXKZvEOj0BF45Wg=="],
 
     "@cspotcode/source-map-support": ["@cspotcode/source-map-support@0.8.1", "", { "dependencies": { "@jridgewell/trace-mapping": "0.3.9" } }, "sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw=="],
 
