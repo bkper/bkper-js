@@ -10,13 +10,24 @@ See what's new and what has changed in bkper-js
 - Added `App.setDevelopers`
 - Added `App.getDevelopers`
 - Added `Config.agentIdProvider`
-- Added `User.getBillingAdminEmail`
-- Added `User.getTotalTransactionsThisMonth`
-- Added `User.getTotalTransactionsThisYear`
+- Added `Billing`
+- Added `Billing.getAdminEmail`
+- Added `Billing.getDaysLeftInTrial`
+- Added `Billing.getPlan`
+- Added `Billing.getTotalTransactionsThisMonth`
+- Added `Billing.getTotalTransactionsThisYear`
+- Added `Billing.hasStartedTrial`
+- Added `Billing.isEnabled`
+- Added `Billing.isPlanOverdue`
+- Added `User.getBilling`
 - Added `User.getUsername`
-- Added `User.isPlanOverdue`
 - Removed `App.setUserEmails` from `App`. Use `App.setUsers` instead
 - Removed `App.setDeveloperEmail` from `App`. Use `App.setDevelopers` instead
+- Removed `User.getDaysLeftInTrial` from `User`. Use `Billing.getDaysLeftInTrial` instead
+- Removed `User.getPlan` from `User`. Use `Billing.getPlan` instead
+- Removed `User.hasBillingEnabled` from `User`. Use `Billing.isEnabled` instead
+- Removed `User.hasStartedTrial` from `User`. Use `Billing.hasStartedTrial` instead
+- Removed `User.isFree` from `User`. Use `Billing.getPlan` instead
 
 ## 2025
 
