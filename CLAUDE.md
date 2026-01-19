@@ -72,7 +72,7 @@ HTTP API communication layer:
 
 ### Dependencies
 - **Runtime**: axios (HTTP), big.js (decimals), dayjs/luxon (dates)
-- **Peer**: @bkper/bkper-api-types (API type definitions)
+- **Runtime**: @bkper/bkper-api-types (API type definitions)
 - **Dev**: TypeScript, Mocha, Chai, API Extractor, gts
 
 ### Key Patterns
