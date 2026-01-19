@@ -3,6 +3,8 @@ import { Config } from "./Config.js";
 import { Resource } from "./Resource.js";
 import { Bkper } from "./Bkper.js";
 import * as ConnectionService from "../service/connection-service.js";
+import * as UserService from "../service/user-service.js";
+import { Billing } from "./Billing.js";
 
 /**
  * This class defines a User on the Bkper platform.
@@ -88,6 +90,16 @@ export class User extends Resource<bkper.User> {
      */
     public getUsername(): string | undefined {
         return this.payload.username;
+    }
+    
+    /**
+     * Gets the billing information for this User.
+     *
+     * @returns The User's billing information
+     */
+    public async getBilling(): Promise<Billing> {
+        const payload = await UserService.getBilling(this.getConfig());
+        return new Billing(payload, this.config);
     }
 
     /**

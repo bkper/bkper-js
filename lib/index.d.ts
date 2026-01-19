@@ -1166,6 +1166,67 @@ export declare enum BalanceType {
 }
 
 /**
+ * This class defines the Billing information for a [[User]].
+ *
+ * The Billing information includes the plan, the admin email, and the billing portal URL.
+ *
+ * @public
+ */
+export declare class Billing extends Resource<bkper.Billing> {
+    private config?;
+    constructor(json?: bkper.Billing, config?: Config);
+
+    /**
+     * Tells if billing is enabled for the User.
+     *
+     * @returns True if billing is enabled for the User
+     */
+    isEnabled(): boolean | undefined;
+    /**
+     * Gets the current plan of the User.
+     *
+     * @returns The User's plan
+     */
+    getPlan(): string | undefined;
+    /**
+     * Tells if the User's current plan payment is overdue.
+     *
+     * @returns True if the plan payment is overdue
+     */
+    isPlanOverdue(): boolean | undefined;
+    /**
+     * Gets the admin email for this User's billing account.
+     *
+     * @returns The billing admin email
+     */
+    getAdminEmail(): string | undefined;
+    /**
+     * Tells if the User has started the trial period.
+     *
+     * @returns True if the User has started the trial period
+     */
+    hasStartedTrial(): boolean | undefined;
+    /**
+     * Gets the number of days left in User's trial period.
+     *
+     * @returns The number of days left in trial period
+     */
+    getDaysLeftInTrial(): number | undefined;
+    /**
+     * Gets the number of total transactions this month for the User's billing account.
+     *
+     * @returns The number of total transactions this month
+     */
+    getTotalTransactionsThisMonth(): number | undefined;
+    /**
+     * Gets the number of total transactions this year for the User's billing account.
+     *
+     * @returns The number of total transactions this year
+     */
+    getTotalTransactionsThisYear(): number | undefined;
+}
+
+/**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
  *
  * You can configure the library in two ways:
@@ -3687,6 +3748,12 @@ export declare class User extends Resource<bkper.User> {
      * @returns The User's username
      */
     getUsername(): string | undefined;
+    /**
+     * Gets the billing information for this User.
+     *
+     * @returns The User's billing information
+     */
+    getBilling(): Promise<Billing>;
     /**
      * Tells if the User has already used [[Connections]].
      *

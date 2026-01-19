@@ -225,6 +225,21 @@ export enum BalanceType {
 }
 
 // @public
+export class Billing extends Resource<bkper.Billing> {
+    constructor(json?: bkper.Billing, config?: Config);
+    getAdminEmail(): string | undefined;
+    // @internal (undocumented)
+    getConfig(): Config;
+    getDaysLeftInTrial(): number | undefined;
+    getPlan(): string | undefined;
+    getTotalTransactionsThisMonth(): number | undefined;
+    getTotalTransactionsThisYear(): number | undefined;
+    hasStartedTrial(): boolean | undefined;
+    isEnabled(): boolean | undefined;
+    isPlanOverdue(): boolean | undefined;
+}
+
+// @public
 export class Bkper {
     constructor(config?: Config);
     getApps(): Promise<App[]>;
@@ -762,6 +777,7 @@ export class TransactionList {
 export class User extends Resource<bkper.User> {
     constructor(payload?: bkper.User, config?: Config);
     getAvatarUrl(): string | undefined;
+    getBilling(): Promise<Billing>;
     // @internal (undocumented)
     getConfig(): Config;
     getConnection(id: string): Promise<Connection>;
