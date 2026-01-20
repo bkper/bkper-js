@@ -52,7 +52,9 @@ export interface Config {
     requestRetryHandler?: (status?: number, error?: any, attempt?: number) => Promise<void>;
 
     /**
-     * Sets the base api url. Default to https://app.bkper.com/_ah/api/bkper
+     * Sets the base api url. Default to https://api.bkper.app
+     * 
+     * @internal
      */
     apiBaseUrl?: string
 

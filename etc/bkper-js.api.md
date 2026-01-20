@@ -406,6 +406,7 @@ export class Collection extends Resource<bkper.Collection> {
 // @public
 export interface Config {
     agentIdProvider?: () => Promise<string | undefined>;
+    // @internal
     apiBaseUrl?: string;
     apiKeyProvider?: () => Promise<string>;
     oauthTokenProvider?: () => Promise<string | undefined>;

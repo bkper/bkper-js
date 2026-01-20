@@ -2,32 +2,18 @@ import { Config } from "../model/Config.js";
 import { HttpRequest } from "./http-request.js";
 
 /**
- * Proxy URL for clients without their own API key.
- * The proxy injects a managed API key server-side.
+ * The official Bkper API base URL.
  */
-export const PROXY_BASE_URL = "https://api.bkper.app";
-
-/**
- * Direct API URL for clients with their own API key.
- */
-export const DIRECT_BASE_URL = "https://app.bkper.com/_ah/api/bkper";
+export const API_BASE_URL = "https://api.bkper.app";
 
 /**
  * Resolves the base URL based on config.
- *
- * Priority:
- * 1. If apiBaseUrl is set, use it (power user / dev mode)
- * 2. If apiKeyProvider is set, use direct URL (power user with own key)
- * 3. Otherwise, use proxy URL (default for most users)
  */
 export function resolveBaseUrl(config: Config): string {
     if (config.apiBaseUrl) {
         return config.apiBaseUrl;
     }
-    if (config.apiKeyProvider) {
-        return DIRECT_BASE_URL;
-    }
-    return PROXY_BASE_URL;
+    return API_BASE_URL;
 }
 
 export interface HttpError {
@@ -59,7 +45,7 @@ export class HttpApiRequest extends HttpRequest {
         this.addCustomHeaders();
         await this.addAgentIdHeader();
         this.setHeader("Authorization", `Bearer ${await this.getAccessToken()}`);
-        this.addParam("key", await this.getApiKey());
+        await this.addApiKeyHeader();
 
         try {
             let resp = await super.execute();
@@ -148,12 +134,14 @@ export class HttpApiRequest extends HttpRequest {
         }
     }
 
-    private async getApiKey() {
+    private async addApiKeyHeader() {
         const effectiveConfig = this.config;
         if (effectiveConfig.apiKeyProvider) {
-            return await effectiveConfig.apiKeyProvider();
+            const apiKey = await effectiveConfig.apiKeyProvider();
+            if (apiKey) {
+                this.setHeader("bkper-api-key", apiKey);
+            }
         }
-        return null;
     }
 
     private async getAccessToken(): Promise<string | undefined> {
