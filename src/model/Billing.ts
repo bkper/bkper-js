@@ -1,6 +1,7 @@
 import { Config } from "./Config.js";
 import { Resource } from "./Resource.js";
 import { Bkper } from "./Bkper.js";
+import * as UserService from "../service/user-service.js";
 
 /**
  * This class defines the Billing information for a [[User]].
@@ -93,6 +94,18 @@ export class Billing extends Resource<bkper.Billing> {
      */
     public getTotalTransactionsThisYear(): number | undefined {
         return this.payload.totalTransactionsThisYear;
+    }
+
+    /**
+     * Gets the URL to redirect the User to the billing portal.
+     *
+     * @param returnUrl - The URL to return to after the User has been redirected to the billing portal
+     *
+     * @returns The URL to redirect the User to the billing portal
+     */
+    public async getPortalUrl(returnUrl: string): Promise<string | undefined> {
+        const urlPayload = await UserService.getBillingPortalUrl(returnUrl, this.getConfig());
+        return urlPayload.url;
     }
 
 }

@@ -41,6 +41,7 @@ import { Collection } from "./Collection.js";
  * @public
  */
 export class Bkper {
+
     /** @internal */
     public static globalConfig: Config = {};
 
@@ -158,17 +159,4 @@ export class Bkper {
         return new User(user, this.config);
     }
 
-    /**
-     * Gets the URL to redirect the User to the billing portal.
-     *
-     * @param returnUrl - The URL to return to after the User has been redirected to the billing portal
-     *
-     * @returns The URL to redirect the User to the billing portal
-     */
-    public async getBillingPortalUrl(
-        returnUrl: string
-    ): Promise<string | undefined> {
-        let url = await UserService.getBillingPortalUrl(returnUrl, this.config);
-        return url.url;
-    }
 }
