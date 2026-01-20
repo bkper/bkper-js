@@ -230,8 +230,10 @@ export class Billing extends Resource<bkper.Billing> {
     getAdminEmail(): string | undefined;
     // @internal (undocumented)
     getConfig(): Config;
+    getCounts(): Promise<bkper.Counts>;
     getDaysLeftInTrial(): number | undefined;
     getPlan(): string | undefined;
+    getPortalUrl(returnUrl: string): Promise<string | undefined>;
     getTotalTransactionsThisMonth(): number | undefined;
     getTotalTransactionsThisYear(): number | undefined;
     hasStartedTrial(): boolean | undefined;
@@ -243,7 +245,6 @@ export class Billing extends Resource<bkper.Billing> {
 export class Bkper {
     constructor(config?: Config);
     getApps(): Promise<App[]>;
-    getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
     getBook(id: string, includeAccounts?: boolean, includeGroups?: boolean): Promise<Book>;
     getBooks(query?: string): Promise<Book[]>;
     getCollections(): Promise<Collection[]>;

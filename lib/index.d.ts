@@ -1224,6 +1224,20 @@ export declare class Billing extends Resource<bkper.Billing> {
      * @returns The number of total transactions this year
      */
     getTotalTransactionsThisYear(): number | undefined;
+    /**
+     * Gets the transaction counts associated to the User's billing account.
+     *
+     * @returns The transaction counts associated to the User's billing account
+     */
+    getCounts(): Promise<bkper.Counts>;
+    /**
+     * Gets the URL to redirect the User to the billing portal.
+     *
+     * @param returnUrl - The URL to return to after the User has been redirected to the billing portal
+     *
+     * @returns The URL to redirect the User to the billing portal
+     */
+    getPortalUrl(returnUrl: string): Promise<string | undefined>;
 }
 
 /**
@@ -1327,14 +1341,6 @@ export declare class Bkper {
      * @returns The retrieved User
      */
     getUser(): Promise<User>;
-    /**
-     * Gets the URL to redirect the User to the billing portal.
-     *
-     * @param returnUrl - The URL to return to after the User has been redirected to the billing portal
-     *
-     * @returns The URL to redirect the User to the billing portal
-     */
-    getBillingPortalUrl(returnUrl: string): Promise<string | undefined>;
 }
 
 /**
