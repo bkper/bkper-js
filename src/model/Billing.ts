@@ -97,6 +97,16 @@ export class Billing extends Resource<bkper.Billing> {
     }
 
     /**
+     * Gets the transaction counts associated to the User's billing account.
+     *
+     * @returns The transaction counts associated to the User's billing account
+     */
+    public async getCounts(): Promise<bkper.Counts> {
+        const countsPayload = await UserService.getBillingCounts(this.getConfig());
+        return countsPayload;
+    }
+
+    /**
      * Gets the URL to redirect the User to the billing portal.
      *
      * @param returnUrl - The URL to return to after the User has been redirected to the billing portal

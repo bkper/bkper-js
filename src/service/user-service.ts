@@ -11,6 +11,11 @@ export async function getBilling(config: Config): Promise<bkper.Billing> {
     return res.data;
 }
 
+export async function getBillingCounts(config: Config): Promise<bkper.Counts> {
+    const res = await new HttpApiV5Request(`user/billing/counts`, config).setMethod('GET').fetch();
+    return res.data;
+}
+
 export async function getBillingPortalUrl(returnUrl: string, config: Config): Promise<bkper.Url> {
     const res = await new HttpApiV5Request(`user/billing/portal`, config).addParam('returnUrl', returnUrl).fetch();
     return res.data;
