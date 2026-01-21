@@ -1,4 +1,4 @@
-[Bkper REST API]: https://bkper.com/docs/#rest-apis
+[Bkper REST API]: https://bkper.com/docs/#rest-api
 
 [![npm](https://img.shields.io/npm/v/bkper-js?color=%235889e4)](https://www.npmjs.com/package/bkper-js)
 
@@ -29,16 +29,20 @@ bun add bkper-js
 
 ## Usage
 
+### Node.js / CLI Scripts
+
+For local scripts and CLI tools, use the [bkper](https://www.npmjs.com/package/bkper) CLI package for authentication:
+
 ```typescript
 import { Bkper } from 'bkper-js';
+import { getOAuthToken } from 'bkper';
 
-// Set global configuration
+// Configure with CLI authentication
 Bkper.setConfig({
-  apiKeyProvider: () => process.env.BKPER_API_KEY,
-  oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
+  oauthTokenProvider: async () => getOAuthToken()
 });
 
-// Create Bkper instance (uses global config)
+// Create Bkper instance
 const bkper = new Bkper();
 
 // Get a book and work with it
@@ -48,10 +52,47 @@ console.log(`Book: ${book.getName()}`);
 // List all books
 const books = await bkper.getBooks();
 console.log(`You have ${books.length} books`);
-
-// Get current user
-const user = await bkper.getUser();
-console.log(`Logged in as: ${user.getName()}`);
 ```
 
+First, login via CLI: `bkper login`
+
+### Web Applications
+
+For browser-based apps, use the [@bkper/web-auth](https://www.npmjs.com/package/@bkper/web-auth) SDK:
+
+```typescript
+import { Bkper } from 'bkper-js';
+import { BkperAuth } from '@bkper/web-auth';
+
+// Initialize authentication
+const auth = new BkperAuth({
+  onLoginSuccess: () => initializeApp(),
+  onLoginRequired: () => showLoginButton()
+});
+
+// Restore session on app load
+await auth.init();
+
+// Configure Bkper with web auth
+Bkper.setConfig({
+  oauthTokenProvider: async () => auth.getAccessToken()
+});
+
+// Create Bkper instance and use it
+const bkper = new Bkper();
+const books = await bkper.getBooks();
+```
+
+See the [@bkper/web-auth documentation](https://bkper.com/docs/auth-sdk) for more details.
+
+### API Key (Optional)
+
+API keys are optional and only needed for dedicated quota limits. If not provided, requests use a shared managed quota via the Bkper API proxy.
+
+```typescript
+Bkper.setConfig({
+  oauthTokenProvider: async () => getOAuthToken(),
+  apiKeyProvider: async () => process.env.BKPER_API_KEY // Optional - for dedicated quota
+});
+```
 

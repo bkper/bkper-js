@@ -62,7 +62,7 @@ HTTP API communication layer:
 - Uses static `Bkper.setConfig(config)` method to set global configuration with API key and OAuth token providers
 - Also supports per-instance configuration via optional constructor parameter: `new Bkper(config)`
 - Supports both API key and OAuth2 authentication
-- Default API base URL: `https://app.bkper.com/_ah/api/bkper`
+- Default API base URL: `https://api.bkper.app`
 
 ### Build System
 - TypeScript compilation with Google TypeScript Style (gts)
