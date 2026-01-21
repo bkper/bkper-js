@@ -12,8 +12,10 @@ See what's new and what has changed in bkper-js
 - Added `Config.agentIdProvider`
 - Added `Billing`
 - Added `Billing.getAdminEmail`
+- Added `Billing.getCounts`
 - Added `Billing.getDaysLeftInTrial`
 - Added `Billing.getPlan`
+- Added `Billing.getPortalUrl`
 - Added `Billing.getTotalTransactionsThisMonth`
 - Added `Billing.getTotalTransactionsThisYear`
 - Added `Billing.hasStartedTrial`
@@ -23,6 +25,7 @@ See what's new and what has changed in bkper-js
 - Added `User.getUsername`
 - Removed `App.setUserEmails` from `App`. Use `App.setUsers` instead
 - Removed `App.setDeveloperEmail` from `App`. Use `App.setDevelopers` instead
+- Removed `Bkper.getBillingPortalUrl` from `Bkper`. Use `Billing.getPortalUrl` instead
 - Removed `User.getDaysLeftInTrial` from `User`. Use `Billing.getDaysLeftInTrial` instead
 - Removed `User.getPlan` from `User`. Use `Billing.getPlan` instead
 - Removed `User.hasBillingEnabled` from `User`. Use `Billing.isEnabled` instead
