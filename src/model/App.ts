@@ -314,16 +314,6 @@ export class App extends Resource<bkper.App> {
     }
 
     /**
-     * Partially updates an App, applying pending changes.
-     *
-     * @returns This App after the partial update
-     */
-    public async patch(): Promise<App> {
-        await AppService.patchApp(this.payload, this.getConfig());
-        return this;
-    }
-
-    /**
      * Performs a full update of the App, applying pending changes.
      *
      * @returns This App after the update

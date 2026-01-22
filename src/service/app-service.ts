@@ -23,8 +23,3 @@ export async function updateApp(app: bkper.App, config: Config): Promise<bkper.A
     var response = await new HttpApiRequest(`v5/apps`, config).setMethod('PUT').setPayload(app).fetch();
     return response.data;
 }
-
-export async function patchApp(app: bkper.App, config: Config): Promise<bkper.App> {
-    var response = await new HttpApiRequest(`v5/apps`, config).setMethod('PATCH').setPayload(app).fetch();
-    return response.data;
-}

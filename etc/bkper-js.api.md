@@ -108,7 +108,6 @@ export class App extends Resource<bkper.App> {
     isInstallable(): boolean;
     isPublished(): boolean;
     isRepositoryPrivate(): boolean | undefined;
-    patch(): Promise<App>;
     setClientSecret(clientSecret?: string): App;
     setDevelopers(developers?: string): App;
     setReadme(readme?: string): App;

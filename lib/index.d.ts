@@ -596,12 +596,6 @@ export declare class App extends Resource<bkper.App> {
      */
     create(): Promise<App>;
     /**
-     * Partially updates an App, applying pending changes.
-     *
-     * @returns This App after the partial update
-     */
-    patch(): Promise<App>;
-    /**
      * Performs a full update of the App, applying pending changes.
      *
      * @returns This App after the update
