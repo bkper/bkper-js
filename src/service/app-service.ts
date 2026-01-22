@@ -14,6 +14,11 @@ export async function getApps(config: Config): Promise<bkper.App[]> {
     return appsJson;
 }
 
+export async function getApp(id: string, config: Config): Promise<bkper.App> {
+    let response = await new HttpApiRequest(`v5/apps/${id}`, config).setMethod('GET').fetch();
+    return response.data;
+}
+
 export async function createApp(app: bkper.App, config: Config): Promise<bkper.App> {
     var response = await new HttpApiRequest(`v5/apps`, config).setMethod('POST').setPayload(app).fetch();
     return response.data;

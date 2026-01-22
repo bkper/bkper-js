@@ -140,6 +140,18 @@ export class Bkper {
     }
 
     /**
+     * Gets the [[App]] with the specified id.
+     *
+     * @param id - The App id (agentId)
+     *
+     * @returns The retrieved App
+     */
+    public async getApp(id: string): Promise<App> {
+        let app = await AppService.getApp(id, this.config);
+        return new App(app, this.config);
+    }
+
+    /**
      * Gets all [[Templates]] available for the user.
      *
      * @returns The retrieved list of Templates
