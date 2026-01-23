@@ -1324,6 +1324,14 @@ export declare class Bkper {
      */
     getApps(): Promise<App[]>;
     /**
+     * Gets the [[App]] with the specified id.
+     *
+     * @param id - The App id (agentId)
+     *
+     * @returns The retrieved App
+     */
+    getApp(id: string): Promise<App>;
+    /**
      * Gets all [[Templates]] available for the user.
      *
      * @returns The retrieved list of Templates

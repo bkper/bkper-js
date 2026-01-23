@@ -243,6 +243,7 @@ export class Billing extends Resource<bkper.Billing> {
 // @public
 export class Bkper {
     constructor(config?: Config);
+    getApp(id: string): Promise<App>;
     getApps(): Promise<App[]>;
     getBook(id: string, includeAccounts?: boolean, includeGroups?: boolean): Promise<Book>;
     getBooks(query?: string): Promise<Book[]>;
