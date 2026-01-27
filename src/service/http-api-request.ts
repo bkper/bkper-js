@@ -99,8 +99,6 @@ export class HttpApiRequest extends HttpRequest {
                 }
             }
 
-            // Other errors
-            console.log("Error", error);
             throw this.handleError(error);
         }
     }
@@ -117,11 +115,7 @@ export class HttpApiRequest extends HttpRequest {
             let error: HttpError = err.response?.data?.error || err.data?.error || err.error;
             if (error) {
                 // Transform to BkperError
-                return new BkperError(
-                    error.code,
-                    error.message,
-                    error.errors?.[0]?.reason
-                );
+                return new BkperError(error.code, error.message, error.errors?.[0]?.reason);
             } else {
                 // Fallback for network errors, etc.
                 return new BkperError(
