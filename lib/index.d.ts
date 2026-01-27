@@ -1346,6 +1346,21 @@ export declare class Bkper {
 }
 
 /**
+ * Standard error interface exposed to users.
+ * Provides a consistent, simple format for all API errors.
+ *
+ * @public
+ */
+export declare interface BkperError {
+    /** HTTP status code (e.g., 404, 400, 500) */
+    code: number;
+    /** Human-readable error message */
+    message: string;
+    /** Machine-readable reason (e.g., "notFound", "badRequest") */
+    reason?: string;
+}
+
+/**
  * A Book represents a [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
  *
  * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;

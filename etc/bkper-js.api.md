@@ -257,6 +257,13 @@ export class Bkper {
 }
 
 // @public
+export interface BkperError {
+    code: number;
+    message: string;
+    reason?: string;
+}
+
+// @public
 export class Book extends ResourceProperty<bkper.Book> {
     constructor(payload?: bkper.Book, config?: Config);
     audit(): void;

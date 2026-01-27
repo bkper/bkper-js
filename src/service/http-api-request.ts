@@ -31,6 +31,21 @@ export interface HttpResponse {
     status?: number;
 }
 
+/**
+ * Standard error interface exposed to users.
+ * Provides a consistent, simple format for all API errors.
+ *
+ * @public
+ */
+export interface BkperError {
+    /** HTTP status code (e.g., 404, 400, 500) */
+    code: number;
+    /** Human-readable error message */
+    message: string;
+    /** Machine-readable reason (e.g., "notFound", "badRequest") */
+    reason?: string;
+}
+
 export class HttpApiRequest extends HttpRequest {
     private retry = 0;
     private config: Config;
@@ -52,7 +67,13 @@ export class HttpApiRequest extends HttpRequest {
             if (resp.status >= 200 && resp.status < 300) {
                 return resp;
             } else if (resp.status == 404) {
-                return { data: null, status: resp.status };
+                const errorObj = {
+                    response: {
+                        status: resp.status,
+                        data: resp.data,
+                    },
+                };
+                throw this.handleError(errorObj);
             } else if (resp.status != 400 && this.retry <= 3) {
                 this.retry++;
                 const effectiveConfig = this.config;
@@ -98,7 +119,7 @@ export class HttpApiRequest extends HttpRequest {
         }
     }
 
-    private handleError(err: any) {
+    private handleError(err: any): BkperError {
         const effectiveConfig = this.config;
         const customError = effectiveConfig.requestErrorHandler
             ? effectiveConfig.requestErrorHandler(err)
@@ -106,12 +127,22 @@ export class HttpApiRequest extends HttpRequest {
         if (customError) {
             return customError;
         } else {
-            //Default error handler
+            // Read internal HttpError from response
             let error: HttpError = err.response?.data?.error || err.data?.error || err.error;
             if (error) {
-                return error.message;
+                // Transform to simple BkperError
+                return {
+                    code: error.code,
+                    message: error.message,
+                    reason: error.errors?.[0]?.reason,
+                };
             } else {
-                return err.message || err;
+                // Fallback for network errors, etc.
+                return {
+                    code: err.response?.status || err.response?.code || err.status || err.code || 0,
+                    message: err.message || String(err),
+                    reason: undefined,
+                };
             }
         }
     }
