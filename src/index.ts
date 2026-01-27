@@ -45,4 +45,4 @@ export {
     EventType,
     BotResponseType,
 } from "./model/Enums.js";
-export { BkperError } from "./service/http-api-request.js";
+export { BkperError } from "./model/BkperError.js";

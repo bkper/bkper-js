@@ -1,4 +1,5 @@
 import { Config } from "../model/Config.js";
+import { BkperError } from "../model/BkperError.js";
 import { HttpRequest } from "./http-request.js";
 
 /**
@@ -29,21 +30,6 @@ export interface HttpError {
 export interface HttpResponse {
     data: any;
     status?: number;
-}
-
-/**
- * Standard error interface exposed to users.
- * Provides a consistent, simple format for all API errors.
- *
- * @public
- */
-export interface BkperError {
-    /** HTTP status code (e.g., 404, 400, 500) */
-    code: number;
-    /** Human-readable error message */
-    message: string;
-    /** Machine-readable reason (e.g., "notFound", "badRequest") */
-    reason?: string;
 }
 
 export class HttpApiRequest extends HttpRequest {
@@ -130,19 +116,19 @@ export class HttpApiRequest extends HttpRequest {
             // Read internal HttpError from response
             let error: HttpError = err.response?.data?.error || err.data?.error || err.error;
             if (error) {
-                // Transform to simple BkperError
-                return {
-                    code: error.code,
-                    message: error.message,
-                    reason: error.errors?.[0]?.reason,
-                };
+                // Transform to BkperError
+                return new BkperError(
+                    error.code,
+                    error.message,
+                    error.errors?.[0]?.reason
+                );
             } else {
                 // Fallback for network errors, etc.
-                return {
-                    code: err.response?.status || err.response?.code || err.status || err.code || 0,
-                    message: err.message || String(err),
-                    reason: undefined,
-                };
+                return new BkperError(
+                    err.response?.status || err.response?.code || err.status || err.code || 0,
+                    err.message || String(err),
+                    undefined
+                );
             }
         }
     }

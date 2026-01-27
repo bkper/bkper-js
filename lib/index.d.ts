@@ -1346,18 +1346,17 @@ export declare class Bkper {
 }
 
 /**
- * Standard error interface exposed to users.
- * Provides a consistent, simple format for all API errors.
+ * Standard error class for Bkper API errors.
+ * Extends Error to enable instanceof checks and standard error handling.
  *
  * @public
  */
-export declare interface BkperError {
+export declare class BkperError extends Error {
     /** HTTP status code (e.g., 404, 400, 500) */
-    code: number;
-    /** Human-readable error message */
-    message: string;
+    readonly code: number;
     /** Machine-readable reason (e.g., "notFound", "badRequest") */
-    reason?: string;
+    readonly reason?: string;
+    constructor(code: number, message: string, reason?: string);
 }
 
 /**

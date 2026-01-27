@@ -1,5 +1,6 @@
 import { expect } from "chai";
-import { resolveBaseUrl, API_BASE_URL, BkperError } from '../src/service/http-api-request.js';
+import { resolveBaseUrl, API_BASE_URL } from '../src/service/http-api-request.js';
+import { BkperError } from '../src/model/BkperError.js';
 import { Config } from '../src/model/Config.js';
 
 describe('http-api-request', () => {
@@ -60,24 +61,24 @@ describe('http-api-request', () => {
   describe('BkperError', () => {
 
     it('should have code, message, and optional reason properties', () => {
-      const error: BkperError = {
-        code: 404,
-        message: 'App NOT found! ID: invalid-id',
-        reason: 'notFound'
-      };
+      const error = new BkperError(404, 'App NOT found! ID: invalid-id', 'notFound');
       expect(error.code).to.equal(404);
       expect(error.message).to.equal('App NOT found! ID: invalid-id');
       expect(error.reason).to.equal('notFound');
     });
 
     it('should allow reason to be undefined', () => {
-      const error: BkperError = {
-        code: 500,
-        message: 'Internal server error'
-      };
+      const error = new BkperError(500, 'Internal server error');
       expect(error.code).to.equal(500);
       expect(error.message).to.equal('Internal server error');
       expect(error.reason).to.be.undefined;
+    });
+
+    it('should extend Error', () => {
+      const error = new BkperError(400, 'Bad request', 'badRequest');
+      expect(error).to.be.instanceOf(Error);
+      expect(error).to.be.instanceOf(BkperError);
+      expect(error.name).to.equal('BkperError');
     });
 
   });

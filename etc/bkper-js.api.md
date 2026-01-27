@@ -257,10 +257,10 @@ export class Bkper {
 }
 
 // @public
-export interface BkperError {
-    code: number;
-    message: string;
-    reason?: string;
+export class BkperError extends Error {
+    constructor(code: number, message: string, reason?: string);
+    readonly code: number;
+    readonly reason?: string;
 }
 
 // @public
