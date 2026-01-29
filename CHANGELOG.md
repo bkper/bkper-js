@@ -12,8 +12,11 @@ See what's new and what has changed in bkper-js
 - Added `Config.agentIdProvider`
 - Added `Billing`
 - Added `Billing.getAdminEmail`
+- Added `Billing.getCheckoutUrl`
 - Added `Billing.getCounts`
 - Added `Billing.getDaysLeftInTrial`
+- Added `Billing.getEmail`
+- Added `Billing.getHostedDomain`
 - Added `Billing.getPlan`
 - Added `Billing.getPortalUrl`
 - Added `Billing.getTotalTransactionsThisMonth`
