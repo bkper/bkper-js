@@ -20,3 +20,15 @@ export async function getBillingPortalUrl(returnUrl: string, config: Config): Pr
     const res = await new HttpApiV5Request(`user/billing/portal`, config).addParam('returnUrl', returnUrl).fetch();
     return res.data;
 }
+
+export async function getBillingCheckoutUrl(plan: string, successUrl: string | undefined, cancelUrl: string | undefined, config: Config): Promise<bkper.Url> {
+    const request = new HttpApiV5Request(`user/billing/checkout`, config).addParam('plan', plan);
+    if (successUrl) {
+        request.addParam('successUrl', successUrl);
+    }
+    if (cancelUrl) {
+        request.addParam('cancelUrl', cancelUrl);
+    }
+    const res = await request.fetch();
+    return res.data;
+}

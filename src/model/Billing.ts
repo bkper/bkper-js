@@ -34,6 +34,24 @@ export class Billing extends Resource<bkper.Billing> {
     }
 
     /**
+     * Gets the email for the User.
+     *
+     * @returns The User's email
+     */
+    public getEmail(): string | undefined {
+        return this.payload.email;
+    }
+
+    /**
+     * Gets the hosted domain for the User.
+     *
+     * @returns The User's hosted domain
+     */
+    public getHostedDomain(): string | undefined {
+        return this.payload.hostedDomain;
+    }
+
+    /**
      * Gets the current plan of the User.
      *
      * @returns The User's plan
@@ -115,7 +133,19 @@ export class Billing extends Resource<bkper.Billing> {
      */
     public async getPortalUrl(returnUrl: string): Promise<string | undefined> {
         const urlPayload = await UserService.getBillingPortalUrl(returnUrl, this.getConfig());
-        return urlPayload.url;
+        return urlPayload?.url;
+    }
+
+    /**
+     * Gets the URL to redirect the User to the billing checkout.
+     *
+     * @param plan - The plan to checkout
+     *
+     * @returns The URL to redirect the User to the billing checkout
+     */
+    public async getCheckoutUrl(plan: string, successUrl?: string, cancelUrl?: string): Promise<string | undefined> {
+        const urlPayload = await UserService.getBillingCheckoutUrl(plan, successUrl, cancelUrl, this.getConfig());
+        return urlPayload?.url;
     }
 
 }

@@ -227,10 +227,13 @@ export enum BalanceType {
 export class Billing extends Resource<bkper.Billing> {
     constructor(json?: bkper.Billing, config?: Config);
     getAdminEmail(): string | undefined;
+    getCheckoutUrl(plan: string, successUrl?: string, cancelUrl?: string): Promise<string | undefined>;
     // @internal (undocumented)
     getConfig(): Config;
     getCounts(): Promise<bkper.Counts>;
     getDaysLeftInTrial(): number | undefined;
+    getEmail(): string | undefined;
+    getHostedDomain(): string | undefined;
     getPlan(): string | undefined;
     getPortalUrl(returnUrl: string): Promise<string | undefined>;
     getTotalTransactionsThisMonth(): number | undefined;
