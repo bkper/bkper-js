@@ -140,6 +140,8 @@ export class Billing extends Resource<bkper.Billing> {
      * Gets the URL to redirect the User to the billing checkout.
      *
      * @param plan - The plan to checkout
+     * @param successUrl - The URL to redirect to after the User has successfully checked out
+     * @param cancelUrl - The URL to redirect to in case the checkout is cancelled
      *
      * @returns The URL to redirect the User to the billing checkout
      */
