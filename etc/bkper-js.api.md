@@ -796,6 +796,7 @@ export class User extends Resource<bkper.User> {
     getConnections(): Promise<Connection[]>;
     getEmail(): string | undefined;
     getFullName(): string | undefined;
+    getGivenName(): string | undefined;
     getHostedDomain(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;

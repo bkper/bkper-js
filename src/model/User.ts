@@ -39,6 +39,15 @@ export class User extends Resource<bkper.User> {
     }
 
     /**
+     * Gets the given name of the User.
+     *
+     * @returns The User's given name
+     */
+    public getGivenName(): string | undefined {
+        return this.payload.givenName;
+    }
+
+    /**
      * Gets the name of the User.
      *
      * @returns The User's name

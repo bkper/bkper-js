@@ -4,6 +4,9 @@ See what's new and what has changed in bkper-js
 
 ## 2026
 
+**February 2026**
+- Added `User.getGivenName`
+
 **January 2026**
 - Added `App.setUsers`
 - Added `App.getUsers`
