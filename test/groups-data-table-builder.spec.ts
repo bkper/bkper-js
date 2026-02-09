@@ -297,4 +297,126 @@ describe('GroupsDataTableBuilder', () => {
             expect(table[2][1]).to.equal('INCOMING_OUTGOING');
         });
     });
+
+    describe('tree(true)', () => {
+        it('should remove Parent column and indent child names', () => {
+            const parent = createGroup({ id: '1', name: 'Assets', type: 'ASSET', permanent: true });
+            const child = createGroup({
+                id: '2',
+                name: 'Bank',
+                type: 'ASSET',
+                permanent: true,
+                parent: { id: '1' },
+            });
+            const root2 = createGroup({ id: '3', name: 'Revenue', type: 'INCOMING' });
+
+            const groups = [parent, child, root2];
+            buildTree(groups);
+
+            const table = new GroupsDataTableBuilder(groups).tree(true).build();
+
+            // Headers should not include Parent
+            expect(table[0]).to.eql(['Name', 'Type']);
+            // Root group — no indentation
+            expect(table[1][0]).to.equal('Assets');
+            // Child group — indented by 2 spaces
+            expect(table[2][0]).to.equal('  Bank');
+            // Another root — no indentation
+            expect(table[3][0]).to.equal('Revenue');
+        });
+
+        it('should indent multiple levels of depth', () => {
+            const root = createGroup({ id: '1', name: 'Root', type: 'ASSET', permanent: true });
+            const child = createGroup({
+                id: '2',
+                name: 'Child',
+                type: 'ASSET',
+                permanent: true,
+                parent: { id: '1' },
+            });
+            const grandchild = createGroup({
+                id: '3',
+                name: 'Grandchild',
+                type: 'ASSET',
+                permanent: true,
+                parent: { id: '2' },
+            });
+
+            const groups = [root, child, grandchild];
+            buildTree(groups);
+
+            const table = new GroupsDataTableBuilder(groups).tree(true).build();
+
+            expect(table[1][0]).to.equal('Root');
+            expect(table[2][0]).to.equal('  Child');
+            expect(table[3][0]).to.equal('    Grandchild');
+        });
+
+        it('should work with ids(true)', () => {
+            const parent = createGroup({
+                id: 'p1',
+                name: 'Parent',
+                type: 'ASSET',
+                permanent: true,
+            });
+            const child = createGroup({
+                id: 'c1',
+                name: 'Child',
+                type: 'ASSET',
+                permanent: true,
+                parent: { id: 'p1' },
+            });
+
+            const groups = [parent, child];
+            buildTree(groups);
+
+            const table = new GroupsDataTableBuilder(groups).ids(true).tree(true).build();
+
+            expect(table[0]).to.eql(['Group Id', 'Name', 'Type']);
+            expect(table[1][0]).to.equal('p1');
+            expect(table[1][1]).to.equal('Parent');
+            expect(table[2][0]).to.equal('c1');
+            expect(table[2][1]).to.equal('  Child');
+        });
+
+        it('should work with properties(true)', () => {
+            const parent = createGroup({
+                id: '1',
+                name: 'Expenses',
+                type: 'OUTGOING',
+                properties: { color: 'red' },
+            });
+            const child = createGroup({
+                id: '2',
+                name: 'Utilities',
+                type: 'OUTGOING',
+                parent: { id: '1' },
+                properties: { color: 'blue' },
+            });
+
+            const groups = [parent, child];
+            buildTree(groups);
+
+            const table = new GroupsDataTableBuilder(groups).tree(true).properties(true).build();
+
+            expect(table[0]).to.eql(['Name', 'Type', 'color']);
+            expect(table[1][0]).to.equal('Expenses');
+            expect(table[1][2]).to.equal('red');
+            expect(table[2][0]).to.equal('  Utilities');
+            expect(table[2][2]).to.equal('blue');
+        });
+
+        it('should not indent root groups with no parent', () => {
+            const g1 = createGroup({ id: '1', name: 'Alpha', type: 'ASSET', permanent: true });
+            const g2 = createGroup({ id: '2', name: 'Beta', type: 'ASSET', permanent: true });
+
+            const groups = [g1, g2];
+            buildTree(groups);
+
+            const table = new GroupsDataTableBuilder(groups).tree(true).build();
+
+            expect(table[1][0]).to.equal('Alpha');
+            expect(table[2][0]).to.equal('Beta');
+        });
+    });
 });

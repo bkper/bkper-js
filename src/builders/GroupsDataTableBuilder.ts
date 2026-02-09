@@ -13,6 +13,7 @@ export class GroupsDataTableBuilder {
     private shouldAddProperties: boolean;
     private shouldAddIds: boolean;
     private shouldAddHiddenProperties: boolean;
+    private shouldShowTree: boolean;
 
     private propertyKeys: string[];
 
@@ -21,6 +22,7 @@ export class GroupsDataTableBuilder {
         this.shouldAddProperties = false;
         this.shouldAddIds = false;
         this.shouldAddHiddenProperties = false;
+        this.shouldShowTree = false;
         this.propertyKeys = [];
     }
 
@@ -59,6 +61,20 @@ export class GroupsDataTableBuilder {
      */
     public hiddenProperties(include: boolean): GroupsDataTableBuilder {
         this.shouldAddHiddenProperties = include;
+        return this;
+    }
+
+    /**
+     * Defines whether to render groups as an indented tree instead of flat rows with a Parent column.
+     * When enabled, child group names are indented by depth level and the Parent column is removed.
+     * Default is false.
+     *
+     * @param enable - Whether to enable tree rendering
+     *
+     * @returns This builder with respective option, for chaining.
+     */
+    public tree(enable: boolean): GroupsDataTableBuilder {
+        this.shouldShowTree = enable;
         return this;
     }
 
@@ -129,7 +145,10 @@ export class GroupsDataTableBuilder {
 
         headers.push('Name');
         headers.push('Type');
-        headers.push('Parent');
+
+        if (!this.shouldShowTree) {
+            headers.push('Parent');
+        }
 
         if (this.shouldAddProperties) {
             this.mapPropertyKeys();
@@ -139,8 +158,8 @@ export class GroupsDataTableBuilder {
             if (group.isHidden() || group.getParent()) {
                 continue;
             }
-            table.push(this.buildGroupLine(group));
-            table = this.traverse(group, table);
+            table.push(this.buildGroupLine(group, 0));
+            table = this.traverse(group, table, 1);
         }
 
         if (this.shouldAddProperties) {
@@ -153,17 +172,22 @@ export class GroupsDataTableBuilder {
         return table;
     }
 
-    private buildGroupLine(group: Group): any[] {
+    private buildGroupLine(group: Group, depth: number): any[] {
         const line: any[] = [];
 
         if (this.shouldAddIds) {
             line.push(group.getId());
         }
 
-        const parentName = group.getParent() ? group.getParent()!.getName() : '';
-        line.push(group.getName());
+        const name = this.shouldShowTree ? '  '.repeat(depth) + group.getName() : group.getName();
+        line.push(name);
         line.push(this.getStringType(group));
-        line.push(parentName);
+
+        if (!this.shouldShowTree) {
+            const parentName = group.getParent() ? group.getParent()!.getName() : '';
+            line.push(parentName);
+        }
+
         if (this.shouldAddProperties) {
             const properties = group.getProperties();
             for (const key of this.propertyKeys) {
@@ -178,13 +202,13 @@ export class GroupsDataTableBuilder {
         return line;
     }
 
-    private traverse(group: Group, table: any[][]): any[][] {
+    private traverse(group: Group, table: any[][], depth: number): any[][] {
         const children = group.getChildren();
         children.sort(this.COMPARATOR);
         for (const child of children) {
-            table.push(this.buildGroupLine(child));
+            table.push(this.buildGroupLine(child, depth));
             if (child.hasChildren()) {
-                this.traverse(child, table);
+                this.traverse(child, table, depth + 1);
             }
         }
         return table;
