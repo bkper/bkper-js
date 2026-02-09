@@ -165,6 +165,43 @@ describe('AccountsDataTableBuilder', () => {
         });
     });
 
+    describe('hiddenProperties', () => {
+        it('properties(true) should exclude hidden properties by default', async () => {
+            const accounts = [
+                createAccount({
+                    id: '1',
+                    name: 'Account A',
+                    type: 'ASSET',
+                    properties: { color: 'red', agent_id_: 'hidden-val' },
+                }),
+            ];
+
+            const table = await new AccountsDataTableBuilder(accounts).properties(true).build();
+
+            expect(table[0]).to.include('color');
+            expect(table[0]).to.not.include('agent_id_');
+        });
+
+        it('properties(true).hiddenProperties(true) should include hidden properties', async () => {
+            const accounts = [
+                createAccount({
+                    id: '1',
+                    name: 'Account A',
+                    type: 'ASSET',
+                    properties: { color: 'red', agent_id_: 'hidden-val' },
+                }),
+            ];
+
+            const table = await new AccountsDataTableBuilder(accounts)
+                .properties(true)
+                .hiddenProperties(true)
+                .build();
+
+            expect(table[0]).to.include('color');
+            expect(table[0]).to.include('agent_id_');
+        });
+    });
+
     describe('combined options', () => {
         it('should support ids + groups + properties together', async () => {
             const freeGroup = createGroup({ id: 'g1', name: 'Operations' });

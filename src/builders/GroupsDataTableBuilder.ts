@@ -12,6 +12,7 @@ export class GroupsDataTableBuilder {
 
     private shouldAddProperties: boolean;
     private shouldAddIds: boolean;
+    private shouldAddHiddenProperties: boolean;
 
     private propertyKeys: string[];
 
@@ -19,6 +20,7 @@ export class GroupsDataTableBuilder {
         this.groups = groups;
         this.shouldAddProperties = false;
         this.shouldAddIds = false;
+        this.shouldAddHiddenProperties = false;
         this.propertyKeys = [];
     }
 
@@ -46,10 +48,27 @@ export class GroupsDataTableBuilder {
         return this;
     }
 
+    /**
+     * Defines whether to include hidden properties (keys ending with underscore "_").
+     * Only relevant when {@link properties} is enabled.
+     * Default is false — hidden properties are excluded.
+     *
+     * @param include - Whether to include hidden properties
+     *
+     * @returns This builder with respective option, for chaining.
+     */
+    public hiddenProperties(include: boolean): GroupsDataTableBuilder {
+        this.shouldAddHiddenProperties = include;
+        return this;
+    }
+
     private mapPropertyKeys(): void {
         this.propertyKeys = [];
         for (const group of this.groups) {
             for (const key of group.getPropertyKeys()) {
+                if (!this.shouldAddHiddenProperties && key.endsWith('_')) {
+                    continue;
+                }
                 if (this.propertyKeys.indexOf(key) <= -1) {
                     this.propertyKeys.push(key);
                 }

@@ -10,6 +10,7 @@ export class BooksDataTableBuilder {
     private books: Book[];
     private shouldAddProperties: boolean = false;
     private shouldAddIds: boolean = false;
+    private shouldAddHiddenProperties: boolean = false;
     private propertyKeys: string[] = [];
 
     constructor(books: Book[]) {
@@ -40,10 +41,27 @@ export class BooksDataTableBuilder {
         return this;
     }
 
+    /**
+     * Defines whether to include hidden properties (keys ending with underscore "_").
+     * Only relevant when {@link properties} is enabled.
+     * Default is false — hidden properties are excluded.
+     *
+     * @param include - Whether to include hidden properties
+     *
+     * @returns This builder with respective option, for chaining.
+     */
+    public hiddenProperties(include: boolean): BooksDataTableBuilder {
+        this.shouldAddHiddenProperties = include;
+        return this;
+    }
+
     private mapPropertyKeys(): void {
         this.propertyKeys = [];
         for (const book of this.books) {
             for (const key of book.getPropertyKeys()) {
+                if (!this.shouldAddHiddenProperties && key.endsWith('_')) {
+                    continue;
+                }
                 if (this.propertyKeys.indexOf(key) <= -1) {
                     this.propertyKeys.push(key);
                 }

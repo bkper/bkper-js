@@ -151,6 +151,37 @@ describe('BooksDataTableBuilder', () => {
         });
     });
 
+    describe('hiddenProperties', () => {
+        it('properties(true) should exclude hidden properties by default', () => {
+            const book = createBook({
+                id: '1',
+                name: 'Book A',
+                properties: { color: 'blue', agent_id_: 'hidden-val' },
+            });
+
+            const table = new BooksDataTableBuilder([book]).properties(true).build();
+
+            expect(table[0]).to.include('color');
+            expect(table[0]).to.not.include('agent_id_');
+        });
+
+        it('properties(true).hiddenProperties(true) should include hidden properties', () => {
+            const book = createBook({
+                id: '1',
+                name: 'Book A',
+                properties: { color: 'blue', agent_id_: 'hidden-val' },
+            });
+
+            const table = new BooksDataTableBuilder([book])
+                .properties(true)
+                .hiddenProperties(true)
+                .build();
+
+            expect(table[0]).to.include('color');
+            expect(table[0]).to.include('agent_id_');
+        });
+    });
+
     describe('combined ids + properties', () => {
         it('should add both Book Id and property columns', () => {
             const book = createBook({

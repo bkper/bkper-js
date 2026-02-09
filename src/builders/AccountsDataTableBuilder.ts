@@ -15,6 +15,7 @@ export class AccountsDataTableBuilder {
     private shouldAddGroups: boolean;
     private shouldAddProperties: boolean;
     private shouldAddIds: boolean;
+    private shouldAddHiddenProperties: boolean;
 
     private propertyKeys: string[];
 
@@ -24,6 +25,7 @@ export class AccountsDataTableBuilder {
         this.shouldAddGroups = false;
         this.shouldAddProperties = false;
         this.shouldAddIds = false;
+        this.shouldAddHiddenProperties = false;
         this.propertyKeys = [];
     }
 
@@ -75,10 +77,27 @@ export class AccountsDataTableBuilder {
         return this;
     }
 
+    /**
+     * Defines whether to include hidden properties (keys ending with underscore "_").
+     * Only relevant when {@link properties} is enabled.
+     * Default is false — hidden properties are excluded.
+     *
+     * @param include - Whether to include hidden properties
+     *
+     * @returns This builder with respective option, for chaining.
+     */
+    public hiddenProperties(include: boolean): AccountsDataTableBuilder {
+        this.shouldAddHiddenProperties = include;
+        return this;
+    }
+
     private getPropertyKeys(): string[] {
         if (this.propertyKeys.length === 0) {
             for (const account of this.accounts) {
                 for (const key of account.getPropertyKeys()) {
+                    if (!this.shouldAddHiddenProperties && key.endsWith('_')) {
+                        continue;
+                    }
                     if (this.propertyKeys.indexOf(key) <= -1) {
                         this.propertyKeys.push(key);
                     }

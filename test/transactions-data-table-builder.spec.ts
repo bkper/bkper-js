@@ -152,7 +152,7 @@ describe('TransactionsDataTableBuilder', () => {
         });
     });
 
-    describe('includeUrls(true)', () => {
+    describe('urls(true)', () => {
         it('should add Attachment columns', async () => {
             const transactions = [
                 createTransaction({
@@ -180,7 +180,7 @@ describe('TransactionsDataTableBuilder', () => {
             ];
 
             const table = await new TransactionsDataTableBuilder(mockBook, transactions)
-                .includeUrls(true)
+                .urls(true)
                 .build();
 
             // Header should have 2 Attachment columns (1 url + 1 file)
@@ -194,7 +194,7 @@ describe('TransactionsDataTableBuilder', () => {
         });
     });
 
-    describe('includeProperties(true)', () => {
+    describe('properties(true)', () => {
         it('should add property columns sorted alphabetically', async () => {
             const transactions = [
                 createTransaction({
@@ -222,7 +222,7 @@ describe('TransactionsDataTableBuilder', () => {
             ];
 
             const table = await new TransactionsDataTableBuilder(mockBook, transactions)
-                .includeProperties(true)
+                .properties(true)
                 .build();
 
             // Properties sorted alphabetically: category, vendor
@@ -247,7 +247,7 @@ describe('TransactionsDataTableBuilder', () => {
         });
     });
 
-    describe('includeIds(true)', () => {
+    describe('ids(true)', () => {
         it('should add Transaction Id as first column and Remote Id columns at end', async () => {
             const transactions = [
                 createTransaction({
@@ -275,7 +275,7 @@ describe('TransactionsDataTableBuilder', () => {
             ];
 
             const table = await new TransactionsDataTableBuilder(mockBook, transactions)
-                .includeIds(true)
+                .ids(true)
                 .build();
 
             // Transaction Id as first column
@@ -297,6 +297,73 @@ describe('TransactionsDataTableBuilder', () => {
 
             // Second row has 1 remote id, second padded
             expect(table[2][table[2].length - 2]).to.equal('remote-3');
+        });
+    });
+
+    describe('recordedAt(false)', () => {
+        it('should exclude Recorded at column from headers and data', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 't1',
+                    posted: true,
+                    checked: false,
+                    dateValue: 20240115,
+                    dateFormatted: '01/15/2024',
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Office supplies',
+                    amount: '100.50',
+                    createdAt: '1705000000000',
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .recordedAt(false)
+                .build();
+
+            expect(table[0]).to.eql([
+                'Status',
+                'Date',
+                'Origin',
+                'Destination',
+                'Description',
+                'Amount',
+            ]);
+            // Data row should have 6 columns (no Recorded at)
+            expect(table[1].length).to.equal(6);
+        });
+
+        it('should work together with properties', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 't1',
+                    posted: true,
+                    dateValue: 20240115,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test',
+                    amount: '100',
+                    createdAt: '1705000000000',
+                    properties: { vendor: 'Acme' },
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .recordedAt(false)
+                .properties(true)
+                .build();
+
+            expect(table[0]).to.eql([
+                'Status',
+                'Date',
+                'Origin',
+                'Destination',
+                'Description',
+                'Amount',
+                'vendor',
+            ]);
+            expect(table[0]).to.not.include('Recorded at');
+            expect(table[1][6]).to.equal('Acme');
         });
     });
 
@@ -400,6 +467,185 @@ describe('TransactionsDataTableBuilder', () => {
         });
     });
 
+    describe('deprecated aliases', () => {
+        it('includeProperties should delegate to properties', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 't1',
+                    posted: true,
+                    dateValue: 20240115,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test',
+                    amount: '100',
+                    createdAt: '1705000000000',
+                    properties: { vendor: 'Acme' },
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .includeProperties(true)
+                .build();
+
+            expect(table[0]).to.include('vendor');
+        });
+
+        it('includeIds should delegate to ids', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 'tx-abc',
+                    posted: true,
+                    dateValue: 20240115,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test',
+                    amount: '100',
+                    createdAt: '1705000000000',
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .includeIds(true)
+                .build();
+
+            expect(table[0][0]).to.equal('Transaction Id');
+        });
+
+        it('includeUrls should delegate to urls', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 't1',
+                    posted: true,
+                    dateValue: 20240115,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test',
+                    amount: '100',
+                    createdAt: '1705000000000',
+                    urls: ['https://example.com/file.pdf'],
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .includeUrls(true)
+                .build();
+
+            expect(table[0]).to.include('Attachment');
+        });
+    });
+
+    describe('hiddenProperties', () => {
+        it('properties(true) should exclude hidden properties by default', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 't1',
+                    posted: true,
+                    dateValue: 20240115,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test',
+                    amount: '100',
+                    createdAt: '1705000000000',
+                    properties: {
+                        vendor: 'Acme',
+                        category: 'Office',
+                        agent_file_id_: 'xyz',
+                        internal_: 'secret',
+                    },
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .properties(true)
+                .build();
+
+            // Should only include visible properties
+            expect(table[0]).to.include('vendor');
+            expect(table[0]).to.include('category');
+            expect(table[0]).to.not.include('agent_file_id_');
+            expect(table[0]).to.not.include('internal_');
+        });
+
+        it('properties(true).hiddenProperties(true) should include hidden properties', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 't1',
+                    posted: true,
+                    dateValue: 20240115,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test',
+                    amount: '100',
+                    createdAt: '1705000000000',
+                    properties: { vendor: 'Acme', agent_file_id_: 'xyz' },
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .properties(true)
+                .hiddenProperties(true)
+                .build();
+
+            expect(table[0]).to.include('vendor');
+            expect(table[0]).to.include('agent_file_id_');
+
+            // Verify data values are correct
+            const vendorIdx = table[0].indexOf('vendor');
+            const hiddenIdx = table[0].indexOf('agent_file_id_');
+            expect(table[1][vendorIdx]).to.equal('Acme');
+            expect(table[1][hiddenIdx]).to.equal('xyz');
+        });
+
+        it('hidden property values should not leak into wrong columns', async () => {
+            const transactions = [
+                createTransaction({
+                    id: 't1',
+                    posted: true,
+                    dateValue: 20240115,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test',
+                    amount: '100',
+                    createdAt: '1705000000000',
+                    properties: { vendor: 'Acme', agent_id_: 'hidden-val', category: 'Office' },
+                }),
+                createTransaction({
+                    id: 't2',
+                    posted: true,
+                    dateValue: 20240116,
+                    creditAccount: { id: 'a1', name: 'Cash' },
+                    debitAccount: { id: 'a2', name: 'Expenses' },
+                    description: 'Test 2',
+                    amount: '200',
+                    createdAt: '1705100000000',
+                    properties: { vendor: 'Beta' },
+                }),
+            ];
+
+            const table = await new TransactionsDataTableBuilder(mockBook, transactions)
+                .properties(true)
+                .build();
+
+            // Only visible property columns
+            const baseHeaders = [
+                'Status',
+                'Date',
+                'Origin',
+                'Destination',
+                'Description',
+                'Amount',
+                'Recorded at',
+            ];
+            expect(table[0]).to.eql([...baseHeaders, 'category', 'vendor']);
+
+            // Values correctly placed
+            expect(table[1][7]).to.equal('Office');
+            expect(table[1][8]).to.equal('Acme');
+            expect(table[2][7]).to.equal('');
+            expect(table[2][8]).to.equal('Beta');
+        });
+    });
+
     describe('combined options', () => {
         it('should support all options enabled together', async () => {
             const account = createAccount({
@@ -430,9 +676,9 @@ describe('TransactionsDataTableBuilder', () => {
             const table = await new TransactionsDataTableBuilder(mockBook, transactions, account)
                 .formatDates(true)
                 .formatValues(true)
-                .includeUrls(true)
-                .includeProperties(true)
-                .includeIds(true)
+                .urls(true)
+                .properties(true)
+                .ids(true)
                 .build();
 
             // Verify header structure

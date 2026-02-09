@@ -18,6 +18,8 @@ export class TransactionsDataTableBuilder {
     private shouldAddUrls: boolean = false;
     private shouldAddProperties: boolean = false;
     private shouldAddIds: boolean = false;
+    private shouldAddRecordedAt: boolean = true;
+    private shouldAddHiddenProperties: boolean = false;
     private propertyKeys: string[] | undefined;
     private attachmentHeaders: string[] | undefined;
     private remoteIdHeaders: string[] | undefined;
@@ -53,39 +55,86 @@ export class TransactionsDataTableBuilder {
     }
 
     /**
-     * Defines whether include attachments and url links.
+     * Defines whether to include attachments and url links.
      *
      * @param include - Whether to include URLs
      *
-     * @returns This builder with respective include attachment option, for chaining.
+     * @returns This builder with respective option, for chaining.
      */
-    public includeUrls(include: boolean): TransactionsDataTableBuilder {
+    public urls(include: boolean): TransactionsDataTableBuilder {
         this.shouldAddUrls = include;
         return this;
     }
 
     /**
-     * Defines whether include custom transaction properties.
+     * Defines whether to include custom transaction properties.
      *
      * @param include - Whether to include properties
      *
-     * @returns This builder with respective include properties option, for chaining.
+     * @returns This builder with respective option, for chaining.
      */
-    public includeProperties(include: boolean): TransactionsDataTableBuilder {
+    public properties(include: boolean): TransactionsDataTableBuilder {
         this.shouldAddProperties = include;
         return this;
     }
 
     /**
-     * Defines whether include transaction ids and remote ids.
+     * Defines whether to include transaction ids and remote ids.
      *
      * @param include - Whether to include ids
      *
-     * @returns This builder with respective include ids option, for chaining.
+     * @returns This builder with respective option, for chaining.
      */
-    public includeIds(include: boolean): TransactionsDataTableBuilder {
+    public ids(include: boolean): TransactionsDataTableBuilder {
         this.shouldAddIds = include;
         return this;
+    }
+
+    /**
+     * Defines whether to include the "Recorded at" column.
+     *
+     * @param include - Whether to include the recorded at column
+     *
+     * @returns This builder with respective option, for chaining.
+     */
+    public recordedAt(include: boolean): TransactionsDataTableBuilder {
+        this.shouldAddRecordedAt = include;
+        return this;
+    }
+
+    /**
+     * Defines whether to include hidden properties (keys ending with underscore "_").
+     * Only relevant when {@link properties} is enabled.
+     * Default is false — hidden properties are excluded.
+     *
+     * @param include - Whether to include hidden properties
+     *
+     * @returns This builder with respective option, for chaining.
+     */
+    public hiddenProperties(include: boolean): TransactionsDataTableBuilder {
+        this.shouldAddHiddenProperties = include;
+        return this;
+    }
+
+    /**
+     * @deprecated Use {@link urls} instead.
+     */
+    public includeUrls(include: boolean): TransactionsDataTableBuilder {
+        return this.urls(include);
+    }
+
+    /**
+     * @deprecated Use {@link properties} instead.
+     */
+    public includeProperties(include: boolean): TransactionsDataTableBuilder {
+        return this.properties(include);
+    }
+
+    /**
+     * @deprecated Use {@link ids} instead.
+     */
+    public includeIds(include: boolean): TransactionsDataTableBuilder {
+        return this.ids(include);
     }
 
     /**
@@ -133,7 +182,9 @@ export class TransactionsDataTableBuilder {
             headerLine.push('Balance');
         }
 
-        headerLine.push('Recorded at');
+        if (this.shouldAddRecordedAt) {
+            headerLine.push('Recorded at');
+        }
 
         if (this.shouldAddProperties) {
             for (const key of this.getPropertyKeys()) {
@@ -223,10 +274,12 @@ export class TransactionsDataTableBuilder {
                 }
             }
 
-            if (this.shouldFormatDates) {
-                line.push(transaction.getCreatedAtFormatted());
-            } else {
-                line.push(transaction.getCreatedAt());
+            if (this.shouldAddRecordedAt) {
+                if (this.shouldFormatDates) {
+                    line.push(transaction.getCreatedAtFormatted());
+                } else {
+                    line.push(transaction.getCreatedAt());
+                }
             }
 
             if (this.shouldAddProperties) {
@@ -267,6 +320,9 @@ export class TransactionsDataTableBuilder {
             this.propertyKeys = [];
             for (const transaction of this.transactions) {
                 for (const key of transaction.getPropertyKeys()) {
+                    if (!this.shouldAddHiddenProperties && key.endsWith('_')) {
+                        continue;
+                    }
                     if (this.propertyKeys.indexOf(key) <= -1) {
                         this.propertyKeys.push(key);
                     }
@@ -311,6 +367,9 @@ export class TransactionsDataTableBuilder {
             line.push('');
         }
         for (const key of transaction.getPropertyKeys()) {
+            if (!this.shouldAddHiddenProperties && key.endsWith('_')) {
+                continue;
+            }
             const index = this.getPropertyKeys().indexOf(key) + lineLength;
             line[index] = transaction.getProperty(key);
         }

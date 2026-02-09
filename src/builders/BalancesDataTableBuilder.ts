@@ -28,6 +28,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     private shouldPeriod: boolean;
     private shouldRaw: boolean;
     private shouldAddProperties: boolean;
+    private shouldAddHiddenProperties: boolean;
     private maxDepth = 0;
     private expandAllAccounts = false;
     private expandAllGroups = false;
@@ -47,6 +48,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         this.shouldPeriod = false;
         this.shouldRaw = false;
         this.shouldAddProperties = false;
+        this.shouldAddHiddenProperties = false;
     }
 
     private getBalance(balance: Amount, permanent: boolean): number {
@@ -221,6 +223,20 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     }
 
     /**
+     * Defines whether to include hidden properties (keys ending with underscore "_").
+     * Only relevant when {@link properties} is enabled.
+     * Default is false — hidden properties are excluded.
+     *
+     * @param include - Whether to include hidden properties
+     *
+     * @returns This builder with respective option, for chaining.
+     */
+    public hiddenProperties(include: boolean): BalancesDataTableBuilder {
+        this.shouldAddHiddenProperties = include;
+        return this;
+    }
+
+    /**
      * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
      *
      * @returns This builder with respective trial option, for chaining.
@@ -267,6 +283,9 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     private addPropertyKeys(propertyKeys: string[], container: BalancesContainer) {
         for (const key of container.getPropertyKeys()) {
+            if (!this.shouldAddHiddenProperties && key.endsWith('_')) {
+                continue;
+            }
             if (propertyKeys.indexOf(key) <= -1) {
                 propertyKeys.push(key);
             }

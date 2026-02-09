@@ -104,6 +104,45 @@ describe('GroupsDataTableBuilder', () => {
         });
     });
 
+    describe('hiddenProperties', () => {
+        it('properties(true) should exclude hidden properties by default', () => {
+            const g1 = createGroup({
+                id: '1',
+                name: 'Expenses',
+                type: 'OUTGOING',
+                properties: { color: 'red', agent_id_: 'hidden-val' },
+            });
+
+            const groups = [g1];
+            buildTree(groups);
+
+            const table = new GroupsDataTableBuilder(groups).properties(true).build();
+
+            expect(table[0]).to.include('color');
+            expect(table[0]).to.not.include('agent_id_');
+        });
+
+        it('properties(true).hiddenProperties(true) should include hidden properties', () => {
+            const g1 = createGroup({
+                id: '1',
+                name: 'Expenses',
+                type: 'OUTGOING',
+                properties: { color: 'red', agent_id_: 'hidden-val' },
+            });
+
+            const groups = [g1];
+            buildTree(groups);
+
+            const table = new GroupsDataTableBuilder(groups)
+                .properties(true)
+                .hiddenProperties(true)
+                .build();
+
+            expect(table[0]).to.include('color');
+            expect(table[0]).to.include('agent_id_');
+        });
+    });
+
     describe('sorting', () => {
         it('should sort by type index, then hasChildren (parents first), then alphabetically', () => {
             // ASSET (index 1) groups
