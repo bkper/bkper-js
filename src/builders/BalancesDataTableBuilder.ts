@@ -1,21 +1,20 @@
-import { Amount } from "./Amount.js";
-import { BalancesContainer } from "./BalancesContainer.js";
-import { Book } from "./Book.js";
-import { BalanceType, Periodicity } from "./Enums.js";
+import { Amount } from '../model/Amount.js';
+import { BalancesContainer } from '../model/BalancesContainer.js';
+import { Book } from '../model/Book.js';
+import { BalanceType, Periodicity } from '../model/Enums.js';
 import * as Utils from '../utils.js';
 
 type IndexEntry = {
     date?: Date;
     amount?: Amount;
     property?: string;
-}
+};
 /**
  * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
- * 
+ *
  * @public
  */
 export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
-
     private balanceType: BalanceType;
     private balancesContainers: BalancesContainer[];
     private periodicity: Periodicity;
@@ -33,7 +32,6 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     private expandAllAccounts = false;
     private expandAllGroups = false;
     private skipRoot = false;
-
 
     constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
         this.book = book;
@@ -55,7 +53,6 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         return this.getRepresentativeBalance(balance, permanent).toNumber();
     }
     private getRepresentativeBalance(balance: Amount, permanent: boolean): Amount {
-
         if (balance == null) {
             return new Amount(0);
         }
@@ -81,10 +78,9 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         return this;
     }
 
-
     /**
      * Defines whether the value should be formatted based on decimal separator of the [[Book]].
-     * 
+     *
      * @returns This builder with respective formatting option, for chaining.
      */
     public formatValues(format: boolean): BalancesDataTableBuilder {
@@ -93,8 +89,8 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     }
 
     /**
-     * Defines whether Groups should expand its child accounts. 
-     * 
+     * Defines whether Groups should expand its child accounts.
+     *
      * true to expand itself
      * -1 to expand all subgroups
      * -2 to expand all accounts
@@ -102,18 +98,18 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
      * 1 to expand itself and its first level of children
      * 2 to expand itself and its first two levels of children
      * etc.
-     * 
+     *
      * @returns This builder with respective expanded option, for chaining.
      */
     public expanded(expanded: boolean | number): BalancesDataTableBuilder {
-        if (typeof expanded == "boolean" && expanded == true) {
+        if (typeof expanded == 'boolean' && expanded == true) {
             this.maxDepth = 1;
             this.skipRoot = true;
         } else if (expanded == -1) {
             this.expandAllGroups = true;
         } else if (expanded == -2) {
             this.expandAllAccounts = true;
-        } else if (typeof expanded == "number" && expanded > 0) {
+        } else if (typeof expanded == 'number' && expanded > 0) {
             this.maxDepth = expanded;
         }
         return this;
@@ -121,23 +117,23 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     /**
      * Fluent method to set the [[BalanceType]] for the builder.
-     * 
+     *
      * @param type - The type of balance for this data table
-     * 
+     *
      * For **TOTAL** [[BalanceType]], the table format looks like:
-     * 
+     *
      * ```
      *   _____________________
      *  | Expenses  | -4568.23 |
      *  | Income    |  5678.93 |
      *  |    ...    |    ...   |
      *  |___________|__________|
-     * 
+     *
      * ```
      * Two columns, and each [[Account]] or [[Group]] per line.
-     * 
+     *
      * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
-     * 
+     *
      * ```
      *  _______________________________________________________________
      *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
@@ -145,11 +141,11 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
      *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
      *  |     ...    |     ...    |     ...    |     ...    |    ...    |
      *  |____________|____________|____________|____________|___________|
-     * 
+     *
      * ```
-     * 
+     *
      * First column will be the [[Account]] or [[Group]] name, and one column for each Date.
-     * 
+     *
      * @returns This builder with respective balance type, for chaining.
      */
     public type(type: BalanceType): BalancesDataTableBuilder {
@@ -159,21 +155,21 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     /**
      * Defines whether should rows and columns should be transposed.
-     * 
+     *
      * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
-     * 
+     *
      * ```
      *   _____________________________
-     *  |  Expenses | Income  |  ...  | 
+     *  |  Expenses | Income  |  ...  |
      *  | -4568.23  | 5678.93 |  ...  |
-     *  |___________|_________|_______| 
-     * 
+     *  |___________|_________|_______|
+     *
      * ```
      * Two rows, and each [[Account]] or [[Group]] per column.
-     * 
-     * 
+     *
+     *
      * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
-     * 
+     *
      * ```
      *   _______________________________________________________________
      *  |            | Expenses   | Income     |     ...    |    ...    |
@@ -182,11 +178,11 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
      *  | 15/03/2014 | -2456.45   |  3567.87   |     ...    |    ...    |
      *  |     ...    |     ...    |     ...    |     ...    |    ...    |
      *  |____________|____________|____________|____________|___________|
-     * 
+     *
      * ```
-     * 
+     *
      * First column will be each Date, and one column for each [[Account]] or [[Group]].
-     * 
+     *
      * @returns This builder with respective transposed option, for chaining.
      */
     public transposed(transposed: boolean): BalancesDataTableBuilder {
@@ -216,7 +212,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     /**
      * Defines whether include custom [[Accounts]] and [[Groups]] properties.
-     * 
+     *
      * @returns This builder with respective include properties option, for chaining.
      */
     public properties(include: boolean): BalancesDataTableBuilder {
@@ -224,10 +220,9 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         return this;
     }
 
-
     /**
      * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
-     * 
+     *
      * @returns This builder with respective trial option, for chaining.
      */
     public trial(trial: boolean): BalancesDataTableBuilder {
@@ -237,7 +232,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     /**
      * Defines whether should force use of period balances for **TOTAL** [[BalanceType]].
-     * 
+     *
      * @returns This builder with respective trial option, for chaining.
      */
     public period(period: boolean): BalancesDataTableBuilder {
@@ -247,7 +242,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     /**
      * Defines whether should show raw balances, no matter the credit nature of the Account or Group.
-     * 
+     *
      * @returns This builder with respective trial option, for chaining.
      */
     public raw(raw: boolean): BalancesDataTableBuilder {
@@ -255,11 +250,10 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         return this;
     }
 
-
     /**
-     * 
+     *
      * Builds an two-dimensional array with the balances.
-     * 
+     *
      */
     public build(): any[][] {
         if (this.balanceType == BalanceType.TOTAL) {
@@ -268,7 +262,6 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             return this.buildTimeDataTable_();
         }
     }
-
 
     ////////////////////////
 
@@ -286,22 +279,26 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                 this.flattenAllAccounts(container, containersFlat, propertyKeys);
                 containersFlat.sort(this.sortContainersFunction);
             } else if (container.isFromGroup() && this.expandAllGroups) {
-                this.flattenAllGroups(container, containersFlat, propertyKeys)
+                this.flattenAllGroups(container, containersFlat, propertyKeys);
             } else {
-                this.flattenMaxDepth(container, containersFlat, propertyKeys)
+                this.flattenMaxDepth(container, containersFlat, propertyKeys);
             }
         }
     }
 
-    private flattenAllAccounts(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
+    private flattenAllAccounts(
+        container: BalancesContainer,
+        containersFlat: BalancesContainer[],
+        propertyKeys: string[]
+    ): void {
         if (container.isFromGroup()) {
             for (const child of container.getBalancesContainers()) {
-                this.flattenAllAccounts(child, containersFlat, propertyKeys)
+                this.flattenAllAccounts(child, containersFlat, propertyKeys);
             }
         } else {
             containersFlat.push(container);
             if (this.shouldAddProperties) {
-                this.addPropertyKeys(propertyKeys, container)
+                this.addPropertyKeys(propertyKeys, container);
             }
         }
     }
@@ -309,15 +306,15 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     private sortContainersFunction(a: BalancesContainer, b: BalancesContainer) {
         let ret = 0;
         if (a.isPermanent() && !b.isPermanent()) {
-            ret = -1
+            ret = -1;
         } else if (!a.isPermanent() && b.isPermanent()) {
-            ret = 1
+            ret = 1;
         }
         if (ret == 0) {
             if (a.getParent() && !b.getParent()) {
-                ret = -1
+                ret = -1;
             } else if (!a.getParent() && b.getParent()) {
-                ret = 1
+                ret = 1;
             }
         }
         if (ret == 0) {
@@ -350,52 +347,58 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         return ret;
     }
 
-
-    private flattenMaxDepth(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
+    private flattenMaxDepth(
+        container: BalancesContainer,
+        containersFlat: BalancesContainer[],
+        propertyKeys: string[]
+    ): void {
         let depth = container.getDepth();
 
         if (depth <= this.maxDepth) {
-
             if (!this.skipRoot && !this.shouldTranspose) {
-                container.payload.name = Utils.repeatString(" ", depth * 4) + container.payload.name;
+                container.payload.name =
+                    Utils.repeatString(' ', depth * 4) + container.payload.name;
             }
             if (!this.skipRoot || depth != 0) {
                 containersFlat.push(container);
                 if (this.shouldAddProperties) {
-                    this.addPropertyKeys(propertyKeys, container)
+                    this.addPropertyKeys(propertyKeys, container);
                 }
             }
             const children = container.getBalancesContainers();
             if (children && children.length > 0) {
                 children.sort(this.sortContainersFunction);
                 for (const child of children) {
-                    this.flattenMaxDepth(child, containersFlat, propertyKeys)
+                    this.flattenMaxDepth(child, containersFlat, propertyKeys);
                 }
             }
         }
     }
 
-    private flattenAllGroups(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
+    private flattenAllGroups(
+        container: BalancesContainer,
+        containersFlat: BalancesContainer[],
+        propertyKeys: string[]
+    ): void {
         if (container.isFromGroup()) {
             if (!this.shouldTranspose) {
                 let depth = container.getDepth();
-                container.payload.name = Utils.repeatString(" ", depth * 4) + container.payload.name;
+                container.payload.name =
+                    Utils.repeatString(' ', depth * 4) + container.payload.name;
             }
             containersFlat.push(container);
             if (this.shouldAddProperties) {
-                this.addPropertyKeys(propertyKeys, container)
+                this.addPropertyKeys(propertyKeys, container);
             }
             if (container.hasGroupBalances()) {
                 const children = container.getBalancesContainers();
                 children.sort(this.sortContainersFunction);
                 for (const child of children) {
-                    this.flattenAllGroups(child, containersFlat, propertyKeys)
+                    this.flattenAllGroups(child, containersFlat, propertyKeys);
                 }
             }
         }
     }
-
-
 
     private buildTotalDataTable_() {
         var table = new Array();
@@ -415,7 +418,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
         let containers = new Array<BalancesContainer>();
 
-        this.flattenContainers(containers, propertyKeys)
+        this.flattenContainers(containers, propertyKeys);
 
         if (this.shouldAddProperties) {
             propertyKeys.sort();
@@ -456,13 +459,23 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                             if (this.shouldRaw) {
                                 line.push(balances.getPeriodBalanceRawText());
                             } else {
-                                line.push(this.getBalanceText(balances.getPeriodBalanceRaw(), balances.isPermanent()));
+                                line.push(
+                                    this.getBalanceText(
+                                        balances.getPeriodBalanceRaw(),
+                                        balances.isPermanent()
+                                    )
+                                );
                             }
                         } else {
                             if (this.shouldRaw) {
                                 line.push(balances.getCumulativeBalanceRawText());
                             } else {
-                                line.push(this.getBalanceText(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
+                                line.push(
+                                    this.getBalanceText(
+                                        balances.getCumulativeBalanceRaw(),
+                                        balances.isPermanent()
+                                    )
+                                );
                             }
                         }
                     } else {
@@ -470,15 +483,24 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                             if (this.shouldRaw) {
                                 line.push(balances.getPeriodBalanceRaw().toNumber());
                             } else {
-                                line.push(this.getBalance(balances.getPeriodBalanceRaw(), balances.isPermanent()));
+                                line.push(
+                                    this.getBalance(
+                                        balances.getPeriodBalanceRaw(),
+                                        balances.isPermanent()
+                                    )
+                                );
                             }
                         } else {
                             if (this.shouldRaw) {
                                 line.push(balances.getCumulativeBalanceRaw().toNumber());
                             } else {
-                                line.push(this.getBalance(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
+                                line.push(
+                                    this.getBalance(
+                                        balances.getCumulativeBalanceRaw(),
+                                        balances.isPermanent()
+                                    )
+                                );
                             }
-
                         }
                     }
                 }
@@ -510,15 +532,13 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         return table;
     }
 
-
     private buildTimeDataTable_() {
         var table = new Array<Array<any>>();
         var dataIndexMap: any = new Object();
         var cumulativeBalance = this.balanceType == BalanceType.CUMULATIVE;
 
         var header = new Array();
-        header.push("");
-
+        header.push('');
 
         if (this.balancesContainers == null) {
             return table;
@@ -527,7 +547,6 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         let containers = new Array<BalancesContainer>();
 
         this.flattenContainers(containers, propertyKeys);
-
 
         for (const container of containers) {
             header.push(container.getName());
@@ -549,11 +568,12 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                     } else {
                         amount = balance.getPeriodBalanceRaw();
                     }
-                    indexEntry[container.getName()] = this.shouldRaw ? amount : this.getRepresentativeBalance(amount, container.isPermanent());
+                    indexEntry[container.getName()] = this.shouldRaw
+                        ? amount
+                        : this.getRepresentativeBalance(amount, container.isPermanent());
                 }
             }
         }
-
 
         table.push(header);
 
@@ -565,11 +585,15 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             for (const container of containers) {
                 var amount = rowObject[container.getName()];
                 if (amount == null) {
-                    amount = "null_amount";
+                    amount = 'null_amount';
                 } else {
                     amount = new Amount(amount);
                     if (this.shouldFormatValue) {
-                        amount = Utils.formatValue(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+                        amount = Utils.formatValue(
+                            amount,
+                            this.book.getDecimalSeparator(),
+                            this.book.getFractionDigits()
+                        );
                     } else {
                         amount = amount.toNumber();
                     }
@@ -580,8 +604,9 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             rows.push(row);
         }
 
-        rows.sort(function (a, b) { return a[0].getTime() - b[0].getTime() });
-
+        rows.sort(function (a, b) {
+            return a[0].getTime() - b[0].getTime();
+        });
 
         var lastRow: any[] | null = null;
         for (var i = 0; i < rows.length; i++) {
@@ -590,10 +615,14 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                 //first row, all null values will be 0
                 for (var j = 1; j < row.length; j++) {
                     var cell = row[j];
-                    if (cell == "null_amount") {
+                    if (cell == 'null_amount') {
                         var amount: any = new Amount(0);
                         if (this.shouldFormatValue) {
-                            amount = Utils.formatValue(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+                            amount = Utils.formatValue(
+                                amount,
+                                this.book.getDecimalSeparator(),
+                                this.book.getFractionDigits()
+                            );
                         } else {
                             amount = amount.toNumber();
                         }
@@ -603,21 +632,24 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             } else {
                 for (var j = 1; j < row.length; j++) {
                     var cell = row[j];
-                    if (cell == "null_amount" && cumulativeBalance) {
+                    if (cell == 'null_amount' && cumulativeBalance) {
                         if (lastRow) {
                             row[j] = lastRow[j];
                         }
-                    } else if (cell == "null_amount") {
+                    } else if (cell == 'null_amount') {
                         var amount: any = new Amount(0);
                         if (this.shouldFormatValue) {
-                            amount = Utils.formatValue(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+                            amount = Utils.formatValue(
+                                amount,
+                                this.book.getDecimalSeparator(),
+                                this.book.getFractionDigits()
+                            );
                         } else {
                             amount = amount.toNumber();
                         }
                         row[j] = amount;
                     }
                 }
-
             }
             lastRow = row;
             table.push(row);
@@ -639,12 +671,11 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             for (const key of propertyKeys) {
                 var propertyRow: string[] = [key];
                 for (const container of containers) {
-                    propertyRow.push(container.getProperty(key) || '')
+                    propertyRow.push(container.getProperty(key) || '');
                 }
                 table.push(propertyRow);
             }
         }
-
 
         if (this.shouldHideNames) {
             table.shift();
@@ -658,8 +689,6 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             table = table[0].map((col: any, i: number) => table.map(row => row[i]));
         }
 
-
         return table;
     }
-
 }

@@ -1,15 +1,14 @@
-import { getRepresentativeValue, normalizeName } from "../utils.js";
-import { Account } from "./Account.js";
-import { Amount } from "./Amount.js";
-import { Balance } from "./Balance.js";
-import { BalancesContainer } from "./BalancesContainer.js";
-import { BalancesDataTableBuilder } from "./BalancesDataTableBuilder.js";
-import { BalancesReport } from "./BalancesReport.js";
-import { Group } from "./Group.js";
+import { getRepresentativeValue, normalizeName } from '../utils.js';
+import { Account } from './Account.js';
+import { Amount } from './Amount.js';
+import { Balance } from './Balance.js';
+import { BalancesContainer } from './BalancesContainer.js';
+import { BalancesDataTableBuilder } from '../builders/BalancesDataTableBuilder.js';
+import { BalancesReport } from './BalancesReport.js';
+import { Group } from './Group.js';
 
 /** @internal */
 export class AccountBalancesContainer implements BalancesContainer {
-
     public payload: bkper.AccountBalances;
 
     /** @internal */
@@ -21,8 +20,11 @@ export class AccountBalancesContainer implements BalancesContainer {
     /** @internal */
     private depth?: number;
 
-
-    constructor(parent: BalancesContainer | null, balancesReport: BalancesReport, payload: bkper.AccountBalances) {
+    constructor(
+        parent: BalancesContainer | null,
+        balancesReport: BalancesReport,
+        payload: bkper.AccountBalances
+    ) {
         this.parent = parent;
         this.balancesReport = balancesReport;
         this.payload = payload;
@@ -82,7 +84,10 @@ export class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getCumulativeBalance(): Amount {
-        return getRepresentativeValue(new Amount(this.payload.cumulativeBalance || 0), this.isCredit());
+        return getRepresentativeValue(
+            new Amount(this.payload.cumulativeBalance || 0),
+            this.isCredit()
+        );
     }
 
     public getCumulativeBalanceRaw(): Amount {
@@ -137,7 +142,6 @@ export class AccountBalancesContainer implements BalancesContainer {
         return this.balancesReport.getBook().formatValue(this.getPeriodBalanceRaw());
     }
 
-
     public getPeriodCreditText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
     }
@@ -147,7 +151,11 @@ export class AccountBalancesContainer implements BalancesContainer {
     }
 
     public createDataTable(): BalancesDataTableBuilder {
-        return new BalancesDataTableBuilder(this.balancesReport.getBook(), [this], this.balancesReport.getPeriodicity());
+        return new BalancesDataTableBuilder(
+            this.balancesReport.getBook(),
+            [this],
+            this.balancesReport.getPeriodicity()
+        );
     }
 
     public getBalancesContainers(): BalancesContainer[] {
@@ -165,11 +173,10 @@ export class AccountBalancesContainer implements BalancesContainer {
         return this.payload.properties != null ? { ...this.payload.properties } : {};
     }
 
-
     public getProperty(...keys: string[]): string | undefined {
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
-            let value = this.payload.properties != null ? this.payload.properties[key] : null
+            let value = this.payload.properties != null ? this.payload.properties[key] : null;
             if (value != null && value.trim() != '') {
                 return value;
             }
@@ -177,14 +184,13 @@ export class AccountBalancesContainer implements BalancesContainer {
         return undefined;
     }
 
-
     public getPropertyKeys(): string[] {
         let properties = this.getProperties();
-        let propertyKeys: string[] = []
+        let propertyKeys: string[] = [];
         if (properties) {
             for (var key in properties) {
                 if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                    propertyKeys.push(key)
+                    propertyKeys.push(key);
                 }
             }
         }
@@ -199,5 +205,4 @@ export class AccountBalancesContainer implements BalancesContainer {
         }
         throw `${name} does not match ${this.getName()}`;
     }
-
 }

@@ -1,12 +1,13 @@
-import { File } from "./File.js";
-import { Book } from "./Book.js";
-import { Account } from "./Account.js";
-import { Config } from "./Config.js";
-import { ResourceProperty } from "./ResourceProperty.js";
-import * as TransactionService from "../service/transaction-service.js";
-import * as Utils from "../utils.js";
-import { Amount } from "./Amount.js";
-import { v4 as uuidv4 } from "uuid";
+import { File } from './File.js';
+import { Book } from './Book.js';
+import { Account } from './Account.js';
+import { Config } from './Config.js';
+import { ResourceProperty } from './ResourceProperty.js';
+import { TransactionStatus } from './Enums.js';
+import * as TransactionService from '../service/transaction-service.js';
+import * as Utils from '../utils.js';
+import { Amount } from './Amount.js';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  *
@@ -17,7 +18,6 @@ import { v4 as uuidv4 } from "uuid";
  * @public
  */
 export class Transaction extends ResourceProperty<bkper.Transaction> {
-
     /** @internal */
     private book: Book;
 
@@ -159,14 +159,30 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      * @returns True if a transaction is locked by the book lock/closing date
      */
     public isLocked(): boolean {
-        const date =
-            this.getDate() ||
-            Utils.formatDateISO(new Date(), this.book.getTimeZone());
+        const date = this.getDate() || Utils.formatDateISO(new Date(), this.book.getTimeZone());
         const lockOrClosingDate = this.book.getMostRecentLockDate_();
         return (
             lockOrClosingDate != null &&
             Utils.getIsoDateValue(lockOrClosingDate) >= Utils.getIsoDateValue(date)
         );
+    }
+
+    /**
+     * Gets the status of the transaction.
+     *
+     * @returns The status of the Transaction
+     */
+    public getStatus(): TransactionStatus {
+        if (this.isTrashed()) {
+            return TransactionStatus.TRASHED;
+        }
+        if (!this.isPosted()) {
+            return TransactionStatus.DRAFT;
+        }
+        if (this.isChecked()) {
+            return TransactionStatus.CHECKED;
+        }
+        return TransactionStatus.UNCHECKED;
     }
 
     /**
@@ -206,7 +222,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
     public setUrls(urls: string[]): Transaction {
         this.payload.urls = undefined;
         if (urls) {
-            urls.forEach((url) => {
+            urls.forEach(url => {
                 this.addUrl(url);
             });
         }
@@ -237,7 +253,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      */
     public getFiles(): File[] {
         if (this.payload.files && this.payload.files.length > 0) {
-            const files = this.payload.files.map((file) => new File(this.book, file));
+            const files = this.payload.files.map(file => new File(this.book, file));
             return files;
         } else {
             return [];
@@ -272,7 +288,6 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      * @returns This Transaction, for chaining
      */
     public addFile(file: File): Transaction {
-
         if (this.payload.files == null) {
             this.payload.files = [];
         }
@@ -294,7 +309,6 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
 
     /** @internal */
     private async createPendingFiles(): Promise<void> {
-
         if (this.pendingFiles.size === 0) {
             return;
         }
@@ -346,8 +360,6 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
         return false;
     }
 
-
-
     /**
      * Gets the credit account associated with this Transaction. Same as origin account
      *
@@ -369,7 +381,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
         if ((await this.getCreditAccount()) != null) {
             return (await this.getCreditAccount())?.getName();
         } else {
-            return "";
+            return '';
         }
     }
 
@@ -430,7 +442,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
         if ((await this.getDebitAccount()) != null) {
             return (await this.getDebitAccount())?.getName();
         } else {
-            return "";
+            return '';
         }
     }
 
@@ -476,7 +488,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      * @returns The amount of this Transaction
      */
     public getAmount(): Amount | undefined {
-        return this.payload.amount != null && this.payload.amount.trim() != ""
+        return this.payload.amount != null && this.payload.amount.trim() != ''
             ? new Amount(this.payload.amount)
             : undefined;
     }
@@ -502,8 +514,8 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      * @returns This Transaction, for chaining
      */
     public setAmount(amount: Amount | number | string): Transaction {
-        if (typeof amount == "string") {
-            amount = Utils.parseValue(amount, this.book.getDecimalSeparator()) + "";
+        if (typeof amount == 'string') {
+            amount = Utils.parseValue(amount, this.book.getDecimalSeparator()) + '';
             this.payload.amount = amount.toString();
             return this;
         }
@@ -527,9 +539,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      *
      * @returns The credit amount or undefined
      */
-    public async getCreditAmount(
-        account: Account | string
-    ): Promise<Amount | undefined> {
+    public async getCreditAmount(account: Account | string): Promise<Amount | undefined> {
         let accountObject = await this.getAccount_(account);
         if (await this.isCredit(accountObject)) {
             return this.getAmount();
@@ -544,9 +554,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      *
      * @returns The debit amount or undefined
      */
-    public async getDebitAmount(
-        account: Account | string
-    ): Promise<Amount | undefined> {
+    public async getDebitAmount(account: Account | string): Promise<Amount | undefined> {
         let accountObject = await this.getAccount_(account);
         if (await this.isDebit(accountObject)) {
             return this.getAmount();
@@ -561,9 +569,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      *
      * @returns The account at the other side of the transaction
      */
-    public async getOtherAccount(
-        account: Account | string
-    ): Promise<Account | undefined> {
+    public async getOtherAccount(account: Account | string): Promise<Account | undefined> {
         let accountObject = await this.getAccount_(account);
         if (await this.isCredit(accountObject)) {
             return await this.getDebitAccount();
@@ -581,14 +587,12 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      *
      * @returns The name of the Account at the other side
      */
-    public async getOtherAccountName(
-        account: string | Account
-    ): Promise<string | undefined> {
+    public async getOtherAccountName(account: string | Account): Promise<string | undefined> {
         var otherAccount = await this.getOtherAccount(account);
         if (otherAccount != null) {
             return otherAccount.getName();
         } else {
-            return "";
+            return '';
         }
     }
 
@@ -603,8 +607,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
         return (
             (await this.getCreditAccount()) != null &&
             account != null &&
-            (await this.getCreditAccount())?.getNormalizedName() ==
-            account.getNormalizedName()
+            (await this.getCreditAccount())?.getNormalizedName() == account.getNormalizedName()
         );
     }
 
@@ -619,15 +622,12 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
         return (
             (await this.getDebitAccount()) != null &&
             account != null &&
-            (await this.getDebitAccount())?.getNormalizedName() ==
-            account.getNormalizedName()
+            (await this.getDebitAccount())?.getNormalizedName() == account.getNormalizedName()
         );
     }
 
     /** @internal */
-    private async getAccount_(
-        account: Account | string
-    ): Promise<Account | undefined> {
+    private async getAccount_(account: Account | string): Promise<Account | undefined> {
         if (account == null || account instanceof Account) {
             return account as Account;
         }
@@ -641,7 +641,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      */
     public getDescription(): string {
         if (this.payload.description == null) {
-            return "";
+            return '';
         }
         return this.payload.description;
     }
@@ -675,21 +675,18 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      * @returns This Transaction, for chaining
      */
     public setDate(date: string | Date): Transaction {
-        if (typeof date == "string") {
-            if (date.indexOf("/") > 0) {
+        if (typeof date == 'string') {
+            if (date.indexOf('/') > 0) {
                 let dateObject = Utils.parseDate(
                     date,
                     this.book.getDatePattern(),
                     this.book.getTimeZone()
                 );
-                this.payload.date = Utils.formatDateISO(
-                    dateObject,
-                    this.book.getTimeZone()
-                );
-            } else if (date.indexOf("-") >= 0) {
+                this.payload.date = Utils.formatDateISO(dateObject, this.book.getTimeZone());
+            } else if (date.indexOf('-') >= 0) {
                 this.payload.date = date;
             }
-        } else if (Object.prototype.toString.call(date) === "[object Date]") {
+        } else if (Object.prototype.toString.call(date) === '[object Date]') {
             this.payload.date = Utils.formatDateISO(date, this.book.getTimeZone());
         }
         return this;
@@ -701,10 +698,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
      * @returns The Transaction Date object, on the time zone of the [[Book]]
      */
     public getDateObject(): Date {
-        return Utils.convertValueToDate(
-            this.getDateValue(),
-            this.book.getTimeZoneOffset()
-        );
+        return Utils.convertValueToDate(this.getDateValue(), this.book.getTimeZoneOffset());
     }
 
     /**
@@ -742,7 +736,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
     public getCreatedAtFormatted(): string {
         return Utils.formatDate(
             this.getCreatedAt(),
-            this.book.getDatePattern() + " HH:mm:ss",
+            this.book.getDatePattern() + ' HH:mm:ss',
             this.book.getTimeZone()
         );
     }
@@ -773,23 +767,21 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
     public getUpdatedAtFormatted(): string {
         return Utils.formatDate(
             this.getUpdatedAt(),
-            this.book.getDatePattern() + " HH:mm:ss",
+            this.book.getDatePattern() + ' HH:mm:ss',
             this.book.getTimeZone()
         );
     }
 
     /** @internal */
     private getCaEvolvedBalance_(): Amount | undefined {
-        return this.payload.creditAccount != null &&
-            this.payload.creditAccount.balance != null
+        return this.payload.creditAccount != null && this.payload.creditAccount.balance != null
             ? new Amount(this.payload.creditAccount.balance)
             : undefined;
     }
 
     /** @internal */
     private getDaEvolvedBalance_(): Amount | undefined {
-        return this.payload.debitAccount != null &&
-            this.payload.debitAccount.balance != null
+        return this.payload.debitAccount != null && this.payload.debitAccount.balance != null
             ? new Amount(this.payload.debitAccount.balance)
             : undefined;
     }
@@ -814,13 +806,8 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
         }
         if (accountBalance != null) {
             if (!raw) {
-                var account = isCa
-                    ? await this.getCreditAccount()
-                    : await this.getDebitAccount();
-                accountBalance = Utils.getRepresentativeValue(
-                    accountBalance,
-                    account?.isCredit()
-                );
+                var account = isCa ? await this.getCreditAccount() : await this.getDebitAccount();
+                accountBalance = Utils.getRepresentativeValue(accountBalance, account?.isCredit());
             }
             return Utils.round(accountBalance, this.book.getFractionDigits());
         } else {

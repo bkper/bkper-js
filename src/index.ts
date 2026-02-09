@@ -6,33 +6,37 @@
  * @packageDocumentation
  */
 
-export { Account } from "./model/Account.js";
-export { Agent } from "./model/Agent.js";
-export { Amount } from "./model/Amount.js";
-export { App } from "./model/App.js";
-export { Backlog } from "./model/Backlog.js";
-export { Balance } from "./model/Balance.js";
-export { BalancesDataTableBuilder } from "./model/BalancesDataTableBuilder.js";
-export { BalancesContainer } from "./model/BalancesContainer.js";
-export { BalancesReport } from "./model/BalancesReport.js";
-export { Billing } from "./model/Billing.js";
-export { Bkper } from "./model/Bkper.js";
-export { Book } from "./model/Book.js";
-export { Collaborator } from "./model/Collaborator.js";
-export { Collection } from "./model/Collection.js";
-export { Config } from "./model/Config.js";
-export { Connection } from "./model/Connection.js";
-export { File } from "./model/File.js";
-export { Group } from "./model/Group.js";
-export { Integration } from "./model/Integration.js";
-export { Query } from "./model/Query.js";
-export { Template } from "./model/Template.js";
-export { Transaction } from "./model/Transaction.js";
-export { TransactionList } from "./model/TransactionList.js";
-export { Event } from "./model/Event.js";
-export { BotResponse } from "./model/BotResponse.js";
-export { EventList } from "./model/EventList.js";
-export { User } from "./model/User.js";
+export { Account } from './model/Account.js';
+export { AccountsDataTableBuilder } from './builders/AccountsDataTableBuilder.js';
+export { Agent } from './model/Agent.js';
+export { Amount } from './model/Amount.js';
+export { App } from './model/App.js';
+export { Backlog } from './model/Backlog.js';
+export { Balance } from './model/Balance.js';
+export { BalancesDataTableBuilder } from './builders/BalancesDataTableBuilder.js';
+export { BalancesContainer } from './model/BalancesContainer.js';
+export { BalancesReport } from './model/BalancesReport.js';
+export { Billing } from './model/Billing.js';
+export { Bkper } from './model/Bkper.js';
+export { Book } from './model/Book.js';
+export { BooksDataTableBuilder } from './builders/BooksDataTableBuilder.js';
+export { Collaborator } from './model/Collaborator.js';
+export { Collection } from './model/Collection.js';
+export { Config } from './model/Config.js';
+export { Connection } from './model/Connection.js';
+export { File } from './model/File.js';
+export { Group } from './model/Group.js';
+export { GroupsDataTableBuilder } from './builders/GroupsDataTableBuilder.js';
+export { Integration } from './model/Integration.js';
+export { Query } from './model/Query.js';
+export { Template } from './model/Template.js';
+export { Transaction } from './model/Transaction.js';
+export { TransactionList } from './model/TransactionList.js';
+export { TransactionsDataTableBuilder } from './builders/TransactionsDataTableBuilder.js';
+export { Event } from './model/Event.js';
+export { BotResponse } from './model/BotResponse.js';
+export { EventList } from './model/EventList.js';
+export { User } from './model/User.js';
 export {
     Periodicity,
     DecimalSeparator,
@@ -44,5 +48,6 @@ export {
     Month,
     EventType,
     BotResponseType,
-} from "./model/Enums.js";
-export { BkperError } from "./model/BkperError.js";
+    TransactionStatus,
+} from './model/Enums.js';
+export { BkperError } from './model/BkperError.js';

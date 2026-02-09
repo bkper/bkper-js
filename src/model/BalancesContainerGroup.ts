@@ -1,16 +1,15 @@
-import { Account } from "./Account.js";
-import { Group } from "./Group.js";
-import { BalancesContainer } from "./BalancesContainer.js";
-import { BalancesReport } from "./BalancesReport.js";
-import { Amount } from "./Amount.js";
-import { getRepresentativeValue, normalizeName } from "../utils.js";
-import { AccountBalancesContainer } from "./BalancesContainerAccount.js";
-import { Balance } from "./Balance.js";
-import { BalancesDataTableBuilder } from "./BalancesDataTableBuilder.js";
+import { Account } from './Account.js';
+import { Group } from './Group.js';
+import { BalancesContainer } from './BalancesContainer.js';
+import { BalancesReport } from './BalancesReport.js';
+import { Amount } from './Amount.js';
+import { getRepresentativeValue, normalizeName } from '../utils.js';
+import { AccountBalancesContainer } from './BalancesContainerAccount.js';
+import { Balance } from './Balance.js';
+import { BalancesDataTableBuilder } from '../builders/BalancesDataTableBuilder.js';
 
 /** @internal */
 export class GroupBalancesContainer implements BalancesContainer {
-
     public payload: bkper.GroupBalances;
 
     /** @internal */
@@ -31,7 +30,11 @@ export class GroupBalancesContainer implements BalancesContainer {
     /** @internal */
     private balancesContainersMap?: Map<string, BalancesContainer>;
 
-    constructor(parent: BalancesContainer | null, balancesReport: BalancesReport, payload: bkper.GroupBalances) {
+    constructor(
+        parent: BalancesContainer | null,
+        balancesReport: BalancesReport,
+        payload: bkper.GroupBalances
+    ) {
         this.parent = parent;
         this.balancesReport = balancesReport;
         this.payload = payload;
@@ -92,7 +95,10 @@ export class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getCumulativeBalance(): Amount {
-        return getRepresentativeValue(new Amount(this.payload.cumulativeBalance || 0), this.isCredit());
+        return getRepresentativeValue(
+            new Amount(this.payload.cumulativeBalance || 0),
+            this.isCredit()
+        );
     }
 
     public getCumulativeBalanceRaw(): Amount {
@@ -131,7 +137,6 @@ export class GroupBalancesContainer implements BalancesContainer {
         return new Amount(this.payload.periodBalance || 0);
     }
 
-
     public getPeriodCredit(): Amount {
         return new Amount(this.payload.periodCredit || 0);
     }
@@ -139,7 +144,6 @@ export class GroupBalancesContainer implements BalancesContainer {
     public getPeriodDebit(): Amount {
         return new Amount(this.payload.periodDebit || 0);
     }
-
 
     public getPeriodBalanceText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodBalance());
@@ -165,18 +169,21 @@ export class GroupBalancesContainer implements BalancesContainer {
     }
 
     public createDataTable() {
-        return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.balancesReport.getPeriodicity());
+        return new BalancesDataTableBuilder(
+            this.balancesReport.getBook(),
+            this.getBalancesContainers(),
+            this.balancesReport.getPeriodicity()
+        );
     }
 
     public getProperties(): { [key: string]: string } {
         return this.payload.properties != null ? { ...this.payload.properties } : {};
     }
 
-
     public getProperty(...keys: string[]): string | undefined {
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
-            let value = this.payload.properties != null ? this.payload.properties[key] : null
+            let value = this.payload.properties != null ? this.payload.properties[key] : null;
             if (value != null && value.trim() != '') {
                 return value;
             }
@@ -184,21 +191,19 @@ export class GroupBalancesContainer implements BalancesContainer {
         return undefined;
     }
 
-
     public getPropertyKeys(): string[] {
         let properties = this.getProperties();
-        let propertyKeys: string[] = []
+        let propertyKeys: string[] = [];
         if (properties) {
             for (var key in properties) {
                 if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                    propertyKeys.push(key)
+                    propertyKeys.push(key);
                 }
             }
         }
         propertyKeys = propertyKeys.sort();
         return propertyKeys;
     }
-
 
     public getBalancesContainers(): BalancesContainer[] {
         let containers: BalancesContainer[] = [];
@@ -220,7 +225,9 @@ export class GroupBalancesContainer implements BalancesContainer {
             this.groupBalances = [];
             for (let i = 0; i < groupBalances.length; i++) {
                 const groupBalance = groupBalances[i];
-                this.groupBalances.push(new GroupBalancesContainer(this, this.balancesReport, groupBalance));
+                this.groupBalances.push(
+                    new GroupBalancesContainer(this, this.balancesReport, groupBalance)
+                );
             }
         }
         return this.groupBalances || [];
@@ -233,14 +240,15 @@ export class GroupBalancesContainer implements BalancesContainer {
             this.accountBalances = [];
             for (let i = 0; i < accountBalances.length; i++) {
                 const accountBalance = accountBalances[i];
-                this.accountBalances.push(new AccountBalancesContainer(this, this.balancesReport, accountBalance));
+                this.accountBalances.push(
+                    new AccountBalancesContainer(this, this.balancesReport, accountBalance)
+                );
             }
         }
         return this.accountBalances || [];
     }
 
     public getBalancesContainer(name: string): BalancesContainer {
-
         const normalizedName = normalizeName(name);
 
         const rootContainers = this.getBalancesContainers();
@@ -249,7 +257,10 @@ export class GroupBalancesContainer implements BalancesContainer {
         }
 
         if (this.balancesContainersMap == null) {
-            this.balancesContainersMap = this.fillBalancesContainersMap(new Map<string, BalancesContainer>(), rootContainers);
+            this.balancesContainersMap = this.fillBalancesContainersMap(
+                new Map<string, BalancesContainer>(),
+                rootContainers
+            );
         }
 
         const balancesContainer = this.balancesContainersMap?.get(normalizedName);
@@ -261,7 +272,10 @@ export class GroupBalancesContainer implements BalancesContainer {
     }
 
     /** @internal */
-    private fillBalancesContainersMap(map: Map<string, BalancesContainer>, containers: BalancesContainer[]): Map<string, BalancesContainer> {
+    private fillBalancesContainersMap(
+        map: Map<string, BalancesContainer>,
+        containers: BalancesContainer[]
+    ): Map<string, BalancesContainer> {
         for (let i = 0; i < containers.length; i++) {
             const container = containers[i];
             const normalizedName = container.getNormalizedName();
@@ -277,5 +291,4 @@ export class GroupBalancesContainer implements BalancesContainer {
         }
         return map;
     }
-
 }

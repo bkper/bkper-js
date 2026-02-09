@@ -1,39 +1,36 @@
-import * as AccountService from "../service/account-service.js";
-import * as BookService from "../service/book-service.js";
-import * as QueryService from "../service/query-service.js";
-import * as BalancesService from "../service/balances-service.js";
-import * as FileService from "../service/file-service.js";
-import * as GroupService from "../service/group-service.js";
-import * as IntegrationService from "../service/integration-service.js";
-import * as TransactionService from "../service/transaction-service.js";
-import * as EventService from "../service/event-service.js";
-import * as CollaboratorService from "../service/collaborator-service.js";
-import * as Utils from "../utils.js";
-import { Config } from "./Config.js";
-import { ResourceProperty } from "./ResourceProperty.js";
-import { Account } from "./Account.js";
-import { Amount } from "./Amount.js";
-import { Collaborator } from "./Collaborator.js";
-import { Collection } from "./Collection.js";
-import {
-    DecimalSeparator,
-    Month,
-    Period,
-    Permission,
-    Visibility,
-} from "./Enums.js";
-import { EventList } from "./EventList.js";
-import { File } from "./File.js";
-import { Group } from "./Group.js";
-import { Integration } from "./Integration.js";
-import { Transaction } from "./Transaction.js";
-import { TransactionList } from "./TransactionList.js";
-import { BalancesReport } from "./BalancesReport.js";
-import { App } from "./App.js";
-import { Event } from "./Event.js";
-import { Query } from "./Query.js";
-import { Bkper } from "./Bkper.js";
-import { Backlog } from "./Backlog.js";
+import * as AccountService from '../service/account-service.js';
+import * as BookService from '../service/book-service.js';
+import * as QueryService from '../service/query-service.js';
+import * as BalancesService from '../service/balances-service.js';
+import * as FileService from '../service/file-service.js';
+import * as GroupService from '../service/group-service.js';
+import * as IntegrationService from '../service/integration-service.js';
+import * as TransactionService from '../service/transaction-service.js';
+import * as EventService from '../service/event-service.js';
+import * as CollaboratorService from '../service/collaborator-service.js';
+import * as Utils from '../utils.js';
+import { Config } from './Config.js';
+import { ResourceProperty } from './ResourceProperty.js';
+import { Account } from './Account.js';
+import { Amount } from './Amount.js';
+import { Collaborator } from './Collaborator.js';
+import { Collection } from './Collection.js';
+import { DecimalSeparator, Month, Period, Permission, Visibility } from './Enums.js';
+import { EventList } from './EventList.js';
+import { File } from './File.js';
+import { Group } from './Group.js';
+import { Integration } from './Integration.js';
+import { Transaction } from './Transaction.js';
+import { TransactionList } from './TransactionList.js';
+import { BalancesReport } from './BalancesReport.js';
+import { App } from './App.js';
+import { Event } from './Event.js';
+import { Query } from './Query.js';
+import { Bkper } from './Bkper.js';
+import { Backlog } from './Backlog.js';
+import { AccountsDataTableBuilder } from '../builders/AccountsDataTableBuilder.js';
+import { GroupsDataTableBuilder } from '../builders/GroupsDataTableBuilder.js';
+import { TransactionsDataTableBuilder } from '../builders/TransactionsDataTableBuilder.js';
 
 /**
  * A Book represents a [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
@@ -43,7 +40,6 @@ import { Backlog } from "./Backlog.js";
  * @public
  */
 export class Book extends ResourceProperty<bkper.Book> {
-
     private config?: Config;
 
     private allGroupsLoaded: boolean = false;
@@ -95,7 +91,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @returns This Book's unique identifier
      */
     public getId(): string {
-        return this.payload.id || "";
+        return this.payload.id || '';
     }
 
     /**
@@ -281,7 +277,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      */
     public setLockDate(lockDate: string | null): Book {
         if (lockDate == null) {
-            lockDate = "1900-00-00";
+            lockDate = '1900-00-00';
         }
         this.payload.lockDate = lockDate;
         return this;
@@ -305,7 +301,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      */
     public setClosingDate(closingDate: string | null): Book {
         if (closingDate == null) {
-            closingDate = "1900-00-00";
+            closingDate = '1900-00-00';
         }
         this.payload.closingDate = closingDate;
         return this;
@@ -444,8 +440,6 @@ export class Book extends ResourceProperty<bkper.Book> {
         return this;
     }
 
-
-
     /**
      * Formats a date according to date pattern of the Book.
      *
@@ -455,7 +449,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @returns The formatted date
      */
     public formatDate(date: Date, timeZone?: string): string {
-        if (timeZone == null || timeZone.trim() == "") {
+        if (timeZone == null || timeZone.trim() == '') {
             timeZone = this.getTimeZone();
         }
         return Utils.formatDate(date, this.getDatePattern(), timeZone);
@@ -481,13 +475,9 @@ export class Book extends ResourceProperty<bkper.Book> {
      */
     public formatValue(value: Amount | number | null | undefined): string {
         if (!value) {
-            return "";
+            return '';
         }
-        return Utils.formatValue(
-            value,
-            this.getDecimalSeparator(),
-            this.getFractionDigits()
-        );
+        return Utils.formatValue(value, this.getDecimalSeparator(), this.getFractionDigits());
     }
 
     /**
@@ -519,17 +509,15 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @returns The created Transactions
      */
-    public async batchCreateTransactions(
-        transactions: Transaction[]
-    ): Promise<Transaction[]> {
+    public async batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]> {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach((tx) => transactionPayloads.push(tx.json()));
+        transactions.forEach(tx => transactionPayloads.push(tx.json()));
         transactionPayloads = await TransactionService.createTransactionsBatch(
             this.getId(),
             transactionPayloads,
             this.getConfig()
         );
-        transactions = transactionPayloads.map((tx) => new Transaction(this, tx));
+        transactions = transactionPayloads.map(tx => new Transaction(this, tx));
         return transactions;
     }
 
@@ -538,11 +526,9 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @param transactions - The transactions to be posted
      */
-    public async batchPostTransactions(
-        transactions: Transaction[]
-    ): Promise<void> {
+    public async batchPostTransactions(transactions: Transaction[]): Promise<void> {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach((tx) => transactionPayloads.push(tx.json()));
+        transactions.forEach(tx => transactionPayloads.push(tx.json()));
         await TransactionService.postTransactionsBatch(
             this.getId(),
             transactionPayloads,
@@ -564,14 +550,14 @@ export class Book extends ResourceProperty<bkper.Book> {
         updateChecked?: boolean
     ): Promise<Transaction[]> {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach((tx) => transactionPayloads.push(tx.json()));
+        transactions.forEach(tx => transactionPayloads.push(tx.json()));
         transactionPayloads = await TransactionService.updateTransactionsBatch(
             this.getId(),
             transactionPayloads,
             updateChecked,
             this.getConfig()
         );
-        transactions = transactionPayloads.map((tx) => new Transaction(this, tx));
+        transactions = transactionPayloads.map(tx => new Transaction(this, tx));
         return transactions;
     }
 
@@ -580,11 +566,9 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @param transactions - The transactions to be checked
      */
-    public async batchCheckTransactions(
-        transactions: Transaction[]
-    ): Promise<void> {
+    public async batchCheckTransactions(transactions: Transaction[]): Promise<void> {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach((tx) => transactionPayloads.push(tx.json()));
+        transactions.forEach(tx => transactionPayloads.push(tx.json()));
         await TransactionService.checkTransactionsBatch(
             this.getId(),
             transactionPayloads,
@@ -597,11 +581,9 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @param transactions - The transactions to be unchecked
      */
-    public async batchUncheckTransactions(
-        transactions: Transaction[]
-    ): Promise<void> {
+    public async batchUncheckTransactions(transactions: Transaction[]): Promise<void> {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach((tx) => transactionPayloads.push(tx.json()));
+        transactions.forEach(tx => transactionPayloads.push(tx.json()));
         await TransactionService.uncheckTransactionsBatch(
             this.getId(),
             transactionPayloads,
@@ -620,7 +602,7 @@ export class Book extends ResourceProperty<bkper.Book> {
         trashChecked?: boolean
     ): Promise<void> {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach((tx) => transactionPayloads.push(tx.json()));
+        transactions.forEach(tx => transactionPayloads.push(tx.json()));
         await TransactionService.trashTransactionsBatch(
             this.getId(),
             transactionPayloads,
@@ -634,11 +616,9 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @param transactions - The transactions to be untrashed
      */
-    public async batchUntrashTransactions(
-        transactions: Transaction[]
-    ): Promise<void> {
+    public async batchUntrashTransactions(transactions: Transaction[]): Promise<void> {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach((tx) => transactionPayloads.push(tx.json()));
+        transactions.forEach(tx => transactionPayloads.push(tx.json()));
         await TransactionService.untrashTransactionsBatch(
             this.getId(),
             transactionPayloads,
@@ -652,19 +632,11 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @param events - The events to be replayed
      * @param errorOnly - True to only replay events with errors
      */
-    public async batchReplayEvents(
-        events: Event[],
-        errorOnly?: boolean
-    ): Promise<void> {
-        const eventIds = events.map((event) => event.getId());
-        const eventPayloads: bkper.Event[] = eventIds.map((id) => ({ id: id }));
+    public async batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void> {
+        const eventIds = events.map(event => event.getId());
+        const eventPayloads: bkper.Event[] = eventIds.map(id => ({ id: id }));
         const eventList: bkper.EventList = { items: eventPayloads };
-        await EventService.replayEventsBatch(
-            this,
-            eventList,
-            errorOnly,
-            this.getConfig()
-        );
+        await EventService.replayEventsBatch(this, eventList, errorOnly, this.getConfig());
     }
 
     /**
@@ -677,7 +649,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     public async batchCreateAccounts(accounts: Account[]): Promise<Account[]> {
         if (accounts.length > 0) {
             const accountList: bkper.AccountList = {
-                items: accounts.map((a) => a.json()),
+                items: accounts.map(a => a.json()),
             };
             const payloads = await AccountService.createAccounts(
                 this.getId(),
@@ -705,7 +677,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      */
     public async batchCreateGroups(groups: Group[]): Promise<Group[]> {
         if (groups.length > 0) {
-            const groupList: bkper.GroupList = { items: groups.map((g) => g.json()) };
+            const groupList: bkper.GroupList = { items: groups.map(g => g.json()) };
             const payloads = await GroupService.createGroups(
                 this.getId(),
                 groupList,
@@ -740,7 +712,7 @@ export class Book extends ResourceProperty<bkper.Book> {
             return this.apps;
         }
         const appsPlain = await BookService.getApps(this.getId(), this.getConfig());
-        this.apps = appsPlain.map((a) => new App(a, this.config));
+        this.apps = appsPlain.map(a => new App(a, this.config));
         return this.apps;
     }
 
@@ -754,7 +726,7 @@ export class Book extends ResourceProperty<bkper.Book> {
             this.getId(),
             this.getConfig()
         );
-        const integrations = integrationsPlain.map((i) => new Integration(i, this.config));
+        const integrations = integrationsPlain.map(i => new Integration(i, this.config));
         return integrations;
     }
 
@@ -791,9 +763,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @returns The updated [[Integration]] object
      */
-    public async updateIntegration(
-        integration: bkper.Integration
-    ): Promise<Integration> {
+    public async updateIntegration(integration: bkper.Integration): Promise<Integration> {
         if (integration instanceof Integration) {
             integration = await IntegrationService.updateIntegration(
                 this.getId(),
@@ -837,7 +807,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      * ```
      */
     public async getAccount(idOrName?: string): Promise<Account | undefined> {
-        if (!idOrName || idOrName.trim() == "") {
+        if (!idOrName || idOrName.trim() == '') {
             return undefined;
         }
 
@@ -915,8 +885,6 @@ export class Book extends ResourceProperty<bkper.Book> {
         }
     }
 
-
-
     /** @internal */
     getMostRecentLockDate_(): string | null {
         const closingDate = this.getClosingDate();
@@ -930,9 +898,7 @@ export class Book extends ResourceProperty<bkper.Book> {
         if (closingDate && !lockDate) {
             return closingDate;
         }
-        if (
-            Utils.getIsoDateValue(closingDate!) > Utils.getIsoDateValue(lockDate!)
-        ) {
+        if (Utils.getIsoDateValue(closingDate!) > Utils.getIsoDateValue(lockDate!)) {
             return closingDate!;
         } else {
             return lockDate!;
@@ -967,7 +933,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      * ```
      */
     public async getGroup(idOrName?: string): Promise<Group | undefined> {
-        if (!idOrName || idOrName.trim() == "") {
+        if (!idOrName || idOrName.trim() == '') {
             return undefined;
         }
 
@@ -1030,13 +996,12 @@ export class Book extends ResourceProperty<bkper.Book> {
         if (!groups) {
             return false;
         }
-        let groupsObj = groups.map((group) => new Group(this, group));
+        let groupsObj = groups.map(group => new Group(this, group));
         this.idGroupMap = new Map<string, Group>();
         this.nameGroupMap = new Map<string, Group>();
         for (const group of groupsObj) {
             this.updateGroupCache(group);
             group.buildGroupTree(this.idGroupMap);
-
         }
         for (const group of groupsObj) {
             group.buildGroupTree(this.idGroupMap);
@@ -1071,10 +1036,7 @@ export class Book extends ResourceProperty<bkper.Book> {
         //Ensure groups are loaded
         await this.getGroups();
 
-        let accounts = await AccountService.getAccounts(
-            this.getId(),
-            this.getConfig()
-        );
+        let accounts = await AccountService.getAccounts(this.getId(), this.getConfig());
         this.allAccountsLoaded = this.mapAccounts(accounts);
         return Array.from(this.idAccountMap?.values() || []);
     }
@@ -1084,7 +1046,7 @@ export class Book extends ResourceProperty<bkper.Book> {
         if (!accounts) {
             return false;
         }
-        let accountsObj = accounts.map((account) => new Account(this, account));
+        let accountsObj = accounts.map(account => new Account(this, account));
         this.idAccountMap = new Map<string, Account>();
         this.nameAccountMap = new Map<string, Account>();
         for (const account of accountsObj) {
@@ -1100,7 +1062,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     private linkAccountsAndGroups(account: Account) {
         const groupPayloads = account.json().groups || [];
         for (const groupPayload of groupPayloads) {
-            const group = this.idGroupMap?.get(groupPayload.id || "");
+            const group = this.idGroupMap?.get(groupPayload.id || '');
             if (group != null) {
                 group.addAccount(account);
             }
@@ -1147,13 +1109,11 @@ export class Book extends ResourceProperty<bkper.Book> {
     setAccount(account: bkper.Account, remove?: boolean): void {
         const accountPayloads = this.payload.accounts || [];
         if (remove) {
-            this.payload.accounts = accountPayloads.filter(
-                (a) => a.id !== account.id
-            );
+            this.payload.accounts = accountPayloads.filter(a => a.id !== account.id);
         } else {
-            const existingAccount = accountPayloads.find((a) => a.id === account.id);
+            const existingAccount = accountPayloads.find(a => a.id === account.id);
             if (existingAccount) {
-                this.payload.accounts = accountPayloads.map((a) =>
+                this.payload.accounts = accountPayloads.map(a =>
                     a.id === account.id ? account : a
                 );
             } else {
@@ -1166,13 +1126,11 @@ export class Book extends ResourceProperty<bkper.Book> {
     setGroup(group: bkper.Group, remove?: boolean): void {
         const groupPayloads = this.payload.groups || [];
         if (remove) {
-            this.payload.groups = groupPayloads.filter((g) => g.id !== group.id);
+            this.payload.groups = groupPayloads.filter(g => g.id !== group.id);
         } else {
-            const existingGroup = groupPayloads.find((g) => g.id === group.id);
+            const existingGroup = groupPayloads.find(g => g.id === group.id);
             if (existingGroup) {
-                this.payload.groups = groupPayloads.map((g) =>
-                    g.id === group.id ? group : g
-                );
+                this.payload.groups = groupPayloads.map(g => (g.id === group.id ? group : g));
             } else {
                 this.payload.groups = [...groupPayloads, group];
             }
@@ -1211,7 +1169,11 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @returns The number of matching transactions
      */
     public async countTransactions(query?: string): Promise<number | undefined> {
-        const count = await TransactionService.countTransactions(this.getId(), query, this.getConfig());
+        const count = await TransactionService.countTransactions(
+            this.getId(),
+            query,
+            this.getConfig()
+        );
         return count.total;
     }
 
@@ -1256,11 +1218,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @returns The [[Transaction]] object
      */
     public async getTransaction(id: string): Promise<Transaction | undefined> {
-        let wrapped = await TransactionService.getTransaction(
-            this.getId(),
-            id,
-            this.getConfig()
-        );
+        let wrapped = await TransactionService.getTransaction(this.getId(), id, this.getConfig());
         if (!wrapped) {
             return undefined;
         }
@@ -1303,11 +1261,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @returns The copied Book object
      */
-    public async copy(
-        name: string,
-        copyTransactions?: boolean,
-        fromDate?: number
-    ): Promise<Book> {
+    public async copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book> {
         const copiedBookPayload = await BookService.copyBook(
             this.getId(),
             name,
@@ -1324,17 +1278,13 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @returns The updated Book object
      */
     public async update(): Promise<Book> {
-        this.payload = await BookService.updateBook(
-            this.getId(),
-            this.payload,
-            this.getConfig()
-        );
+        this.payload = await BookService.updateBook(this.getId(), this.payload, this.getConfig());
         return this;
     }
 
     /**
      * Warning!
-     * 
+     *
      * Deletes this Book and all its data (transactions, accounts, groups). Book owner only.
      *
      * @returns This Book after deletion
@@ -1364,11 +1314,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @returns The retrieved [[BalancesReport]] object
      */
     public async getBalancesReport(query: string): Promise<BalancesReport> {
-        const balances = await BalancesService.getBalances(
-            this.getId(),
-            query,
-            this.getConfig()
-        );
+        const balances = await BalancesService.getBalances(this.getId(), query, this.getConfig());
         return new BalancesReport(this, balances);
     }
 
@@ -1383,7 +1329,7 @@ export class Book extends ResourceProperty<bkper.Book> {
                 this.getId(),
                 this.getConfig()
             );
-            this.queries = queryPayloads.map((payload) => new Query(this, payload));
+            this.queries = queryPayloads.map(payload => new Query(this, payload));
         }
         return this.queries;
     }
@@ -1400,7 +1346,7 @@ export class Book extends ResourceProperty<bkper.Book> {
                 this.getConfig()
             );
             this.collaborators = collaboratorPayloads.map(
-                (payload) => new Collaborator(this, payload)
+                payload => new Collaborator(this, payload)
             );
         }
         return this.collaborators;
@@ -1416,4 +1362,46 @@ export class Book extends ResourceProperty<bkper.Book> {
         return new Backlog(backlogPayload, this.config);
     }
 
+    /**
+     * Create a {@link AccountsDataTableBuilder}, to build two dimensional Array representations of {@link Account} dataset.
+     *
+     * @param accounts - Optional array of accounts. If not provided, all accounts will be fetched.
+     *
+     * @returns Accounts data table builder.
+     */
+    public async createAccountsDataTable(accounts?: Account[]): Promise<AccountsDataTableBuilder> {
+        if (!accounts) {
+            accounts = await this.getAccounts();
+        }
+        return new AccountsDataTableBuilder(accounts);
+    }
+
+    /**
+     * Create a {@link GroupsDataTableBuilder}, to build two dimensional Array representations of {@link Group} dataset.
+     *
+     * @param groups - Optional array of groups. If not provided, all groups will be fetched.
+     *
+     * @returns Groups data table builder.
+     */
+    public async createGroupsDataTable(groups?: Group[]): Promise<GroupsDataTableBuilder> {
+        if (!groups) {
+            groups = await this.getGroups();
+        }
+        return new GroupsDataTableBuilder(groups);
+    }
+
+    /**
+     * Create a {@link TransactionsDataTableBuilder}, to build two dimensional Array representations of {@link Transaction} dataset.
+     *
+     * @param transactions - Array of transactions to include in the table.
+     * @param account - Optional account for balance column display.
+     *
+     * @returns Transactions data table builder.
+     */
+    public createTransactionsDataTable(
+        transactions: Transaction[],
+        account?: Account
+    ): TransactionsDataTableBuilder {
+        return new TransactionsDataTableBuilder(this, transactions, account);
+    }
 }

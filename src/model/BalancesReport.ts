@@ -1,18 +1,17 @@
 import { normalizeName } from '../utils.js';
-import { BalancesContainer } from "./BalancesContainer.js";
-import { AccountBalancesContainer } from "./BalancesContainerAccount.js";
-import { GroupBalancesContainer } from "./BalancesContainerGroup.js";
-import { BalancesDataTableBuilder } from './BalancesDataTableBuilder.js';
-import { Book } from "./Book.js";
-import { Periodicity } from "./Enums.js";
+import { BalancesContainer } from './BalancesContainer.js';
+import { AccountBalancesContainer } from './BalancesContainerAccount.js';
+import { GroupBalancesContainer } from './BalancesContainerGroup.js';
+import { BalancesDataTableBuilder } from '../builders/BalancesDataTableBuilder.js';
+import { Book } from './Book.js';
+import { Periodicity } from './Enums.js';
 
 /**
  * Class representing a Balance Report, generated when calling [Book.getBalanceReport](#book_getbalancesreport)
- * 
+ *
  * @public
  */
 export class BalancesReport {
-
     public payload: bkper.Balances;
 
     /** @internal */
@@ -45,7 +44,11 @@ export class BalancesReport {
      * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
      */
     public createDataTable(): BalancesDataTableBuilder {
-        return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity());
+        return new BalancesDataTableBuilder(
+            this.book,
+            this.getBalancesContainers(),
+            this.getPeriodicity()
+        );
     }
 
     /**
@@ -77,13 +80,12 @@ export class BalancesReport {
 
     /**
      * Gets a specific [[BalancesContainer]].
-     * 
+     *
      * @param name - The [[Account]] or [[Group]] name
-     * 
+     *
      * @returns The retrieved [[BalancesContainer]]
      */
     public getBalancesContainer(name: string): BalancesContainer {
-
         const normalizedName = normalizeName(name);
 
         const rootContainers = this.getBalancesContainers();
@@ -92,7 +94,10 @@ export class BalancesReport {
         }
 
         if (this.balancesContainersMap == null) {
-            this.balancesContainersMap = this.fillBalancesContainersMap(new Map<string, BalancesContainer>(), rootContainers);
+            this.balancesContainersMap = this.fillBalancesContainersMap(
+                new Map<string, BalancesContainer>(),
+                rootContainers
+            );
         }
 
         const balancesContainer = this.balancesContainersMap?.get(normalizedName);
@@ -109,7 +114,11 @@ export class BalancesReport {
             this.accountBalancesContainers = [];
             for (let i = 0; i < this.payload.accountBalances.length; i++) {
                 const accountBalances = this.payload.accountBalances[i];
-                const accountBalancesContainer = new AccountBalancesContainer(null, this, accountBalances);
+                const accountBalancesContainer = new AccountBalancesContainer(
+                    null,
+                    this,
+                    accountBalances
+                );
                 this.accountBalancesContainers.push(accountBalancesContainer);
             }
         }
@@ -122,7 +131,11 @@ export class BalancesReport {
             this.groupBalancesContainers = [];
             for (let i = 0; i < this.payload.groupBalances.length; i++) {
                 const groupBalances = this.payload.groupBalances[i];
-                const groupBalancesContainer = new GroupBalancesContainer(null, this, groupBalances);
+                const groupBalancesContainer = new GroupBalancesContainer(
+                    null,
+                    this,
+                    groupBalances
+                );
                 this.groupBalancesContainers.push(groupBalancesContainer);
             }
         }
@@ -130,7 +143,10 @@ export class BalancesReport {
     }
 
     /** @internal */
-    private fillBalancesContainersMap(map: Map<string, BalancesContainer>, containers: BalancesContainer[]): Map<string, BalancesContainer> {
+    private fillBalancesContainersMap(
+        map: Map<string, BalancesContainer>,
+        containers: BalancesContainer[]
+    ): Map<string, BalancesContainer> {
         for (let i = 0; i < containers.length; i++) {
             const container = containers[i];
             const normalizedName = container.getNormalizedName();
@@ -146,5 +162,4 @@ export class BalancesReport {
         }
         return map;
     }
-
 }

@@ -34,6 +34,16 @@ export class Account extends ResourceProperty<bkper.Account> {
 }
 
 // @public
+export class AccountsDataTableBuilder {
+    constructor(accounts: Account[]);
+    archived(include: boolean): AccountsDataTableBuilder;
+    build(): Promise<any[][]>;
+    groups(include: boolean): AccountsDataTableBuilder;
+    ids(include: boolean): AccountsDataTableBuilder;
+    properties(include: boolean): AccountsDataTableBuilder;
+}
+
+// @public
 export enum AccountType {
     ASSET = "ASSET",
     INCOMING = "INCOMING",
@@ -289,7 +299,10 @@ export class Book extends ResourceProperty<bkper.Book> {
     copy(name: string, copyTransactions?: boolean, fromDate?: number): Promise<Book>;
     countTransactions(query?: string): Promise<number | undefined>;
     create(): Promise<Book>;
+    createAccountsDataTable(accounts?: Account[]): Promise<AccountsDataTableBuilder>;
+    createGroupsDataTable(groups?: Group[]): Promise<GroupsDataTableBuilder>;
     createIntegration(integration: bkper.Integration | Integration): Promise<Integration>;
+    createTransactionsDataTable(transactions: Transaction[], account?: Account): TransactionsDataTableBuilder;
     formatDate(date: Date, timeZone?: string): string;
     formatValue(value: Amount | number | null | undefined): string;
     getAccount(idOrName?: string): Promise<Account | undefined>;
@@ -356,6 +369,14 @@ export class Book extends ResourceProperty<bkper.Book> {
     setVisibility(visibility: Visibility): Book;
     update(): Promise<Book>;
     updateIntegration(integration: bkper.Integration): Promise<Integration>;
+}
+
+// @public
+export class BooksDataTableBuilder {
+    constructor(books: Book[]);
+    build(): any[][];
+    ids(include: boolean): BooksDataTableBuilder;
+    properties(include: boolean): BooksDataTableBuilder;
 }
 
 // @public
@@ -610,6 +631,14 @@ export class Group extends ResourceProperty<bkper.Group> {
 }
 
 // @public
+export class GroupsDataTableBuilder {
+    constructor(groups: Group[]);
+    build(): any[][];
+    ids(include: boolean): GroupsDataTableBuilder;
+    properties(include: boolean): GroupsDataTableBuilder;
+}
+
+// @public
 export class Integration extends ResourceProperty<bkper.Integration> {
     constructor(payload?: bkper.Integration, config?: Config);
     getAddedBy(): string | undefined;
@@ -748,6 +777,7 @@ export class Transaction extends ResourceProperty<bkper.Transaction> {
     getOtherAccount(account: Account | string): Promise<Account | undefined>;
     getOtherAccountName(account: string | Account): Promise<string | undefined>;
     getRemoteIds(): string[];
+    getStatus(): TransactionStatus;
     getTags(): string[];
     getUpdatedAt(): Date;
     getUpdatedAtFormatted(): string;
@@ -783,6 +813,26 @@ export class TransactionList {
     getFirst(): Transaction | undefined;
     getItems(): Transaction[];
     size(): number;
+}
+
+// @public
+export class TransactionsDataTableBuilder {
+    constructor(book: Book, transactions: Transaction[], account?: Account);
+    build(): Promise<any[][]>;
+    formatDates(format: boolean): TransactionsDataTableBuilder;
+    formatValues(format: boolean): TransactionsDataTableBuilder;
+    getAccount(): Account | undefined;
+    includeIds(include: boolean): TransactionsDataTableBuilder;
+    includeProperties(include: boolean): TransactionsDataTableBuilder;
+    includeUrls(include: boolean): TransactionsDataTableBuilder;
+}
+
+// @public
+export enum TransactionStatus {
+    CHECKED = "CHECKED",
+    DRAFT = "DRAFT",
+    TRASHED = "TRASHED",
+    UNCHECKED = "UNCHECKED"
 }
 
 // @public

@@ -1,254 +1,271 @@
 /**
  * The Periodicity of the query. It may depend on the level of granularity you write the range params.
- * 
+ *
  * @public
  */
 export enum Periodicity {
-
     /**
-     * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
+     * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m
      */
-    DAILY = "DAILY",
+    DAILY = 'DAILY',
 
     /**
      * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
      */
-    MONTHLY = "MONTHLY",
+    MONTHLY = 'MONTHLY',
 
     /**
      * Example: on:2013, after:2013, $y
      */
-    YEARLY = "YEARLY"
+    YEARLY = 'YEARLY',
 }
 
 /**
  * Decimal separator of numbers on book
- * 
+ *
  * @public
  */
 export enum DecimalSeparator {
-
     /**
      * ,
      */
-    COMMA = "COMMA",
+    COMMA = 'COMMA',
 
     /**
      * .
      */
-    DOT = "DOT"
+    DOT = 'DOT',
 }
-
 
 /**
  * Enum representing permissions of user in the Book
- * 
+ *
  * Learn more at [share article](https://help.bkper.com/en/articles/2569153-share-your-book-with-your-peers).
- * 
+ *
  * @public
  */
 
 export enum Permission {
-
     /**
      * No permission
      */
-    NONE = "NONE",
+    NONE = 'NONE',
 
     /**
      * View transactions, accounts and balances.
      */
-    VIEWER = "VIEWER",
+    VIEWER = 'VIEWER',
 
     /**
      * Record and delete drafts only. Useful to collect data only
      */
-    RECORDER = "RECORDER",
+    RECORDER = 'RECORDER',
 
     /**
      * View transactions, accounts, record and delete drafts
      */
-    POSTER = "POSTER",
+    POSTER = 'POSTER',
 
     /**
      * Manage accounts, transactions, book configuration and sharing
      */
-    EDITOR = "EDITOR",
+    EDITOR = 'EDITOR',
 
     /**
      * Manage everything, including book visibility and deletion. Only one owner per book.
      */
-    OWNER = "OWNER"
+    OWNER = 'OWNER',
 }
 
 /**
  * Enum representing the visibility of a Book
- * 
+ *
  * @public
  */
 export enum Visibility {
-
     /**
      * The book can be accessed by anyone with the link
      */
-    PUBLIC = "PUBLIC",
+    PUBLIC = 'PUBLIC',
 
     /**
      * The book can be accessed by the owner and collaborators
      */
-    PRIVATE = "PRIVATE"
-
+    PRIVATE = 'PRIVATE',
 }
 
 /**
  * Enum that represents account types.
- * 
+ *
  * @public
  */
 export enum AccountType {
-
     /**
      * Asset account type
      */
-    ASSET = "ASSET",
+    ASSET = 'ASSET',
 
     /**
      * Liability account type
      */
-    LIABILITY = "LIABILITY",
+    LIABILITY = 'LIABILITY',
 
     /**
      * Incoming account type
      */
-    INCOMING = "INCOMING",
+    INCOMING = 'INCOMING',
 
     /**
      * Outgoing account type
      */
-    OUTGOING = "OUTGOING"
+    OUTGOING = 'OUTGOING',
 }
 
 /**
  * Enum that represents balance types.
- * 
+ *
  * @public
  */
 export enum BalanceType {
-
     /**
      * Total balance
      */
-    TOTAL = "TOTAL",
+    TOTAL = 'TOTAL',
 
     /**
      * Period balance
      */
-    PERIOD = "PERIOD",
+    PERIOD = 'PERIOD',
 
     /**
      * Cumulative balance
      */
-    CUMULATIVE = "CUMULATIVE"
+    CUMULATIVE = 'CUMULATIVE',
 }
 
 /**
  * Enum that represents a period slice.
- * 
+ *
  * @public
  */
 export enum Period {
-
     /**
      *  Monthly period
      */
-    MONTH = "MONTH",
+    MONTH = 'MONTH',
 
     /**
      * Quarterly period
      */
-    QUARTER = "QUARTER",
+    QUARTER = 'QUARTER',
 
     /**
      * Yearly period
      */
-    YEAR = "YEAR"
+    YEAR = 'YEAR',
 }
 
 /**
  * Enum that represents a Month.
- * 
+ *
  * @public
  */
 export enum Month {
-    JANUARY = "JANUARY",
-    FEBRUARY = "FEBRUARY",
-    MARCH = "MARCH",
-    APRIL = "APRIL",
-    MAY = "MAY",
-    JUNE = "JUNE",
-    JULY = "JULY",
-    AUGUST = "AUGUST",
-    SEPTEMBER = "SEPTEMBER",
-    OCTOBER = "OCTOBER",
-    NOVEMBER = "NOVEMBER",
-    DECEMBER = "DECEMBER"
+    JANUARY = 'JANUARY',
+    FEBRUARY = 'FEBRUARY',
+    MARCH = 'MARCH',
+    APRIL = 'APRIL',
+    MAY = 'MAY',
+    JUNE = 'JUNE',
+    JULY = 'JULY',
+    AUGUST = 'AUGUST',
+    SEPTEMBER = 'SEPTEMBER',
+    OCTOBER = 'OCTOBER',
+    NOVEMBER = 'NOVEMBER',
+    DECEMBER = 'DECEMBER',
+}
+
+/**
+ * Enum that represents the status of a Transaction.
+ *
+ * @public
+ */
+export enum TransactionStatus {
+    /**
+     * Transaction is in the trash
+     */
+    TRASHED = 'TRASHED',
+
+    /**
+     * Transaction is a draft, not yet posted
+     */
+    DRAFT = 'DRAFT',
+
+    /**
+     * Transaction is posted but not checked
+     */
+    UNCHECKED = 'UNCHECKED',
+
+    /**
+     * Transaction is posted and checked
+     */
+    CHECKED = 'CHECKED',
 }
 
 /**
  * Enum that represents the type of a Bot Response
- * 
+ *
  * @public
  */
 export enum BotResponseType {
-
     /**
      * Info bot response
      */
-    INFO = "INFO",
+    INFO = 'INFO',
 
     /**
      * Warning bot response
      */
-    WARNING = "WARNING",
+    WARNING = 'WARNING',
 
     /**
      * Error bot response
      */
-    ERROR = "ERROR",
+    ERROR = 'ERROR',
 }
 
 /**
  * Enum that represents event types.
- * 
+ *
  * @public
  */
 export enum EventType {
-    FILE_CREATED = "FILE_CREATED",
-    FILE_UPDATED = "FILE_UPDATED",
-    TRANSACTION_CREATED = "TRANSACTION_CREATED",
-    TRANSACTION_UPDATED = "TRANSACTION_UPDATED",
-    TRANSACTION_DELETED = "TRANSACTION_DELETED",
-    TRANSACTION_POSTED = "TRANSACTION_POSTED",
-    TRANSACTION_CHECKED = "TRANSACTION_CHECKED",
-    TRANSACTION_UNCHECKED = "TRANSACTION_UNCHECKED",
-    TRANSACTION_RESTORED = "TRANSACTION_RESTORED",
-    ACCOUNT_CREATED = "ACCOUNT_CREATED",
-    ACCOUNT_UPDATED = "ACCOUNT_UPDATED",
-    ACCOUNT_DELETED = "ACCOUNT_DELETED",
-    QUERY_CREATED = "QUERY_CREATED",
-    QUERY_UPDATED = "QUERY_UPDATED",
-    QUERY_DELETED = "QUERY_DELETED",
-    GROUP_CREATED = "GROUP_CREATED",
-    GROUP_UPDATED = "GROUP_UPDATED",
-    GROUP_DELETED = "GROUP_DELETED",
-    COMMENT_CREATED = "COMMENT_CREATED",
-    COMMENT_DELETED = "COMMENT_DELETED",
-    COLLABORATOR_ADDED = "COLLABORATOR_ADDED",
-    COLLABORATOR_UPDATED = "COLLABORATOR_UPDATED",
-    COLLABORATOR_REMOVED = "COLLABORATOR_REMOVED",
-    INTEGRATION_CREATED = "INTEGRATION_CREATED",
-    INTEGRATION_UPDATED = "INTEGRATION_UPDATED",
-    INTEGRATION_DELETED = "INTEGRATION_DELETED",
-    BOOK_UPDATED = "BOOK_UPDATED",
-    BOOK_DELETED = "BOOK_DELETED"
+    FILE_CREATED = 'FILE_CREATED',
+    FILE_UPDATED = 'FILE_UPDATED',
+    TRANSACTION_CREATED = 'TRANSACTION_CREATED',
+    TRANSACTION_UPDATED = 'TRANSACTION_UPDATED',
+    TRANSACTION_DELETED = 'TRANSACTION_DELETED',
+    TRANSACTION_POSTED = 'TRANSACTION_POSTED',
+    TRANSACTION_CHECKED = 'TRANSACTION_CHECKED',
+    TRANSACTION_UNCHECKED = 'TRANSACTION_UNCHECKED',
+    TRANSACTION_RESTORED = 'TRANSACTION_RESTORED',
+    ACCOUNT_CREATED = 'ACCOUNT_CREATED',
+    ACCOUNT_UPDATED = 'ACCOUNT_UPDATED',
+    ACCOUNT_DELETED = 'ACCOUNT_DELETED',
+    QUERY_CREATED = 'QUERY_CREATED',
+    QUERY_UPDATED = 'QUERY_UPDATED',
+    QUERY_DELETED = 'QUERY_DELETED',
+    GROUP_CREATED = 'GROUP_CREATED',
+    GROUP_UPDATED = 'GROUP_UPDATED',
+    GROUP_DELETED = 'GROUP_DELETED',
+    COMMENT_CREATED = 'COMMENT_CREATED',
+    COMMENT_DELETED = 'COMMENT_DELETED',
+    COLLABORATOR_ADDED = 'COLLABORATOR_ADDED',
+    COLLABORATOR_UPDATED = 'COLLABORATOR_UPDATED',
+    COLLABORATOR_REMOVED = 'COLLABORATOR_REMOVED',
+    INTEGRATION_CREATED = 'INTEGRATION_CREATED',
+    INTEGRATION_UPDATED = 'INTEGRATION_UPDATED',
+    INTEGRATION_DELETED = 'INTEGRATION_DELETED',
+    BOOK_UPDATED = 'BOOK_UPDATED',
+    BOOK_DELETED = 'BOOK_DELETED',
 }
