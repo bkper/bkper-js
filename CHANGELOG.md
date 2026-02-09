@@ -5,9 +5,29 @@ See what's new and what has changed in bkper-js
 ## 2026
 
 **February 2026**
+
 - Added `User.getGivenName`
+- Added `BooksDataTableBuilder`
+- Added `AccountsDataTableBuilder`
+- Added `GroupsDataTableBuilder`
+- Added `TransactionsDataTableBuilder`
+- Added `Book.createAccountsDataTable`
+- Added `Book.createGroupsDataTable`
+- Added `Book.createTransactionsDataTable`
+- Added `TransactionsDataTableBuilder.ids`
+- Added `TransactionsDataTableBuilder.properties`
+- Added `TransactionsDataTableBuilder.urls`
+- Added `TransactionsDataTableBuilder.recordedAt`
+- Added `AccountsDataTableBuilder.hiddenProperties`
+- Added `BooksDataTableBuilder.hiddenProperties`
+- Added `GroupsDataTableBuilder.hiddenProperties`
+- Added `GroupsDataTableBuilder.tree`
+- Added `TransactionsDataTableBuilder.hiddenProperties`
+- Added `BalancesDataTableBuilder.hiddenProperties`
+
 
 **January 2026**
+
 - Added `App.setUsers`
 - Added `App.getUsers`
 - Added `App.setDevelopers`
@@ -41,16 +61,18 @@ See what's new and what has changed in bkper-js
 ## 2025
 
 **December 2025**
+
 - Added `File.update`
 - Added `EventType.FILE_UPDATED`
 
 **November 2025**
+
 - **v2.15.2 - INTERNAL REFACTOR:**
-  - Introduced `ResourceProperty` abstract class for model entities that support custom properties
-  - Moved shared property methods to ResourceProperty
-  - Refactor 7 model classes to extend ResourceProperty instead of Resource
-  - Eliminate ~350 lines of duplicated property management code
-  - Maintained full backward compatibility - no breaking changes to existing APIs
+    - Introduced `ResourceProperty` abstract class for model entities that support custom properties
+    - Moved shared property methods to ResourceProperty
+    - Refactor 7 model classes to extend ResourceProperty instead of Resource
+    - Eliminate ~350 lines of duplicated property management code
+    - Maintained full backward compatibility - no breaking changes to existing APIs
 - Added `ResourceProperty.setVisibleProperty`
 - Added `ResourceProperty.setVisibleProperties`
 - Added `ResourceProperty.getVisibleProperties`
@@ -66,11 +88,11 @@ See what's new and what has changed in bkper-js
 **September 2025**
 
 - **v2.8.0 - INTERNAL REFACTOR:**
-  - Introduced abstract `Resource` class for all model entities
-  - Improved config management with `getConfig()` pattern for config resolution
-  - Enhanced type safety with explicit Config type usage throughout
-  - Standardized `json()` method across resources for consistent JSON serialization
-  - Maintained full backward compatibility - no breaking changes to existing APIs
+    - Introduced abstract `Resource` class for all model entities
+    - Improved config management with `getConfig()` pattern for config resolution
+    - Enhanced type safety with explicit Config type usage throughout
+    - Standardized `json()` method across resources for consistent JSON serialization
+    - Maintained full backward compatibility - no breaking changes to existing APIs
 - Added `Account.isBalanceVerified`
 - Added `App.getOwnerWebsiteUrl`
 - Added `App.getReadme`

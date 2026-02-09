@@ -39,6 +39,7 @@ export class AccountsDataTableBuilder {
     archived(include: boolean): AccountsDataTableBuilder;
     build(): Promise<any[][]>;
     groups(include: boolean): AccountsDataTableBuilder;
+    hiddenProperties(include: boolean): AccountsDataTableBuilder;
     ids(include: boolean): AccountsDataTableBuilder;
     properties(include: boolean): AccountsDataTableBuilder;
 }
@@ -204,6 +205,7 @@ export class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     expanded(expanded: boolean | number): BalancesDataTableBuilder;
     formatDates(format: boolean): BalancesDataTableBuilder;
     formatValues(format: boolean): BalancesDataTableBuilder;
+    hiddenProperties(include: boolean): BalancesDataTableBuilder;
     hideDates(hide: boolean): BalancesDataTableBuilder;
     hideNames(hide: boolean): BalancesDataTableBuilder;
     period(period: boolean): BalancesDataTableBuilder;
@@ -375,6 +377,7 @@ export class Book extends ResourceProperty<bkper.Book> {
 export class BooksDataTableBuilder {
     constructor(books: Book[]);
     build(): any[][];
+    hiddenProperties(include: boolean): BooksDataTableBuilder;
     ids(include: boolean): BooksDataTableBuilder;
     properties(include: boolean): BooksDataTableBuilder;
 }
@@ -634,8 +637,10 @@ export class Group extends ResourceProperty<bkper.Group> {
 export class GroupsDataTableBuilder {
     constructor(groups: Group[]);
     build(): any[][];
+    hiddenProperties(include: boolean): GroupsDataTableBuilder;
     ids(include: boolean): GroupsDataTableBuilder;
     properties(include: boolean): GroupsDataTableBuilder;
+    tree(enable: boolean): GroupsDataTableBuilder;
 }
 
 // @public
@@ -822,9 +827,17 @@ export class TransactionsDataTableBuilder {
     formatDates(format: boolean): TransactionsDataTableBuilder;
     formatValues(format: boolean): TransactionsDataTableBuilder;
     getAccount(): Account | undefined;
+    hiddenProperties(include: boolean): TransactionsDataTableBuilder;
+    ids(include: boolean): TransactionsDataTableBuilder;
+    // @deprecated (undocumented)
     includeIds(include: boolean): TransactionsDataTableBuilder;
+    // @deprecated (undocumented)
     includeProperties(include: boolean): TransactionsDataTableBuilder;
+    // @deprecated (undocumented)
     includeUrls(include: boolean): TransactionsDataTableBuilder;
+    properties(include: boolean): TransactionsDataTableBuilder;
+    recordedAt(include: boolean): TransactionsDataTableBuilder;
+    urls(include: boolean): TransactionsDataTableBuilder;
 }
 
 // @public
