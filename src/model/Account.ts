@@ -1,11 +1,11 @@
-import * as AccountService from "../service/account-service.js";
-import * as GroupService from "../service/group-service.js";
-import { Book } from "./Book.js";
-import { Config } from "./Config.js";
-import { AccountType } from "./Enums.js";
-import { Group } from "./Group.js";
-import { normalizeText } from "../utils.js";
-import { ResourceProperty } from "./ResourceProperty.js";
+import * as AccountService from '../service/account-service.js';
+import * as GroupService from '../service/group-service.js';
+import { Book } from './Book.js';
+import { Config } from './Config.js';
+import { AccountType } from './Enums.js';
+import { Group } from './Group.js';
+import { normalizeText } from '../utils.js';
+import { ResourceProperty } from './ResourceProperty.js';
 
 /**
  * This class defines an [Account](https://en.wikipedia.org/wiki/Account_(bookkeeping)) of a [[Book]].
@@ -103,8 +103,6 @@ export class Account extends ResourceProperty<bkper.Account> {
         return this;
     }
 
-
-
     /**
      * Tells if this Account is archived.
      *
@@ -181,6 +179,10 @@ export class Account extends ResourceProperty<bkper.Account> {
     /**
      * Gets the [[Groups]] of this Account.
      *
+     * When groups are already embedded in the account payload (e.g. from
+     * {@link Bkper.getBook} with includeGroups), resolves them from the
+     * book's cache instead of making API calls.
+     *
      * @returns Promise with the [[Groups]] of this Account
      */
     public async getGroups(): Promise<Group[]> {
@@ -188,13 +190,22 @@ export class Account extends ResourceProperty<bkper.Account> {
         if (!id) {
             return [];
         }
-        let groups = await GroupService.getGroupsByAccountId(
-            this.book.getId(),
-            id,
-            this.getConfig()
-        );
-        let groupsObj = groups.map((group) => new Group(this.book, group));
-        return groupsObj;
+
+        //Ensure groups are pre-loaded in the book cache to avoid multiple API calls when resolving groups from the payload
+        await this.book.getGroups();
+
+        // resolve them from the book's group cache to get properly tree-linked Group objects
+        if (this.payload.groups != null) {
+            const groups: Group[] = [];
+            for (const groupPayload of this.payload.groups) {
+                const group = await this.book.getGroup(groupPayload.id);
+                if (group) {
+                    groups.push(group);
+                }
+            }
+            return groups;
+        }
+        return [];
     }
 
     /**
@@ -207,7 +218,7 @@ export class Account extends ResourceProperty<bkper.Account> {
     public setGroups(groups: Group[] | bkper.Group[]): Account {
         this.payload.groups = undefined;
         if (groups != null) {
-            groups.forEach((group) => this.addGroup(group));
+            groups.forEach(group => this.addGroup(group));
         }
         return this;
     }
@@ -245,7 +256,7 @@ export class Account extends ResourceProperty<bkper.Account> {
             let groupObject: Group | undefined = undefined;
             if (group instanceof Group) {
                 groupObject = group;
-            } else if (typeof group == "string") {
+            } else if (typeof group == 'string') {
                 groupObject = await this.book.getGroup(group);
             }
             if (groupObject) {

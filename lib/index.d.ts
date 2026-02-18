@@ -125,6 +125,10 @@ export declare class Account extends ResourceProperty<bkper.Account> {
     /**
      * Gets the [[Groups]] of this Account.
      *
+     * When groups are already embedded in the account payload (e.g. from
+     * {@link Bkper.getBook} with includeGroups), resolves them from the
+     * book's cache instead of making API calls.
+     *
      * @returns Promise with the [[Groups]] of this Account
      */
     getGroups(): Promise<Group[]>;
