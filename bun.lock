@@ -5,7 +5,7 @@
     "": {
       "name": "bkper-js",
       "dependencies": {
-        "@bkper/bkper-api-types": "^5.35.0",
+        "@bkper/bkper-api-types": "^5.36.0",
         "big.js": "^6.0.3",
         "dayjs": "^1.10.3",
         "luxon": "^1.25.0",
@@ -37,7 +37,7 @@
 
     "@babel/highlight": ["@babel/highlight@7.25.9", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.25.9", "chalk": "^2.4.2", "js-tokens": "^4.0.0", "picocolors": "^1.0.0" } }, "sha512-llL88JShoCsth8fF8R4SJnIn+WLvR6ccFxu1H3FlMhDontdcmZWf2HgIZ7AIqV3Xcck1idlohrN4EUBQz6klbw=="],
 
-    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.35.0", "", {}, "sha512-mj9bkl01IN5Wb7nx2e/m1L8tGw6j27pCiLYPynp8qG0K9oVR2RlWRb2wCPVpRyuc82b5nrDEKK74kRsVH4f42Q=="],
+    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.36.0", "", {}, "sha512-HA87gOU279Z+NgWcXv+SaKDKMJHApkX63pwOP5l9zn/vI2/9Jf3czFyjPac7o926sJOYkOdF1zl1Q9Cy3SXaxA=="],
 
     "@cspotcode/source-map-support": ["@cspotcode/source-map-support@0.8.1", "", { "dependencies": { "@jridgewell/trace-mapping": "0.3.9" } }, "sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw=="],
 
