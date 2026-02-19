@@ -286,7 +286,7 @@ export class App extends Resource<bkper.App> {
      * @returns The readme text
      */
     public getReadme(): string | undefined {
-        return this.payload.readme;
+        return this.payload.readmeMd || this.payload.readme;
     }
 
     /**
@@ -297,7 +297,7 @@ export class App extends Resource<bkper.App> {
      * @returns This App, for chaining
      */
     public setReadme(readme?: string): App {
-        this.payload.readme = readme;
+        this.payload.readmeMd = readme;
         return this;
     }
 
