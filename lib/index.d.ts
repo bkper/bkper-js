@@ -1340,10 +1340,11 @@ export declare class Billing extends Resource<bkper.Billing> {
      * @param plan - The plan to checkout
      * @param successUrl - The URL to redirect to after the User has successfully checked out
      * @param cancelUrl - The URL to redirect to in case the checkout is cancelled
+     * @param cycle - The billing cycle to checkout - "monthly" (default) or "yearly"
      *
      * @returns The URL to redirect the User to the billing checkout
      */
-    getCheckoutUrl(plan: string, successUrl?: string, cancelUrl?: string): Promise<string | undefined>;
+    getCheckoutUrl(plan: string, successUrl?: string, cancelUrl?: string, cycle?: string): Promise<string | undefined>;
 }
 
 /**

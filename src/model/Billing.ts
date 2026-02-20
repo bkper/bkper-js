@@ -1,7 +1,7 @@
-import { Config } from "./Config.js";
-import { Resource } from "./Resource.js";
-import { Bkper } from "./Bkper.js";
-import * as UserService from "../service/user-service.js";
+import { Config } from './Config.js';
+import { Resource } from './Resource.js';
+import { Bkper } from './Bkper.js';
+import * as UserService from '../service/user-service.js';
 
 /**
  * This class defines the Billing information for a [[User]].
@@ -11,7 +11,6 @@ import * as UserService from "../service/user-service.js";
  * @public
  */
 export class Billing extends Resource<bkper.Billing> {
-
     private config?: Config;
 
     constructor(json?: bkper.Billing, config?: Config) {
@@ -142,12 +141,23 @@ export class Billing extends Resource<bkper.Billing> {
      * @param plan - The plan to checkout
      * @param successUrl - The URL to redirect to after the User has successfully checked out
      * @param cancelUrl - The URL to redirect to in case the checkout is cancelled
+     * @param cycle - The billing cycle to checkout - "monthly" (default) or "yearly"
      *
      * @returns The URL to redirect the User to the billing checkout
      */
-    public async getCheckoutUrl(plan: string, successUrl?: string, cancelUrl?: string): Promise<string | undefined> {
-        const urlPayload = await UserService.getBillingCheckoutUrl(plan, successUrl, cancelUrl, this.getConfig());
+    public async getCheckoutUrl(
+        plan: string,
+        successUrl?: string,
+        cancelUrl?: string,
+        cycle?: string
+    ): Promise<string | undefined> {
+        const urlPayload = await UserService.getBillingCheckoutUrl(
+            plan,
+            successUrl,
+            cancelUrl,
+            cycle,
+            this.getConfig()
+        );
         return urlPayload?.url;
     }
-
 }
