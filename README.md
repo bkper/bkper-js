@@ -18,11 +18,15 @@ It provides a set of classes and functions to interact with the Bkper API, inclu
 ```
 npm i -S bkper-js
 ```
+
 or
+
 ```
 yarn add bkper-js
 ```
+
 or
+
 ```
 bun add bkper-js
 ```
@@ -39,7 +43,7 @@ import { getOAuthToken } from 'bkper';
 
 // Configure with CLI authentication
 Bkper.setConfig({
-  oauthTokenProvider: async () => getOAuthToken()
+    oauthTokenProvider: async () => getOAuthToken(),
 });
 
 // Create Bkper instance
@@ -54,7 +58,7 @@ const books = await bkper.getBooks();
 console.log(`You have ${books.length} books`);
 ```
 
-First, login via CLI: `bkper login`
+First, login via CLI: `bkper auth login`
 
 ### Web Applications
 
@@ -66,8 +70,8 @@ import { BkperAuth } from '@bkper/web-auth';
 
 // Initialize authentication
 const auth = new BkperAuth({
-  onLoginSuccess: () => initializeApp(),
-  onLoginRequired: () => showLoginButton()
+    onLoginSuccess: () => initializeApp(),
+    onLoginRequired: () => showLoginButton(),
 });
 
 // Restore session on app load
@@ -75,7 +79,7 @@ await auth.init();
 
 // Configure Bkper with web auth
 Bkper.setConfig({
-  oauthTokenProvider: async () => auth.getAccessToken()
+    oauthTokenProvider: async () => auth.getAccessToken(),
 });
 
 // Create Bkper instance and use it
@@ -91,8 +95,7 @@ API keys are optional and only needed for dedicated quota limits. If not provide
 
 ```typescript
 Bkper.setConfig({
-  oauthTokenProvider: async () => getOAuthToken(),
-  apiKeyProvider: async () => process.env.BKPER_API_KEY // Optional - for dedicated quota
+    oauthTokenProvider: async () => getOAuthToken(),
+    apiKeyProvider: async () => process.env.BKPER_API_KEY, // Optional - for dedicated quota
 });
 ```
-
