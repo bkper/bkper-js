@@ -14,6 +14,10 @@ import { ResourceProperty } from './ResourceProperty.js';
  *
  * An Account can be grouped by [[Groups]].
  *
+ * @remarks
+ * `Account` has no `getBalance()` method. To retrieve account balances, use
+ * {@link Book.getBalancesReport} and read the resulting {@link BalancesContainer}.
+ *
  * @public
  */
 export class Account extends ResourceProperty<bkper.Account> {
