@@ -15,20 +15,20 @@ It provides a set of classes and functions to interact with the Bkper API, inclu
 
 ### Add the package:
 
+```bash tab="bun"
+bun add bkper-js
 ```
+
+```bash tab="npm"
 npm i -S bkper-js
 ```
 
-or
-
+```bash tab="pnpm"
+pnpm add bkper-js
 ```
+
+```bash tab="yarn"
 yarn add bkper-js
-```
-
-or
-
-```
-bun add bkper-js
 ```
 
 ## Usage
