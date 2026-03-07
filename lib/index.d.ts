@@ -20,7 +20,6 @@
  * @public
  */
 export declare class Account extends ResourceProperty<bkper.Account> {
-
     constructor(book: Book, payload?: bkper.Account);
 
     /**
@@ -187,7 +186,6 @@ export declare class Account extends ResourceProperty<bkper.Account> {
      * @returns Promise with this Account after deletion
      */
     remove(): Promise<Account>;
-
 }
 
 /**
@@ -274,19 +272,19 @@ export declare enum AccountType {
     /**
      * Asset account type
      */
-    ASSET = "ASSET",
+    ASSET = 'ASSET',
     /**
      * Liability account type
      */
-    LIABILITY = "LIABILITY",
+    LIABILITY = 'LIABILITY',
     /**
      * Incoming account type
      */
-    INCOMING = "INCOMING",
+    INCOMING = 'INCOMING',
     /**
      * Outgoing account type
      */
-    OUTGOING = "OUTGOING"
+    OUTGOING = 'OUTGOING',
 }
 
 /**
@@ -339,7 +337,6 @@ export declare class Agent {
  * @public
  */
 export declare class Amount {
-
     /**
      * The Amount constructor.
      *
@@ -470,9 +467,6 @@ export declare class Amount {
      * @returns The numeric value of this Amount
      */
     toNumber(): number;
-
-
-
 }
 
 /**
@@ -1194,9 +1188,6 @@ export declare class BalancesDataTableBuilder implements BalancesDataTableBuilde
 export declare class BalancesReport {
     payload: bkper.Balances;
 
-
-
-
     constructor(book: Book, payload: bkper.Balances);
     /**
      * Gets the [[Book]] that generated the report.
@@ -1228,9 +1219,6 @@ export declare class BalancesReport {
      * @returns The retrieved [[BalancesContainer]]
      */
     getBalancesContainer(name: string): BalancesContainer;
-
-
-
 }
 
 /**
@@ -1242,15 +1230,15 @@ export declare enum BalanceType {
     /**
      * Total balance
      */
-    TOTAL = "TOTAL",
+    TOTAL = 'TOTAL',
     /**
      * Period balance
      */
-    PERIOD = "PERIOD",
+    PERIOD = 'PERIOD',
     /**
      * Cumulative balance
      */
-    CUMULATIVE = "CUMULATIVE"
+    CUMULATIVE = 'CUMULATIVE',
 }
 
 /**
@@ -1348,7 +1336,12 @@ export declare class Billing extends Resource<bkper.Billing> {
      *
      * @returns The URL to redirect the User to the billing checkout
      */
-    getCheckoutUrl(plan: string, successUrl?: string, cancelUrl?: string, cycle?: string): Promise<string | undefined>;
+    getCheckoutUrl(
+        plan: string,
+        successUrl?: string,
+        cancelUrl?: string,
+        cycle?: string
+    ): Promise<string | undefined>;
 }
 
 /**
@@ -1382,7 +1375,6 @@ export declare class Billing extends Resource<bkper.Billing> {
  * @public
  */
 export declare class Bkper {
-
     private config;
     /**
      * Sets the global API configuration for all Bkper operations.
@@ -1487,13 +1479,6 @@ export declare class Book extends ResourceProperty<bkper.Book> {
     private config?;
     private allGroupsLoaded;
     private allAccountsLoaded;
-
-
-
-
-
-
-
 
     constructor(payload?: bkper.Book, config?: Config);
 
@@ -1789,7 +1774,10 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      *
      * @returns The updated draft Transactions
      */
-    batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]>;
+    batchUpdateTransactions(
+        transactions: Transaction[],
+        updateChecked?: boolean
+    ): Promise<Transaction[]>;
     /**
      * Batch check [[Transactions]] on the Book.
      *
@@ -1839,7 +1827,7 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      */
     batchCreateGroups(groups: Group[]): Promise<Group[]>;
     /**
-     * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
+     * Trigger Balances Audit async process.
      */
     audit(): void;
     /**
@@ -1897,12 +1885,6 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      * ```
      */
     getAccount(idOrName?: string): Promise<Account | undefined>;
-
-
-
-
-
-
 
     /**
      * Gets a [[Group]] object by id or name.
@@ -1974,14 +1956,6 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      */
     getAccounts(): Promise<Account[]>;
 
-
-
-
-
-
-
-
-
     /**
      * Lists transactions in the Book based on the provided query, limit, and cursor, for pagination.
      *
@@ -2012,7 +1986,14 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      *
      * @returns An [[EventList]] object containing the list of events
      */
-    listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
+    listEvents(
+        afterDate: string | null,
+        beforeDate: string | null,
+        onError: boolean,
+        resourceId: string | null,
+        limit: number,
+        cursor?: string
+    ): Promise<EventList>;
     /**
      * Retrieve a transaction by id.
      *
@@ -2121,7 +2102,10 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      *
      * @returns Transactions data table builder.
      */
-    createTransactionsDataTable(transactions: Transaction[], account?: Account): TransactionsDataTableBuilder;
+    createTransactionsDataTable(
+        transactions: Transaction[],
+        account?: Account
+    ): TransactionsDataTableBuilder;
 }
 
 /**
@@ -2223,7 +2207,6 @@ export declare class BotResponse {
      * @returns The deleted Bot Response
      */
     remove(): Promise<BotResponse>;
-
 }
 
 /**
@@ -2235,15 +2218,15 @@ export declare enum BotResponseType {
     /**
      * Info bot response
      */
-    INFO = "INFO",
+    INFO = 'INFO',
     /**
      * Warning bot response
      */
-    WARNING = "WARNING",
+    WARNING = 'WARNING',
     /**
      * Error bot response
      */
-    ERROR = "ERROR"
+    ERROR = 'ERROR',
 }
 
 /**
@@ -2254,7 +2237,6 @@ export declare enum BotResponseType {
  * @public
  */
 export declare class Collaborator extends Resource<bkper.Collaborator> {
-
     constructor(book: Book, payload?: bkper.Collaborator);
 
     /**
@@ -2450,7 +2432,6 @@ export declare interface Config {
      * @param attempt - The number of retry attempts made so far.
      */
     requestRetryHandler?: (status?: number, error?: any, attempt?: number) => Promise<void>;
-
 }
 
 /**
@@ -2533,7 +2514,7 @@ export declare class Connection extends ResourceProperty<bkper.Connection> {
      *
      * @returns The Connection type
      */
-    getType(): "APP" | "BANK" | undefined;
+    getType(): 'APP' | 'BANK' | undefined;
     /**
      * Sets the Connection type.
      *
@@ -2541,7 +2522,7 @@ export declare class Connection extends ResourceProperty<bkper.Connection> {
      *
      * @returns The Connection, for chaining
      */
-    setType(type: "APP" | "BANK"): Connection;
+    setType(type: 'APP' | 'BANK'): Connection;
     /**
      * Cleans any token property stored in the Connection.
      */
@@ -2575,11 +2556,11 @@ export declare enum DecimalSeparator {
     /**
      * ,
      */
-    COMMA = "COMMA",
+    COMMA = 'COMMA',
     /**
      * .
      */
-    DOT = "DOT"
+    DOT = 'DOT',
 }
 
 /**
@@ -2592,7 +2573,6 @@ export declare enum DecimalSeparator {
  */
 export declare class Event {
     payload: bkper.Event;
-
 
     constructor(book: Book, payload?: bkper.Event);
     /**
@@ -2649,7 +2629,6 @@ export declare class Event {
      * @returns True if this Event has at least one Bot Response of type ERROR
      */
     hasErrorResponse(): boolean;
-
 }
 
 /**
@@ -2693,34 +2672,34 @@ export declare class EventList {
  * @public
  */
 export declare enum EventType {
-    FILE_CREATED = "FILE_CREATED",
-    FILE_UPDATED = "FILE_UPDATED",
-    TRANSACTION_CREATED = "TRANSACTION_CREATED",
-    TRANSACTION_UPDATED = "TRANSACTION_UPDATED",
-    TRANSACTION_DELETED = "TRANSACTION_DELETED",
-    TRANSACTION_POSTED = "TRANSACTION_POSTED",
-    TRANSACTION_CHECKED = "TRANSACTION_CHECKED",
-    TRANSACTION_UNCHECKED = "TRANSACTION_UNCHECKED",
-    TRANSACTION_RESTORED = "TRANSACTION_RESTORED",
-    ACCOUNT_CREATED = "ACCOUNT_CREATED",
-    ACCOUNT_UPDATED = "ACCOUNT_UPDATED",
-    ACCOUNT_DELETED = "ACCOUNT_DELETED",
-    QUERY_CREATED = "QUERY_CREATED",
-    QUERY_UPDATED = "QUERY_UPDATED",
-    QUERY_DELETED = "QUERY_DELETED",
-    GROUP_CREATED = "GROUP_CREATED",
-    GROUP_UPDATED = "GROUP_UPDATED",
-    GROUP_DELETED = "GROUP_DELETED",
-    COMMENT_CREATED = "COMMENT_CREATED",
-    COMMENT_DELETED = "COMMENT_DELETED",
-    COLLABORATOR_ADDED = "COLLABORATOR_ADDED",
-    COLLABORATOR_UPDATED = "COLLABORATOR_UPDATED",
-    COLLABORATOR_REMOVED = "COLLABORATOR_REMOVED",
-    INTEGRATION_CREATED = "INTEGRATION_CREATED",
-    INTEGRATION_UPDATED = "INTEGRATION_UPDATED",
-    INTEGRATION_DELETED = "INTEGRATION_DELETED",
-    BOOK_UPDATED = "BOOK_UPDATED",
-    BOOK_DELETED = "BOOK_DELETED"
+    FILE_CREATED = 'FILE_CREATED',
+    FILE_UPDATED = 'FILE_UPDATED',
+    TRANSACTION_CREATED = 'TRANSACTION_CREATED',
+    TRANSACTION_UPDATED = 'TRANSACTION_UPDATED',
+    TRANSACTION_DELETED = 'TRANSACTION_DELETED',
+    TRANSACTION_POSTED = 'TRANSACTION_POSTED',
+    TRANSACTION_CHECKED = 'TRANSACTION_CHECKED',
+    TRANSACTION_UNCHECKED = 'TRANSACTION_UNCHECKED',
+    TRANSACTION_RESTORED = 'TRANSACTION_RESTORED',
+    ACCOUNT_CREATED = 'ACCOUNT_CREATED',
+    ACCOUNT_UPDATED = 'ACCOUNT_UPDATED',
+    ACCOUNT_DELETED = 'ACCOUNT_DELETED',
+    QUERY_CREATED = 'QUERY_CREATED',
+    QUERY_UPDATED = 'QUERY_UPDATED',
+    QUERY_DELETED = 'QUERY_DELETED',
+    GROUP_CREATED = 'GROUP_CREATED',
+    GROUP_UPDATED = 'GROUP_UPDATED',
+    GROUP_DELETED = 'GROUP_DELETED',
+    COMMENT_CREATED = 'COMMENT_CREATED',
+    COMMENT_DELETED = 'COMMENT_DELETED',
+    COLLABORATOR_ADDED = 'COLLABORATOR_ADDED',
+    COLLABORATOR_UPDATED = 'COLLABORATOR_UPDATED',
+    COLLABORATOR_REMOVED = 'COLLABORATOR_REMOVED',
+    INTEGRATION_CREATED = 'INTEGRATION_CREATED',
+    INTEGRATION_UPDATED = 'INTEGRATION_UPDATED',
+    INTEGRATION_DELETED = 'INTEGRATION_DELETED',
+    BOOK_UPDATED = 'BOOK_UPDATED',
+    BOOK_DELETED = 'BOOK_DELETED',
 }
 
 /**
@@ -2732,7 +2711,6 @@ export declare enum EventType {
  * @public
  */
 export declare class File extends ResourceProperty<bkper.File> {
-
     constructor(book: Book, payload?: bkper.File);
     /**
      * Gets the Book this File belongs to.
@@ -2825,12 +2803,6 @@ export declare class File extends ResourceProperty<bkper.File> {
  * @public
  */
 export declare class Group extends ResourceProperty<bkper.Group> {
-
-
-
-
-
-
     constructor(book: Book, payload?: bkper.Group);
 
     /**
@@ -2999,8 +2971,6 @@ export declare class Group extends ResourceProperty<bkper.Group> {
      */
     getRootName(): string;
 
-
-
     /**
      * Tells if this group has any account in it.
      *
@@ -3025,7 +2995,6 @@ export declare class Group extends ResourceProperty<bkper.Group> {
      * @returns A promise that resolves to this Group
      */
     remove(): Promise<Group>;
-
 }
 
 /**
@@ -3177,18 +3146,18 @@ export declare class Integration extends ResourceProperty<bkper.Integration> {
  * @public
  */
 export declare enum Month {
-    JANUARY = "JANUARY",
-    FEBRUARY = "FEBRUARY",
-    MARCH = "MARCH",
-    APRIL = "APRIL",
-    MAY = "MAY",
-    JUNE = "JUNE",
-    JULY = "JULY",
-    AUGUST = "AUGUST",
-    SEPTEMBER = "SEPTEMBER",
-    OCTOBER = "OCTOBER",
-    NOVEMBER = "NOVEMBER",
-    DECEMBER = "DECEMBER"
+    JANUARY = 'JANUARY',
+    FEBRUARY = 'FEBRUARY',
+    MARCH = 'MARCH',
+    APRIL = 'APRIL',
+    MAY = 'MAY',
+    JUNE = 'JUNE',
+    JULY = 'JULY',
+    AUGUST = 'AUGUST',
+    SEPTEMBER = 'SEPTEMBER',
+    OCTOBER = 'OCTOBER',
+    NOVEMBER = 'NOVEMBER',
+    DECEMBER = 'DECEMBER',
 }
 
 /**
@@ -3200,15 +3169,15 @@ export declare enum Period {
     /**
      *  Monthly period
      */
-    MONTH = "MONTH",
+    MONTH = 'MONTH',
     /**
      * Quarterly period
      */
-    QUARTER = "QUARTER",
+    QUARTER = 'QUARTER',
     /**
      * Yearly period
      */
-    YEAR = "YEAR"
+    YEAR = 'YEAR',
 }
 
 /**
@@ -3220,21 +3189,19 @@ export declare enum Periodicity {
     /**
      * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m
      */
-    DAILY = "DAILY",
+    DAILY = 'DAILY',
     /**
      * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
      */
-    MONTHLY = "MONTHLY",
+    MONTHLY = 'MONTHLY',
     /**
      * Example: on:2013, after:2013, $y
      */
-    YEARLY = "YEARLY"
+    YEARLY = 'YEARLY',
 }
 
 /**
  * Enum representing permissions of user in the Book
- *
- * Learn more at [share article](https://help.bkper.com/en/articles/2569153-share-your-book-with-your-peers).
  *
  * @public
  */
@@ -3242,27 +3209,27 @@ export declare enum Permission {
     /**
      * No permission
      */
-    NONE = "NONE",
+    NONE = 'NONE',
     /**
      * View transactions, accounts and balances.
      */
-    VIEWER = "VIEWER",
+    VIEWER = 'VIEWER',
     /**
      * Record and delete drafts only. Useful to collect data only
      */
-    RECORDER = "RECORDER",
+    RECORDER = 'RECORDER',
     /**
      * View transactions, accounts, record and delete drafts
      */
-    POSTER = "POSTER",
+    POSTER = 'POSTER',
     /**
      * Manage accounts, transactions, book configuration and sharing
      */
-    EDITOR = "EDITOR",
+    EDITOR = 'EDITOR',
     /**
      * Manage everything, including book visibility and deletion. Only one owner per book.
      */
-    OWNER = "OWNER"
+    OWNER = 'OWNER',
 }
 
 /**
@@ -3273,7 +3240,6 @@ export declare enum Permission {
  * @public
  */
 export declare class Query extends Resource<bkper.Query> {
-
     constructor(book: Book, payload?: bkper.Query);
 
     /**
@@ -3328,7 +3294,6 @@ export declare class Query extends Resource<bkper.Query> {
      * @returns This Query, for chaining
      */
     remove(): Promise<Query>;
-
 }
 
 /**
@@ -3352,7 +3317,6 @@ declare abstract class Resource<T = any> {
      * @returns An immutable copy of the json payload
      */
     json(): T;
-
 }
 
 /**
@@ -3363,12 +3327,13 @@ declare abstract class Resource<T = any> {
  *
  * @public
  */
-declare abstract class ResourceProperty<T extends {
-    properties?: {
-        [key: string]: string;
-    };
-}> extends Resource<T> {
-
+declare abstract class ResourceProperty<
+    T extends {
+        properties?: {
+            [key: string]: string;
+        };
+    },
+> extends Resource<T> {
     /**
      * Gets the custom properties stored in this resource.
      *
@@ -3384,9 +3349,7 @@ declare abstract class ResourceProperty<T extends {
      *
      * @returns This resource, for chaining
      */
-    setProperties(properties: {
-        [key: string]: string;
-    }): this;
+    setProperties(properties: { [key: string]: string }): this;
     /**
      * Gets the property value for given keys. First property found will be retrieved.
      *
@@ -3436,9 +3399,7 @@ declare abstract class ResourceProperty<T extends {
      *
      * @returns This resource, for chaining
      */
-    setVisibleProperties(properties: {
-        [key: string]: string;
-    }): this;
+    setVisibleProperties(properties: { [key: string]: string }): this;
     /**
      * Gets the visible custom properties stored in this resource.
      * Hidden properties (those ending with "_") are excluded from the result.
@@ -3520,8 +3481,6 @@ export declare class Template extends Resource<bkper.Template> {
  * @public
  */
 export declare class Transaction extends ResourceProperty<bkper.Transaction> {
-
-
     constructor(book: Book, payload?: bkper.Transaction);
 
     /**
@@ -3875,7 +3834,6 @@ export declare class Transaction extends ResourceProperty<bkper.Transaction> {
      */
     getUpdatedAtFormatted(): string;
 
-
     /**
      * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
      *
@@ -4097,19 +4055,19 @@ export declare enum TransactionStatus {
     /**
      * Transaction is in the trash
      */
-    TRASHED = "TRASHED",
+    TRASHED = 'TRASHED',
     /**
      * Transaction is a draft, not yet posted
      */
-    DRAFT = "DRAFT",
+    DRAFT = 'DRAFT',
     /**
      * Transaction is posted but not checked
      */
-    UNCHECKED = "UNCHECKED",
+    UNCHECKED = 'UNCHECKED',
     /**
      * Transaction is posted and checked
      */
-    CHECKED = "CHECKED"
+    CHECKED = 'CHECKED',
 }
 
 /**
@@ -4210,11 +4168,11 @@ export declare enum Visibility {
     /**
      * The book can be accessed by anyone with the link
      */
-    PUBLIC = "PUBLIC",
+    PUBLIC = 'PUBLIC',
     /**
      * The book can be accessed by the owner and collaborators
      */
-    PRIVATE = "PRIVATE"
+    PRIVATE = 'PRIVATE',
 }
 
-export { }
+export {};

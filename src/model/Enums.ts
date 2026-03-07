@@ -40,8 +40,6 @@ export enum DecimalSeparator {
 /**
  * Enum representing permissions of user in the Book
  *
- * Learn more at [share article](https://help.bkper.com/en/articles/2569153-share-your-book-with-your-peers).
- *
  * @public
  */
 

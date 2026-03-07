@@ -696,7 +696,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
+     * Trigger Balances Audit async process.
      */
     public audit(): void {
         BookService.audit(this.getId(), this.getConfig());
