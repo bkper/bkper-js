@@ -669,6 +669,35 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Delete [[Accounts]] on the Book, in batch.
+     *
+     * @param accounts - The accounts to be deleted
+     *
+     * @returns The deleted Accounts
+     */
+    public async batchDeleteAccounts(accounts: Account[]): Promise<Account[]> {
+        if (accounts.length > 0) {
+            const accountList: bkper.AccountList = {
+                items: accounts.map(a => a.json()),
+            };
+            const payloads = await AccountService.deleteAccounts(
+                this.getId(),
+                accountList,
+                this.getConfig()
+            );
+            const deletedAccounts: Account[] = [];
+            for (const payload of payloads) {
+                const account = new Account(this, payload);
+                deletedAccounts.push(account);
+                this.setAccount(payload, true);
+            }
+            this.clearCache();
+            return deletedAccounts;
+        }
+        return [];
+    }
+
+    /**
      * Create [[Groups]] on the Book, in batch.
      *
      * @param groups - The groups to be created

@@ -22,6 +22,11 @@ export async function deleteAccount(bookId: string, account: bkper.Account, conf
     return response.data;
 }
 
+export async function deleteAccounts(bookId: string, payload: bkper.AccountList, config: Config): Promise<bkper.Account[]> {
+    const response = await new HttpBooksApiV5Request(`${bookId}/accounts/delete/batch`, config).setMethod('POST').setPayload(payload).fetch();
+    return response.data?.items || [];
+}
+
 export async function getAccount(bookId: string, idOrName: string, config: Config): Promise<bkper.Account> {
     let response = await new HttpBooksApiV5Request(`${bookId}/accounts/${encodeURIComponent(idOrName)}`, config).setMethod('GET').fetch();
     return response.data;

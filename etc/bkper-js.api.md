@@ -286,6 +286,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     batchCreateAccounts(accounts: Account[]): Promise<Account[]>;
     batchCreateGroups(groups: Group[]): Promise<Group[]>;
     batchCreateTransactions(transactions: Transaction[]): Promise<Transaction[]>;
+    batchDeleteAccounts(accounts: Account[]): Promise<Account[]>;
     batchPostTransactions(transactions: Transaction[]): Promise<void>;
     batchReplayEvents(events: Event[], errorOnly?: boolean): Promise<void>;
     batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void>;
