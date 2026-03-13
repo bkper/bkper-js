@@ -8,8 +8,8 @@ It provides a set of classes and functions to interact with the Bkper API, inclu
 
 ## Documentation
 
-- [Developer Docs](https://bkper.com/docs)
-- [API Reference](https://bkper.com/docs/bkper-js/)
+-   [Developer Docs](https://bkper.com/docs)
+-   [API Reference](https://bkper.com/docs/bkper-js/)
 
 ## Installation
 
@@ -60,9 +60,9 @@ console.log(`You have ${books.length} books`);
 
 First, login via CLI: `bkper auth login`
 
-### Web Applications
+### Web Applications on \*.bkper.app
 
-For browser-based apps, use the [@bkper/web-auth](https://www.npmjs.com/package/@bkper/web-auth) SDK:
+For apps hosted on `*.bkper.app` subdomains, use the [@bkper/web-auth](https://www.npmjs.com/package/@bkper/web-auth) SDK for built-in OAuth login flow:
 
 ```typescript
 import { Bkper } from 'bkper-js';
@@ -88,6 +88,35 @@ const books = await bkper.getBooks();
 ```
 
 See the [@bkper/web-auth documentation](https://bkper.com/docs/auth-sdk) for more details.
+
+### CDN / Browser
+
+Use bkper-js directly in any browser environment with a valid access token — no build tools required. Available via [jsDelivr](https://www.jsdelivr.com/) or [unpkg](https://unpkg.com/):
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/bkper-js@2/dist/bkper.min.js"></script>
+<script>
+    const { Bkper } = bkperjs;
+
+    Bkper.setConfig({
+      oauthTokenProvider: async () => 'your-access-token',
+    });
+
+    const b = new Bkper();
+    const books = await b.getBooks();
+</script>
+```
+
+Pin to a specific version by replacing `@2` with an exact version like `@2.31.0`.
+
+You can obtain an access token using the [Bkper CLI](https://www.npmjs.com/package/bkper):
+
+```bash
+bkper auth login   # one-time setup
+bkper auth token   # prints the access token
+```
+
+Access tokens expire after 1 hour. For short-lived use like prototyping or testing this is fine — just run `bkper auth token` again to get a fresh one.
 
 ### API Key (Optional)
 

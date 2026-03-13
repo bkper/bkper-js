@@ -14,5 +14,6 @@ declare global {
         text(): Promise<string>;
     }
     function fetch(input: string, init?: RequestInit): Promise<Response>;
+    function atob(data: string): string;
 }
-export { };
+export {};
