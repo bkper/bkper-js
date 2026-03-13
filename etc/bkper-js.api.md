@@ -292,6 +292,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): Promise<void>;
     batchUncheckTransactions(transactions: Transaction[]): Promise<void>;
     batchUntrashTransactions(transactions: Transaction[]): Promise<void>;
+    batchUpdateAccounts(accounts: Account[]): Promise<Account[]>;
     batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Promise<Transaction[]>;
     // @internal (undocumented)
     clearCache(): void;
