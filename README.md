@@ -51,10 +51,12 @@ The simplest way to use bkper-js in a browser — no build tools, no npm, just a
     }
 
     // Example: prompt for a token and list books
-    document.getElementById('go').addEventListener('click', async () => {
-        const token = document.getElementById('token').value;
-        const books = await listBooks(token);
-        document.getElementById('output').textContent = books.map(b => b.getName()).join('\n');
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('go').addEventListener('click', async () => {
+            const token = document.getElementById('token').value;
+            const books = await listBooks(token);
+            document.getElementById('output').textContent = books.map(b => b.getName()).join('\n');
+        });
     });
 </script>
 
