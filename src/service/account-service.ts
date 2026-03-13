@@ -17,6 +17,11 @@ export async function updateAccount(bookId: string, account: bkper.Account, conf
     return response.data;
 }
 
+export async function updateAccounts(bookId: string, payload: bkper.AccountList, config: Config): Promise<bkper.Account[]> {
+    const response = await new HttpBooksApiV5Request(`${bookId}/accounts/batch`, config).setMethod('PUT').setPayload(payload).fetch();
+    return response.data?.items || [];
+}
+
 export async function deleteAccount(bookId: string, account: bkper.Account, config: Config): Promise<bkper.Account> {
     var response = await new HttpBooksApiV5Request(`${bookId}/accounts/${account.id}`, config).setMethod('DELETE').fetch();
     return response.data;
