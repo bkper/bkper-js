@@ -1,4 +1,4 @@
-[Bkper REST API]: https://bkper.com/docs/#rest-api
+[Bkper REST API]: https://bkper.com/docs/api/rest
 
 [![npm](https://img.shields.io/npm/v/bkper-js?color=%235889e4)](https://www.npmjs.com/package/bkper-js)
 
@@ -9,7 +9,7 @@ It provides a set of classes and functions to interact with the Bkper API, inclu
 ## Documentation
 
 - [Developer Docs](https://bkper.com/docs)
-- [API Reference](https://bkper.com/docs/bkper-js/)
+- [API Reference](https://bkper.com/docs/api/bkper-js/)
 
 ## Installation
 
