@@ -4,6 +4,11 @@ See what's new and what has changed in bkper-js
 
 ## 2026
 
+**March 2026**
+
+- Added `Book.batchUpdateAccounts`
+- Added `Book.batchDeleteAccounts`
+
 **February 2026**
 
 - Added `User.getGivenName`
