@@ -1127,9 +1127,27 @@ export class Book extends ResourceProperty<bkper.Book> {
         }
     }
 
-    /** @internal */
+    /**
+     * Ensures every group has a cached `.accounts` Map after accounts are loaded.
+     *
+     * `linkAccountsAndGroups()` populates `.accounts` on groups that have accounts
+     * linked to them. Groups with zero accounts keep `.accounts = undefined`. This
+     * method fills that gap by initializing an empty Map on those groups.
+     *
+     * Without this, `Group.getAccounts()` sees `undefined`, skips the cache check,
+     * and falls through to a network request per group — causing hundreds of
+     * redundant `/groups/{id}/accounts` calls on books with many groups.
+     *
+     * IMPORTANT: This method must NOT be guarded by `allGroupsLoaded` or any
+     * similar flag. It runs inside `mapAccounts()`, which is always called after
+     * `mapGroups()` sets `allGroupsLoaded = true`. A guard like
+     * `if (!this.allGroupsLoaded)` would make this method dead code, silently
+     * reintroducing the redundant network requests.
+     *
+     * @internal
+     */
     private ensureGroupsAccountMapsLoaded(): void {
-        if (this.idGroupMap && !this.allGroupsLoaded) {
+        if (this.idGroupMap) {
             for (const group of this.idGroupMap.values()) {
                 if (group.accounts == null) {
                     group.accounts = new Map<string, Account>();
