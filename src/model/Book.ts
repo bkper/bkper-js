@@ -218,6 +218,15 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Gets the logo URL of the Book owner's custom domain, if any.
+     *
+     * @returns The logo URL, or undefined if the owner has no custom domain logo
+     */
+    public getLogoUrl(): string | undefined {
+        return this.payload.logoUrl;
+    }
+
+    /**
      * Gets the permission for the current user in this Book.
      *
      * @returns The permission for the current user in this Book

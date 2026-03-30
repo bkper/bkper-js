@@ -331,6 +331,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     getIntegrations(): Promise<Integration[]>;
     getLastUpdateMs(): number | undefined;
     getLockDate(): string | undefined;
+    getLogoUrl(): string | undefined;
     // @internal (undocumented)
     getMostRecentLockDate_(): string | null;
     getName(): string | undefined;
