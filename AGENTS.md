@@ -23,6 +23,7 @@ This file provides guidance to coding agents when working with code in this repo
 - Releases are managed by GitHub Actions, not local commands
 - Open a PR with exactly one release label: `release:patch`, `release:minor`, or `release:major`
 - The PR workflow bumps `package.json` automatically on the PR branch
+- After adding a release label, wait for the automated version bump commit before merging the PR
 - After merge to `main`, CI validates the version, creates the tag, and publishes to npm
 - Do not perform local version bumps or local npm publishes unless explicitly instructed
 
