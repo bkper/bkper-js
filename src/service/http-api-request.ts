@@ -32,14 +32,32 @@ export interface HttpResponse {
     status?: number;
 }
 
+interface NetworkError extends TypeError {
+    response?: {
+        status?: number;
+        code?: number;
+    };
+    status?: number;
+    code?: number;
+    cause?: {
+        code?: string;
+        hostname?: string;
+        address?: string;
+        port?: number | string;
+        syscall?: string;
+    };
+}
+
 export class HttpApiRequest extends HttpRequest {
     private retry = 0;
     private config: Config;
+    private requestPath: string;
 
     constructor(path: string, config: Config) {
         const baseUrl = resolveBaseUrl(config);
         super(`${baseUrl}/${path}`);
         this.config = config;
+        this.requestPath = path;
     }
 
     async fetch(): Promise<HttpResponse> {
@@ -60,13 +78,13 @@ export class HttpApiRequest extends HttpRequest {
                     },
                 };
                 throw this.handleError(errorObj);
-            } else if (resp.status != 400 && this.retry <= 3) {
+            } else if (this.shouldRetry(resp.status) && this.retry < 3) {
                 this.retry++;
                 const effectiveConfig = this.config;
                 if (effectiveConfig.requestRetryHandler) {
                     await effectiveConfig.requestRetryHandler(resp.status, resp.data, this.retry);
                 } else {
-                    console.log(`${JSON.stringify(resp.data)} - Retrying... `);
+                    console.log(`${JSON.stringify(resp.data)} - Retrying ${this.retry}/3... `);
                 }
                 return await this.fetch();
             } else {
@@ -80,20 +98,23 @@ export class HttpApiRequest extends HttpRequest {
                 throw this.handleError(errorObj);
             }
         } catch (error: any) {
-            // If error already has response structure (from our code above), use it
+            if (error instanceof BkperError) {
+                throw error;
+            }
+            // If error already has response structure (from upstream), preserve it
             if (error.response) {
                 throw error;
             }
             // Network error or fetch failure
-            if (error instanceof TypeError && error.message.includes("fetch")) {
+            if (this.isNetworkError(error)) {
                 // Network error - retry if within retry limit
-                if (this.retry <= 3) {
+                if (this.retry < 3) {
                     this.retry++;
                     const effectiveConfig = this.config;
                     if (effectiveConfig.requestRetryHandler) {
-                        await effectiveConfig.requestRetryHandler(520, undefined, this.retry);
+                        await effectiveConfig.requestRetryHandler(520, error, this.retry);
                     } else {
-                        console.log(`Network error - Retrying... `);
+                        console.log(`${this.formatNetworkErrorMessage(error)} - Retrying ${this.retry}/3... `);
                     }
                     return await this.fetch();
                 }
@@ -103,6 +124,37 @@ export class HttpApiRequest extends HttpRequest {
         }
     }
 
+    private shouldRetry(status?: number): boolean {
+        return status == 408 || status == 429 || (status != null && status >= 500);
+    }
+
+    private isNetworkError(error: unknown): error is NetworkError {
+        return error instanceof TypeError && error.message.toLowerCase().includes("fetch");
+    }
+
+    private formatNetworkErrorMessage(error: NetworkError): string {
+        const details: string[] = [];
+        if (error.cause?.code) {
+            details.push(error.cause.code);
+        }
+        if (error.cause?.hostname) {
+            details.push(error.cause.hostname);
+        } else if (error.cause?.address) {
+            details.push(error.cause.address);
+        }
+        if (error.cause?.port !== undefined) {
+            details.push(`port=${error.cause.port}`);
+        }
+        if (error.cause?.syscall) {
+            details.push(`syscall=${error.cause.syscall}`);
+        }
+
+        if (details.length > 0) {
+            return `Network error calling ${this.requestPath}: ${error.message} (${details.join(", ")})`;
+        }
+        return `Network error calling ${this.requestPath}: ${error.message}`;
+    }
+
     private handleError(err: any): BkperError {
         const effectiveConfig = this.config;
         const customError = effectiveConfig.requestErrorHandler
@@ -110,6 +162,14 @@ export class HttpApiRequest extends HttpRequest {
             : undefined;
         if (customError) {
             return customError;
+        } else if (err instanceof BkperError) {
+            return err;
+        } else if (this.isNetworkError(err)) {
+            return new BkperError(
+                err.response?.status || err.response?.code || err.status || err.code || 0,
+                this.formatNetworkErrorMessage(err),
+                undefined
+            );
         } else {
             // Read internal HttpError from response
             let error: HttpError = err.response?.data?.error || err.data?.error || err.error;
