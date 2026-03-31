@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to coding agents when working with code in this repository.
 
 ## Common Development Commands
 
@@ -20,9 +20,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Uses Bun as primary package manager (bun.lockb present)
 
 ### Versioning and Publishing
-- `bun run patch/minor/major` - Version bump commands
-- `bun run preversion` - Runs full build before version bump
-- `bun run postversion` - Automated git push, npm publish, and git push tags
+- Releases are managed by GitHub Actions, not local commands
+- Open a PR with exactly one release label: `release:patch`, `release:minor`, or `release:major`
+- The PR workflow bumps `package.json` automatically on the PR branch
+- After merge to `main`, CI validates the version, creates the tag, and publishes to npm
+- Do not perform local version bumps or local npm publishes unless explicitly instructed
 
 ## Code Architecture
 
