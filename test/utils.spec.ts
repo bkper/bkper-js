@@ -35,21 +35,25 @@ describe('utils', () => {
     });
 
     describe('#parseDate()', () => {
+        function expectIsoDate(value: Date, expected: string) {
+            expect(utils.formatDateISO(value, 'America/Sao_Paulo')).to.equal(expected);
+        }
+
         it('should parse yyyy/MM/dd', () => {
             let value = utils.parseDate('2020/01/25', 'yyyy/MM/dd', 'America/Sao_Paulo');
-            expect(value.toString()).to.equal(new Date(2020, 0, 25).toString());
+            expectIsoDate(value, '2020-01-25');
         });
         it('should parse MM/dd/yyyy', () => {
             let value = utils.parseDate('01/25/2020', 'MM/dd/yyyy', 'America/Sao_Paulo');
-            expect(value.toString()).to.equal(new Date(2020, 0, 25).toString());
+            expectIsoDate(value, '2020-01-25');
         });
         it('should parse dd/MM/yyyy', () => {
             let value = utils.parseDate('25/01/2020', 'dd/MM/yyyy', 'America/Sao_Paulo');
-            expect(value.toString()).to.equal(new Date(2020, 0, 25).toString());
+            expectIsoDate(value, '2020-01-25');
         });
         it('should parse ISO', () => {
             let value = utils.parseDate('2020-01-25', 'dd/MM/yyyy', 'America/Sao_Paulo');
-            expect(value.toString()).to.equal(new Date(2020, 0, 25).toString());
+            expectIsoDate(value, '2020-01-25');
         });
     });
 

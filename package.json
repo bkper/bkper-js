@@ -18,7 +18,8 @@
     "license": "Apache-2.0",
     "private": false,
     "scripts": {
-        "test": "env TS_NODE_COMPILER_OPTIONS='{\"rootDir\": \".\", \"lib\": [\"es2020\", \"dom\"] }' mocha -r ts-node/register 'test/**/*.ts'",
+        "test": "env TS_NODE_COMPILER_OPTIONS='{\"rootDir\": \".\", \"lib\": [\"es2020\", \"dom\"] }' mocha -r ts-node/register 'test/**/*.ts' --ignore 'test/integration/**/*.ts'",
+        "test:integration": "env TS_NODE_COMPILER_OPTIONS='{\"rootDir\": \".\", \"lib\": [\"es2020\", \"dom\"] }' mocha --config .mocharc.integration.json",
         "clean": "rm -rf ./lib & rm -rf ./node_modules & wait",
         "prebuild": "bun install",
         "build": "run-s build:*",
@@ -31,12 +32,7 @@
         "build:clean-dist": "rimraf dist",
         "build:bundle": "esbuild lib/index.js --bundle --format=iife --global-name=bkperjs --minify --sourcemap --target=es2015 --platform=browser --outfile=dist/bkper.min.js",
         "dev": "tsc -w",
-        "upgrade:api": "bun update @bkper/bkper-api-types --latest",
-        "patch": "yarn version --patch",
-        "minor": "yarn version --minor",
-        "major": "yarn version --major",
-        "preversion": "bun run build",
-        "postversion": "git push --tags && yarn publish --new-version $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\""
+        "upgrade:api": "bun update @bkper/bkper-api-types --latest"
     },
     "dependencies": {
         "@bkper/bkper-api-types": "^5.39.1",
@@ -54,6 +50,7 @@
         "@types/node": "^14.14.20",
         "@types/node-fetch": "^2.5.8",
         "@types/uuid": "^10.0.0",
+        "bkper": "^4.12.0",
         "chai": "^5.1.1",
         "esbuild": "^0.27.4",
         "gts": "^3.0.3",
