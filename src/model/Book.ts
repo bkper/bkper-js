@@ -658,7 +658,9 @@ export class Book extends ResourceProperty<bkper.Book> {
     public async batchCreateAccounts(accounts: Account[]): Promise<Account[]> {
         if (accounts.length > 0) {
             const accountList: bkper.AccountList = {
-                items: accounts.map(a => a.json()),
+                items: await Promise.all(
+                    accounts.map(account => this.normalizeAccountPayloadForBatchCreate_(account))
+                ),
             };
             const payloads = await AccountService.createAccounts(
                 this.getId(),
@@ -675,6 +677,32 @@ export class Book extends ResourceProperty<bkper.Book> {
             return createdAccounts;
         }
         return [];
+    }
+
+    /** @internal */
+    private async normalizeAccountPayloadForBatchCreate_(account: Account): Promise<bkper.Account> {
+        const payload = account.json();
+        if (!payload.groups || payload.groups.length === 0) {
+            return payload;
+        }
+
+        const normalizedGroups: bkper.Group[] = [];
+        for (const groupPayload of payload.groups) {
+            const idOrName = groupPayload.id || groupPayload.name;
+            if (!idOrName || idOrName.trim() === '') {
+                throw new Error('Account group reference must include id or name');
+            }
+
+            const group = await this.getGroup(idOrName);
+            if (!group) {
+                throw new Error(`Group not found: ${idOrName}`);
+            }
+
+            normalizedGroups.push(group.json());
+        }
+
+        payload.groups = normalizedGroups;
+        return payload;
     }
 
     /**
