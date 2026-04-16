@@ -35,7 +35,7 @@
         "upgrade:api": "bun update @bkper/bkper-api-types --latest"
     },
     "dependencies": {
-        "@bkper/bkper-api-types": "^5.39.1",
+        "@bkper/bkper-api-types": "^5.40.0",
         "big.js": "^6.0.3",
         "dayjs": "^1.10.3",
         "luxon": "^1.25.0",

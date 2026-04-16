@@ -5,7 +5,7 @@
     "": {
       "name": "bkper-js",
       "dependencies": {
-        "@bkper/bkper-api-types": "^5.39.1",
+        "@bkper/bkper-api-types": "^5.40.0",
         "big.js": "^6.0.3",
         "dayjs": "^1.10.3",
         "luxon": "^1.25.0",
@@ -109,7 +109,7 @@
 
     "@babel/runtime": ["@babel/runtime@7.29.2", "", {}, "sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g=="],
 
-    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.39.1", "", {}, "sha512-xJuLxoH8w0p0qEf/xhu1AK3BEhnxX5RSzxMC6vJ5vwpgbWcAeeSDdMSGifJjyQScxicarfRrBqfADEOBbuws7A=="],
+    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.40.0", "", {}, "sha512-hN2s3+/n8hTBspLQNp3+P6XpSMM3LUaiR1Pe/bJmcRkv66PBgSEcF7OrMZy7jKHf5oGQcYU/4vr7KgV2lxsD6A=="],
 
     "@borewit/text-codec": ["@borewit/text-codec@0.2.2", "", {}, "sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ=="],
 
@@ -1540,6 +1540,8 @@
     "ansi-escapes/type-fest": ["type-fest@0.21.3", "", {}, "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w=="],
 
     "ast-types/tslib": ["tslib@2.8.1", "", {}, "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="],
+
+    "bkper-js/@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.39.1", "", {}, "sha512-xJuLxoH8w0p0qEf/xhu1AK3BEhnxX5RSzxMC6vJ5vwpgbWcAeeSDdMSGifJjyQScxicarfRrBqfADEOBbuws7A=="],
 
     "camelcase-keys/camelcase": ["camelcase@5.3.1", "", {}, "sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg=="],
 
