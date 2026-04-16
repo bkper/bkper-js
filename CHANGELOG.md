@@ -4,8 +4,12 @@ See what's new and what has changed in bkper-js
 
 ## 2026
 
+**April 2026**
+- Added `Book.mergeTransactions`
+
 **March 2026**
 
+- Added `Book.getLogoUrl`
 - Added `Book.batchUpdateAccounts`
 - Added `Book.batchDeleteAccounts`
 
