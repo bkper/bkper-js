@@ -104,6 +104,12 @@ export async function listTransactions(bookId: string, query: string | undefined
     return response.data;
 }
 
+export async function mergeTransactions(bookId: string, transactions: bkper.TransactionList, config: Config): Promise<bkper.TransactionOperation> {
+    const payload: bkper.TransactionList = { ...transactions };
+    const response = await new HttpBooksApiV5Request(`${bookId}/transactions/merge`, config).setMethod('PATCH').setPayload(payload).fetch();
+    return response.data;
+}
+
 export async function countTransactions(bookId: string, query: string | undefined, config: Config): Promise<bkper.Count> {
     const request = new HttpBooksApiV5Request(`${bookId}/transactions/count`, config).setMethod('GET').addParam('query', query);
     const response = await request.fetch();

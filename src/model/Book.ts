@@ -636,6 +636,32 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Merge two [[Transactions]] into a single new canonical transaction.
+     *
+     * The merged transaction is created synchronously. Cleanup of the two
+     * originals is scheduled asynchronously by the backend.
+     *
+     * @param transaction1 - The first transaction to merge
+     * @param transaction2 - The second transaction to merge
+     *
+     * @returns The merged Transaction
+     */
+    public async mergeTransactions(
+        transaction1: Transaction,
+        transaction2: Transaction
+    ): Promise<Transaction> {
+        const payload: bkper.TransactionList = {
+            items: [transaction1.json(), transaction2.json()],
+        };
+        let operation = await TransactionService.mergeTransactions(
+            this.getId(),
+            payload,
+            this.getConfig()
+        );
+        return new Transaction(this, operation.transaction || {});
+    }
+
+    /**
      * Replay [[Events]] on the Book, in batch.
      *
      * @param events - The events to be replayed

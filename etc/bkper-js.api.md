@@ -350,6 +350,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     getVisibility(): Visibility;
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
+    mergeTransactions(transaction1: Transaction, transaction2: Transaction): Promise<Transaction>;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
     // @internal (undocumented)
