@@ -1,47 +1,21 @@
-import { Book } from "./Book.js";
-import { App } from "./App.js";
-import * as AppService from "../service/app-service.js";
-import * as BookService from "../service/book-service.js";
-import * as CollectionService from "../service/collection-service.js";
-import * as UserService from "../service/user-service.js";
-import * as TemplateService from "../service/template-service.js";
-import { User } from "./User.js";
-import { Config } from "./Config.js";
-import { Template } from "./Template.js";
-import { Collection } from "./Collection.js";
+import { Book } from './Book.js';
+import { App } from './App.js';
+import * as AppService from '../service/app-service.js';
+import * as BookService from '../service/book-service.js';
+import * as CollectionService from '../service/collection-service.js';
+import * as UserService from '../service/user-service.js';
+import * as TemplateService from '../service/template-service.js';
+import { User } from './User.js';
+import { Config } from './Config.js';
+import { Template } from './Template.js';
+import { Collection } from './Collection.js';
 
 /**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
  *
- * You can configure the library in two ways:
- *
- * 1. Using static configuration (traditional approach):
- * 
- * ```typescript
- * Bkper.setConfig({
- *   apiKeyProvider: () => process.env.BKPER_API_KEY,
- *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
- * });
- *
- * const bkper = new Bkper();
- * const book = await bkper.getBook('bookId');
- * ```
- *
- * 2. Using per-instance configuration (recommended for Cloudflare Workers):
- * 
- * ```typescript
- * const bkper = new Bkper({
- *   apiKeyProvider: () => process.env.BKPER_API_KEY,
- *   oauthTokenProvider: () => process.env.BKPER_OAUTH_TOKEN
- * });
- *
- * const book = await bkper.getBook('bookId');
- * ```
- *
  * @public
  */
 export class Bkper {
-
     /** @internal */
     public static globalConfig: Config = {};
 
@@ -70,7 +44,7 @@ export class Bkper {
 
     /**
      * Gets the current instance configuration.
-     * 
+     *
      * @returns The Config object for this Bkper instance
      */
     public getConfig(): Config {
@@ -97,12 +71,7 @@ export class Bkper {
         includeAccounts?: boolean,
         includeGroups?: boolean
     ): Promise<Book> {
-        let book = await BookService.loadBook(
-            id,
-            includeAccounts,
-            includeGroups,
-            this.config
-        );
+        let book = await BookService.loadBook(id, includeAccounts, includeGroups, this.config);
         return new Book(book, this.config);
     }
 
@@ -114,7 +83,7 @@ export class Bkper {
      */
     public async getBooks(query?: string): Promise<Book[]> {
         let books = await BookService.loadBooks(query, this.config);
-        return books.map((book) => new Book(book, this.config));
+        return books.map(book => new Book(book, this.config));
     }
 
     /**
@@ -124,9 +93,7 @@ export class Bkper {
      */
     public async getCollections(): Promise<Collection[]> {
         let collections = await CollectionService.loadCollections(this.config);
-        return collections.map(
-            (collection) => new Collection(collection, this.config)
-        );
+        return collections.map(collection => new Collection(collection, this.config));
     }
 
     /**
@@ -136,7 +103,7 @@ export class Bkper {
      */
     public async getApps(): Promise<App[]> {
         let apps = await AppService.getApps(this.config);
-        return apps.map((app) => new App(app, this.config));
+        return apps.map(app => new App(app, this.config));
     }
 
     /**
@@ -158,7 +125,7 @@ export class Bkper {
      */
     public async getTemplates(): Promise<Template[]> {
         let templates = await TemplateService.getTemplates(this.config);
-        return templates.map((template) => new Template(template, this.config));
+        return templates.map(template => new Template(template, this.config));
     }
 
     /**
@@ -170,5 +137,4 @@ export class Bkper {
         let user = await UserService.getUser(this.config);
         return new User(user, this.config);
     }
-
 }
