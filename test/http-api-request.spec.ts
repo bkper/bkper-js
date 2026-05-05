@@ -134,7 +134,52 @@ describe("http-api-request", () => {
       });
     }
 
-    it("should fail fast on 401 access errors without retry noise", async () => {
+    it("should retry 403 so consumers can refresh the OAuth token and succeed", async () => {
+      let fetchCalls = 0;
+      let tokenRefreshed = false;
+      globalThis.fetch = async () => {
+        fetchCalls++;
+        if (!tokenRefreshed) {
+          return createJsonResponse(403, {
+            error: {
+              errors: [
+                {
+                  domain: "global",
+                  reason: "forbidden",
+                  message: "Login Required.",
+                },
+              ],
+              code: 403,
+              message: "Login Required.",
+            },
+          });
+        }
+        return createJsonResponse(200, { ok: true });
+      };
+
+      const retries: Array<{ status?: number; attempt?: number }> = [];
+      const request = new HttpApiRequest(
+        "v5/books/transactions",
+        createConfig({
+          requestRetryHandler: async (status, _error, attempt) => {
+            retries.push({ status, attempt });
+            // Simulate the consumer refreshing the OAuth token on 403.
+            if (status === 403) {
+              tokenRefreshed = true;
+            }
+          },
+        })
+      );
+
+      const response = await request.fetch();
+
+      expect(response.status).to.equal(200);
+      expect(response.data).to.deep.equal({ ok: true });
+      expect(fetchCalls).to.equal(2);
+      expect(retries).to.deep.equal([{ status: 403, attempt: 1 }]);
+    });
+
+    it("should retry 401 up to 3 times and then throw", async () => {
       let fetchCalls = 0;
       globalThis.fetch = async () => {
         fetchCalls++;
@@ -178,10 +223,8 @@ describe("http-api-request", () => {
         expect(error.message).to.equal(collaboratorMessage);
       }
 
-      expect(fetchCalls).to.equal(1);
-      expect(retryAttempts).to.deep.equal([]);
-      expect(logs).to.deep.equal([]);
-      expect(warnings).to.deep.equal([]);
+      expect(fetchCalls).to.equal(4);
+      expect(retryAttempts).to.deep.equal([1, 2, 3]);
     });
 
     it("should fail fast on 400 errors without retry", async () => {

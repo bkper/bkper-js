@@ -125,7 +125,10 @@ export class HttpApiRequest extends HttpRequest {
     }
 
     private shouldRetry(status?: number): boolean {
-        return status == 408 || status == 429 || (status != null && status >= 500);
+        // 401/403 are included so consumers can refresh the OAuth token via
+        // requestRetryHandler and have the request re-issued. The retry cap
+        // (this.retry < 3) prevents loops on permanent auth failures.
+        return status == 401 || status == 403 || status == 408 || status == 429 || (status != null && status >= 500);
     }
 
     private isNetworkError(error: unknown): error is NetworkError {
