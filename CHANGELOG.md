@@ -4,6 +4,14 @@ See what's new and what has changed in bkper-js
 
 ## 2026
 
+**May 2026**
+
+- Added `MenuOpenMode`
+- Added `App.getMenuOpenMode`
+- Added `App.setMenuOpenMode`
+- Deprecated `App.getMenuPopupWidth`. Use `App.getMenuOpenMode` instead
+- Deprecated `App.getMenuPopupHeight`. Use `App.getMenuOpenMode` instead
+
 **April 2026**
 - Added `Book.mergeTransactions`
 
