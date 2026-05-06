@@ -32,7 +32,11 @@
         "build:clean-dist": "rimraf dist",
         "build:bundle": "esbuild lib/index.js --bundle --format=iife --global-name=bkperjs --minify --sourcemap --target=es2015 --platform=browser --outfile=dist/bkper.min.js",
         "dev": "tsc -w",
-        "upgrade:api": "bun update @bkper/bkper-api-types --latest"
+        "upgrade:api": "bun update @bkper/bkper-api-types --latest",
+        "release:patch": "npm version patch -m \"chore(release): v%s\"",
+        "release:minor": "npm version minor -m \"chore(release): v%s\"",
+        "release:major": "npm version major -m \"chore(release): v%s\""
+
     },
     "dependencies": {
         "@bkper/bkper-api-types": "^5.40.2",

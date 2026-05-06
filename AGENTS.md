@@ -19,13 +19,21 @@ This file provides guidance to coding agents when working with code in this repo
 - `bun run upgrade:api` - Update @bkper/bkper-api-types to latest version
 - Uses Bun as primary package manager (bun.lockb present)
 
-### Versioning and Publishing
-- Releases are managed by GitHub Actions, not local commands
-- Open a PR with exactly one release label: `release:patch`, `release:minor`, or `release:major`
-- The PR workflow bumps `package.json` automatically on the PR branch
-- After adding a release label, wait for the automated version bump commit before merging the PR
-- After merge to `main`, CI validates the version, creates the tag, and publishes to npm
-- Do not perform local version bumps or local npm publishes unless explicitly instructed
+### Release workflow
+Releases are published by GitHub Actions (Trusted Publisher with OIDC), not from local machines.
+
+- Merge work into `main` normally; release timing is decoupled from PRs.
+- When ready to release from a clean, up-to-date `main`, run one of:
+  - `bun run release:patch`
+  - `bun run release:minor`
+  - `bun run release:major`
+- Push the resulting commit and tag with `git push origin main --follow-tags`
+- CI publishes only from version tags matching `v*.*.*`
+
+### Publishing policy
+- Never publish manually from local environment unless explicitly instructed.
+- Publishing is performed by CI on version tag pushes, with Trusted Publisher (OIDC).
+- If publish fails, fix root cause and re-run through the tag-based release flow; do not bypass with ad-hoc changes.
 
 ## Code Architecture
 
