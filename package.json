@@ -1,6 +1,6 @@
 {
     "name": "bkper-js",
-    "version": "2.33.1",
+    "version": "2.34.0",
     "description": "Javascript client for Bkper REST API",
     "main": "./lib/index.js",
     "module": "./lib/index.js",
@@ -36,7 +36,6 @@
         "release:patch": "npm version patch -m \"chore(release): v%s\"",
         "release:minor": "npm version minor -m \"chore(release): v%s\"",
         "release:major": "npm version major -m \"chore(release): v%s\""
-
     },
     "dependencies": {
         "@bkper/bkper-api-types": "^5.40.2",
