@@ -36,6 +36,6 @@ export { Event } from './model/Event.js';
 export { BotResponse } from './model/BotResponse.js';
 export { EventList } from './model/EventList.js';
 export { User } from './model/User.js';
-export { Periodicity, DecimalSeparator, Permission, Visibility, AccountType, BalanceType, Period, Month, EventType, BotResponseType, TransactionStatus, } from './model/Enums.js';
+export { Periodicity, DecimalSeparator, Permission, Visibility, AccountType, BalanceType, Period, Month, EventType, BotResponseType, TransactionStatus, MenuOpenMode, } from './model/Enums.js';
 export { BkperError } from './model/BkperError.js';
 //# sourceMappingURL=index.d.ts.map

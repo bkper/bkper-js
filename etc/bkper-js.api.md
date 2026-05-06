@@ -102,7 +102,10 @@ export class App extends Resource<bkper.App> {
     getId(): string | undefined;
     getLogoUrl(): string | undefined;
     getLogoUrlDark(): string | undefined;
+    getMenuOpenMode(): MenuOpenMode;
+    // @deprecated
     getMenuPopupHeight(): string | undefined;
+    // @deprecated
     getMenuPopupWidth(): string | undefined;
     getMenuText(): string | undefined;
     getMenuUrl(): string | undefined;
@@ -121,6 +124,7 @@ export class App extends Resource<bkper.App> {
     isRepositoryPrivate(): boolean | undefined;
     setClientSecret(clientSecret?: string): App;
     setDevelopers(developers?: string): App;
+    setMenuOpenMode(menuOpenMode?: MenuOpenMode): App;
     setReadme(readme?: string): App;
     setUsers(users?: string): App;
     setWebhookUrlDev(webhookUrlDev: string): App;
@@ -664,6 +668,13 @@ export class Integration extends ResourceProperty<bkper.Integration> {
     getLogoUrlDark(): string | undefined;
     getName(): string | undefined;
     remove(): Promise<Integration>;
+}
+
+// @public
+export enum MenuOpenMode {
+    EXPANDED = "EXPANDED",
+    NEW_TAB = "NEW_TAB",
+    SIDEBAR = "SIDEBAR"
 }
 
 // @public

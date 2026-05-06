@@ -1,5 +1,5 @@
 import * as AppService from "../service/app-service.js";
-import { EventType } from "./Enums.js";
+import { EventType, MenuOpenMode } from "./Enums.js";
 import { Config } from "./Config.js";
 import { Resource } from "./Resource.js";
 import { Bkper } from "./Bkper.js";
@@ -167,8 +167,30 @@ export class App extends Resource<bkper.App> {
     }
 
     /**
+     * Gets how the app menu opens.
+     *
+     * @returns The configured app menu open mode, defaults to SIDEBAR
+     */
+    public getMenuOpenMode(): MenuOpenMode {
+        return (this.payload.menuOpenMode as MenuOpenMode) || MenuOpenMode.SIDEBAR;
+    }
+
+    /**
+     * Sets how the app menu opens.
+     *
+     * @param menuOpenMode - The app menu open mode to set
+     *
+     * @returns This App, for chaining
+     */
+    public setMenuOpenMode(menuOpenMode?: MenuOpenMode): App {
+        this.payload.menuOpenMode = menuOpenMode;
+        return this;
+    }
+
+    /**
      * Gets the menu popup width of this App.
      *
+     * @deprecated Use getMenuOpenMode() to decide how the app should open.
      * @returns The menu popup width of this App
      */
     public getMenuPopupWidth(): string | undefined {
@@ -178,6 +200,7 @@ export class App extends Resource<bkper.App> {
     /**
      * Gets the menu popup height of this App.
      *
+     * @deprecated Use getMenuOpenMode() to decide how the app should open.
      * @returns The menu popup height of this App
      */
     public getMenuPopupHeight(): string | undefined {

@@ -211,6 +211,28 @@ export enum TransactionStatus {
 }
 
 /**
+ * Enum that represents how an App menu opens.
+ *
+ * @public
+ */
+export enum MenuOpenMode {
+    /**
+     * Open inside the sidebar panel.
+     */
+    SIDEBAR = 'SIDEBAR',
+
+    /**
+     * Open expanded inside the app panel.
+     */
+    EXPANDED = 'EXPANDED',
+
+    /**
+     * Open in a new browser tab.
+     */
+    NEW_TAB = 'NEW_TAB',
+}
+
+/**
  * Enum that represents the type of a Bot Response
  *
  * @public

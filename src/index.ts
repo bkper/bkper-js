@@ -49,5 +49,6 @@ export {
     EventType,
     BotResponseType,
     TransactionStatus,
+    MenuOpenMode,
 } from './model/Enums.js';
 export { BkperError } from './model/BkperError.js';
