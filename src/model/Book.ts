@@ -1339,8 +1339,8 @@ export class Book extends ResourceProperty<bkper.Book> {
      *
      * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
      * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
-     * @param onError - True to search only for events on error
-     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null
+     * @param onError - Filter by error state: `true` = only errors, `false` = only non-errors, `null` = all. Ignored when `resourceId` is set.
+     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null. When set, `onError` is ignored.
      * @param limit - The maximum number of events to return
      * @param cursor - The cursor for pagination. Can be null
      *
@@ -1349,7 +1349,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     public async listEvents(
         afterDate: string | null,
         beforeDate: string | null,
-        onError: boolean,
+        onError: boolean | null,
         resourceId: string | null,
         limit: number,
         cursor?: string

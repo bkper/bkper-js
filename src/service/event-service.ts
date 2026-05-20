@@ -2,7 +2,16 @@ import { Book } from "../model/Book.js";
 import { HttpBooksApiV5Request } from "./http-api-request.js";
 import { Config } from '../model/Config.js';
 
-export async function listEvents(book: Book, afterDate: string | null, beforeDate: string | null, onError: boolean, resourceId: string | null, limit: number, cursor: string | undefined, config: Config): Promise<bkper.EventList> {
+export async function listEvents(
+    book: Book,
+    afterDate: string | null,
+    beforeDate: string | null,
+    onError: boolean | null,
+    resourceId: string | null,
+    limit: number,
+    cursor: string | undefined,
+    config: Config
+): Promise<bkper.EventList> {
     let request = new HttpBooksApiV5Request(`${book.getId()}/events`, config);
     request.addParam('after', afterDate);
     request.addParam('before', beforeDate);
