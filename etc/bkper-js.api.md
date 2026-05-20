@@ -526,6 +526,10 @@ export enum EventType {
     // (undocumented)
     ACCOUNT_UPDATED = "ACCOUNT_UPDATED",
     // (undocumented)
+    BOOK_AUDITED = "BOOK_AUDITED",
+    // (undocumented)
+    BOOK_CREATED = "BOOK_CREATED",
+    // (undocumented)
     BOOK_DELETED = "BOOK_DELETED",
     // (undocumented)
     BOOK_UPDATED = "BOOK_UPDATED",
