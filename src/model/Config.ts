@@ -18,6 +18,10 @@ export interface Config {
 
     /**
      * Issue a valid OAuth2 access token with **https://www.googleapis.com/auth/userinfo.email** scope authorized.
+     *
+     * If omitted or if it returns undefined, requests are sent without an Authorization header.
+     * This supports environments where authentication is injected outside bkper-js, such as
+     * Bkper Platform outbound for server-side app routes.
      */
     oauthTokenProvider?: () => Promise<string | undefined>;
 

@@ -63,7 +63,10 @@ export class HttpApiRequest extends HttpRequest {
     async fetch(): Promise<HttpResponse> {
         this.addCustomHeaders();
         await this.addAgentIdHeader();
-        this.setHeader("Authorization", `Bearer ${await this.getAccessToken()}`);
+        const accessToken = await this.getAccessToken();
+        if (accessToken) {
+            this.setHeader("Authorization", `Bearer ${accessToken}`);
+        }
         await this.addApiKeyHeader();
 
         try {
@@ -223,8 +226,6 @@ export class HttpApiRequest extends HttpRequest {
         const effectiveConfig = this.config;
         if (effectiveConfig.oauthTokenProvider) {
             token = await effectiveConfig.oauthTokenProvider();
-        } else {
-            console.warn(`Token provider NOT configured!`);
         }
 
         if (token) {

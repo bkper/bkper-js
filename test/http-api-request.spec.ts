@@ -134,6 +134,22 @@ describe("http-api-request", () => {
       });
     }
 
+    it("should omit Authorization when no OAuth token provider is configured", async () => {
+      let requestHeaders: Headers | undefined;
+      globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+        requestHeaders = input instanceof Request ? input.headers : new Headers(init?.headers);
+        return createJsonResponse(200, { ok: true });
+      };
+
+      const request = new HttpApiRequest("v5/books", {});
+      const response = await request.fetch();
+
+      expect(response.status).to.equal(200);
+      expect(response.data).to.deep.equal({ ok: true });
+      expect(requestHeaders?.has("Authorization")).to.be.false;
+      expect(warnings).to.deep.equal([]);
+    });
+
     it("should retry 403 so consumers can refresh the OAuth token and succeed", async () => {
       let fetchCalls = 0;
       let tokenRefreshed = false;
