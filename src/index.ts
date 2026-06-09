@@ -25,6 +25,7 @@ export { Collection } from './model/Collection.js';
 export { Config } from './model/Config.js';
 export { Connection } from './model/Connection.js';
 export { File } from './model/File.js';
+export { FileList } from './model/FileList.js';
 export { Group } from './model/Group.js';
 export { GroupsDataTableBuilder } from './builders/GroupsDataTableBuilder.js';
 export { Integration } from './model/Integration.js';

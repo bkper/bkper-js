@@ -2021,6 +2021,15 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      */
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
     /**
+     * Lists files in the Book, for pagination.
+     *
+     * @param limit - The maximum number of files to return. Default to 100
+     * @param cursor - The cursor for pagination
+     *
+     * @returns A [[FileList]] object containing the list of files
+     */
+    listFiles(limit?: number, cursor?: string): Promise<FileList>;
+    /**
      * Retrieve the number of transactions based on a query.
      *
      * @param query - The query string
@@ -2847,6 +2856,41 @@ export declare class File extends ResourceProperty<bkper.File> {
      * @returns The updated File object
      */
     update(): Promise<File>;
+}
+
+/**
+ * A list associated with a file query.
+ *
+ * @public
+ */
+export declare class FileList {
+    private payload;
+
+    constructor(book: Book, payload: bkper.FileList);
+    /**
+     * Gets the cursor associated with the query for pagination.
+     *
+     * @returns The cursor associated with the query for pagination
+     */
+    getCursor(): string | undefined;
+    /**
+     * Gets the first File in the list.
+     *
+     * @returns The first File in the list
+     */
+    getFirst(): File | undefined;
+    /**
+     * Gets the total number of files in the list.
+     *
+     * @returns The total number of files
+     */
+    size(): number;
+    /**
+     * Gets the files in the list.
+     *
+     * @returns An array of File objects
+     */
+    getItems(): File[];
 }
 
 /**

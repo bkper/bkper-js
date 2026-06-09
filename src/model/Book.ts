@@ -18,6 +18,7 @@ import { Collection } from './Collection.js';
 import { DecimalSeparator, Month, Period, Permission, Visibility } from './Enums.js';
 import { EventList } from './EventList.js';
 import { File } from './File.js';
+import { FileList } from './FileList.js';
 import { Group } from './Group.js';
 import { Integration } from './Integration.js';
 import { Transaction } from './Transaction.js';
@@ -1316,6 +1317,24 @@ export class Book extends ResourceProperty<bkper.Book> {
             this.getConfig()
         );
         return new TransactionList(this, transactionsList);
+    }
+
+    /**
+     * Lists files in the Book, for pagination.
+     *
+     * @param limit - The maximum number of files to return. Default to 100
+     * @param cursor - The cursor for pagination
+     *
+     * @returns A [[FileList]] object containing the list of files
+     */
+    public async listFiles(limit?: number, cursor?: string): Promise<FileList> {
+        const fileList = await FileService.listFiles(
+            this.getId(),
+            limit,
+            cursor,
+            this.getConfig()
+        );
+        return new FileList(this, fileList);
     }
 
     /**

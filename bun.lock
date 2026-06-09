@@ -5,7 +5,7 @@
     "": {
       "name": "bkper-js",
       "dependencies": {
-        "@bkper/bkper-api-types": "^5.40.2",
+        "@bkper/bkper-api-types": "^5.41.0",
         "big.js": "^6.0.3",
         "dayjs": "^1.10.3",
         "luxon": "^1.25.0",
@@ -109,7 +109,7 @@
 
     "@babel/runtime": ["@babel/runtime@7.29.2", "", {}, "sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g=="],
 
-    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.40.2", "", {}, "sha512-bvaP0B7AH0hAbXLWs/KQQwbSH8e6UE2RpAdcKveEPo5679a2Hl34MjslKJUbTUPi2mB8li16kKCPrx86VkGx8w=="],
+    "@bkper/bkper-api-types": ["@bkper/bkper-api-types@5.41.0", "", {}, "sha512-sd6ip4Yuf1bPUArIk2um+Jcrxm+XXmpRmWt1OX3ZJ2WEO3UOy6Ungk2qwgxZvWZf2PcRhgPiaBe4V9Dc6ZIAZQ=="],
 
     "@borewit/text-codec": ["@borewit/text-codec@0.2.2", "", {}, "sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ=="],
 

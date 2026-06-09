@@ -4,6 +4,11 @@ See what's new and what has changed in bkper-js
 
 ## 2026
 
+**June 2026**
+
+- Added `Book.listFiles`
+- Added `FileList`
+
 **May 2026**
 
 - Added `MenuOpenMode`
