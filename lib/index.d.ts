@@ -3457,6 +3457,16 @@ declare abstract class Resource<T = any> {
  * Extends Resource<T> and adds property management methods for entities
  * that have a properties field in their payload.
  *
+ * Custom property keys are normalized and validated by the Bkper API when
+ * resources are persisted:
+ *
+ * - Keys can have up to 30 characters after normalization.
+ * - Keys are normalized to lowercase, spaces become underscores, and unsupported
+ *   punctuation is removed.
+ * - Keys ending with an underscore (`_`) are treated as hidden/internal by SDK
+ *   visible-property helpers.
+ * - Empty, null, or undefined values clear the property when saved.
+ *
  * @public
  */
 declare abstract class ResourceProperty<T extends {
@@ -3493,6 +3503,10 @@ declare abstract class ResourceProperty<T extends {
     getProperty(...keys: string[]): string | undefined;
     /**
      * Sets a custom property in this resource.
+     *
+     * Property keys are normalized and validated by the API when saved. Keep keys
+     * to 30 characters or fewer after normalization. Use a trailing underscore
+     * (`_`) for hidden/internal properties.
      *
      * @param key - The property key
      * @param value - The property value, or null/undefined to clean it
