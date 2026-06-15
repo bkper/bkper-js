@@ -353,6 +353,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     getTransaction(id: string): Promise<Transaction | undefined>;
     getVisibility(): Visibility;
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean | null, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
+    listFiles(limit?: number, cursor?: string): Promise<FileList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
     mergeTransactions(transaction1: Transaction | bkper.Transaction | string, transaction2: Transaction | bkper.Transaction | string): Promise<Transaction>;
     parseDate(date: string): Date;
@@ -473,13 +474,14 @@ export class Connection extends ResourceProperty<bkper.Connection> {
     getIntegrations(): Promise<Integration[]>;
     getLogo(): string | undefined;
     getName(): string | undefined;
-    getType(): "APP" | "BANK" | undefined;
+    getType(): 'APP' | 'BANK' | undefined;
     getUUID(): string | undefined;
     remove(): Promise<Connection>;
     setAgentId(agentId: string): Connection;
     setName(name: string): Connection;
-    setType(type: "APP" | "BANK"): Connection;
+    setType(type: 'APP' | 'BANK'): Connection;
     setUUID(uuid: string): Connection;
+    update(): Promise<Connection>;
 }
 
 // @public
@@ -603,6 +605,15 @@ export class File extends ResourceProperty<bkper.File> {
 }
 
 // @public
+export class FileList {
+    constructor(book: Book, payload: bkper.FileList);
+    getCursor(): string | undefined;
+    getFirst(): File | undefined;
+    getItems(): File[];
+    size(): number;
+}
+
+// @public
 export class Group extends ResourceProperty<bkper.Group> {
     constructor(book: Book, payload?: bkper.Group);
     // @internal (undocumented)
@@ -672,6 +683,8 @@ export class Integration extends ResourceProperty<bkper.Integration> {
     getLogoUrlDark(): string | undefined;
     getName(): string | undefined;
     remove(): Promise<Integration>;
+    setName(name: string): Integration;
+    update(): Promise<Integration>;
 }
 
 // @public

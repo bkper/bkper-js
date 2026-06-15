@@ -2574,7 +2574,7 @@ export declare class Connection extends ResourceProperty<bkper.Connection> {
      *
      * @returns The Connection type
      */
-    getType(): "APP" | "BANK" | undefined;
+    getType(): 'APP' | 'BANK' | undefined;
     /**
      * Sets the Connection type.
      *
@@ -2582,7 +2582,7 @@ export declare class Connection extends ResourceProperty<bkper.Connection> {
      *
      * @returns The Connection, for chaining
      */
-    setType(type: "APP" | "BANK"): Connection;
+    setType(type: 'APP' | 'BANK'): Connection;
     /**
      * Cleans any token property stored in the Connection.
      */
@@ -2599,6 +2599,12 @@ export declare class Connection extends ResourceProperty<bkper.Connection> {
      * @returns The created Connection, for chaining
      */
     create(): Promise<Connection>;
+    /**
+     * Performs update Connection.
+     *
+     * @returns The updated Connection object
+     */
+    update(): Promise<Connection>;
     /**
      * Performs remove Connection.
      *
@@ -3198,6 +3204,14 @@ export declare class Integration extends ResourceProperty<bkper.Integration> {
      */
     getName(): string | undefined;
     /**
+     * Sets the name of the Integration.
+     *
+     * @param name - The name of the Integration
+     *
+     * @returns The Integration, for chaining
+     */
+    setName(name: string): Integration;
+    /**
      * Gets the name of the user who added the Integration.
      *
      * @returns The user name of who added the Integration
@@ -3241,6 +3255,12 @@ export declare class Integration extends ResourceProperty<bkper.Integration> {
      * @returns The Integration last update date in milliseconds
      */
     getLastUpdateMs(): string | undefined;
+    /**
+     * Performs update Integration.
+     *
+     * @returns The updated Integration object
+     */
+    update(): Promise<Integration>;
     /**
      * Performs remove Integration.
      *
