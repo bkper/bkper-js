@@ -1,7 +1,7 @@
-import * as IntegrationService from "../service/integration-service.js";
-import { ResourceProperty } from "./ResourceProperty.js";
-import { Config } from "./Config.js";
-import { Bkper } from "./Bkper.js";
+import * as IntegrationService from '../service/integration-service.js';
+import { ResourceProperty } from './ResourceProperty.js';
+import { Config } from './Config.js';
+import { Bkper } from './Bkper.js';
 
 /**
  * This class defines a Integration from an [[User]] to an external service.
@@ -9,7 +9,6 @@ import { Bkper } from "./Bkper.js";
  * @public
  */
 export class Integration extends ResourceProperty<bkper.Integration> {
-
     private config?: Config;
 
     constructor(payload?: bkper.Integration, config?: Config) {
@@ -50,6 +49,18 @@ export class Integration extends ResourceProperty<bkper.Integration> {
     }
 
     /**
+     * Sets the name of the Integration.
+     *
+     * @param name - The name of the Integration
+     *
+     * @returns The Integration, for chaining
+     */
+    public setName(name: string): Integration {
+        this.payload.name = name;
+        return this;
+    }
+
+    /**
      * Gets the name of the user who added the Integration.
      *
      * @returns The user name of who added the Integration
@@ -71,7 +82,7 @@ export class Integration extends ResourceProperty<bkper.Integration> {
      * Gets the logo of the Integration.
      *
      * @returns The Integration's logo
-     * 
+     *
      * @deprecated Use getLogoUrl instead.
      */
     public getLogo(): string | undefined {
@@ -114,7 +125,22 @@ export class Integration extends ResourceProperty<bkper.Integration> {
         return this.payload.lastUpdateMs;
     }
 
-
+    /**
+     * Performs update Integration.
+     *
+     * @returns The updated Integration object
+     */
+    public async update(): Promise<Integration> {
+        const bookId = this.getBookId();
+        if (bookId) {
+            this.payload = await IntegrationService.updateIntegration(
+                bookId,
+                this.payload,
+                this.getConfig()
+            );
+        }
+        return this;
+    }
 
     /**
      * Performs remove Integration.
