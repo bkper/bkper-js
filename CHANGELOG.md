@@ -7,13 +7,21 @@ See what's new and what has changed in bkper-js
 **June 2026**
 
 - Added `Book.listFiles`
+- Added `Connection.update`
 - Added `FileList`
+- Added `Integration.setName`
+- Added `Integration.update`
 
 **May 2026**
 
 - Added `MenuOpenMode`
 - Added `App.getMenuOpenMode`
 - Added `App.setMenuOpenMode`
+- Added `EventType.BOOK_AUDITED`
+- Added `EventType.BOOK_CREATED`
+- Added support for transaction ids in `Book.mergeTransactions`
+- Changed `Book.listEvents` to allow `null` `onError` for fetching all events
+- Changed OAuth token provider configuration to be optional
 - Deprecated `App.getMenuPopupWidth`. Use `App.getMenuOpenMode` instead
 - Deprecated `App.getMenuPopupHeight`. Use `App.getMenuOpenMode` instead
 
