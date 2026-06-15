@@ -1,8 +1,8 @@
-import { Config } from "./Config.js";
-import { ResourceProperty } from "./ResourceProperty.js";
-import { Bkper } from "./Bkper.js";
-import * as ConnectionService from "../service/connection-service.js";
-import { Integration } from "./Integration.js";
+import { Config } from './Config.js';
+import { ResourceProperty } from './ResourceProperty.js';
+import { Bkper } from './Bkper.js';
+import * as ConnectionService from '../service/connection-service.js';
+import { Integration } from './Integration.js';
 
 /**
  * This class defines a Connection from an [[User]] to an external service.
@@ -126,7 +126,7 @@ export class Connection extends ResourceProperty<bkper.Connection> {
      *
      * @returns The Connection type
      */
-    public getType(): "APP" | "BANK" | undefined {
+    public getType(): 'APP' | 'BANK' | undefined {
         return this.payload.type;
     }
 
@@ -137,7 +137,7 @@ export class Connection extends ResourceProperty<bkper.Connection> {
      *
      * @returns The Connection, for chaining
      */
-    public setType(type: "APP" | "BANK"): Connection {
+    public setType(type: 'APP' | 'BANK'): Connection {
         this.payload.type = type;
         return this;
     }
@@ -147,8 +147,8 @@ export class Connection extends ResourceProperty<bkper.Connection> {
      */
     public clearTokenProperties(): void {
         this.getPropertyKeys()
-            .filter((key) => key.includes("token"))
-            .forEach((key) => this.deleteProperty(key));
+            .filter(key => key.includes('token'))
+            .forEach(key => this.deleteProperty(key));
     }
 
     /**
@@ -161,11 +161,8 @@ export class Connection extends ResourceProperty<bkper.Connection> {
         if (!id) {
             return [];
         }
-        const integrationsPlain = await ConnectionService.listIntegrations(
-            id,
-            this.getConfig()
-        );
-        const integrations = integrationsPlain.map((i) => new Integration(i, this.config));
+        const integrationsPlain = await ConnectionService.listIntegrations(id, this.getConfig());
+        const integrations = integrationsPlain.map(i => new Integration(i, this.config));
         return integrations;
     }
 
@@ -175,10 +172,17 @@ export class Connection extends ResourceProperty<bkper.Connection> {
      * @returns The created Connection, for chaining
      */
     public async create(): Promise<Connection> {
-        this.payload = await ConnectionService.createConnection(
-            this.payload,
-            this.getConfig()
-        );
+        this.payload = await ConnectionService.createConnection(this.payload, this.getConfig());
+        return this;
+    }
+
+    /**
+     * Performs update Connection.
+     *
+     * @returns The updated Connection object
+     */
+    public async update(): Promise<Connection> {
+        this.payload = await ConnectionService.updateConnection(this.payload, this.getConfig());
         return this;
     }
 
@@ -190,10 +194,7 @@ export class Connection extends ResourceProperty<bkper.Connection> {
     public async remove(): Promise<Connection> {
         const connectionId = this.getId();
         if (connectionId) {
-            this.payload = await ConnectionService.deleteConnection(
-                connectionId,
-                this.getConfig()
-            );
+            this.payload = await ConnectionService.deleteConnection(connectionId, this.getConfig());
         }
         return this;
     }
