@@ -77,6 +77,15 @@ export class Collaborator extends Resource<bkper.Collaborator> {
     }
 
     /**
+     * Gets the public avatar url of the Collaborator.
+     *
+     * @returns The Collaborator's public avatar url
+     */
+    public getAvatarUrl(): string | undefined {
+        return this.payload.avatarUrl;
+    }
+
+    /**
      * Performs create new Collaborator.
      *
      * @returns Promise with the created Collaborator

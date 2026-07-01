@@ -2329,6 +2329,12 @@ export declare class Collaborator extends Resource<bkper.Collaborator> {
      */
     setPermission(permission: Permission): Collaborator;
     /**
+     * Gets the public avatar url of the Collaborator.
+     *
+     * @returns The Collaborator's public avatar url
+     */
+    getAvatarUrl(): string | undefined;
+    /**
      * Performs create new Collaborator.
      *
      * @returns Promise with the created Collaborator

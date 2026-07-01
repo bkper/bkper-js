@@ -416,6 +416,7 @@ export enum BotResponseType {
 export class Collaborator extends Resource<bkper.Collaborator> {
     constructor(book: Book, payload?: bkper.Collaborator);
     create(message?: string): Promise<Collaborator>;
+    getAvatarUrl(): string | undefined;
     // @internal (undocumented)
     getConfig(): Config;
     getEmail(): string | undefined;
