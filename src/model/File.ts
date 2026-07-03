@@ -138,7 +138,14 @@ export class File extends ResourceProperty<bkper.File> {
         return this.payload.size;
     }
 
-
+    /**
+     * Gets the date the File was created.
+     *
+     * @returns The date the File was created
+     */
+    public getCreatedAt(): Date | undefined {
+        return this.payload.createdAt ? new Date(new Number(this.payload.createdAt).valueOf()) : undefined;
+    }
 
     /**
      * Perform create new File.

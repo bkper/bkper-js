@@ -2857,6 +2857,12 @@ export declare class File extends ResourceProperty<bkper.File> {
      */
     getSize(): number | undefined;
     /**
+     * Gets the date the File was created.
+     *
+     * @returns The date the File was created
+     */
+    getCreatedAt(): Date | undefined;
+    /**
      * Perform create new File.
      *
      * @returns The created File object

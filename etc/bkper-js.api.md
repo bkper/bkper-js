@@ -595,6 +595,7 @@ export class File extends ResourceProperty<bkper.File> {
     getConfig(): Config;
     getContent(): Promise<string | undefined>;
     getContentType(): string | undefined;
+    getCreatedAt(): Date | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
     getSize(): number | undefined;
