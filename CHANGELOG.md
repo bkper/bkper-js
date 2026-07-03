@@ -4,6 +4,11 @@ See what's new and what has changed in bkper-js
 
 ## 2026
 
+**July 2026**
+
+- Added `Collaborator.getAvatarUrl`
+- Added `File.getCreatedAt`
+
 **June 2026**
 
 - Added `Book.listFiles`
