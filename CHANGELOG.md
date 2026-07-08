@@ -14,6 +14,10 @@ See what's new and what has changed in bkper-js
 - Added `Book.listFiles`
 - Added `Connection.update`
 - Added `FileList`
+- Added `FileList.getCursor`
+- Added `FileList.getFirst`
+- Added `FileList.size`
+- Added `FileList.getItems`
 - Added `Integration.setName`
 - Added `Integration.update`
 
