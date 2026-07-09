@@ -4,11 +4,11 @@ import { Config } from '../model/Config.js';
 
 export async function listEvents(
     book: Book,
-    afterDate: string | null,
-    beforeDate: string | null,
-    onError: boolean | null,
-    resourceId: string | null,
-    limit: number,
+    afterDate: string | null | undefined,
+    beforeDate: string | null | undefined,
+    onError: boolean | null | undefined,
+    resourceId: string | null | undefined,
+    limit: number | undefined,
     cursor: string | undefined,
     config: Config
 ): Promise<bkper.EventList> {

@@ -43,6 +43,7 @@ describe("Book.listEvents()", () => {
     await book.listEvents(null, null, null, null, 10);
     expect(requestedUrls).to.have.length(1);
     expect(requestedUrls[0]).to.not.contain("error=");
+    expect(requestedUrls[0]).to.contain("limit=10");
   });
 
   it("sends error=false when onError is false", async () => {
@@ -57,5 +58,13 @@ describe("Book.listEvents()", () => {
     await book.listEvents(null, null, true, null, 10);
     expect(requestedUrls).to.have.length(1);
     expect(requestedUrls[0]).to.contain("error=true");
+  });
+
+  it("sends query params with options", async () => {
+    const book = createBook();
+    await book.listEvents({ onError: false, limit: 10 });
+    expect(requestedUrls).to.have.length(1);
+    expect(requestedUrls[0]).to.contain("error=false");
+    expect(requestedUrls[0]).to.contain("limit=10");
   });
 });

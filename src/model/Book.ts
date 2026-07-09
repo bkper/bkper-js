@@ -32,6 +32,7 @@ import { Backlog } from './Backlog.js';
 import { AccountsDataTableBuilder } from '../builders/AccountsDataTableBuilder.js';
 import { GroupsDataTableBuilder } from '../builders/GroupsDataTableBuilder.js';
 import { TransactionsDataTableBuilder } from '../builders/TransactionsDataTableBuilder.js';
+import type { ListEventsOptions } from './ListEventsOptions.js';
 
 /**
  * A Book represents a [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
@@ -1328,12 +1329,7 @@ export class Book extends ResourceProperty<bkper.Book> {
      * @returns A [[FileList]] object containing the list of files
      */
     public async listFiles(limit?: number, cursor?: string): Promise<FileList> {
-        const fileList = await FileService.listFiles(
-            this.getId(),
-            limit,
-            cursor,
-            this.getConfig()
-        );
+        const fileList = await FileService.listFiles(this.getId(), limit, cursor, this.getConfig());
         return new FileList(this, fileList);
     }
 
@@ -1354,14 +1350,24 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Lists events in the Book based on the provided options.
+     *
+     * @param options - The event list options
+     *
+     * @returns An [[EventList]] object containing the list of events
+     */
+    public async listEvents(options: ListEventsOptions): Promise<EventList>;
+    /**
      * Lists events in the Book based on the provided parameters.
      *
-     * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
-     * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
-     * @param onError - Filter by error state: `true` = only errors, `false` = only non-errors, `null` = all. Ignored when `resourceId` is set.
-     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null. When set, `onError` is ignored.
-     * @param limit - The maximum number of events to return
-     * @param cursor - The cursor for pagination. Can be null
+     * @deprecated Use `listEvents(options)` instead.
+     *
+     * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format.
+     * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format.
+     * @param onError - Whether to filter events by error responses. `true` returns events with at least one error response. `false` returns events with no error responses. `null` or `undefined` includes events regardless of error responses. Ignored when `resourceId` is set.
+     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). When set, `onError` is ignored.
+     * @param limit - The maximum number of events to return. Defaults to `50`, maximum is `200`.
+     * @param cursor - The cursor for pagination.
      *
      * @returns An [[EventList]] object containing the list of events
      */
@@ -1372,15 +1378,34 @@ export class Book extends ResourceProperty<bkper.Book> {
         resourceId: string | null,
         limit: number,
         cursor?: string
+    ): Promise<EventList>;
+    public async listEvents(
+        optionsOrAfterDate: ListEventsOptions | string | null,
+        beforeDate?: string | null,
+        onError?: boolean | null,
+        resourceId?: string | null,
+        limit?: number,
+        cursor?: string
     ): Promise<EventList> {
+        const options =
+            typeof optionsOrAfterDate === 'object' && optionsOrAfterDate !== null
+                ? optionsOrAfterDate
+                : {
+                      afterDate: optionsOrAfterDate,
+                      beforeDate,
+                      onError,
+                      resourceId,
+                      limit,
+                      cursor,
+                  };
         const eventsList = await EventService.listEvents(
             this,
-            afterDate,
-            beforeDate,
-            onError,
-            resourceId,
-            limit,
-            cursor,
+            options.afterDate,
+            options.beforeDate,
+            options.onError,
+            options.resourceId,
+            options.limit,
+            options.cursor,
             this.getConfig()
         );
         return new EventList(this, eventsList);

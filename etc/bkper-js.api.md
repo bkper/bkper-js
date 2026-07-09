@@ -352,6 +352,8 @@ export class Book extends ResourceProperty<bkper.Book> {
     getTotalTransactionsCurrentYear(): number;
     getTransaction(id: string): Promise<Transaction | undefined>;
     getVisibility(): Visibility;
+    listEvents(options: ListEventsOptions): Promise<EventList>;
+    // @deprecated
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean | null, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     listFiles(limit?: number, cursor?: string): Promise<FileList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
@@ -687,6 +689,16 @@ export class Integration extends ResourceProperty<bkper.Integration> {
     remove(): Promise<Integration>;
     setName(name: string): Integration;
     update(): Promise<Integration>;
+}
+
+// @public
+export interface ListEventsOptions {
+    afterDate?: string;
+    beforeDate?: string;
+    cursor?: string;
+    limit: number;
+    onError?: boolean;
+    resourceId?: string;
 }
 
 // @public

@@ -19,6 +19,7 @@ export { BalancesReport } from './model/BalancesReport.js';
 export { Billing } from './model/Billing.js';
 export { Bkper } from './model/Bkper.js';
 export { Book } from './model/Book.js';
+export type { ListEventsOptions } from './model/ListEventsOptions.js';
 export { BooksDataTableBuilder } from './builders/BooksDataTableBuilder.js';
 export { Collaborator } from './model/Collaborator.js';
 export { Collection } from './model/Collection.js';

@@ -2038,14 +2038,24 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      */
     countTransactions(query?: string): Promise<number | undefined>;
     /**
+     * Lists events in the Book based on the provided options.
+     *
+     * @param options - The event list options
+     *
+     * @returns An [[EventList]] object containing the list of events
+     */
+    listEvents(options: ListEventsOptions): Promise<EventList>;
+    /**
      * Lists events in the Book based on the provided parameters.
      *
-     * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
-     * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format. Can be null
-     * @param onError - Filter by error state: `true` = only errors, `false` = only non-errors, `null` = all. Ignored when `resourceId` is set.
-     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). Can be null. When set, `onError` is ignored.
-     * @param limit - The maximum number of events to return
-     * @param cursor - The cursor for pagination. Can be null
+     * @deprecated Use `listEvents(options)` instead.
+     *
+     * @param afterDate - The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format.
+     * @param beforeDate - The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format.
+     * @param onError - Whether to filter events by error responses. `true` returns events with at least one error response. `false` returns events with no error responses. `null` or `undefined` includes events regardless of error responses. Ignored when `resourceId` is set.
+     * @param resourceId - The ID of the event's resource (Transaction, Account, or Group). When set, `onError` is ignored.
+     * @param limit - The maximum number of events to return. Defaults to `50`, maximum is `200`.
+     * @param cursor - The cursor for pagination.
      *
      * @returns An [[EventList]] object containing the list of events
      */
@@ -3279,6 +3289,48 @@ export declare class Integration extends ResourceProperty<bkper.Integration> {
      * @returns The removed Integration object
      */
     remove(): Promise<Integration>;
+}
+
+/**
+ * Options for listing events in a Book.
+ *
+ * @public
+ */
+export declare interface ListEventsOptions {
+    /**
+     * The start date (inclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format.
+     */
+    afterDate?: string;
+    /**
+     * The end date (exclusive) for the events search range, in [RFC3339](https://en.wikipedia.org/wiki/ISO_8601#RFC_3339) format.
+     */
+    beforeDate?: string;
+    /**
+     * The ID of the event's resource (Transaction, Account, or Group).
+     *
+     * When set, `onError` is ignored.
+     */
+    resourceId?: string;
+    /**
+     * Whether to filter events by error responses.
+     *
+     * `true` returns events with at least one error response.
+     * `false` returns events with no error responses.
+     * `null` or `undefined` includes events regardless of error responses.
+     *
+     * Ignored when `resourceId` is set.
+     */
+    onError?: boolean;
+    /**
+     * The maximum number of events to return.
+     *
+     * Defaults to `50`, maximum is `200`.
+     */
+    limit: number;
+    /**
+     * The cursor for pagination.
+     */
+    cursor?: string;
 }
 
 /**
