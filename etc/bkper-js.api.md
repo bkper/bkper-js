@@ -699,6 +699,7 @@ export interface ListEventsOptions {
     limit: number;
     onError?: boolean;
     resourceId?: string;
+    type?: EventType;
 }
 
 // @public

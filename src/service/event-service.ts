@@ -1,6 +1,7 @@
 import { Book } from "../model/Book.js";
 import { HttpBooksApiV5Request } from "./http-api-request.js";
 import { Config } from '../model/Config.js';
+import type { EventType } from '../model/Enums.js';
 
 export async function listEvents(
     book: Book,
@@ -8,6 +9,7 @@ export async function listEvents(
     beforeDate: string | null | undefined,
     onError: boolean | null | undefined,
     resourceId: string | null | undefined,
+    eventType: EventType | undefined,
     limit: number | undefined,
     cursor: string | undefined,
     config: Config
@@ -17,6 +19,7 @@ export async function listEvents(
     request.addParam('before', beforeDate);
     request.addParam('error', onError);
     request.addParam('resoureId', resourceId);
+    request.addParam('type', eventType);
     request.addParam('limit', limit);
     if (cursor != null) {
         request.setHeader('cursor', cursor);

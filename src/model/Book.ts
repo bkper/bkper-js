@@ -1395,6 +1395,7 @@ export class Book extends ResourceProperty<bkper.Book> {
                       beforeDate,
                       onError,
                       resourceId,
+                      type: undefined,
                       limit,
                       cursor,
                   };
@@ -1404,6 +1405,7 @@ export class Book extends ResourceProperty<bkper.Book> {
             options.beforeDate,
             options.onError,
             options.resourceId,
+            options.type,
             options.limit,
             options.cursor,
             this.getConfig()

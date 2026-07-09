@@ -3308,7 +3308,7 @@ export declare interface ListEventsOptions {
     /**
      * The ID of the event's resource (Transaction, Account, or Group).
      *
-     * When set, `onError` is ignored.
+     * When set, `onError` and `type` are ignored.
      */
     resourceId?: string;
     /**
@@ -3318,9 +3318,15 @@ export declare interface ListEventsOptions {
      * `false` returns events with no error responses.
      * `null` or `undefined` includes events regardless of error responses.
      *
-     * Ignored when `resourceId` is set.
+     * Ignored when `resourceId` is set. When set, `type` is ignored.
      */
     onError?: boolean;
+    /**
+     * The event type to filter by.
+     *
+     * Ignored when `resourceId` or `onError` is set.
+     */
+    type?: EventType;
     /**
      * The maximum number of events to return.
      *

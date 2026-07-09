@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { Book } from "../src/model/Book.js";
 import { Config } from "../src/model/Config.js";
+import { EventType } from "../src/model/Enums.js";
 
 describe("Book.listEvents()", () => {
   let originalFetch: typeof globalThis.fetch;
@@ -62,9 +63,10 @@ describe("Book.listEvents()", () => {
 
   it("sends query params with options", async () => {
     const book = createBook();
-    await book.listEvents({ onError: false, limit: 10 });
+    await book.listEvents({ onError: false, type: EventType.BOOK_AUDITED, limit: 10 });
     expect(requestedUrls).to.have.length(1);
     expect(requestedUrls[0]).to.contain("error=false");
+    expect(requestedUrls[0]).to.contain("type=BOOK_AUDITED");
     expect(requestedUrls[0]).to.contain("limit=10");
   });
 });
