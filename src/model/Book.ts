@@ -655,17 +655,21 @@ export class Book extends ResourceProperty<bkper.Book> {
         transaction2: Transaction | bkper.Transaction | string
     ): Promise<Transaction> {
         const transactionId1 =
-            typeof transaction1 === 'string' ? transaction1 :
-            transaction1 instanceof Transaction ? transaction1.getId() :
-            transaction1.id;
+            typeof transaction1 === 'string'
+                ? transaction1
+                : transaction1 instanceof Transaction
+                ? transaction1.getId()
+                : transaction1.id;
         if (transactionId1 == null || transactionId1.trim() === '') {
             throw new Error('The first transaction must provide an id for merge.');
         }
 
         const transactionId2 =
-            typeof transaction2 === 'string' ? transaction2 :
-            transaction2 instanceof Transaction ? transaction2.getId() :
-            transaction2.id;
+            typeof transaction2 === 'string'
+                ? transaction2
+                : transaction2 instanceof Transaction
+                ? transaction2.getId()
+                : transaction2.id;
         if (transactionId2 == null || transactionId2.trim() === '') {
             throw new Error('The second transaction must provide an id for merge.');
         }
@@ -1387,19 +1391,24 @@ export class Book extends ResourceProperty<bkper.Book> {
         limit?: number,
         cursor?: string
     ): Promise<EventList> {
-        const options =
-            typeof optionsOrAfterDate === 'object' && optionsOrAfterDate !== null
-                ? optionsOrAfterDate
-                : {
-                      afterDate: optionsOrAfterDate,
-                      beforeDate,
-                      onError,
-                      resourceId,
-                      type: undefined,
-                      limit,
-                      cursor,
-                  };
-        const eventsList = await EventService.listEvents(
+        const isOptions = typeof optionsOrAfterDate === 'object' && optionsOrAfterDate !== null;
+        if (isOptions) {
+            return this.listEventsWithOptions(optionsOrAfterDate);
+        }
+        const options: ListEventsOptions = {
+            afterDate: optionsOrAfterDate ?? undefined,
+            beforeDate: beforeDate ?? undefined,
+            resourceId: resourceId ?? undefined,
+            onError: onError ?? undefined,
+            type: undefined,
+            limit: limit ?? 50,
+            cursor,
+        };
+        return this.listEventsWithOptions(options);
+    }
+
+    private async listEventsWithOptions(options: ListEventsOptions): Promise<EventList> {
+        const eventList = await EventService.listEvents(
             this,
             options.afterDate,
             options.beforeDate,
@@ -1410,7 +1419,7 @@ export class Book extends ResourceProperty<bkper.Book> {
             options.cursor,
             this.getConfig()
         );
-        return new EventList(this, eventsList);
+        return new EventList(this, eventList);
     }
 
     /**
