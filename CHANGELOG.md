@@ -6,6 +6,10 @@ See what's new and what has changed in bkper-js
 
 **July 2026**
 
+- Added `Book.listEvents(options)` overload
+- Added `ListEventsOptions`
+- Added event type filtering to `Book.listEvents`
+- Deprecated positional `Book.listEvents` parameters. Use `Book.listEvents(options)` instead
 - Added `Collaborator.getAvatarUrl`
 - Added `File.getCreatedAt`
 
