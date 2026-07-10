@@ -38,7 +38,7 @@
         "release:major": "npm version major -m \"chore(release): v%s\""
     },
     "dependencies": {
-        "@bkper/bkper-api-types": "^5.42.0",
+        "@bkper/bkper-api-types": "^5.43.0",
         "big.js": "^6.0.3",
         "dayjs": "^1.10.3",
         "luxon": "^1.25.0",
