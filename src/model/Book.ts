@@ -1407,6 +1407,7 @@ export class Book extends ResourceProperty<bkper.Book> {
         return this.listEventsWithOptions(options);
     }
 
+    /** @internal */
     private async listEventsWithOptions(options: ListEventsOptions): Promise<EventList> {
         const eventList = await EventService.listEvents(
             this,
