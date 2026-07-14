@@ -14,6 +14,7 @@ See what's new and what has changed in bkper-js
 - Added `File.getCreatedAt`
 - Added `File.remove`
 - Added `User.getPlanCycle`
+- Added `EventType.FILE_DELETED`
 
 **June 2026**
 
