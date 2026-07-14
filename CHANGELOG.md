@@ -12,6 +12,8 @@ See what's new and what has changed in bkper-js
 - Deprecated positional `Book.listEvents` parameters. Use `Book.listEvents(options)` instead
 - Added `Collaborator.getAvatarUrl`
 - Added `File.getCreatedAt`
+- Added `File.remove`
+- Added `User.getPlanCycle`
 
 **June 2026**
 
