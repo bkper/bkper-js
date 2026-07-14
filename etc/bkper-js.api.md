@@ -602,6 +602,7 @@ export class File extends ResourceProperty<bkper.File> {
     getName(): string | undefined;
     getSize(): number | undefined;
     getUrl(): string | undefined;
+    remove(): Promise<File>;
     setContent(content: string): File;
     setContentType(contentType: string): File;
     setName(name: string): File;

@@ -2885,6 +2885,12 @@ export declare class File extends ResourceProperty<bkper.File> {
      * @returns The updated File object
      */
     update(): Promise<File>;
+    /**
+     * Perform delete File.
+     *
+     * @returns This File after deletion
+     */
+    remove(): Promise<File>;
 }
 
 /**

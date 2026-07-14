@@ -29,3 +29,8 @@ export async function updateFile(bookId: string, file: bkper.File, config: Confi
     let response = await new HttpBooksApiV5Request(`${bookId}/files`, config).setMethod('PUT').setPayload(file).fetch();
     return response.data;
 }
+
+export async function deleteFile(bookId: string, file: bkper.File, config: Config): Promise<bkper.File> {
+    const response = await new HttpBooksApiV5Request(`${bookId}/files/${file.id}`, config).setMethod('DELETE').fetch();
+    return response.data;
+}

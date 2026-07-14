@@ -175,4 +175,18 @@ export class File extends ResourceProperty<bkper.File> {
         return this;
     }
 
+    /**
+     * Perform delete File.
+     *
+     * @returns This File after deletion
+     */
+    public async remove(): Promise<File> {
+        this.payload = await FileService.deleteFile(
+            this.book.getId(),
+            this.payload,
+            this.getConfig()
+        );
+        return this;
+    }
+
 }
