@@ -910,6 +910,7 @@ export class User extends Resource<bkper.User> {
     getHostedDomain(): string | undefined;
     getId(): string | undefined;
     getName(): string | undefined;
+    getPlanCycle(): 'MONTHLY' | 'YEARLY' | undefined;
     getUsername(): string | undefined;
     hasUsedConnections(): boolean | undefined;
 }

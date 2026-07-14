@@ -93,6 +93,15 @@ export class User extends Resource<bkper.User> {
     }
 
     /**
+     * Gets the billing cycle of the User's current plan.
+     *
+     * @returns The User's plan billing cycle
+     */
+    public getPlanCycle(): 'MONTHLY' | 'YEARLY' | undefined {
+        return this.payload.planCycle;
+    }
+
+    /**
      * Gets the username of the User.
      *
      * @returns The User's username

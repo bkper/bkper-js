@@ -2060,6 +2060,7 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      * @returns An [[EventList]] object containing the list of events
      */
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean | null, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
+
     /**
      * Retrieve a transaction by id.
      *
@@ -4367,6 +4368,12 @@ export declare class User extends Resource<bkper.User> {
      * @returns The User's hosted domain
      */
     getHostedDomain(): string | undefined;
+    /**
+     * Gets the billing cycle of the User's current plan.
+     *
+     * @returns The User's plan billing cycle
+     */
+    getPlanCycle(): 'MONTHLY' | 'YEARLY' | undefined;
     /**
      * Gets the username of the User.
      *
