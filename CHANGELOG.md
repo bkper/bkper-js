@@ -6,6 +6,8 @@ See what's new and what has changed in bkper-js
 
 **July 2026**
 
+- Added `Bkper.requestBookAccess`
+- Added `Book.resolveAccessRequest`
 - Added `Book.listEvents(options)` overload
 - Added `ListEventsOptions`
 - Added event type filtering to `Book.listEvents`
