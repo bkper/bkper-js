@@ -1548,6 +1548,24 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Resolves an access request for this Book.
+     *
+     * Resolving the request does not grant access. Call Collaborator.create
+     * on the returned Collaborator to grant access to the Book.
+     *
+     * @param accessRequestId - The access request id
+     * @returns The matching [[Collaborator]] object
+     */
+    public async resolveAccessRequest(accessRequestId: string): Promise<Collaborator> {
+        const payload = await CollaboratorService.resolveBookAccessRequest(
+            this.getId(),
+            accessRequestId,
+            this.getConfig()
+        );
+        return new Collaborator(this, payload);
+    }
+
+    /**
      * Gets all collaborators of this Book.
      *
      * @returns Array of Collaborator objects

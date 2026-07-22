@@ -3,12 +3,14 @@ import { App } from './App.js';
 import * as AppService from '../service/app-service.js';
 import * as BookService from '../service/book-service.js';
 import * as CollectionService from '../service/collection-service.js';
+import * as CollaboratorService from '../service/collaborator-service.js';
 import * as UserService from '../service/user-service.js';
 import * as TemplateService from '../service/template-service.js';
 import { User } from './User.js';
 import { Config } from './Config.js';
 import { Template } from './Template.js';
 import { Collection } from './Collection.js';
+import { Permission } from './Enums.js';
 
 /**
  * This is the main entry point of the [bkper-js](https://www.npmjs.com/package/bkper-js) library.
@@ -84,6 +86,27 @@ export class Bkper {
     public async getBooks(query?: string): Promise<Book[]> {
         let books = await BookService.loadBooks(query, this.config);
         return books.map(book => new Book(book, this.config));
+    }
+
+    /**
+     * Requests access to a Book the current user cannot access.
+     *
+     * @param bookId - The universal Book id
+     * @param permission - The permission requested in the Book
+     * @param message - An optional message to the Book owner
+     */
+    public async requestBookAccess(
+        bookId: string,
+        permission: Permission,
+        message?: string
+    ): Promise<void> {
+        const trimmedMessage = message?.trim();
+        await CollaboratorService.requestBookAccess(
+            bookId,
+            permission,
+            trimmedMessage || undefined,
+            this.config
+        );
     }
 
     /**

@@ -272,6 +272,7 @@ export class Bkper {
     getUser(): Promise<User>;
     // @internal (undocumented)
     static globalConfig: Config;
+    requestBookAccess(bookId: string, permission: Permission, message?: string): Promise<void>;
     static setConfig(config: Config): void;
 }
 
@@ -363,6 +364,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     // @internal (undocumented)
     queries?: Query[];
     remove(): Promise<Book>;
+    resolveAccessRequest(accessRequestId: string): Promise<Collaborator>;
     round(value: Amount | number): Amount;
     // @internal (undocumented)
     setAccount(account: bkper.Account, remove?: boolean): void;

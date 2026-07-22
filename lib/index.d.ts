@@ -1420,6 +1420,14 @@ export declare class Bkper {
      */
     getBooks(query?: string): Promise<Book[]>;
     /**
+     * Requests access to a Book the current user cannot access.
+     *
+     * @param bookId - The universal Book id
+     * @param permission - The permission requested in the Book
+     * @param message - An optional message to the Book owner
+     */
+    requestBookAccess(bookId: string, permission: Permission, message?: string): Promise<void>;
+    /**
      * Gets all [[Collections]] the user has access to.
      *
      * @returns The retrieved list of Collections
@@ -2133,6 +2141,16 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      * @returns The saved queries from this book
      */
     getSavedQueries(): Promise<Query[]>;
+    /**
+     * Resolves an access request for this Book.
+     *
+     * Resolving the request does not grant access. Call Collaborator.create
+     * on the returned Collaborator to grant access to the Book.
+     *
+     * @param accessRequestId - The access request id
+     * @returns The matching [[Collaborator]] object
+     */
+    resolveAccessRequest(accessRequestId: string): Promise<Collaborator>;
     /**
      * Gets all collaborators of this Book.
      *
