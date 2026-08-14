@@ -1440,6 +1440,46 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Retrieve complete transactions by id.
+     *
+     * Requests are sent sequentially in batches of up to 200 IDs.
+     *
+     * @param ids - The transaction IDs
+     *
+     * @returns The matching Transactions in input order
+     */
+    public async getTransactionsByIds(ids: string[]): Promise<Transaction[]> {
+        if (ids == null) {
+            throw new Error('Transaction IDs are required.');
+        }
+
+        const distinctIds = new Set<string>();
+        const normalizedIds: string[] = [];
+        for (const id of ids) {
+            if (id == null || typeof id !== 'string' || id.trim() === '') {
+                throw new Error('Transaction IDs must be non-blank strings.');
+            }
+            const normalizedId = id.trim();
+            if (distinctIds.has(normalizedId)) {
+                throw new Error(`Duplicate transaction ID: ${normalizedId}`);
+            }
+            distinctIds.add(normalizedId);
+            normalizedIds.push(normalizedId);
+        }
+
+        const transactions: Transaction[] = [];
+        for (let index = 0; index < normalizedIds.length; index += 200) {
+            const payloads = await TransactionService.getTransactionsByIds(
+                this.getId(),
+                normalizedIds.slice(index, index + 200),
+                this.getConfig()
+            );
+            transactions.push(...payloads.map(payload => new Transaction(this, payload)));
+        }
+        return transactions;
+    }
+
+    /**
      * Retrieve a file by id.
      *
      * @param id - The file ID

@@ -352,6 +352,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     getTotalTransactionsCurrentMonth(): number;
     getTotalTransactionsCurrentYear(): number;
     getTransaction(id: string): Promise<Transaction | undefined>;
+    getTransactionsByIds(ids: string[]): Promise<Transaction[]>;
     getVisibility(): Visibility;
     listEvents(options: ListEventsOptions): Promise<EventList>;
     // @deprecated

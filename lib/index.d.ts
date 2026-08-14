@@ -2078,6 +2078,16 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      */
     getTransaction(id: string): Promise<Transaction | undefined>;
     /**
+     * Retrieve complete transactions by id.
+     *
+     * Requests are sent sequentially in batches of up to 200 IDs.
+     *
+     * @param ids - The transaction IDs
+     *
+     * @returns The matching Transactions in input order
+     */
+    getTransactionsByIds(ids: string[]): Promise<Transaction[]>;
+    /**
      * Retrieve a file by id.
      *
      * @param id - The file ID

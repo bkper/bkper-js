@@ -86,6 +86,18 @@ export async function getTransaction(bookId: string, id: string, config: Config)
     return response.data;
 }
 
+export async function getTransactionsByIds(bookId: string, ids: string[], config: Config): Promise<bkper.Transaction[]> {
+    const payload: bkper.TransactionList = {
+        items: ids.map(id => ({ id: id })),
+    };
+    const response = await new HttpBooksApiV5Request(`${bookId}/transactions/load/batch`, config)
+        .setMethod('POST')
+        .setPayload(payload)
+        .fetch();
+    const transactionList = response.data as bkper.TransactionList;
+    return transactionList != null && transactionList.items != null ? transactionList.items : [];
+}
+
 export async function listTransactions(bookId: string, query: string | undefined, limit: number | undefined, cursor: string | undefined, config: Config): Promise<bkper.TransactionList> {
     if (!query) {
         query = "";
