@@ -78,7 +78,7 @@ describe("Book.getTransactionsByIds()", () => {
     expect(requests).to.have.length(2);
     expect(maxActiveRequests).to.equal(1);
     expect(requests[0].url).to.equal(
-      "https://api.example.com/v5/books/book-1/transactions/load/batch?"
+      "https://api.example.com/v5/books/book-1/transactions/load?"
     );
     expect(requests[0].init?.method).to.equal("POST");
     expect(getRequestIds(0)).to.deep.equal(ids.slice(0, 200));

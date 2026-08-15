@@ -90,7 +90,7 @@ export async function getTransactionsByIds(bookId: string, ids: string[], config
     const payload: bkper.TransactionList = {
         items: ids.map(id => ({ id: id })),
     };
-    const response = await new HttpBooksApiV5Request(`${bookId}/transactions/load/batch`, config)
+    const response = await new HttpBooksApiV5Request(`${bookId}/transactions/load`, config)
         .setMethod('POST')
         .setPayload(payload)
         .fetch();
