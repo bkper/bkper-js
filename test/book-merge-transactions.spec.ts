@@ -77,20 +77,28 @@ describe("Book.mergeTransactions()", () => {
     const book = createBook();
     const transactionPayload: bkper.Transaction = {
       id: "tx-1",
+      amount: "42.00",
+      date: "2026-08-18",
+      creditAccount: { id: "account-1" },
+      debitAccount: { id: "account-2" },
       description: "Plain payload transaction",
+      files: [{ id: "file-1", name: "receipt.pdf" }],
+      properties: { source: "client" },
+      remoteIds: ["remote-1"],
+      urls: ["https://example.com/receipt"],
+    };
+    const secondaryPayload: bkper.Transaction = {
+      id: "tx-2",
+      amount: " ",
+      description: " ",
+      properties: { secondary: "value" },
     };
 
-    const merged = await book.mergeTransactions(transactionPayload, {
-      id: "tx-2",
-      description: "Second plain payload",
-    });
+    const merged = await book.mergeTransactions(transactionPayload, secondaryPayload);
 
     expect(merged.getId()).to.equal("merged-1");
     expect(getRequestBody(0)).to.deep.equal({
-      items: [
-        transactionPayload,
-        { id: "tx-2", description: "Second plain payload" },
-      ],
+      items: [transactionPayload, secondaryPayload],
     });
   });
 
