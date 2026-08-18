@@ -7,12 +7,12 @@ import {
   Config,
 } from "../../src/index.js";
 
-const LOCAL_API_URL = "http://localhost:8081/_ah/api/bkper";
+const DEFAULT_API_URL = "http://localhost:8081/_ah/api/bkper";
 const FORBIDDEN_BOOK_ID =
   "agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICA4Lzpsb4LDA";
 
-export function getLocalApiUrl(): string {
-  return LOCAL_API_URL;
+export function getIntegrationApiUrl(): string {
+  return process.env.BKPER_INTEGRATION_API_BASE_URL || DEFAULT_API_URL;
 }
 
 export function getForbiddenBookId(): string {
@@ -20,7 +20,9 @@ export function getForbiddenBookId(): string {
 }
 
 export async function getOAuthToken(): Promise<string> {
-  const token = await getBkperCliOAuthToken();
+  const token =
+    process.env.BKPER_INTEGRATION_OAUTH_TOKEN ||
+    (await getBkperCliOAuthToken());
   if (!token) {
     throw new Error(
       "Failed to get OAuth token from bkper CLI. Run `bkper auth login` again."
@@ -34,7 +36,7 @@ export async function createIntegrationConfig(
 ): Promise<Config> {
   const token = await getOAuthToken();
   return {
-    apiBaseUrl: LOCAL_API_URL,
+    apiBaseUrl: getIntegrationApiUrl(),
     oauthTokenProvider: async () => token,
     ...overrides,
   };

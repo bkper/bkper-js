@@ -11,7 +11,7 @@ import {
   createReadyTestBook,
   deleteTestBook,
   getForbiddenBookId,
-  getLocalApiUrl,
+  getIntegrationApiUrl,
   isApiAvailable,
   seedBasicAccounts,
   uniqueTestName,
@@ -23,7 +23,7 @@ describe("http-api-request integration", function () {
   before(async function () {
     const available = await isApiAvailable();
     if (!available) {
-      console.log(`Skipping integration tests: API not available at ${getLocalApiUrl()}`);
+      console.log(`Skipping integration tests: API not available at ${getIntegrationApiUrl()}`);
       this.skip();
     }
   });
