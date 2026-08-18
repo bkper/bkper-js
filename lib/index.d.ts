@@ -1821,19 +1821,14 @@ export declare class Book extends ResourceProperty<bkper.Book> {
      */
     batchUntrashTransactions(transactions: Transaction[]): Promise<void>;
     /**
-     * Merge two [[Transactions]] into a single new canonical transaction.
+     * Merge a primary and secondary [[Transaction]]. Submitted primary fields
+     * have highest precedence; an id string sends no field overrides.
      *
-     * The merged transaction is created synchronously. Cleanup of the two
-     * originals is scheduled asynchronously by the backend.
-     *
-     * @param transaction1 - The first transaction to merge. Accepts a wrapped
-     *     [[Transaction]], a plain `bkper.Transaction` payload, or a transaction id.
-     * @param transaction2 - The second transaction to merge. Accepts a wrapped
-     *     [[Transaction]], a plain `bkper.Transaction` payload, or a transaction id.
-     *
+     * @param primary - Primary Transaction, payload, or id.
+     * @param secondary - Secondary Transaction, payload, or id.
      * @returns The merged Transaction
      */
-    mergeTransactions(transaction1: Transaction | bkper.Transaction | string, transaction2: Transaction | bkper.Transaction | string): Promise<Transaction>;
+    mergeTransactions(primary: Transaction | bkper.Transaction | string, secondary: Transaction | bkper.Transaction | string): Promise<Transaction>;
     /**
      * Replay [[Events]] on the Book, in batch.
      *

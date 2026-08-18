@@ -69,7 +69,7 @@ describe("Book.mergeTransactions()", () => {
     );
     expect(requests[0].init?.method).to.equal("PATCH");
     expect(getRequestBody(0)).to.deep.equal({
-      items: [{ id: "tx-1" }, { id: "tx-2" }],
+      items: [transaction.json(), { id: "tx-2" }],
     });
   });
 
@@ -87,7 +87,10 @@ describe("Book.mergeTransactions()", () => {
 
     expect(merged.getId()).to.equal("merged-1");
     expect(getRequestBody(0)).to.deep.equal({
-      items: [{ id: "tx-1" }, { id: "tx-2" }],
+      items: [
+        transactionPayload,
+        { id: "tx-2", description: "Second plain payload" },
+      ],
     });
   });
 
@@ -106,7 +109,7 @@ describe("Book.mergeTransactions()", () => {
       throw new Error("Expected mergeTransactions to throw an Error");
     }
     expect(caughtError.message).to.equal(
-      "The first transaction must provide an id for merge."
+      "The primary transaction must provide an id for merge."
     );
     expect(requests).to.have.length(0);
   });

@@ -359,7 +359,7 @@ export class Book extends ResourceProperty<bkper.Book> {
     listEvents(afterDate: string | null, beforeDate: string | null, onError: boolean | null, resourceId: string | null, limit: number, cursor?: string): Promise<EventList>;
     listFiles(limit?: number, cursor?: string): Promise<FileList>;
     listTransactions(query?: string, limit?: number, cursor?: string): Promise<TransactionList>;
-    mergeTransactions(transaction1: Transaction | bkper.Transaction | string, transaction2: Transaction | bkper.Transaction | string): Promise<Transaction>;
+    mergeTransactions(primary: Transaction | bkper.Transaction | string, secondary: Transaction | bkper.Transaction | string): Promise<Transaction>;
     parseDate(date: string): Date;
     parseValue(value: string): Amount | undefined;
     // @internal (undocumented)

@@ -6,6 +6,7 @@ See what's new and what has changed in bkper-js
 
 **August 2026**
 
+- Changed `Book.mergeTransactions(primary, secondary)` to forward supplied transaction fields as explicit merge overrides while keeping string inputs ID-only
 - Added `Book.getTransactionsByIds` to retrieve complete transactions by ID in sequential batches of up to 200
 
 **July 2026**

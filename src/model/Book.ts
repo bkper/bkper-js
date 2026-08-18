@@ -638,44 +638,39 @@ export class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * Merge two [[Transactions]] into a single new canonical transaction.
+     * Merge a primary and secondary [[Transaction]]. Submitted primary fields
+     * have highest precedence; an id string sends no field overrides.
      *
-     * The merged transaction is created synchronously. Cleanup of the two
-     * originals is scheduled asynchronously by the backend.
-     *
-     * @param transaction1 - The first transaction to merge. Accepts a wrapped
-     *     [[Transaction]], a plain `bkper.Transaction` payload, or a transaction id.
-     * @param transaction2 - The second transaction to merge. Accepts a wrapped
-     *     [[Transaction]], a plain `bkper.Transaction` payload, or a transaction id.
-     *
+     * @param primary - Primary Transaction, payload, or id.
+     * @param secondary - Secondary Transaction, payload, or id.
      * @returns The merged Transaction
      */
     public async mergeTransactions(
-        transaction1: Transaction | bkper.Transaction | string,
-        transaction2: Transaction | bkper.Transaction | string
+        primary: Transaction | bkper.Transaction | string,
+        secondary: Transaction | bkper.Transaction | string
     ): Promise<Transaction> {
-        const transactionId1 =
-            typeof transaction1 === 'string'
-                ? transaction1
-                : transaction1 instanceof Transaction
-                ? transaction1.getId()
-                : transaction1.id;
-        if (transactionId1 == null || transactionId1.trim() === '') {
-            throw new Error('The first transaction must provide an id for merge.');
+        const primaryPayload: bkper.Transaction =
+            typeof primary === 'string'
+                ? { id: primary }
+                : primary instanceof Transaction
+                ? primary.json()
+                : primary;
+        if (primaryPayload.id == null || primaryPayload.id.trim() === '') {
+            throw new Error('The primary transaction must provide an id for merge.');
         }
 
-        const transactionId2 =
-            typeof transaction2 === 'string'
-                ? transaction2
-                : transaction2 instanceof Transaction
-                ? transaction2.getId()
-                : transaction2.id;
-        if (transactionId2 == null || transactionId2.trim() === '') {
-            throw new Error('The second transaction must provide an id for merge.');
+        const secondaryPayload: bkper.Transaction =
+            typeof secondary === 'string'
+                ? { id: secondary }
+                : secondary instanceof Transaction
+                ? secondary.json()
+                : secondary;
+        if (secondaryPayload.id == null || secondaryPayload.id.trim() === '') {
+            throw new Error('The secondary transaction must provide an id for merge.');
         }
 
         const payload: bkper.TransactionList = {
-            items: [{ id: transactionId1 }, { id: transactionId2 }],
+            items: [primaryPayload, secondaryPayload],
         };
         let operation = await TransactionService.mergeTransactions(
             this.getId(),
