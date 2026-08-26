@@ -4,6 +4,12 @@ Notable user-facing changes to `bkper-js`, organized by released version.
 
 ## Unreleased
 
+## [2.43.3](https://github.com/bkper/bkper-js/releases/tag/v2.43.3) - 2026-08-26
+
+### Fixed
+
+- Fixed `Account.isInGroup` to compare embedded group IDs correctly
+
 ## [2.43.2](https://github.com/bkper/bkper-js/releases/tag/v2.43.2) - 2026-08-18
 
 ### Changed
