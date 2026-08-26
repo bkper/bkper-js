@@ -303,12 +303,13 @@ export class Account extends ResourceProperty<bkper.Account> {
 
     /** @internal */
     private isInGroupObject_(group: Group): boolean {
-        if (this.payload.groups == null) {
+        const groupId = group.getId();
+        if (this.payload.groups == null || !groupId) {
             return false;
         }
 
         for (var i = 0; i < this.payload.groups.length; i++) {
-            if (this.payload.groups[i] == group.getId()) {
+            if (this.payload.groups[i].id === groupId) {
                 return true;
             }
         }

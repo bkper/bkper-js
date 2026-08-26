@@ -15,6 +15,26 @@ function createBookWithGroups(groupPayloads: bkper.Group[]): Book {
     return new Book(bookPayload);
 }
 
+describe('Account.isInGroup()', () => {
+    it('should compare embedded group payload ids', async () => {
+        const book = createBookWithGroups([
+            { id: 'g1', name: 'Assets', permanent: true },
+            { id: 'g2', name: 'Liabilities', permanent: true },
+        ]);
+        const account = new Account(book, {
+            id: 'a1',
+            name: 'Cash',
+            type: 'ASSET',
+            groups: [{ id: 'g1' }, { name: 'Unsaved Group' }],
+        });
+
+        expect(await account.isInGroup(new Group(book, { id: 'g1' }))).to.be.true;
+        expect(await account.isInGroup('g1')).to.be.true;
+        expect(await account.isInGroup(new Group(book, { id: 'g2' }))).to.be.false;
+        expect(await account.isInGroup(new Group(book, { name: 'Unsaved Group' }))).to.be.false;
+    });
+});
+
 describe('Account.getGroups()', () => {
     describe('with groups in account payload', () => {
         it('should resolve groups from the book cache', async () => {
