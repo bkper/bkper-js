@@ -114,6 +114,24 @@ export class Billing extends Resource<bkper.Billing> {
     }
 
     /**
+     * Gets the authoritative rolling monthly average of posted transactions.
+     *
+     * @returns The transaction average, or undefined when unavailable for the current plan
+     */
+    public getTransactionsAverage(): number | undefined {
+        return this.payload.transactionsAverage;
+    }
+
+    /**
+     * Gets the confirmed average monthly transaction capacity.
+     *
+     * @returns The transaction capacity, or undefined when unavailable for the current plan
+     */
+    public getTransactionsCapacity(): number | undefined {
+        return this.payload.transactionsCapacity;
+    }
+
+    /**
      * Gets the transaction counts associated to the User's billing account.
      *
      * @returns The transaction counts associated to the User's billing account

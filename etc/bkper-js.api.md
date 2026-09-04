@@ -254,6 +254,8 @@ export class Billing extends Resource<bkper.Billing> {
     getPortalUrl(returnUrl: string): Promise<string | undefined>;
     getTotalTransactionsThisMonth(): number | undefined;
     getTotalTransactionsThisYear(): number | undefined;
+    getTransactionsAverage(): number | undefined;
+    getTransactionsCapacity(): number | undefined;
     hasStartedTrial(): boolean | undefined;
     isEnabled(): boolean | undefined;
     isPlanOverdue(): boolean | undefined;
