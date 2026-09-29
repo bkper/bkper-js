@@ -541,6 +541,7 @@ export enum EventType {
     BOOK_CREATED = "BOOK_CREATED",
     // (undocumented)
     BOOK_DELETED = "BOOK_DELETED",
+    BOOK_OVERNIGHT = "BOOK_OVERNIGHT",
     // (undocumented)
     BOOK_UPDATED = "BOOK_UPDATED",
     // (undocumented)

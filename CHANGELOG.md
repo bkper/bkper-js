@@ -4,6 +4,10 @@ Notable user-facing changes to `bkper-js`, organized by released version.
 
 ## Unreleased
 
+### Added
+
+- Added `EventType.BOOK_OVERNIGHT`, a daily per-Book event for Apps subscribed to it
+
 ## [2.43.3](https://github.com/bkper/bkper-js/releases/tag/v2.43.3) - 2026-08-26
 
 ### Fixed

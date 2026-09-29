@@ -288,6 +288,10 @@ export enum EventType {
     INTEGRATION_UPDATED = 'INTEGRATION_UPDATED',
     INTEGRATION_DELETED = 'INTEGRATION_DELETED',
     BOOK_AUDITED = 'BOOK_AUDITED',
+    /**
+     * Daily per-Book event for Apps subscribed to it, delivered at or after 01:00 in the Book's time zone.
+     */
+    BOOK_OVERNIGHT = 'BOOK_OVERNIGHT',
     BOOK_CREATED = 'BOOK_CREATED',
     BOOK_UPDATED = 'BOOK_UPDATED',
     BOOK_DELETED = 'BOOK_DELETED',
