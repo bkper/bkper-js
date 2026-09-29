@@ -4,9 +4,17 @@ Notable user-facing changes to `bkper-js`, organized by released version.
 
 ## Unreleased
 
+## [2.45.0](https://github.com/bkper/bkper-js/releases/tag/v2.45.0) - 2026-09-29
+
 ### Added
 
 - Added `EventType.BOOK_OVERNIGHT`, a daily per-Book event for Apps subscribed to it
+
+## [2.44.0](https://github.com/bkper/bkper-js/releases/tag/v2.44.0) - 2026-09-04
+
+### Added
+
+- Added `Billing.getTransactionsAverage` and `Billing.getTransactionsCapacity`
 
 ## [2.43.3](https://github.com/bkper/bkper-js/releases/tag/v2.43.3) - 2026-08-26
 
