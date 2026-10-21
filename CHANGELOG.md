@@ -4,6 +4,8 @@ Notable user-facing changes to `bkper-js`, organized by released version.
 
 ## Unreleased
 
+## [2.45.1](https://github.com/bkper/bkper-js/releases/tag/v2.45.1) - 2026-10-21
+
 ### Fixed
 
 - Fixed `Book.countTransactions`, `Billing.getTotalTransactionsThisMonth` and `Billing.getTotalTransactionsThisYear` to return numbers instead of numeric strings
