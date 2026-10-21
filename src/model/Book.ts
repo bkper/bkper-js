@@ -1345,7 +1345,8 @@ export class Book extends ResourceProperty<bkper.Book> {
             query,
             this.getConfig()
         );
-        return count.total;
+        // int64 totals arrive as JSON strings
+        return count.total != null ? +count.total : undefined;
     }
 
     /**

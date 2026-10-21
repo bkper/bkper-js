@@ -101,7 +101,9 @@ export class Billing extends Resource<bkper.Billing> {
      * @returns The number of total transactions this month
      */
     public getTotalTransactionsThisMonth(): number | undefined {
-        return this.payload.totalTransactionsThisMonth;
+        const total = this.payload.totalTransactionsThisMonth;
+        // int64 totals arrive as JSON strings
+        return total != null ? +total : undefined;
     }
 
     /**
@@ -110,7 +112,9 @@ export class Billing extends Resource<bkper.Billing> {
      * @returns The number of total transactions this year
      */
     public getTotalTransactionsThisYear(): number | undefined {
-        return this.payload.totalTransactionsThisYear;
+        const total = this.payload.totalTransactionsThisYear;
+        // int64 totals arrive as JSON strings
+        return total != null ? +total : undefined;
     }
 
     /**
