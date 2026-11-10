@@ -119,6 +119,7 @@ export class App extends Resource<bkper.App> {
     getUsers(): string | undefined;
     getWebsiteUrl(): string | undefined;
     hasEvents(): boolean;
+    isHidden(): boolean;
     isInstallable(): boolean;
     isPublished(): boolean;
     isRepositoryPrivate(): boolean | undefined;

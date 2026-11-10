@@ -525,6 +525,12 @@ export declare class App extends Resource<bkper.App> {
      */
     isPublished(): boolean;
     /**
+     * Checks if this App is hidden.
+     *
+     * @returns True if this App is hidden, defaults to false
+     */
+    isHidden(): boolean;
+    /**
      * Tells if this App is installable.
      *
      * @returns True if this App is installable

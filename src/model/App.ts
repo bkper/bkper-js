@@ -83,6 +83,15 @@ export class App extends Resource<bkper.App> {
     }
 
     /**
+     * Checks if this App is hidden.
+     *
+     * @returns True if this App is hidden, defaults to false
+     */
+    public isHidden(): boolean {
+        return this.payload.hidden || false;
+    }
+
+    /**
      * Tells if this App is installable.
      *
      * @returns True if this App is installable
