@@ -4,6 +4,12 @@ Notable user-facing changes to `bkper-js`, organized by released version.
 
 ## Unreleased
 
+## [2.46.0](https://github.com/bkper/bkper-js/releases/tag/v2.46.0) - 2026-11-10
+
+### Added
+
+- Added `App.isHidden` to check whether an App is hidden from normal discovery, defaulting to false when omitted
+
 ## [2.45.1](https://github.com/bkper/bkper-js/releases/tag/v2.45.1) - 2026-10-21
 
 ### Fixed
