@@ -116,6 +116,7 @@ export class App extends Resource<bkper.App> {
     getOwnerWebsiteUrl(): string | undefined;
     getReadme(): string | undefined;
     getRepositoryUrl(): string | undefined;
+    getTags(): string[] | undefined;
     getUsers(): string | undefined;
     getWebsiteUrl(): string | undefined;
     hasEvents(): boolean;

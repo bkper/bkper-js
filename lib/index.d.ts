@@ -519,6 +519,12 @@ export declare class App extends Resource<bkper.App> {
      */
     getEvents(): EventType[] | undefined;
     /**
+     * Gets the tags of this App.
+     *
+     * @returns The tags of this App, or undefined when absent
+     */
+    getTags(): string[] | undefined;
+    /**
      * Checks if this App is published.
      *
      * @returns True if this App is published

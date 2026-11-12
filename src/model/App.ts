@@ -74,6 +74,15 @@ export class App extends Resource<bkper.App> {
     }
 
     /**
+     * Gets the tags of this App.
+     *
+     * @returns The tags of this App, or undefined when absent
+     */
+    public getTags(): string[] | undefined {
+        return this.payload.tags;
+    }
+
+    /**
      * Checks if this App is published.
      *
      * @returns True if this App is published
