@@ -4,6 +4,12 @@ Notable user-facing changes to `bkper-js`, organized by released version.
 
 ## Unreleased
 
+## [2.47.0](https://github.com/bkper/bkper-js/releases/tag/v2.47.0) - 2026-11-12
+
+### Added
+
+- Added `App.getTags` to retrieve an App's tags, returning `undefined` when absent
+
 ## [2.46.0](https://github.com/bkper/bkper-js/releases/tag/v2.46.0) - 2026-11-10
 
 ### Added
